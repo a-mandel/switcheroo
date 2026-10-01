@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Claude Hands Free Text Mode
 // @namespace    andre.mandel
-// @version      8.1.3
+// @version      8.2
 // @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply.
 // @match        https://claude.ai/*
 // @match        *://*/*
@@ -290,6 +290,14 @@
 
   8.1.3: Screen mode fonts are Grid Runner: Orbitron titles, Exo 2 text, Share Tech Mono numbers. Light and dark.
   8.1.2: UPDATE TEST. Screen mode text is temporarily serif to prove auto update works. 8.1.3 puts it back.
+  8.2: LINKS AND PAGES ON HQ. Every link in a reply is caught and numbered, newest reply first, and logged in
+    the LINKS pill on HQ, kept apart by practice: CHxTLD, ANDRÉ MANDEL, and Unsorted. A chat's practice comes
+    from its project name or title (Tampermonkey menu, Links: project words, kept on this Mac only), or click
+    its practice in the Links panel to move it. Say "open" for the latest reply's first link, "open two" for
+    the second, "close page" to close it; or click a link in the panel. The page takes the right side of HQ;
+    the transcript stays on the left, still glowing word by word. A site that won't show inside HQ opens in a
+    window docked to the right half (allow pop-ups for claude.ai once so voice can open it). With no HQ open,
+    "open" opens a tab. Agents write links as [short spoken label](url), so the readout says the label.
   8.1.1: UPDATES ITSELF. Tampermonkey fetches new versions from github.com/a-mandel/switcheroo on its own.
     Say "update Switcheroo" to check now: a newer one opens Tampermonkey's update page, and one click on
     Update installs it. A new version is also announced once, on its own.
@@ -721,6 +729,42 @@
         '.smx .dkb .bn{border-color:var(--ink)}',
         '.smx .dkb button[disabled]{opacity:.35;cursor:default}',
         '.smx .dkt{text-align:center;font:15px var(--mf);letter-spacing:.3em;text-transform:lowercase;color:var(--mute);flex:none}',
+        // 8.2: the Links pill, the links panel, and the page viewer on the right
+        '.smx .bar .lk{font:700 15px var(--mf);letter-spacing:.2em;border:1px solid var(--accent);padding:6px 12px;color:var(--accent);white-space:nowrap;flex:none;cursor:pointer}',
+        '.smx .bar .lk.zero{border-color:var(--line);color:var(--mute)}',
+        '.smx .bar .lk.on,.smx .bar .lk:hover{background:var(--accent);color:var(--bg);border-color:var(--accent)}',
+        '.smx :where(.lnk button,.pgv button){all:unset;box-sizing:border-box;cursor:pointer}',
+        '.smx .lnk button:focus-visible,.smx .pgv button:focus-visible{outline:3px solid var(--ink);outline-offset:2px}',
+        '.smx .lnk{position:absolute;left:800px;top:100px;width:1100px;bottom:248px;z-index:4;border:1px solid var(--line);background:linear-gradient(var(--panel),var(--panel)),var(--bg);display:flex;flex-direction:column;min-height:0;box-shadow:0 18px 40px rgba(0,0,0,.25)}',
+        '.smx .lnk .lh{display:flex;align-items:center;gap:10px;padding:16px 22px;border-bottom:1px solid var(--line);flex:none}',
+        '.smx .lnk .lt{font:700 24px var(--hf);letter-spacing:.24em;text-transform:uppercase;margin-right:10px}',
+        '.smx .lnk .lb{height:40px;padding:0 14px;display:flex;align-items:center;font:700 15px var(--mf);letter-spacing:.14em;text-transform:uppercase;border:1px solid var(--line);color:var(--mute)}',
+        '.smx .lnk .lb.on{border-color:var(--accent);color:var(--accent);box-shadow:inset 0 -3px var(--accent)}',
+        '.smx .lnk .lg{flex:1}',
+        '.smx .lnk .lx{width:40px;justify-content:center;font-size:20px}',
+        '.smx .lnk .ll{flex:1;min-height:0;overflow:auto;padding:8px 22px 18px;scrollbar-width:thin}',
+        '.smx .lnk .lc{display:flex;align-items:baseline;gap:12px;margin:16px 0 8px;font:600 15px var(--mf);letter-spacing:.18em;text-transform:uppercase;color:var(--mute)}',
+        '.smx .lnk .lc b{color:var(--ink)}',
+        '.smx .lnk .lc button{font:700 13px var(--mf);letter-spacing:.14em;padding:3px 8px;border:1px dashed var(--line);color:var(--mute)}',
+        '.smx .lnk .lc button:hover{border-color:var(--ink);color:var(--ink)}',
+        '.smx .lnk .li{display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:14px;width:100%;padding:10px 12px;border:1px solid transparent;min-width:0}',
+        '.smx .lnk .li:hover{border-color:var(--line);background:var(--bg2)}',
+        '.smx .lnk .li .n{font:700 26px var(--hf);color:var(--accent);text-align:center}',
+        '.smx .lnk .li .lbl{font:600 21px/1.25 var(--bf);color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}',
+        '.smx .lnk .li .hs{font:15px var(--mf);color:var(--mute);letter-spacing:.06em;white-space:nowrap}',
+        '.smx .lnk .le{padding:40px 0;text-align:center;font:600 20px var(--mf);letter-spacing:.14em;color:var(--mute);text-transform:uppercase}',
+        '.smx .pgv{position:absolute;left:800px;top:100px;width:1100px;bottom:20px;z-index:5;border:1px solid var(--line);background:linear-gradient(var(--panel),var(--panel)),var(--bg);display:flex;flex-direction:column;min-height:0;box-shadow:0 18px 40px rgba(0,0,0,.25)}',
+        '.smx.light .pgv{border-top:4px solid var(--accent)}',
+        '.smx .pgv .ph{display:flex;align-items:center;gap:14px;padding:12px 18px;border-bottom:1px solid var(--line);flex:none;min-width:0}',
+        '.smx .pgv .pn{font:700 30px var(--hf);color:var(--accent);flex:none}',
+        '.smx .pgv .pl{font:700 22px var(--hf);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}',
+        '.smx .pgv .pu{font:15px var(--mf);color:var(--mute);letter-spacing:.06em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;flex:1}',
+        '.smx .pgv .pb{height:40px;padding:0 14px;display:flex;align-items:center;font:700 15px var(--mf);letter-spacing:.14em;text-transform:uppercase;border:1px solid var(--line);color:var(--ink);flex:none}',
+        '.smx .pgv .pb:hover{border-color:var(--ink)}',
+        '.smx .pgv .pf{flex:1;min-height:0;position:relative;background:#ffffff}',
+        '.smx .pgv iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#ffffff}',
+        '.smx .pgv .pw{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:var(--bg2);font:600 22px var(--bf);color:var(--mute);text-align:center;padding:40px}',
+        '.smx .pgv .pw b{font:700 30px var(--hf);letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}',
         '@media (prefers-reduced-motion:reduce){.smx *{animation:none!important;transition:none!important}}'
       ].join('\n');
     }
@@ -737,9 +781,9 @@
         '<div class="dock" hidden><span class="cn a"></span><span class="cn b"></span><span class="cn c"></span><span class="cn d"></span><div class="il">Image · from this reply</div><div class="im"></div></div>' +
         '<div class="draft" hidden><span class="mic"></span><span class="dw">You</span><span class="dt"></span></div>' +
         '<div class="hint">say next · take me to · allow · silence · resume</div><button type="button" class="flw" hidden title="Follow the voice again">FOLLOW</button></div>' +
-        '<div class="bar"><span class="br" title="Light or dark (Option Shift D)"></span><span class="sb">Switcheroo</span><span class="dots"></span><span class="grow"></span><span class="nx" title="Go to the next chat (Option Shift N)"></span><span class="pz" title="Pause the Switchboard for two turns, or resume it">LIVE</span></div>' +
+        '<div class="bar"><span class="br" title="Light or dark (Option Shift D)"></span><span class="sb">Switcheroo</span><span class="dots"></span><span class="grow"></span><span class="nx" title="Go to the next chat (Option Shift N)"></span><span class="lk zero" title="Links from your chats. Say open, or open two">LINKS</span><span class="pz" title="Pause the Switchboard for two turns, or resume it">LIVE</span></div>' +
         '<div class="stage"></div>' +
-        '<div class="asks" hidden></div><div class="dkov" hidden></div>' +
+        '<div class="asks" hidden></div><div class="dkov" hidden></div><div class="lnk" hidden></div><div class="pgv" hidden></div>' +
         '<div class="ctl" hidden><button type="button" class="hold" data-ctl="hold"><span class="hk">Responses · live</span><span class="hv">Hold</span><span class="hs">Stops every tab until you resume</span></button>' +
         '<div class="tgw"><div class="ck">Controls · every tab follows</div><div class="tgs">' +
         SM_CTL.map((c) => '<button type="button" class="tg" data-ctl="' + c[0] + '" title="' + smEsc(c[2]) + '" aria-pressed="false"><span class="tl">' + smEsc(c[1]) + '</span><span class="sw"><i></i></span><span class="tv">OFF</span></button>').join('') +
@@ -751,6 +795,7 @@
       // 8.1: approvals and question cards, the deck overlay, the reading glow
       let askSig = '', armAlways = '', armT = null, multiSel = new Set(), multiKey = '';
       let dkSig = '', dkOpen = false, lpT = null, lpFired = false;
+      let lnkOpen = false, lnkSig = '', lnkBiz = '';   // 8.2
       let msgScrollAt = 0, lastTextSig = '';
 
       function fit() {
@@ -821,6 +866,19 @@
         if (j) { onAction({ t: 'jump', id: j.getAttribute('data-jump') }); return; }
         if (ev.target.closest('.nx')) { onAction({ t: 'next' }); return; }
         if (ev.target.closest('.pz')) { onAction({ t: 'pause' }); return; }
+        // 8.2: links and pages
+        if (ev.target.closest('.bar .lk')) { lnkOpen = !lnkOpen; lnkSig = ''; if (model) renderLinks(model); return; }
+        const lc = ev.target.closest('[data-lnk]');
+        if (lc) {
+          const k = lc.getAttribute('data-lnk');
+          if (k === 'close') { lnkOpen = false; lnkSig = ''; renderLinks(model); return; }
+          if (k === 'tab') { lnkBiz = lc.getAttribute('data-biz'); lnkSig = ''; renderLinks(model); return; }
+          if (k === 'biz') { onAction({ t: 'biz', path: lc.getAttribute('data-path'), biz: lc.getAttribute('data-biz') }); return; }
+          if (k === 'open') { lnkOpen = false; lnkSig = ''; renderLinks(model); onAction({ t: 'page', url: lc.getAttribute('data-url'), label: lc.getAttribute('data-label'), n: +lc.getAttribute('data-n') || 0 }); return; }
+          return;
+        }
+        const pc = ev.target.closest('[data-pg]');
+        if (pc) { onAction({ t: 'pageAct', k: pc.getAttribute('data-pg') }); return; }
         if (ev.target.closest('.br')) onAction({ t: 'theme' });
       });
       fx.addEventListener('pointerdown', (ev) => {
@@ -978,6 +1036,55 @@
         if (sig !== stageSig) { stageSig = sig; q('.stage').innerHTML = stage(tabs, fid, ex); fitNames(); }
         renderAsks(m);   // 8.1
         renderDeck(m);   // 8.1
+        renderLinks(m);  // 8.2
+      }
+
+      // ---------- 8.2: links caught from every chat, kept apart by practice ----------
+      const BIZ_LABEL = { 'CHxTLD': 'CHxTLD', 'ANDRE MANDEL': 'ANDRÉ MANDEL', '': 'Unsorted' };
+      const hostOf = (u) => { try { const x = new URL(u); return /claude\.ai$/.test(x.hostname) && /\/artifact\//.test(x.pathname) ? 'claude.ai page' : x.hostname.replace(/^www\./, ''); } catch (e) { return ''; } };
+      function renderLinks(m) {
+        const L = (m && m.links) || [];
+        const total = L.reduce((t, c) => t + c.links.length, 0);
+        const pill = q('.bar .lk');
+        pill.textContent = 'LINKS' + (total ? ' ' + total : '');
+        pill.className = 'lk' + (total ? '' : ' zero') + (lnkOpen ? ' on' : '');
+        const box = q('.lnk');
+        if (!lnkOpen) { if (!box.hidden) { box.hidden = true; box.replaceChildren(); } lnkSig = ''; return; }
+        const fl = L.find((c) => c.id === m.floorId);
+        if (lnkBiz === '' && fl && fl.biz && !lnkSig) lnkBiz = fl.biz;
+        const sig = JSON.stringify([lnkBiz, m.floorId, L.map((c) => [c.id, c.biz, c.title, c.links.map((x) => x.url)])]);
+        if (sig === lnkSig) return;
+        lnkSig = sig;
+        const count = (b) => L.filter((c) => (c.biz || '') === b).reduce((t, c) => t + c.links.length, 0);
+        const chats = L.filter((c) => (c.biz || '') === lnkBiz && c.links.length).sort((a, b) => (b.id === m.floorId) - (a.id === m.floorId) || (b.at || 0) - (a.at || 0));
+        const nextBiz = (b) => (b === 'CHxTLD' ? 'ANDRE MANDEL' : b === 'ANDRE MANDEL' ? '' : 'CHxTLD');
+        box.innerHTML = '<div class="lh"><span class="lt">Links</span>' +
+          ['CHxTLD', 'ANDRE MANDEL', ''].map((b) => '<button type="button" class="lb' + (lnkBiz === b ? ' on' : '') + '" data-lnk="tab" data-biz="' + b + '">' + smEsc(BIZ_LABEL[b]) + ' ' + count(b) + '</button>').join('') +
+          '<span class="lg"></span><button type="button" class="lb lx" data-lnk="close" title="Close">×</button></div><div class="ll">' +
+          (chats.length ? chats.map((c) => '<div class="lc"><b>' + smEsc(String(c.name || c.title || 'Claude').toUpperCase()) + '</b>' + (c.id === m.floorId ? '<span>· floor · say open, or open two</span>' : '') +
+            '<button type="button" data-lnk="biz" data-path="' + smEsc(c.path) + '" data-biz="' + nextBiz(c.biz || '') + '" title="Move this chat to ' + smEsc(BIZ_LABEL[nextBiz(c.biz || '')]) + '">' + smEsc(BIZ_LABEL[c.biz || '']) + ' ›</button></div>' +
+            c.links.map((x) => '<button type="button" class="li" data-lnk="open" data-url="' + smEsc(x.url) + '" data-label="' + smEsc(x.label) + '" data-n="' + x.n + '" title="' + smEsc(x.url) + '"><span class="n">' + x.n + '</span><span class="lbl">' + smEsc(x.label) + '</span><span class="hs">' + smEsc(hostOf(x.url)) + '</span></button>').join('')).join('')
+            : '<div class="le">No ' + smEsc(BIZ_LABEL[lnkBiz]) + ' links yet</div>') + '</div>';
+        box.hidden = false;
+      }
+      // ---------- 8.2: the page viewer. Transcript stays left; the page takes the right ----------
+      function showPage(pg) {
+        const v = q('.pgv');
+        if (!pg) { v.hidden = true; v.replaceChildren(); return; }
+        v.hidden = false;
+        v.innerHTML = '<div class="ph"><span class="pn">' + (pg.n ? pg.n : '·') + '</span><span class="pl">' + smEsc(pg.label || hostOf(pg.url)) + '</span><span class="pu">' + smEsc(pg.url) + '</span>' +
+          '<button type="button" class="pb" data-pg="window" title="Open in its own window, docked right">Window</button><button type="button" class="pb" data-pg="close" title="Close the page (say close page)">Close</button></div><div class="pf"></div>';
+        const f = q('.pgv .pf');
+        if (pg.mode === 'frame') {
+          const fr = document.createElement('iframe');
+          fr.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-downloads');
+          fr.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
+          fr.src = pg.url;
+          f.appendChild(fr);
+        } else {
+          f.innerHTML = '<div class="pw"><b>' + (pg.mode === 'checking' ? 'Opening' : pg.mode === 'blocked' ? 'Pop-ups blocked' : 'In its own window') + '</b><span>' +
+            (pg.mode === 'checking' ? 'Checking whether this page can show here.' : pg.mode === 'blocked' ? 'This site won&#39;t show inside screen mode, and Chrome blocked its window. Allow pop-ups for claude.ai once (the icon at the end of the address bar), then say open again, or click Window.' : 'This site won&#39;t show inside screen mode, so it opened in a window docked to the right. Say close page to close it.') + '</span></div>';
+        }
       }
 
       // ---------- 8.1: approvals and question cards, answered with a click ----------
@@ -1288,7 +1395,7 @@
       }
 
       setTheme(theme);
-      return { el: fx, fit, setTheme, setZoom, paint, tick, setHtml, clearHtml, flash, setReading, follow };
+      return { el: fx, fit, setTheme, setZoom, paint, tick, setHtml, clearHtml, flash, setReading, follow, showPage, scale: () => (fx.getBoundingClientRect().width / 1920) || 1 };
     }
 
     // Rajdhani, Barlow and Share Tech Mono for the dark look. Claude's page blocks outside font
@@ -1368,10 +1475,77 @@
       const st = dk.st, n = (st.nAudio || 0) + (st.nVisual || 0);
       return { id: '__deck', deck: true, title: 'Swipe Deck', name: 'Swipe Deck', deckN: n, nAudio: st.nAudio || 0, nVisual: st.nVisual || 0, on: true, born: 0 };
     }
+    // 8.2: links every chat reported, by tab
+    const linkReg = new Map();
+    function linkList() {
+      const now = Date.now(), live = new Set(tabs().map((e) => e.id));
+      for (const [id, c] of linkReg) if (!live.has(id) && now - c.at > 150000) linkReg.delete(id);
+      return [...linkReg.values()];
+    }
     function model() {
       const f = lsGet('chf_sb_floor', null), list = tabs(), de = deckEntry();
       if (de) list.push(de);
-      return { tabs: list, floorId: floorId || (f && f.id) || '', floor: floorP, quiet: lsGet('chf_sb_quiet', {}), ctl: ctlModel(), deck: deckModel() };
+      return { tabs: list, floorId: floorId || (f && f.id) || '', floor: floorP, quiet: lsGet('chf_sb_quiet', {}), ctl: ctlModel(), deck: deckModel(), links: linkList() };
+    }
+    // 8.2: a page opens on the right of HQ when the site allows it; otherwise in a window docked there
+    let page = null, pageWin = null, pageGen = 0;
+    function headersSayNoFrame(url) {
+      return new Promise((resolve) => {
+        let done = false;
+        const fin = (v) => { if (!done) { done = true; resolve(v); } };
+        setTimeout(() => fin(null), 4000);
+        try {
+          const rq = GM_xmlhttpRequest({ method: 'GET', url, timeout: 6000,
+            onreadystatechange: (r) => {
+              if (r.readyState < 2 || done) return;
+              const h = String(r.responseHeaders || '').toLowerCase();
+              const xfo = (/^x-frame-options:\s*(.+)$/m.exec(h) || [])[1] || '';
+              const fa = (/frame-ancestors\s+([^;\n]+)/.exec(h) || [])[1] || '';
+              let same = false; try { same = new URL(url).origin === location.origin; } catch (e) {}
+              let no = false;
+              if (/deny/.test(xfo) || (/sameorigin/.test(xfo) && !same)) no = true;
+              if (fa && !/\*|https:\/\/claude\.ai/.test(fa) && !(/'self'/.test(fa) && same)) no = true;
+              fin(no);
+              try { rq && rq.abort && rq.abort(); } catch (e) {}
+            },
+            onerror: () => fin(null), ontimeout: () => fin(null) });
+        } catch (e) { fin(null); }
+      });
+    }
+    function dockWindow(url) {
+      try { if (pageWin && !pageWin.closed) pageWin.close(); } catch (e) {}
+      const s = scr.scale(), left = Math.round(window.screenX + 800 * s), top = Math.round(window.screenY);
+      const width = Math.max(480, Math.round(window.outerWidth - 800 * s)), height = Math.max(400, Math.round(window.outerHeight));
+      let w = null;
+      try { w = window.open(url, 'switcheroo-page', 'popup=yes,left=' + left + ',top=' + top + ',width=' + width + ',height=' + height); } catch (e) {}
+      if (w) { pageWin = w; try { w.moveTo(left, top); w.resizeTo(width, height); } catch (e) {} }
+      return !!w;
+    }
+    async function openPage(url, label, n, from) {
+      if (!/^https?:/i.test(String(url || ''))) return false;
+      const gen = ++pageGen;
+      page = { url, label: label || '', n: n || 0, mode: 'checking' };
+      scr.showPage(page);
+      const no = await headersSayNoFrame(url);
+      if (gen !== pageGen) return true;
+      if (no) { page.mode = dockWindow(url) ? 'window' : 'blocked'; scr.showPage(page); return true; }
+      page.mode = 'frame';
+      scr.showPage(page);
+      return true;
+    }
+    // claude.ai itself may refuse to frame a site; then the window takes over
+    document.addEventListener('securitypolicyviolation', (e) => {
+      if (!page || page.mode !== 'frame' || !/frame-src|child-src/.test(e.violatedDirective || e.effectiveDirective || '')) return;
+      let o = ''; try { o = new URL(page.url).origin; } catch (x) {}
+      if (o && String(e.blockedURI || '').indexOf(o) !== 0) return;
+      page.mode = dockWindow(page.url) ? 'window' : 'blocked';
+      scr.showPage(page);
+    });
+    function closePage() {
+      pageGen++;
+      try { if (pageWin && !pageWin.closed) pageWin.close(); } catch (e) {}
+      pageWin = null; page = null;
+      scr.showPage(null);
     }
     function applyTheme() {
       const t = SM_THEMES[themeId];
@@ -1412,6 +1586,10 @@
       // 8.1: where the voice is, approvals answered, the deck
       else if (m.t === 'reading') { if (!m.from || m.from === floorId) scr.setReading(m.r && floorP && m.r.path === floorP.path ? m.r : null); }
       else if (m.t === 'follow') scr.follow();
+      // 8.2: links and pages
+      else if (m.t === 'links' && m.from) { linkReg.set(m.from, { id: m.from, title: m.title, name: m.name, path: m.path, biz: m.biz || '', links: m.links || [], at: Date.now() }); scr.paint(model()); }
+      else if (m.t === 'page-open' && m.url) { send({ t: 'page-opened', to: m.from, ok: true }); openPage(m.url, m.label, m.n, m.from); }   // HQ has it
+      else if (m.t === 'page-close') { closePage(); send({ t: 'page-closed', to: m.from }); }
       else if ((m.t === 'approved' || m.t === 'denied') && m.to === 'mirror') scr.flash(m.ok ? (m.t === 'denied' ? 'Denied' : m.always ? 'Always allowed' : 'Allowed once') : 'That request changed, so it was left alone');
       else if (m.t === 'askpicked' && m.to === 'mirror') scr.flash(m.ok ? 'Answered' : 'That question changed, so nothing was picked');
       else if (m.t === 'deck' && m.st) {
@@ -1532,6 +1710,16 @@
       else if (a.t === 'appr') approveFrom(a.k, a.id);
       else if (a.t === 'pick') pickFrom(a.key, a.n);
       else if (a.t === 'deck') deckCmd(a.cmd, a.deck);
+      else if (a.t === 'page') openPage(a.url, a.label, a.n, 'mirror');   // 8.2
+      else if (a.t === 'pageAct') { if (a.k === 'close') closePage(); else if (a.k === 'window' && page) { page.mode = dockWindow(page.url) ? 'window' : 'blocked'; scr.showPage(page); } }
+      else if (a.t === 'biz') {   // 8.2: this chat belongs to that practice, remembered in this browser
+        const pins = lsGet('chf_biz_chat', {}) || {};
+        if (a.biz) pins[a.path] = a.biz; else pins[a.path] = 'none';
+        try { localStorage.setItem('chf_biz_chat', JSON.stringify(pins)); } catch (x) {}
+        send({ t: 'biz', path: a.path });
+        for (const c of linkReg.values()) if (c.path === a.path) c.biz = a.biz || '';
+        scr.paint(model());
+      }
       else if (a.t === 'jump') jump(a.id);
       else if (a.t === 'next') goNext();
       else if (a.t === 'pause') togglePause();
@@ -2868,6 +3056,80 @@
     if (isFloor()) post({ t: 'reading', from: ME, r: rdNow });
   }
 
+  // ---------- 8.2: links in replies, caught and numbered for HQ ----------
+  // Newest reply first, in the order they appear in it, so "open" is the first link of the latest reply.
+  // Agents write links as [short spoken label](url); the readout says the label, never the address.
+  const hostLabel = (u) => { try { const x = new URL(u); return /claude\.ai$/.test(x.hostname) && /\/artifact\//.test(x.pathname) ? 'Claude page' : x.hostname.replace(/^www\./, ''); } catch (e) { return 'link'; } };
+  function chatLinks() {
+    const ms = [...replies()], out = [];
+    for (let i = ms.length - 1; i >= 0 && out.length < 40; i--) {
+      for (const a of ms[i].querySelectorAll('a[href]')) {
+        if (ours(a) || a.closest('pre')) continue;
+        let url = '';
+        try { url = new URL(a.getAttribute('href'), location.href).href; } catch (e) { continue; }
+        if (!/^https?:/i.test(url) || out.some((x) => x.url === url)) continue;
+        if (url.split('#')[0] === location.href.split('#')[0]) continue;
+        let label = (a.innerText || a.getAttribute('aria-label') || '').replace(/\s+/g, ' ').trim();
+        if (!label || /^(?:https?:\/\/|www\.)/i.test(label) || label === url) label = hostLabel(url);
+        out.push({ n: out.length + 1, label: label.slice(0, 90), url });
+      }
+    }
+    return out;
+  }
+  // which practice this chat belongs to: a pin from HQ, else words in its project or title. The words live in
+  // Tampermonkey's menu (Links: practice words), on this Mac only, never in the script.
+  function projectName() {
+    const a = [...document.querySelectorAll('a[href*="/project/"]')].find((x) => !ours(x) && !x.closest('nav, aside, [data-testid="assistant-message"]') && visible(x));
+    return a ? (a.innerText || '').trim() : '';
+  }
+  function bizOfChat() {
+    const pin = (lsJson('chf_biz_chat', {}) || {})[location.pathname];
+    if (pin) return pin === 'none' ? '' : pin;
+    const hay = (projectName() + ' ' + chatTitle()).toLowerCase();
+    const words = { 'CHxTLD': String(cfg.bizCh || 'chxtld, clever homes, toby long design'), 'ANDRE MANDEL': String(cfg.bizAm || 'andre mandel, andré mandel') };
+    for (const b of Object.keys(words)) if (words[b].split(',').map((x) => x.trim().toLowerCase()).filter(Boolean).some((k) => hay.includes(k))) return b;
+    return '';
+  }
+  try {
+    if (typeof GM_registerMenuCommand === 'function') {
+      GM_registerMenuCommand('Links: CHxTLD project words', () => {
+        const v = window.prompt('Words that mark a chat as CHxTLD (its project name or title), separated by commas. Kept on this Mac only.', cfg.bizCh || 'chxtld, clever homes, toby long design');
+        if (v !== null) { cfg.bizCh = v; save(cfg); linksPush(true); }
+      });
+      GM_registerMenuCommand('Links: ANDRÉ MANDEL project words', () => {
+        const v = window.prompt('Words that mark a chat as ANDRÉ MANDEL (its project name or title), separated by commas. Kept on this Mac only.', cfg.bizAm || 'andre mandel, andré mandel');
+        if (v !== null) { cfg.bizAm = v; save(cfg); linksPush(true); }
+      });
+    }
+  } catch (e) {}
+  let linksSig = '', linksAt = 0;
+  function linksPush(force) {
+    if (tabOff || !composer()) return;
+    const links = chatLinks(), title = chatTitle();
+    const m = { t: 'links', from: ME, title, name: shortName(title), path: location.pathname, biz: bizOfChat(), links };
+    const sig = JSON.stringify([m.path, m.biz, title, links]);
+    if (!force && sig === linksSig && Date.now() - linksAt < 30000) return;
+    linksSig = sig; linksAt = Date.now();
+    post(m);
+  }
+  // "open", "open two": the latest reply's links first; HQ shows the page, or this tab opens it
+  let pageAsk = null;
+  function openLink(n) {
+    const L = chatLinks();
+    if (!L.length) return say('No links in this chat.');
+    const x = L[(n || 1) - 1];
+    if (!x) return say('This chat has ' + (L.length === 1 ? 'one link.' : L.length + ' links.'));
+    const tok = Math.random().toString(36).slice(2);
+    pageAsk = { tok, x };
+    post({ t: 'page-open', from: ME, url: x.url, label: x.label, n: x.n, biz: bizOfChat() });
+    setTimeout(() => {
+      if (!pageAsk || pageAsk.tok !== tok) return;
+      pageAsk = null;   // no screen mode open: a tab instead
+      try { GM_openInTab(x.url, { active: true, insert: true }); } catch (e) { window.open(x.url, '_blank'); }
+      say('Opening ' + x.label + ' in a tab.');
+    }, 1500);
+  }
+
   // ---------- Swipe Deck by voice (7.9) ----------
   // The Swipe Deck page tells the claude.ai page around it which card is on top. Here that card is
   // read aloud and your answer goes back: yes, no, TBD, back one. It listens with Chrome's own
@@ -3154,7 +3416,7 @@
   let computeTimer = null;
   function scheduleCompute() {
     if (computeTimer) return;
-    computeTimer = setTimeout(() => { computeTimer = null; computeLocal(); publish(); mirrorPush(); }, 400);
+    computeTimer = setTimeout(() => { computeTimer = null; computeLocal(); publish(); mirrorPush(); linksPush(); }, 400);
   }
 
   // ---------- switchboard: talking to the other tabs ----------
@@ -3199,8 +3461,10 @@
   if (bc) bc.onmessage = (ev) => onMsg(ev.data || {});
   function onMsg(m) {
     switch (m.t) {
-      case 'hello': publish(true); deckRelay(); break;
-      case 'mirror-hello': mirrorPush(true); break;
+      case 'hello': publish(true); deckRelay(); linksPush(true); break;
+      case 'mirror-hello': mirrorPush(true); linksPush(true); break;
+      case 'page-opened': if (m.to === ME && pageAsk) { const pa = pageAsk; pageAsk = null; say('Opening ' + pa.x.label + '.'); } break;   // 8.2: HQ has it
+      case 'biz': if (m.path === location.pathname) linksPush(true); break;
       case 'state':
         if (m.e && m.e.id !== ME) { reg.set(m.e.id, Object.assign({}, m.e, { ts: Date.now() })); paintBoard(); }
         break;
@@ -4091,6 +4355,16 @@
     // 7.9: Swipe Deck hands free
     if (/^(?:(?:open|start|review|run|do|go to|take me to|bring up|pull up|let's do|lets do|let's review)\s+)?(?:the\s+|my\s+)?(?:swipe ?decks?|swipe ?deck review|deck review|review (?:the |my )?deck)(?:\s+(?:hands free|please|now))*$/.test(flat)) return { kind: 'deck' };
     if (/^(next|next chat|next one|next please)$/.test(flat)) return { kind: 'next' };
+    // 8.2: links. "open", "open two", "open link three", "open the second link", "close page"
+    {
+      const om = flat.match(/^(?:open|pull up|show me|bring up)(?: (?:it|that|this))?(?: (?:the|a))?(?: (first|second|third|fourth|fifth|sixth|seventh|eighth|last))?(?: (?:link|page|one))?(?: (?:number )?([a-z]+|\d{1,2}))?(?: (?:link|page))?(?: please)?$/);
+      if (om && (/^open\b/.test(flat) || /\b(?:link|page)\b/.test(flat))) {
+        const w = om[1] || om[2];
+        let n = !w ? 1 : w === 'last' ? -1 : (ORD[w] || toNum(w));
+        if (isFinite(n) && n !== 0) return { kind: 'openLink', n };
+      }
+      if (/^(?:close|hide|dismiss|shut)(?: the| this| that)? (?:page|link|window|viewer|site)(?: please)?$|^(?:close it|page close|close page please)$/.test(flat)) return { kind: 'closePage' };
+    }
     if (/^(?:(?:please|can you|could you)\s+)?(?:update|upgrade|refresh|reinstall)\s+(?:the\s+|my\s+)?(?:switcheroo|switch a roo|switch roo|switchboard|script|hands free)(?:\s+(?:now|please))*$|^(?:check for (?:an? )?updates?|any updates?|is there an update)$/.test(flat)) return { kind: 'update' };   // 8.1.1
     if (/^(?:follow|follow along|follow me|follow the voice|follow the reading|follow it|follow again|keep up)$/.test(flat)) return { kind: 'follow' };   // 8.1
     if (/^(status|status check|what's the status|whats the status|board|switchboard|switcheroo)$/.test(flat)) return { kind: 'status' };
@@ -4285,6 +4559,8 @@
       return openDeck();
     }
     if (c.kind === 'update') return checkUpdate(true);   // 8.1.1
+    if (c.kind === 'openLink') return openLink(c.n === -1 ? chatLinks().length : c.n);   // 8.2
+    if (c.kind === 'closePage') { post({ t: 'page-close', from: ME }); return say('Page closed.'); }
     if (c.kind === 'follow') { post({ t: 'follow' }); toast('Screen mode follows the voice again'); return; }   // 8.1
     if (c.kind === 'read') {
       takeFloor('touch');
