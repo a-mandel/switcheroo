@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Claude Hands Free Text Mode
 // @namespace    andre.mandel
-// @version      8.1.2
+// @version      8.1.3
 // @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply.
 // @match        https://claude.ai/*
 // @match        *://*/*
@@ -288,6 +288,7 @@
     Screen mode gets a control panel: HOLD plus labeled switches, all clickable with the mouse.
     Mic after reading switched off there stays off, even after a reload.
 
+  8.1.3: Screen mode fonts are Grid Runner: Orbitron titles, Exo 2 text, Share Tech Mono numbers. Light and dark.
   8.1.2: UPDATE TEST. Screen mode text is temporarily serif to prove auto update works. 8.1.3 puts it back.
   8.1.1: UPDATES ITSELF. Tampermonkey fetches new versions from github.com/a-mandel/switcheroo on its own.
     Say "update Switcheroo" to check now: a newer one opens Tampermonkey's update page, and one click on
@@ -412,10 +413,10 @@
     // a pie of every chat in the middle, load rails on the right. Two looks, same layout:
     // light is the CHxTLD letterhead look, dark is the ANDRÉ MANDEL radar look. Option Shift D flips them.
     // Colors and type live in SM_THEMES, so graphic standards can be swapped in one place.
-    const SM_HUD = { hf: 'Georgia,"Times New Roman",serif', bf: 'Georgia,"Times New Roman",serif',   // 8.1.2 UPDATE TEST: serif, revert in 8.1.3. Was hf Rajdhani stack, bf Barlow stack
+    const SM_HUD = { hf: '"Orbitron","Rajdhani",Arial,sans-serif', bf: '"Exo 2","Barlow",Arial,sans-serif',   // 8.1.3: Grid Runner, André's pick from Switcheroo Fonts
       mf: '"Share Tech Mono","SF Mono",Menlo,ui-monospace,monospace' };
-    const SM_ARIAL = { hf: 'Georgia,"Times New Roman",serif', bf: 'Georgia,"Times New Roman",serif',   // 8.1.2 UPDATE TEST: serif, revert in 8.1.3. Was Arial
-      mf: 'Arial,"Helvetica Neue",Helvetica,sans-serif' };
+    const SM_ARIAL = { hf: '"Orbitron","Rajdhani",Arial,sans-serif', bf: '"Exo 2","Barlow",Arial,sans-serif',   // 8.1.3: Grid Runner in light HQ too. Was Arial (letterhead)
+      mf: '"Share Tech Mono","SF Mono",Menlo,ui-monospace,monospace' };
     const SM_THEMES = {
       // CHxTLD, from the letterhead: white ground, black Arial set in bold caps for headings,
       // brand orange DE6A2D for the tagline, bullets and keylines, the cube logo up top.
@@ -1295,7 +1296,7 @@
     // the Mac's DIN Alternate and Avenir Next stand in.
     function smFonts(onload) {
       if (typeof GM_xmlhttpRequest !== 'function' || typeof FontFace !== 'function') return;
-      const url = 'https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Barlow:wght@400;500;600&family=Share+Tech+Mono&family=Shippori+Mincho:wght@500;600;700&family=EB+Garamond:wght@400;500&family=JetBrains+Mono:wght@400;700&display=swap';   // 8.1: plus the living set faces for ANDRÉ MANDEL cards
+      const url = 'https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800&family=Exo+2:wght@400;500;600;700&family=Rajdhani:wght@500;600;700&family=Barlow:wght@400;500;600&family=Share+Tech+Mono&family=Shippori+Mincho:wght@500;600;700&family=EB+Garamond:wght@400;500&family=JetBrains+Mono:wght@400;700&display=swap';   // 8.1: plus the living set faces for ANDRÉ MANDEL cards
       try {
         GM_xmlhttpRequest({
           method: 'GET', url, headers: { 'User-Agent': navigator.userAgent },
