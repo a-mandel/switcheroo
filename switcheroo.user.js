@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Claude Hands Free Text Mode
 // @namespace    andre.mandel
-// @version      8.7
+// @version      8.7.1
 // @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land.
 // @match        https://claude.ai/*
 // @match        *://*/*
@@ -318,6 +318,11 @@
     "wait" still pause so you can pick it back up. Away from a reading, "shut up" is still Hold.
     Spacebar alone now does what Option Space does (talk, again to send), whenever you're not typing
     in a text box. Option Space still works.
+  8.7.1: ONE MIC GRAB PER DICTATION. Every finish used to take the mic right back: Claude's finish button
+    lingers a beat after it's clicked, and a new listener started on it the moment Claude let the mic go,
+    so the mic flapped on and off and a stray listener could press finish on nothing. Now a listener starts
+    only when dictation really starts, lets go as soon as dictation ends, and the message box emptying after
+    a send no longer counts as you talking.
   8.7: HQ TAKES FILES AND TYPING. Drag files onto a wedge or a rail and they land in that chat's message
     box; drop on the center or anywhere else and they go to the chat you're talking to. Paste an image
     or a file into HQ, or click + to pick one. Type in the box under the transcript and press Enter or
@@ -2455,6 +2460,7 @@
     await sleep(150);
     const mic = last(buttons('mic'));
     if (!mic) { toast('Mic not found. Press Option Shift 1, then click the mic.'); return; }
+    armListener();   // 8.7.1
     mic.click();
     toast('Note');
   }
@@ -2782,6 +2788,7 @@
       if (!cancel && !stop) return;
       dlog('dropped dictation', why);
       noteMode = false;
+      markFinishClick();
       if (cancel) cancel.click(); else stop.click();   // stop leaves the words in the box, unsent
     } catch (e) {}
   }
@@ -5205,7 +5212,7 @@
       try { pauseReading(); } catch (e) {}
       try { deckStop(true); } catch (e) {}
       try { earStop(); } catch (e) {}   // 8.1
-      try { const c = last(buttons('cancel')); if (c && autoStarted) c.click(); } catch (e) {}   // a mic that opened by itself closes
+      try { const c = last(buttons('cancel')); if (c && autoStarted) { markFinishClick(); c.click(); } } catch (e) {}   // a mic that opened by itself closes
       toast('On hold. Nothing reads or talks until you resume');
     } else {
       toast('Back on');
@@ -5699,6 +5706,7 @@
     duckSoon();
     boxBefore = composerText();
     dlog('mic open');
+    armListener();   // 8.7.1
     mic.click();
     cueWhenLive();
   }
@@ -5708,7 +5716,7 @@
     overFlag = false;
     dlog('finish', (byOver ? 'by over' : 'by squeeze or pause') + ' note=' + noteMode + ' text=' + composerText());
     const stop = last(buttons('stop'));
-    if (stop) stop.click();
+    if (stop) { markFinishClick(); stop.click(); }
     if (ag.noteOpen) {
       if (byOver) { await sleep(900); await stripOver(); }
       await agFinishNote(); return;
@@ -5844,6 +5852,24 @@
   let micLiveAt = 0;   // when the mic first delivered real sound (3.5)
   let autoStarted = false; // mic opened by your turn mode
 
+  // 8.7.1: one listener per dictation. Claude's finish button stays on screen for a beat after it's
+  // clicked, and a fresh listener used to start on that leftover button, taking the mic again the
+  // moment Claude let it go, every single time. Now a listener starts only when the button first
+  // appears, and never on a button that shows up again right after a finish click.
+  var stopShown = false, finishClickAt = 0;   // var: earlier code can mark a finish click before this line runs
+  function markFinishClick() { finishClickAt = Date.now(); }
+  function armListener() { finishClickAt = 0; stopShown = false; }   // the mic is being opened on purpose: listen to it
+  // Claude can swap the button's label without the page observer seeing it, so check for the button going away too
+  setInterval(() => { if (stopShown && !watching && !buttons('stop').length) stopShown = false; }, 700);
+  function maybeWatch() {
+    const on = buttons('stop').length > 0;
+    const rose = on && !stopShown;
+    stopShown = on;
+    if (!rose || tabOff) return;
+    if (Date.now() - finishClickAt < 1500) { dlog('leftover finish button, not listening'); return; }
+    watchForPause();
+  }
+
   async function watchForPause() {
     if (watching || !cfg.autoSend) return;
     watching = true;
@@ -5870,7 +5896,7 @@
         return Math.sqrt(s / buf.length);
       };
       // 3.5: AirPods deliver pure silence while they switch to headset mode; wait for real sound
-      for (let i = 0; i < 50 && !deaf && level() < 2e-5 && composerText() === text0; i++) await sleep(100);
+      for (let i = 0; i < 50 && !deaf && level() < 2e-5 && composerText() === text0 && buttons('stop').length; i++) await sleep(100);   // 8.7.1: let go if dictation already ended
       micLiveAt = Date.now();
 
       // learn the room's noise floor for a moment
@@ -5889,7 +5915,7 @@
         const now = Date.now();
         if (level() > talkLevel) { spoke = true; lastSound = now; }
         const t = composerText();
-        if (t !== lastText) { lastText = t; lastSound = now; spoke = true; }
+        if (t !== lastText) { const landed = !!t.trim(); lastText = t; if (landed) { lastSound = now; spoke = true; } }   // 8.7.1: the box emptying after a send isn't you talking
         if (!cfg.autoSend) break;
         // 4.2: "over" said and held for a moment ends it now
         const ol = spoke ? liveLines().find(endsWithOver) || '' : '';
@@ -5897,7 +5923,7 @@
         else if (ol && now - overSince >= 900) { overFlag = true; finishAfter = true; break; }
         if (autoStarted && !spoke && now - started > 8000) { // your turn, but you stayed quiet
           const cancel = last(buttons('cancel'));
-          if (cancel) cancel.click();
+          if (cancel) { markFinishClick(); cancel.click(); }
           toast('Mic closed');
           break;
         }
@@ -5981,8 +6007,8 @@
   const observer = new MutationObserver((muts) => {
     if (muts.every((m) => ours(m.target) || m.target === boardEl)) return; // our own repaints
     scheduleCompute();                             // traffic light, even when hands free is off here
+    maybeWatch();                                  // 8.7.1: dictation just started, by hotkey or by click (once per start)
     if (tabOff) return;
-    if (buttons('stop').length) watchForPause(); // dictation just started, by hotkey or by click
     syncDuck();
 
     if (location.href !== lastUrl) {
@@ -6085,7 +6111,7 @@
     if (!mic) { dlog('mic not found', why); return false; }
     autoMicAt = Date.now();
     dlog('mic opened by itself', why);
-    autoStarted = true; duckSoon(); boxBefore = composerText(); mic.click(); toast('Your turn'); cueWhenLive();
+    autoStarted = true; duckSoon(); boxBefore = composerText(); armListener(); mic.click(); toast('Your turn'); cueWhenLive();
     return true;
   }
   const claudeReadingNow = () => buttons('pause').length > 0 || buttons('resume').length > 0;
@@ -6403,7 +6429,7 @@
   document.addEventListener('click', (e) => {
     const b = e.target && e.target.closest && e.target.closest('button');
     if (b && buttons('send').includes(b)) { dlog('send button', (e.isTrusted ? 'by you: ' : 'by script: ') + composerText()); catchCommand(e); }
-    else if (b && e.isTrusted && buttons('mic').includes(b)) dlog('mic clicked by you');
+    else if (b && e.isTrusted && buttons('mic').includes(b)) { armListener(); dlog('mic clicked by you'); }
   }, true);
 
   function toggleTab() {
