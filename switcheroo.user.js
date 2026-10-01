@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Claude Hands Free Text Mode
 // @namespace    andre.mandel
-// @version      8.5
+// @version      8.6
 // @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet.
 // @match        https://claude.ai/*
 // @match        *://*/*
@@ -318,6 +318,10 @@
     "wait" still pause so you can pick it back up. Away from a reading, "shut up" is still Hold.
     Spacebar alone now does what Option Space does (talk, again to send), whenever you're not typing
     in a text box. Option Space still works.
+  8.6: HQ AND YOUR VIDEO TRADE PLACES. With the small Switcheroo Tabs Chrome extension installed, the HQ
+    tab comes to the front when you or Claude start talking, and the video you were watching comes back
+    to the front when it plays on in the quiet. Put HQ and the video as tabs in the same window. Turn it
+    off or on from the Tampermonkey menu: "HQ and video trade places".
   8.3: VIDEOS PAUSE WHILE WE TALK. YouTube or any other player in another tab pauses the moment you
     start talking or Claude starts reading, and plays on after about two and a half seconds of quiet,
     so it fills the gaps while Claude thinks. Only what Switcheroo paused comes back. Press play yourself
@@ -487,9 +491,12 @@
         try { if (Date.now() - at > 3000 && isFinite(el.duration) && !isLive(el)) el.currentTime = Math.max(0, el.currentTime - 2); } catch (e) {}
         try { const pr = el.play(); if (pr && pr.catch) pr.catch(() => {}); } catch (e) {}
       }
+      const played = held.size;
       held.clear();
       mine = new WeakSet();
       beat(false);
+      // 8.6: the video plays on, so ask the Switcheroo Tabs extension to bring this tab back to the front
+      try { if (played && GM_getValue('chf_tabswap', true) !== false) document.dispatchEvent(new CustomEvent('switcheroo-front', { detail: 'video' })); } catch (e) {}
     }
     function resumeSoon(ms) {
       if (!held.size || resumeTimer) return;
@@ -601,6 +608,18 @@
   if (mirrorTab) { runMirror(); return; }
 
   function runMirror() {
+    // 8.6: when a conversation starts, ask the Switcheroo Tabs extension to bring this HQ tab forward
+    try {
+      let frontAt = 0;
+      const swapOn = () => { try { return GM_getValue('chf_tabswap', true) !== false; } catch (e) { return true; } };
+      GM_addValueChangeListener('chf_duck', (n, o, v) => {
+        if (!swapOn() || !v || !v.on || v.kind === 'line') return;
+        if (o && o.on && o.kind !== 'line') return;              // already talking
+        if (Date.now() - frontAt < 1500) return;
+        frontAt = Date.now();
+        try { document.dispatchEvent(new CustomEvent('switcheroo-front', { detail: 'hq' })); } catch (e) {}
+      });
+    } catch (e) {}
     // @@SCREEN-START
     // 7.8: screen mode redrawn flat, from Switchboard Styles 25. Transcript docked on the left,
     // a pie of every chat in the middle, load rails on the right. Two looks, same layout:
@@ -3749,6 +3768,14 @@
   }
 
   try { if (typeof GM_registerMenuCommand === 'function') GM_registerMenuCommand('Screen mode in this tab', enterScreenMode); } catch (e) {}
+  // 8.6: HQ comes forward when we talk, your video when it plays on (needs the Switcheroo Tabs extension)
+  try {
+    if (typeof GM_registerMenuCommand === 'function') GM_registerMenuCommand('HQ and video trade places, on or off', () => {
+      const on = GM_getValue('chf_tabswap', true) === false;
+      GM_setValue('chf_tabswap', on);
+      toast(on ? 'HQ and your video will trade places' : 'Tabs stay where they are');
+    });
+  } catch (e) {}
 
   // 4.9: bring the chat you land on to the front always, or only when you're looking at Claude
   try {
