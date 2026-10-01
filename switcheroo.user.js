@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Claude Hands Free Text Mode
 // @namespace    andre.mandel
-// @version      8.6
-// @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet.
+// @version      8.7
+// @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land.
 // @match        https://claude.ai/*
 // @match        *://*/*
 // @grant        GM_xmlhttpRequest
@@ -318,6 +318,15 @@
     "wait" still pause so you can pick it back up. Away from a reading, "shut up" is still Hold.
     Spacebar alone now does what Option Space does (talk, again to send), whenever you're not typing
     in a text box. Option Space still works.
+  8.7: HQ TAKES FILES AND TYPING. Drag files onto a wedge or a rail and they land in that chat's message
+    box; drop on the center or anywhere else and they go to the chat you're talking to. Paste an image
+    or a file into HQ, or click + to pick one. Type in the box under the transcript and press Enter or
+    SEND; Shift Enter is a new line. The TO chip shows where it goes: it follows the floor, or the wedge
+    you last dropped on (click it to go back to the floor). Each chat tab needs 8.7, so reload open chats
+    once after updating.
+  8.7: READ ALONG. While Claude is still working, each update it sends you is read as it lands, not
+    held for the end. When the reply finishes, only what wasn't read yet is read, then your mic opens.
+    HQ pill: Read along.
   8.6: HQ AND YOUR VIDEO TRADE PLACES. With the small Switcheroo Tabs Chrome extension installed, the HQ
     tab comes to the front when you or Claude start talking, and the video you were watching comes back
     to the front when it plays on in the quiet. Put HQ and the video as tabs in the same window. Turn it
@@ -695,12 +704,13 @@
     }
     // 8.0: the switches in the control panel: key, label, what it does
     const SM_CTL = [
-      ['read', 'Read replies aloud', 'New replies are read to you as they finish'],
-      ['mic', 'Mic after reading', 'Your mic opens by itself when a reading or a Switcheroo line ends'],
+      ['read', 'Read aloud', 'New replies are read to you as they finish'],
+      ['mic', 'Mic after', 'Your mic opens by itself when a reading or a Switcheroo line ends'],
       ['send', 'Auto send', 'Dictation sends itself after a pause'],
-      ['chimes', 'Chimes and alerts', 'Switcheroo chimes and tells you who needs you'],
+      ['chimes', 'Chimes', 'Switcheroo chimes and tells you who needs you'],
       ['others', 'Other tabs', 'Click to step through: videos pause while we talk, videos turn down, or other tabs are left alone. Live and sports always turn down'],   // 8.4: one switch, three ways
-      ['voice', 'ElevenLabs voice', 'Replies read in the ElevenLabs voice; off uses Claude\'s own read aloud']
+      ['voice', 'ElevenLabs', 'Replies read in the ElevenLabs voice; off uses Claude\'s own read aloud'],
+      ['along', 'Read along', 'Updates Claude sends while it is still working are read as they land']   // 8.7
     ];
     const SM_HP = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 18v-6a9 9 0 0 1 18 0v6"></path><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path></svg>';
 
@@ -768,6 +778,32 @@
         '.smx .caret{display:inline-block;width:2px;height:30px;background:var(--ink);vertical-align:-6px;margin-left:3px;animation:smblink 1s steps(2) infinite}',
         '.smx .hint{padding:14px 34px 20px;font:15px var(--mf);letter-spacing:.34em;color:var(--mute);text-transform:lowercase;border-top:1px solid var(--line);flex:none}',
         '.smx .draft:not([hidden])+.hint{border-top:0;padding-top:0}',
+        // 8.7: the composer under the transcript, and the drop banner over the pie
+        '.smx .cmp{flex:none;border-top:1px solid var(--line);padding:16px 34px 16px;display:flex;flex-direction:column;gap:12px}',
+        '.smx .cmp+.hint{border-top:0;padding-top:2px}',
+        '.smx .cto{display:flex;align-items:center;gap:12px;flex-wrap:wrap;min-height:36px}',
+        '.smx .ck2{font:600 15px var(--mf);letter-spacing:.3em;color:var(--mute);text-transform:uppercase}',
+        '.smx .cdst{all:unset;cursor:pointer;font:700 17px var(--hf);letter-spacing:.12em;text-transform:uppercase;color:var(--ink);padding:6px 14px;border:1px solid var(--line);background:var(--bg2)}',
+        '.smx .cdst.pinned{border-color:var(--accent);color:var(--accent)}',
+        '.smx .cfl{display:contents}',
+        '.smx .chip{display:inline-flex;align-items:center;gap:8px;font:15px var(--mf);color:var(--ink);padding:5px 10px;border:1px solid var(--line);max-width:320px;min-width:0}',
+        '.smx .chip b{font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}',
+        '.smx .chip i{font-style:normal;color:var(--mute);flex:none}',
+        '.smx .chip.busy{opacity:.6;animation:smblink 1.4s ease-in-out infinite}',
+        '.smx .chip.bad{border-color:var(--need);color:var(--need)}',
+        '.smx .crow{display:flex;align-items:flex-end;gap:12px}',
+        '.smx .cin{flex:1;min-width:0;resize:none;font:24px/1.35 var(--bf);color:var(--ink);background:var(--bg2);border:1px solid var(--line);padding:12px 16px;height:54px;max-height:170px;outline:none;border-radius:0}',
+        '.smx .cin::placeholder{color:var(--mute)}',
+        '.smx .cin:focus{border-color:var(--accent)}',
+        '.smx .cclip,.smx .csend{all:unset;cursor:pointer;height:54px;display:flex;align-items:center;justify-content:center;font:700 17px var(--hf);letter-spacing:.14em;border:1px solid var(--line);background:var(--bg2);color:var(--ink);flex:none}',
+        '.smx .cclip{width:54px;font-size:30px;font-weight:400}',
+        '.smx .csend{padding:0 22px;background:var(--accent);border-color:var(--accent);color:var(--bg)}',
+        '.smx.dragging .cmp{box-shadow:inset 0 0 0 2px var(--accent)}',
+        '.smx .dropov{position:absolute;left:800px;top:100px;width:1100px;padding:18px 0;text-align:center;pointer-events:none;background:var(--panel);border:2px dashed var(--accent);z-index:5}',
+        '.smx .dropov .dpt{font:700 30px var(--hf);letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}',
+        '.smx .dropov .dps{font:17px var(--mf);letter-spacing:.08em;color:var(--mute);margin-top:6px}',
+        '.smx .stage .dhot{filter:brightness(1.45)}',
+        '.smx .stage g.dhot .hitbg{fill-opacity:.12}',
         '.smx .bar{position:absolute;left:800px;top:20px;width:1100px;height:62px;display:flex;flex-wrap:nowrap;justify-content:flex-start;align-items:center;gap:18px;margin:0;padding:0 20px;border:1px solid var(--line);background:var(--panel)}',
         '.smx .bar .br{font:700 20px var(--hf);letter-spacing:.16em;padding-right:18px;border-right:1px solid var(--line);white-space:nowrap;color:var(--ink)}',
         '.smx.light .bar .br{font-weight:500;letter-spacing:.08em}',
@@ -818,10 +854,10 @@
         '.smx .hold.on:hover{filter:brightness(1.08)}',
         '.smx .tgw{display:flex;flex-direction:column;gap:10px;padding:14px 18px;min-width:0}',
         '.smx .tgw .ck{font:600 15px var(--mf);letter-spacing:.24em;text-transform:uppercase;color:var(--mute)}',
-        '.smx .tgs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px 14px}',
+        '.smx .tgs{display:grid;grid-template-columns:repeat(4,1fr);gap:10px 14px}',
         '.smx .tg{display:grid;grid-template-columns:auto 1fr;align-items:center;column-gap:12px;row-gap:8px;height:74px;padding:9px 16px;border:1px solid var(--line);background:var(--bg2);min-width:0}',
         '.smx .tg:hover{border-color:var(--ink)}',
-        '.smx .tg .tl{grid-column:1/-1;min-width:0;font:600 20px/1.1 var(--bf);color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}',
+        '.smx .tg .tl{grid-column:1/-1;min-width:0;font:600 19px/1.1 var(--bf);color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}',
         '.smx .tg .sw{position:relative;width:50px;height:26px;border-radius:13px;background:var(--line);transition:background .15s}',
         '.smx .tg .sw i{position:absolute;left:3px;top:3px;width:20px;height:20px;border-radius:50%;background:var(--panel);transition:left .15s}',
         '.smx .tg .tv{font:700 16px var(--mf);letter-spacing:.12em;color:var(--mute);white-space:nowrap}',
@@ -984,6 +1020,9 @@
         '<div class="msgs"><div class="mz"><div class="mw">Waiting for the chat you&#39;re talking to</div></div></div>' +
         '<div class="dock" hidden><span class="cn a"></span><span class="cn b"></span><span class="cn c"></span><span class="cn d"></span><div class="il">Image · from this reply</div><div class="im"></div></div>' +
         '<div class="draft" hidden><span class="mic"></span><span class="dw">You</span><span class="dt"></span></div>' +
+        '<div class="cmp"><div class="cto"><span class="ck2">To</span><button type="button" class="cdst" title="Follows the chat you are talking to">FLOOR</button><span class="cfl"></span></div>' +
+        '<div class="crow"><button type="button" class="cclip" title="Attach files">+</button><textarea class="cin" rows="1" placeholder="Type, paste or drop files" spellcheck="true"></textarea><button type="button" class="csend">SEND</button></div>' +
+        '<input type="file" class="cfile" multiple hidden></div>' +
         '<div class="hint">say next · take me to · allow · silence · resume</div><button type="button" class="flw" hidden title="Follow the voice again">FOLLOW</button></div>' +
         '<div class="bar"><span class="br" title="Light or dark (Option Shift D)"></span><span class="sb">Switcheroo</span><span class="dots"></span><span class="grow"></span><span class="nx" title="Go to the next chat (Option Shift N)"></span><span class="lk zero" title="Links from your chats. Say open, or open two">LINKS</span><span class="pz" title="Pause the Switchboard for two turns, or resume it">LIVE</span></div>' +
         '<div class="stage"></div>' +
@@ -992,6 +1031,7 @@
         '<div class="tgw"><div class="ck">Controls · every tab follows</div><div class="tgs">' +
         SM_CTL.map((c) => '<button type="button" class="tg" data-ctl="' + c[0] + '" title="' + smEsc(c[2]) + '" aria-pressed="false"><span class="tl">' + smEsc(c[1]) + '</span><span class="sw"><i></i></span><span class="tv">OFF</span></button>').join('') +
         '</div></div></div>' +
+        '<div class="dropov" hidden><div class="dpt">Drop on a chat</div><div class="dps">The center, or anywhere else, goes to the chat you are talking to</div></div>' +
         '<div class="toast" role="status"></div>';
       host.appendChild(fx);
       const q = (s) => fx.querySelector(s);
@@ -1674,7 +1714,7 @@
     function ctlModel() {
       const c = lsGet(CFG_KEY, {}), qt = lsGet('chf_sb_quiet', {}), h = lsGet('chf_hold', {});
       return { held: !!h.on, meeting: !!(h.on && h.meeting), read: c.autoRead !== false, mic: c.autoListen !== false, send: c.autoSend !== false,
-        chimes: !qt.quiet, others: c.duck === false ? 'off' : c.duckMode === 'lower' ? 'lower' : 'pause', voice: c.el !== false, vidTabs: hqMediaTabs() };
+        chimes: !qt.quiet, others: c.duck === false ? 'off' : c.duckMode === 'lower' ? 'lower' : 'pause', voice: c.el !== false, along: c.readAlong !== false, vidTabs: hqMediaTabs() };
     }
     // 8.1: the Swipe Deck, as the tab holding it reports it
     const DECK_URL = 'https://claude.ai/artifact/CbVwPd6sZh5MH2A7NUeMGP';
@@ -1815,6 +1855,7 @@
         scr.paint(model());
       }
       else if (m.t === 'deck-act' && m.cmd) { dkLast = { cmd: m.cmd, at: Date.now() }; }
+      else if (m.t === 'delivered' && m.to === 'mirror') gotDelivered(m);   // 8.7
     };
     // another tab changed a setting, the hold, or quiet mode
     window.addEventListener('storage', (e) => { if (/^chf_(config_v1|hold|sb_quiet)$/.test(e.key || '')) scr.paint(model()); });
@@ -1837,7 +1878,7 @@
       jump(n.e.id);
     }
     // 8.0: the control panel. Hold goes to every tab; the switches write the shared settings
-    const CTL_NAMES = { read: 'Read aloud', mic: 'Mic after reading', send: 'Auto send', chimes: 'Chimes and alerts', others: 'Other tabs', voice: 'ElevenLabs voice' };
+    const CTL_NAMES = { read: 'Read aloud', mic: 'Mic after reading', send: 'Auto send', chimes: 'Chimes and alerts', others: 'Other tabs', voice: 'ElevenLabs voice', along: 'Read while working' };
     function toggleCtl(k) {
       const cur = ctlModel();
       if (k === 'hold') {
@@ -1871,6 +1912,7 @@
         else if (k === 'send') c.autoSend = on;
         else if (k === 'mic') { c.autoListen = on; if (on) delete c.listenOff; else c.listenOff = true; }
         else if (k === 'voice') c.el = on;
+        else if (k === 'along') c.readAlong = on;   // 8.7
         try { localStorage.setItem(CFG_KEY, JSON.stringify(c)); } catch (x) {}
         send({ t: 'cfg' });
       }
@@ -1951,6 +1993,149 @@
       else if (a.t === 'pause') togglePause();
       else if (a.t === 'theme') flipTheme();
       else if (a.t === 'ctl') toggleCtl(a.k);   // 8.0
+    }
+
+    // 8.7: HQ takes files and typing. A file dropped on a wedge or a rail lands in that chat's message
+    // box; the center, or anywhere else, goes to the chat you're talking to. Words typed below go out on Send.
+    const cx = {
+      fx: root.querySelector('.smx'), inp: root.querySelector('.cmp .cin'), dst: root.querySelector('.cmp .cdst'),
+      fl: root.querySelector('.cmp .cfl'), pick: root.querySelector('.cmp .cfile'), ov: root.querySelector('.dropov'), ovt: root.querySelector('.dropov .dpt')
+    };
+    let cTo = '';                 // '' follows the floor; otherwise the chat you last dropped on
+    const cWait = new Map();      // token -> what went out
+    let cChips = [];              // { token, to, name, st: busy | ok | bad }
+    const cName = (id) => { const e = reg.get(id); return e ? (e.name || e.title || 'that chat') : 'that chat'; };
+    function cTarget() {
+      if (cTo && reg.has(cTo)) return cTo;
+      if (cTo && !reg.has(cTo)) cTo = '';
+      return floorId && reg.has(floorId) ? floorId : '';
+    }
+    function paintCmp() {
+      if (!cx.dst) return;
+      const id = cTarget(), pinned = !!cTo && cTo !== floorId;
+      cx.dst.textContent = id ? smTrunc(cName(id), 30).toUpperCase() : 'NO CHAT YET';
+      cx.dst.classList.toggle('pinned', pinned);
+      cx.dst.title = pinned ? 'Click to send to the chat you are talking to instead' : 'Follows the chat you are talking to. Drop a file on a wedge to send there';
+      const now = Date.now();
+      cChips = cChips.filter((c) => !(c.st === 'bad' && now - c.at > 9000));
+      cx.fl.innerHTML = cChips.map((c) => '<span class="chip ' + c.st + '" title="' + smEsc(c.name + ' · ' + cName(c.to)) + '">' +
+        (c.to !== id ? '<i>' + smEsc(smTrunc(cName(c.to), 12)) + '</i>' : '') + '<b>' + smEsc(c.name) + '</b>' +
+        '<i>' + (c.st === 'busy' ? '…' : c.st === 'bad' ? '✕' : '✓') + '</i></span>').join('');
+    }
+    function cAutosize() {
+      if (!cx.inp) return;
+      cx.inp.style.height = '54px';
+      cx.inp.style.height = Math.min(170, Math.max(54, cx.inp.scrollHeight + 2)) + 'px';
+    }
+    function deliver(id, files, text, doSend) {
+      if (!id) { scr.flash('No chat to send to yet. Click into a chat once'); return ''; }
+      if (id === '__deck') { scr.flash('Swipe Deck does not take files'); return ''; }
+      if (!reg.has(id)) { scr.flash('That chat closed. Pick another'); return ''; }
+      const token = Math.random().toString(36).slice(2);
+      const list = [...(files || [])];
+      list.forEach((f) => cChips.push({ token, to: id, name: f.name || 'pasted image', st: 'busy', at: Date.now() }));
+      cWait.set(token, { id, n: list.length, send: !!doSend, at: Date.now() });
+      send({ t: 'deliver', to: id, from: 'mirror', token, files: list, text: text || '', send: !!doSend });
+      setTimeout(() => {
+        if (!cWait.has(token)) return;
+        cWait.delete(token);
+        cChips.forEach((c) => { if (c.token === token) { c.st = 'bad'; c.at = Date.now(); } });
+        scr.flash(cName(id) + ' did not answer. Reload that tab once so it runs 8.7');
+        paintCmp();
+      }, doSend ? 120000 : 45000);
+      paintCmp();
+      return token;
+    }
+    function gotDelivered(m) {
+      const w = cWait.get(m.token);
+      if (!w) return;
+      cWait.delete(m.token);
+      const nm = cName(w.id);
+      if (!m.ok) {
+        cChips.forEach((c) => { if (c.token === m.token) { c.st = 'bad'; c.at = Date.now(); } });
+        scr.flash(nm + ': ' + (m.why || 'that did not go through'));
+      } else if (m.sent) {
+        cChips = cChips.filter((c) => c.to !== w.id);
+        scr.flash('Sent to ' + nm);
+      } else {
+        cChips.forEach((c) => { if (c.token === m.token) c.st = 'ok'; });
+        const n = m.n || 0;
+        scr.flash((n === 1 ? 'Attached to ' : 'Attached ' + n + ' files to ') + nm + (w.id === floorId ? '. Say it, or type below' : '. Type below to send it there'));
+      }
+      paintCmp();
+    }
+    function sendTyped() {
+      const id = cTarget(), text = (cx.inp.value || '').trim();
+      const waiting = cChips.some((c) => c.to === id && c.st !== 'bad');
+      if (!id) { scr.flash('No chat to send to yet. Click into a chat once'); return; }
+      if (!text && !waiting) { scr.flash('Type something, or drop a file first'); return; }
+      if (deliver(id, [], text, true)) { cx.inp.value = ''; cAutosize(); }
+    }
+    if (cx.inp) {
+      cx.inp.addEventListener('input', cAutosize);
+      cx.dst.addEventListener('click', () => { cTo = ''; paintCmp(); });
+      root.querySelector('.cmp .csend').addEventListener('click', sendTyped);
+      root.querySelector('.cmp .cclip').addEventListener('click', () => cx.pick.click());
+      cx.pick.addEventListener('change', () => {
+        const fs = [...(cx.pick.files || [])];
+        cx.pick.value = '';
+        if (fs.length) deliver(cTarget(), fs, '', false);
+      });
+      // claude.ai underneath listens for keys, pastes and drops; HQ keeps its own
+      window.addEventListener('keydown', (e) => {
+        if (e.target !== cx.inp) return;
+        e.stopPropagation(); if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+        if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); sendTyped(); }
+      }, true);
+      for (const ty of ['keyup', 'keypress']) window.addEventListener(ty, (e) => { if (e.target === cx.inp) { e.stopPropagation(); if (e.stopImmediatePropagation) e.stopImmediatePropagation(); } }, true);
+      window.addEventListener('paste', (e) => {
+        const fs = [...((e.clipboardData && e.clipboardData.files) || [])];
+        if (fs.length) {
+          e.preventDefault(); e.stopPropagation(); if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+          deliver(cTarget(), fs, '', false);
+          return;
+        }
+        if (e.target === cx.inp) { e.stopPropagation(); if (e.stopImmediatePropagation) e.stopImmediatePropagation(); }
+        else if (!(e.target && e.target.closest && e.target.closest('input, textarea, [contenteditable="true"]'))) {
+          // words pasted anywhere on HQ go in the box
+          const tx = e.clipboardData && e.clipboardData.getData('text/plain');
+          if (tx) { e.preventDefault(); e.stopPropagation(); cx.inp.focus(); cx.inp.value += (cx.inp.value ? ' ' : '') + tx; cAutosize(); }
+        }
+      }, true);
+      const hasFiles = (e) => { try { return [...(e.dataTransfer && e.dataTransfer.types || [])].includes('Files'); } catch (x) { return false; } };
+      const dropId = (el) => { const j = el && el.closest && el.closest('[data-jump]'); return j ? j.getAttribute('data-jump') : ''; };
+      let dHot = null, dOffT = null;
+      const dragEnd = () => {
+        clearTimeout(dOffT);
+        if (dHot) { dHot.classList.remove('dhot'); dHot = null; }
+        cx.ov.hidden = true; cx.fx.classList.remove('dragging');
+      };
+      const onDrag = (e) => {
+        if (!hasFiles(e)) return;
+        e.preventDefault(); e.stopPropagation(); if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+        try { e.dataTransfer.dropEffect = 'copy'; } catch (x) {}
+        const id = dropId(e.target);
+        const el = id ? e.target.closest('[data-jump]') : null;
+        if (el !== dHot) { if (dHot) dHot.classList.remove('dhot'); dHot = el; if (el) el.classList.add('dhot'); }
+        const to = id || cTarget();
+        cx.ovt.textContent = id === '__deck' ? 'Swipe Deck does not take files' : to ? 'Drop to send to ' + cName(to) : 'Drop on a chat';
+        cx.ov.hidden = false; cx.fx.classList.add('dragging');
+        clearTimeout(dOffT); dOffT = setTimeout(dragEnd, 400);
+      };
+      window.addEventListener('dragenter', onDrag, true);
+      window.addEventListener('dragover', onDrag, true);
+      window.addEventListener('drop', (e) => {
+        if (!hasFiles(e)) return;
+        e.preventDefault(); e.stopPropagation(); if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+        const id = dropId(e.target);
+        dragEnd();
+        const fs = [...(e.dataTransfer.files || [])];
+        if (!fs.length) return;
+        if (id && id !== '__deck') cTo = id === floorId ? '' : id;
+        deliver(id || cTarget(), fs, '', false);
+      }, true);
+      setInterval(paintCmp, 1000);
+      paintCmp();
     }
 
     function flipTheme() {
@@ -3719,7 +3904,95 @@
       case 'hold': applyHold(!!m.on); break;   // 8.0
       case 'cfg': reloadCfg(); break;          // 8.0: screen mode changed a setting
       case 'front': if (m.to === ME) bringToFront(); break;
+      case 'deliver': if (m.to === ME) deliverHere(m); break;   // 8.7
     }
+  }
+
+  // 8.7: HQ hands this chat files and words. Files land in the message box; words go out with Send
+  let deliverChain = Promise.resolve();
+  function deliverHere(m) { deliverChain = deliverChain.then(() => deliverNow(m)).catch(() => {}); }
+  function composerZone() {
+    const c = composer();
+    if (!c) return null;
+    const s = last(buttons('send'));
+    let z = c;
+    for (let i = 0; i < 14 && z.parentElement && z.parentElement !== document.body; i++) {
+      z = z.parentElement;
+      if (s ? z.contains(s) : z.tagName === 'FIELDSET') break;
+    }
+    for (let i = 0; i < 2 && z.parentElement && z.parentElement !== document.body; i++) z = z.parentElement;
+    return z;
+  }
+  const attCount = (z) => (z ? z.querySelectorAll('img, [data-testid*="file" i], [data-testid*="attach" i], [aria-label*="remove" i]').length : 0);
+  async function attachFiles(files) {
+    const names = files.map((f) => String(f.name || '').slice(0, 24)).filter(Boolean);
+    const dt = () => { const d = new DataTransfer(); files.forEach((f) => d.items.add(f)); return d; };
+    const zone = composerZone(), before = attCount(zone);
+    const landed = async (ms) => {
+      for (let i = 0; i < ms / 150; i++) {
+        await sleep(150);
+        const z = composerZone();
+        if (attCount(z) > before) return true;
+        const tx = z ? z.innerText || '' : '';
+        if (names.length && names.some((n) => tx.includes(n))) return true;
+      }
+      return false;
+    };
+    // 1: Claude's own file picker
+    const inp = (zone && zone.querySelector('input[type="file"]')) || document.querySelector('input[data-testid="file-upload"]') ||
+      last([...document.querySelectorAll('input[type="file"]')].filter((x) => !ours(x)));
+    if (inp) {
+      try { inp.files = dt().files; inp.dispatchEvent(new Event('input', { bubbles: true })); inp.dispatchEvent(new Event('change', { bubbles: true })); } catch (e) {}
+      if (await landed(3500)) return 'picker';
+    }
+    // 2: a paste into the message box
+    const c = composer();
+    if (c) {
+      try { c.focus(); c.dispatchEvent(new ClipboardEvent('paste', { clipboardData: dt(), bubbles: true, cancelable: true })); } catch (e) {}
+      if (await landed(3000)) return 'paste';
+      // 3: a drop on the message box
+      try { const d = dt(); for (const ty of ['dragenter', 'dragover', 'drop']) c.dispatchEvent(new DragEvent(ty, { dataTransfer: d, bubbles: true, cancelable: true })); } catch (e) {}
+      if (await landed(3000)) return 'drop';
+    }
+    return '';
+  }
+  function typeInComposer(text) {
+    const c = composer();
+    if (!c) return false;
+    const had = composerText();
+    const add = (had ? (/\s$/.test(had) ? '' : ' ') : '') + text;
+    caretToEnd(c);
+    let ok = false;
+    try { ok = document.execCommand('insertText', false, add); } catch (e) {}
+    if (!ok || composerText().length <= had.length) {
+      try { const d = new DataTransfer(); d.setData('text/plain', add); caretToEnd(c); c.dispatchEvent(new ClipboardEvent('paste', { clipboardData: d, bubbles: true, cancelable: true })); } catch (e) {}
+    }
+    return composerText().length > had.length;
+  }
+  async function sendWhenUploaded() {
+    for (let i = 0; i < 400; i++) {   // uploads get about a minute and a half
+      await sleep(225);
+      const b = last(buttons('send'));
+      if (b && !b.disabled && b.getAttribute('aria-disabled') !== 'true') { dlog('HQ sends', composerText().slice(0, 60)); b.click(); return true; }
+    }
+    return false;
+  }
+  async function deliverNow(m) {
+    const reply = (o) => post(Object.assign({ t: 'delivered', to: m.from || 'mirror', token: m.token, from: ME }, o));
+    try {
+      if (!composer()) return reply({ ok: false, why: 'no message box in that tab' });
+      const files = [...(m.files || [])].filter((f) => f && typeof f.size === 'number');
+      let how = '';
+      if (files.length) {
+        how = await attachFiles(files);
+        dlog('HQ files', files.length + ' ' + (how || 'not taken'));
+        if (!how) return reply({ ok: false, why: 'Claude did not take the file' });
+      }
+      if (m.text && !typeInComposer(m.text)) return reply({ ok: false, why: 'could not type in the message box' });
+      if (!m.send) return reply({ ok: true, n: files.length, how });
+      const ok = await sendWhenUploaded();
+      reply({ ok, sent: ok, n: files.length, why: ok ? '' : 'Send never came on. Check the chat' });
+    } catch (e) { reply({ ok: false, why: 'something broke: ' + String(e && e.message || e).slice(0, 60) }); }
   }
 
   function markActive() { lastActive = Date.now(); ssSet('chf_sb_active', String(lastActive)); }
@@ -3911,23 +4184,30 @@
   // reads the reply with its own voice, a sentence or two at a time so it can pause for notes.
   let fb = null;   // { parts, i, paused, gen }
   const fbActive = () => !!fb && !fb.paused;
-  function replyParts(m, firstMax, restMax) {
-    firstMax = firstMax || 220; restMax = restMax || 220;
+  // 8.7: the reply as plain text, its sentences, and sentences grouped into reading parts
+  function replyText(m) {
     const els = [...m.querySelectorAll('p, li, h1, h2, h3, h4, h5, blockquote, td')]
       .filter((e) => !e.closest('pre, button, [aria-hidden="true"], .sr-only, [data-testid="message-actions"]'));   // 6.2: no hidden summary
     const outer = els.filter((e) => !els.some((o) => o !== e && o.contains(e)));
-    const text = (outer.length ? outer.map((e) => e.innerText) : [m.innerText]).join('. ')
+    return (outer.length ? outer.map((e) => e.innerText) : [m.innerText]).join('. ')
       .replace(/^\s*Claude responded:\s*/i, '')
       .replace(/https?:\/\/\S+/g, 'a link').replace(/[`*_#>|]/g, ' ').replace(/\s+/g, ' ').replace(/(\.\s*){2,}/g, '. ').trim();
-    const sentences = text.match(/[^.!?]+[.!?]+["')\]]*|[^.!?]+$/g) || [];
+  }
+  // a period inside a number (8.7, 3.5 ft) doesn't end a sentence
+  const sentencesOf = (text) => (String(text || '').replace(/(\d)\.(\d)/g, '$1\u2024$2').match(/[^.!?]+[.!?]+["')\]]*|[^.!?]+$/g) || []).map((y) => y.trim().replace(/\u2024/g, '.')).filter(Boolean);
+  function partsOf(sentences, firstMax, restMax) {
     const parts = [];
     let cur = '';
-    for (const x of sentences.map((y) => y.trim()).filter(Boolean)) {
+    for (const x of sentences) {
       const max = parts.length ? restMax : firstMax;
       if (cur && (cur + ' ' + x).length > max) { parts.push(cur); cur = x; } else cur = cur ? cur + ' ' + x : x;
     }
     if (cur) parts.push(cur);
     return parts;
+  }
+  function replyParts(m, firstMax, restMax) {
+    firstMax = firstMax || 220; restMax = restMax || 220;
+    return partsOf(sentencesOf(replyText(m)), firstMax, restMax);
   }
   async function fbPlay() {
     if (!fb) return;
@@ -4060,10 +4340,23 @@
     a.addEventListener('ended', () => clearInterval(iv), { once: true });
     tick();
   }
-  function readReply(m, engine, full) {
+  function readReply(m, engine, full, auto) {
     if (engine !== 'el') return;   // 5.3: no Mac voice for replies
     const el = true;
-    const all = replyParts(m, 180, 600);
+    let all = replyParts(m, 180, 600);
+    // 8.7: what read along already said isn't said twice
+    if (auto && ra && ra.heard.size) {
+      const ss = sentencesOf(replyText(m)), rest = ss.filter((x) => !ra.heard.has(x));
+      if (rest.length < ss.length) {
+        ra = null;
+        const tail = partsOf(rest, 180, 600);
+        dlog('read along, the rest', tail.length + ' parts');
+        if (fb && fb.ra) { fb.parts.push(...tail); fb.ra = false; return; }
+        if (!tail.length) { if (cfg.autoListen && !fbActive()) yourTurn(); return; }
+        all = tail;
+        full = true;
+      }
+    }
     moreRead = null;
     const cut = full ? { now: all, more: [] } : capParts(all);
     const parts = cut.now;
@@ -4088,6 +4381,44 @@
     if (a) { try { a.pause(); } catch (e) {} }
     hush();
   }
+
+  // ---------- read along (8.7) ----------
+  // While Claude is still working, each update it sends is read as it lands. A sentence still being
+  // written waits; when the reply finishes, readReply reads only what wasn't read here.
+  let ra = null;   // { turn, heard: Set, last, at }
+  function raReply() {
+    const all = replies(), m = all[all.length - 1];
+    if (!m) return null;
+    const us = document.querySelectorAll('[data-testid="user-message"]'), u = us[us.length - 1];
+    if (u && !(u.compareDocumentPosition(m) & Node.DOCUMENT_POSITION_FOLLOWING)) return null;   // nothing new since your last message
+    return m;
+  }
+  setInterval(() => {
+    if (cfg.readAlong === false || tabOff || held || hardPause || !cfg.autoRead || !isFloor() || !ownsFloor()) return;
+    if (!isWorking() || !elReady()) return;
+    if (buttons('stop').length || agActive() || noteMode) return;   // you're talking
+    if (fb && !fb.ra) return;   // something else is being read; this waits its turn
+    const m = raReply();
+    if (!m) return;
+    const turn = location.pathname + '|' + document.querySelectorAll('[data-testid="user-message"]').length;
+    if (!ra || ra.turn !== turn) {
+      // the reply on screen when this turn started is never read along
+      ra = { turn, heard: new Set(), last: '', at: Date.now() };
+    }
+    const text = replyText(m);
+    const still = text === ra.last && Date.now() - ra.at > 1500;
+    if (text !== ra.last) { ra.last = text; ra.at = Date.now(); }
+    let ss = sentencesOf(text);
+    if (ss.length && (!still || !/[.!?]["')\]]*$/.test(ss[ss.length - 1]))) ss = ss.slice(0, -1);   // the last sentence may still be growing
+    const fresh = ss.filter((x) => !ra.heard.has(x));
+    if (!fresh.length) return;
+    fresh.forEach((x) => ra.heard.add(x));
+    const parts = partsOf(fresh, 220, 600);
+    dlog('read along', fresh.length + ' sentences: ' + fresh[0].slice(0, 50));
+    if (fb && fb.ra) { fb.parts.push(...parts); return; }   // the reading in progress picks these up
+    fb = { engine: 'el', parts, i: 0, paused: false, gen: 0, audio: null, audioIdx: -1, cache: [], more: [], el: m, lastBlock: null, ra: true };
+    fbPlay();
+  }, 700);
 
   // ---------- ElevenLabs voice (5.1) ----------
   const EL_DEFAULT_VOICE = 'j08RBkJwvXYv5AZ961JE';   // Annika, warm and conversational
@@ -4889,8 +5220,8 @@
   // screen mode writes the settings straight into this browser's store; pick them up here
   function reloadCfg() {
     const c = load();
-    for (const k of ['autoRead', 'autoSend', 'autoListen', 'listenOff', 'duck', 'duckMode', 'duckReading', 'duckReadLevel', 'el']) {
-      if (k in c) cfg[k] = c[k]; else if (k === 'listenOff' || k === 'duck' || k === 'duckMode' || k === 'el' || k === 'duckReading') delete cfg[k];
+    for (const k of ['autoRead', 'autoSend', 'autoListen', 'listenOff', 'duck', 'duckMode', 'duckReading', 'duckReadLevel', 'el', 'readAlong']) {
+      if (k in c) cfg[k] = c[k]; else if (k === 'listenOff' || k === 'duck' || k === 'duckMode' || k === 'el' || k === 'duckReading' || k === 'readAlong') delete cfg[k];
     }
     try { syncDuck(); } catch (e) {}
     paintPill(); paintBoard();
@@ -5688,7 +6019,7 @@
       if (!ownsFloor()) dlog('new reply, not the floor, chime only', head.slice(0, 50));
       if (ownsFloor()) {                           // other tabs chime on the switchboard instead
         dlog('auto read', (msg.innerText || '').trim().slice(18, 70));
-        if (elReady()) { fbStop(); readReply(msg, 'el'); }   // 5.1: ElevenLabs reads it
+        if (elReady()) { if (!(fb && fb.ra)) fbStop(); readReply(msg, 'el', false, true); }   // 5.1: ElevenLabs reads it (8.7: after read along)
         else if (!claudeIsReading()) { dlog('ElevenLabs not ready, Claude read aloud'); fbStop(); speak.click(); watchPlayback(speak); }   // 5.6: never toggle
         else dlog('Claude already reading, skip');
       }
@@ -5715,7 +6046,7 @@
     const claudeReading = buttons('pause').length > 0 || buttons('resume').length > 0;
     if (claudeReading && fbActive()) fbStop();   // Claude's own read aloud started after all
     const readingNow = claudeReading || fbActive() || (!!fb && noteMode);
-    if (wasReading && !readingNow && cfg.autoListen && !noteMode && !agActive() && !buttons('stop').length) yourTurn();
+    if (wasReading && !readingNow && cfg.autoListen && !noteMode && !agActive() && !buttons('stop').length && !isWorking()) yourTurn();   // 8.7: not while Claude still works
     wasReading = readingNow;
   }, 300);
 
