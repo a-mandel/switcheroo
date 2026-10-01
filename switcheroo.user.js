@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Claude Hands Free Text Mode
 // @namespace    andre.mandel
-// @version      8.3
+// @version      8.4
 // @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet.
 // @match        https://claude.ai/*
 // @match        *://*/*
@@ -298,6 +298,18 @@
     the transcript stays on the left, still glowing word by word. A site that won't show inside HQ opens in a
     window docked to the right half (allow pop-ups for claude.ai once so voice can open it). With no HQ open,
     "open" opens a tab. Agents write links as [short spoken label](url), so the readout says the label.
+  8.4: SPORTS STAY LIVE, AND VIDEOS KNOW WHO THEY'RE TALKING TO.
+    Live streams and sports sites (ESPN, YouTube TV, NBA, NFL, Peacock, Fubo, Kayo and more, plus any
+    YouTube live) turn down while we talk; they never pause. Regular videos still pause, and when they play
+    on they back up two seconds so you don't miss a word.
+    Fewer interruptions: chimes and short Switcheroo lines ("Alder needs you") only turn a video down for
+    a moment. Pausing is for real conversation: you talking, a reply or a question being read.
+    Your way, per site: on any site, Tampermonkey menu, "Switcheroo on this site" cycles pause, turn down,
+    leave alone, and back to Switcheroo deciding.
+    Say "video check": it says which video tabs are connected and what each does. On HQ, Quiet other tabs
+    and Pause videos are now one switch, Other tabs: click through Pause, Turn down and Off. It shows how
+    many video tabs are connected. No tabs connected while one is playing means
+    Tampermonkey isn't running on that site: click its icon there and allow it on all sites.
   8.3: VIDEOS PAUSE WHILE WE TALK. YouTube or any other player in another tab pauses the moment you
     start talking or Claude starts reading, and plays on after about two and a half seconds of quiet,
     so it fills the gaps while Claude thinks. Only what Switcheroo paused comes back. Press play yourself
@@ -349,8 +361,20 @@
   if (window.top !== window.self) return;   // the Claude side runs only in the main page
   function runDuck() {
     if (typeof GM_addValueChangeListener !== 'function' || typeof GM_getValue !== 'function') return;
+    // 8.4: a quiet mark that Switcheroo runs on this page, so a check can tell when it doesn't
+    const VER = (() => { try { return GM_info.script.version; } catch (e) { return 'on'; } })();
+    try { document.documentElement.setAttribute('data-switcheroo', VER); } catch (e) {}
+    const TOP = window.top === window.self;
+    // the site you're on, even from inside a player's frame
+    const SITE = (() => {
+      try { if (!TOP && location.ancestorOrigins && location.ancestorOrigins.length) return new URL(location.ancestorOrigins[location.ancestorOrigins.length - 1]).hostname.replace(/^www\./, ''); } catch (e) {}
+      return location.hostname.replace(/^www\./, '');
+    })();
     const saved = new WeakMap();   // media element -> its volume before we turned it down
+    const ytSaved = new WeakMap(); // YouTube player -> its own volume (0 to 100) before we turned it down
     let isDucked = false, stamp = 0, level = 0, lastTold = 0;
+    const BEAT_ID = Math.random().toString(36).slice(2, 9);   // 8.4: this tab, when it reports in
+    let beatAt = 0, beatSig = '';
     // players can sit inside frames (this script runs in each one) or inside shadow roots
     function media(root, out) {
       root = root || document; out = out || [];
@@ -360,46 +384,104 @@
       } catch (e) {}
       return out;
     }
-    function duck() {
-      for (const el of media()) {
-        if (el.paused || el.muted) continue;
-        if (!saved.has(el)) saved.set(el, el.volume);
-        const want = Math.max(0, Math.min(1, saved.get(el) * level));
-        if (Math.abs(el.volume - want) > 0.005) { try { el.volume = want; } catch (e) {} }
+    // 8.4: live sports and live streams stay live. They turn down while we talk; they never pause.
+    const LIVE_SITES = /(^|\.)(espn\.com|tv\.youtube\.com|nba\.com|nfl\.com|mlb\.com|nhl\.com|wnba\.com|mls(soccer)?\.com|peacocktv\.com|fubo\.tv|paramountplus\.com|foxsports\.com|fox\.com|foxone\.com|dazn\.com|sling\.com|nbcsports\.com|cbssports\.com|kayosports\.com\.au|afl\.com\.au|watchafl\.com\.au|fifa\.com|plus\.fifa\.com|twitch\.tv|kick\.com|directv\.com|stream\.directv\.com|hulu\.com\/live|telemundo\.com|tudn\.com|globoplay\.globo\.com|ge\.globo)$/;
+    let rules = {};
+    try { rules = GM_getValue('chf_site_media', {}) || {}; } catch (e) {}
+    GM_addValueChangeListener('chf_site_media', (n, o, v) => { rules = v || {}; beat(true); if (isDucked) enforce(); });
+    const siteRule = () => rules[SITE] || 'auto';   // pause, lower, ignore, or auto
+    function ytPlayer(el) {
+      try {
+        if (!/(^|\.)youtube\.com$|(^|\.)youtube-nocookie\.com$/.test(location.hostname)) return null;
+        const p = el.closest('#movie_player, .html5-video-player');
+        if (!p) return null;
+        if (typeof p.setVolume === 'function') return p;
+        const w = typeof unsafeWindow !== 'undefined' ? unsafeWindow : window;
+        const q = w.document.getElementById(p.id || 'movie_player');
+        return q && typeof q.setVolume === 'function' ? q : null;
+      } catch (e) { return null; }
+    }
+    function isLive(el) {
+      if (LIVE_SITES.test(SITE)) return true;
+      if (el.duration === Infinity) return true;
+      try {
+        const yp = el.closest('#movie_player, .html5-video-player');
+        if (yp) {
+          if (yp.classList.contains('ytp-live')) return true;
+          const b = yp.querySelector('.ytp-live-badge');
+          if (b && b.offsetParent !== null && getComputedStyle(b).display !== 'none') return true;
+          const p = ytPlayer(el);
+          if (p && typeof p.getVideoData === 'function') { const d = p.getVideoData(); if (d && d.isLive) return true; }
+        }
+      } catch (e) {}
+      return false;
+    }
+    // what Claude's side asked for: pause videos, or turn them down; and what's happening (talk, read, line)
+    let gmode = 'lower', kind = 'talk';
+    function actionFor(el) {
+      const r = siteRule();
+      if (r === 'ignore') return 'ignore';
+      let how = r === 'pause' || r === 'lower' ? r : (gmode === 'pause' && !isLive(el) ? 'pause' : 'lower');
+      // a short Switcheroo line ("Alder needs you") never pauses a video; it only turns it down
+      if (how === 'pause' && kind === 'line') how = held.has(el) ? 'keep' : 'lower';
+      return how;
+    }
+    function lowerEl(el) {
+      if (el.paused || el.muted) return;
+      const p = ytPlayer(el);
+      if (p) {   // YouTube's own volume, so its player doesn't put it back
+        try {
+          if (!ytSaved.has(p)) ytSaved.set(p, p.getVolume());
+          const want = Math.round(ytSaved.get(p) * level);
+          if (Math.abs(p.getVolume() - want) > 1) p.setVolume(want);
+          return;
+        } catch (e) {}
       }
+      if (!saved.has(el)) saved.set(el, el.volume);
+      const want = Math.max(0, Math.min(1, saved.get(el) * level));
+      if (Math.abs(el.volume - want) > 0.005) { try { el.volume = want; } catch (e) {} }
     }
     function restore() {
       for (const el of media()) {
+        const p = ytPlayer(el);
+        if (p && ytSaved.has(p)) { try { p.setVolume(ytSaved.get(p)); } catch (e) {} ytSaved.delete(p); }
         if (!saved.has(el)) continue;
         const v = saved.get(el);
         saved.delete(el);
         try { el.volume = v; } catch (e) {}
       }
     }
-    // 8.3: PAUSE VIDEOS. Instead of turning down, playing videos pause while you talk or Claude
-    // reads, and play on again once it has been quiet a moment. Only what this script paused
-    // comes back; press play yourself mid talk and it's left alone until the next quiet.
-    let mode = 'lower', resumeTimer = 0, resuming = 0;
-    const held = new Set();            // players this script paused
+    // 8.3: PAUSE VIDEOS. Playing videos pause while you talk or Claude reads, and play on again once it
+    // has been quiet a moment. Only what this script paused comes back; press play yourself mid talk and
+    // it's left alone until the next quiet. 8.4: and it backs up two seconds, so you don't miss a word.
+    let resumeTimer = 0, resuming = 0;
+    const held = new Map();            // players this script paused -> when
     let mine = new WeakSet();          // players you started yourself during this stretch
     const RESUME_MS = 2500;            // the quiet that counts as downtime
-    function pauseAll() {
+    function enforce() {
       if (resumeTimer) { clearTimeout(resumeTimer); resumeTimer = 0; }
       for (const el of media()) {
-        if (el.paused || el.ended || el.muted || mine.has(el)) continue;   // muted hover previews stay as they are
-        held.add(el);
-        try { el.pause(); } catch (e) {}
+        const how = actionFor(el);
+        if (how === 'ignore' || how === 'keep') continue;
+        if (how === 'pause') {
+          if (el.paused || el.ended || el.muted || mine.has(el)) continue;   // muted hover previews stay as they are
+          held.set(el, Date.now());
+          try { el.pause(); } catch (e) {}
+        } else lowerEl(el);
       }
+      beat(false);
     }
     function resumeAll() {
       resumeTimer = 0;
       resuming = Date.now();
-      for (const el of held) {
+      for (const [el, at] of held) {
         if (!el.isConnected || !el.paused || el.ended) continue;
-        try { const p = el.play(); if (p && p.catch) p.catch(() => {}); } catch (e) {}
+        try { if (Date.now() - at > 3000 && isFinite(el.duration) && !isLive(el)) el.currentTime = Math.max(0, el.currentTime - 2); } catch (e) {}
+        try { const pr = el.play(); if (pr && pr.catch) pr.catch(() => {}); } catch (e) {}
       }
       held.clear();
       mine = new WeakSet();
+      beat(false);
     }
     function resumeSoon(ms) {
       if (!held.size || resumeTimer) return;
@@ -408,12 +490,13 @@
     function apply(v) {
       const on = !!(v && v.on && Date.now() - (v.ts || 0) < 20000);
       stamp = (v && v.ts) || 0;
-      const was = mode;
-      mode = v && v.mode === 'pause' ? 'pause' : 'lower';
+      gmode = v && v.mode === 'pause' ? 'pause' : 'lower';
+      kind = (v && v.kind) || 'talk';
       if (on) {
+        // a video that was paused for a reading and now only needs turning down (or the reverse) changes over cleanly
+        if (!isDucked || level !== (typeof v.level === 'number' ? v.level : 0)) restore();
         isDucked = true; level = typeof v.level === 'number' ? v.level : 0;
-        if (mode === 'pause') { if (was !== 'pause') restore(); pauseAll(); }
-        else { if (was === 'pause') resumeAll(); duck(); }
+        enforce();
       } else {
         if (isDucked) { isDucked = false; restore(); }
         resumeSoon(v && v.resumeMs);
@@ -425,7 +508,9 @@
     setInterval(() => { if (isDucked && Date.now() - stamp > 20000) { isDucked = false; restore(); resumeSoon(0); } }, 3000);
     // 5.7: some players put their volume back on their own; keep it down while ducked
     // 8.3: and in pause mode, a player that started itself (autoplay, next in queue) pauses too
-    setInterval(() => { if (isDucked) { if (mode === 'pause') pauseAll(); else duck(); } }, 1000);
+    setInterval(() => { if (isDucked) enforce(); }, 1000);
+    // don't leave YouTube's saved volume turned down if the tab closes mid talk
+    addEventListener('pagehide', () => { try { restore(); } catch (e) {} });
     // an audible player can grab the AirPods squeeze; tell Claude so it can take it back
     const audible = (el) => !el.paused && !el.muted && (el.volume > 0 || saved.has(el));
     function tell(force) {
@@ -433,15 +518,32 @@
       lastTold = Date.now();
       try { if (typeof GM_setValue === 'function') GM_setValue('chf_media', lastTold); } catch (x) {}
     }
+    // 8.4: video tabs report in, so "video check" and HQ can say what's connected and how it behaves
+    function beat(force) {
+      try {
+        const ms = media().filter((el) => el.currentSrc || el.src || el.srcObject);
+        if (!ms.length && !held.size) return;
+        const play = ms.find((el) => !el.paused && !el.muted) || ms.find((el) => held.has(el)) || ms[0];
+        const live = play ? isLive(play) : LIVE_SITES.test(SITE);
+        const b = { id: BEAT_ID, site: SITE, title: TOP ? String(document.title || '').slice(0, 80) : '', live, rule: siteRule(),
+          playing: ms.some((el) => !el.paused && !el.muted), held: held.size, ver: VER, ts: Date.now() };
+        const sig = [b.site, b.live, b.rule, b.playing, b.held].join('|');
+        if (!force && sig === beatSig && Date.now() - beatAt < 10000) return;
+        beatSig = sig; beatAt = Date.now();
+        if (typeof GM_setValue === 'function') GM_setValue('chf_media_beat', b);
+      } catch (e) {}
+    }
+    setInterval(() => beat(false), 3000);
     document.addEventListener('play', (e) => {
       const el = e.target;
       if (!el || (el.tagName !== 'VIDEO' && el.tagName !== 'AUDIO')) return;
-      if (isDucked && mode === 'pause') {
+      if (isDucked && actionFor(el) === 'pause') {
         // a play we didn't make while you talk is you pressing play: leave it be
         if (Date.now() - resuming > 1500 && navigator.userActivation && navigator.userActivation.isActive) { held.delete(el); mine.add(el); }
-        else if (!mine.has(el)) { held.add(el); try { el.pause(); } catch (x) {} return; }
-      } else if (isDucked) duck();
+        else if (!mine.has(el)) { held.set(el, Date.now()); try { el.pause(); } catch (x) {} return; }
+      } else if (isDucked && actionFor(el) === 'lower') lowerEl(el);
       if (audible(el)) tell(false);
+      beat(true);
     }, true);
     // 3.7: players that start muted and unmute later never fire play again
     document.addEventListener('volumechange', (e) => {
@@ -450,7 +552,35 @@
       if (audible(el) && !isDucked) tell(false);
     }, true);
     setInterval(() => { if (media().some(audible)) tell(true); }, 10000);
+    // 8.4: this site, your way. Tampermonkey menu on the site itself
+    if (TOP && typeof GM_registerMenuCommand === 'function') {
+      const NEXT = { auto: 'pause', pause: 'lower', lower: 'ignore', ignore: 'auto' };
+      const SAY = { auto: 'Switcheroo decides: videos pause, live and sports turn down', pause: 'Videos here always pause while you talk to Claude',
+        lower: 'Videos here always turn down instead of pausing', ignore: 'Switcheroo leaves this site alone' };
+      try {
+        GM_registerMenuCommand('Switcheroo on this site: pause, turn down, or leave alone', () => {
+          const r = NEXT[siteRule()] || 'pause';
+          const all = Object.assign({}, rules);
+          if (r === 'auto') delete all[SITE]; else all[SITE] = r;
+          rules = all;
+          try { GM_setValue('chf_site_media', all); } catch (e) {}
+          note(SITE + ': ' + SAY[r]);
+          beat(true);
+        });
+      } catch (e) {}
+    }
+    function note(text) {
+      try {
+        const t = document.createElement('div');
+        t.textContent = text;
+        Object.assign(t.style, { position: 'fixed', bottom: '40px', left: '50%', transform: 'translateX(-50%)', background: '#111', color: '#fff',
+          padding: '10px 16px', borderRadius: '8px', font: '14px system-ui,sans-serif', zIndex: 2147483647, pointerEvents: 'none', maxWidth: '80vw', textAlign: 'center' });
+        document.documentElement.appendChild(t);
+        setTimeout(() => t.remove(), 3500);
+      } catch (e) {}
+    }
   }
+
 
   // ---------- screen mode (2.7) ----------
   // Press Option Shift M in a spare Claude tab, ideally in its own window on another screen,
@@ -542,8 +672,7 @@
       ['mic', 'Mic after reading', 'Your mic opens by itself when a reading or a Switcheroo line ends'],
       ['send', 'Auto send', 'Dictation sends itself after a pause'],
       ['chimes', 'Chimes and alerts', 'Switcheroo chimes and tells you who needs you'],
-      ['duck', 'Quiet other tabs', 'Other tabs playing sound go quiet while you talk or Claude reads'],
-      ['vidpause', 'Pause videos', 'On: YouTube and other players pause while you talk or Claude reads, then play on in the quiet. Off: they turn down instead'],
+      ['others', 'Other tabs', 'Click to step through: videos pause while we talk, videos turn down, or other tabs are left alone. Live and sports always turn down'],   // 8.4: one switch, three ways
       ['voice', 'ElevenLabs voice', 'Replies read in the ElevenLabs voice; off uses Claude\'s own read aloud']
     ];
     const SM_HP = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 18v-6a9 9 0 0 1 18 0v6"></path><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path></svg>';
@@ -668,7 +797,7 @@
         '.smx .tg .tl{grid-column:1/-1;min-width:0;font:600 20px/1.1 var(--bf);color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}',
         '.smx .tg .sw{position:relative;width:50px;height:26px;border-radius:13px;background:var(--line);transition:background .15s}',
         '.smx .tg .sw i{position:absolute;left:3px;top:3px;width:20px;height:20px;border-radius:50%;background:var(--panel);transition:left .15s}',
-        '.smx .tg .tv{font:700 16px var(--mf);letter-spacing:.12em;color:var(--mute)}',
+        '.smx .tg .tv{font:700 16px var(--mf);letter-spacing:.12em;color:var(--mute);white-space:nowrap}',
         '.smx .tg.on .sw{background:var(--accent)}',
         '.smx .tg.on .sw i{left:27px;background:#ffffff}',
         '.smx .tg.on .tv{color:var(--accent)}',
@@ -1072,10 +1201,14 @@
           q('.hold .hs').textContent = ct.held ? 'Click, or say resume' : 'Stops every tab until you resume';
           q('.tgw .ck').textContent = ct.held ? 'On hold · these come back when you resume' : 'Controls · every tab follows';
           fx.querySelectorAll('.tg').forEach((b) => {
-            const on = !!ct[b.getAttribute('data-ctl')];
+            const k2 = b.getAttribute('data-ctl');
+            const on = k2 === 'others' ? ct.others !== 'off' : !!ct[k2];
             b.classList.toggle('on', on);
             b.setAttribute('aria-pressed', on ? 'true' : 'false');
-            b.querySelector('.tv').textContent = on ? 'ON' : 'OFF';
+            // 8.4: Other tabs reads PAUSE, TURN DOWN or OFF, and how many video tabs are connected
+            b.querySelector('.tv').textContent = k2 === 'others' ? ({ pause: 'PAUSE', lower: 'TURN DOWN', off: 'OFF' }[ct.others] || 'PAUSE') : (on ? 'ON' : 'OFF');
+            if (k2 === 'others') b.querySelector('.tl').textContent = 'Other tabs' + (ct.others === 'off' ? '' : ct.vidTabs ? ' · ' + ct.vidTabs + (ct.vidTabs === 1 ? ' video' : ' videos') : ' · none heard');
+            if (k2 === 'others') b.title = (b.title.split(' · ')[0]) + ' · ' + (ct.vidTabs ? ct.vidTabs + ' video ' + (ct.vidTabs === 1 ? 'tab' : 'tabs') + ' connected' : 'No video tabs connected. Say video check');
           });
         }
         // the stage, redrawn only when something on it changed so the animations keep running
@@ -1501,12 +1634,20 @@
       for (const [id, e] of reg) if (now - e.ts > 150000) reg.delete(id);
       return [...reg.values()].filter((e) => e.chat).sort((a, b) => a.born - b.born || (a.id < b.id ? -1 : 1));
     }
+    // 8.4: video tabs that report in, so the Pause videos switch can say how many are connected
+    const hqMedia = new Map();
+    try { if (typeof GM_addValueChangeListener === 'function') GM_addValueChangeListener('chf_media_beat', (n, o, b) => { if (b && b.id) { hqMedia.set(b.id, b); scr.paint(model()); } }); } catch (e) {}
+    function hqMediaTabs() {
+      const now = Date.now();
+      for (const [id, b] of hqMedia) if (now - (b.ts || 0) > 30000) hqMedia.delete(id);
+      return new Set([...hqMedia.values()].map((b) => b.site)).size;
+    }
     // 8.0: the control panel reads the same store every Claude tab uses
     const CFG_KEY = 'chf_config_v1';
     function ctlModel() {
       const c = lsGet(CFG_KEY, {}), qt = lsGet('chf_sb_quiet', {}), h = lsGet('chf_hold', {});
       return { held: !!h.on, meeting: !!(h.on && h.meeting), read: c.autoRead !== false, mic: c.autoListen !== false, send: c.autoSend !== false,
-        chimes: !qt.quiet, duck: c.duck !== false, vidpause: c.duckMode !== 'lower', voice: c.el !== false };
+        chimes: !qt.quiet, others: c.duck === false ? 'off' : c.duckMode === 'lower' ? 'lower' : 'pause', voice: c.el !== false, vidTabs: hqMediaTabs() };
     }
     // 8.1: the Swipe Deck, as the tab holding it reports it
     const DECK_URL = 'https://claude.ai/artifact/CbVwPd6sZh5MH2A7NUeMGP';
@@ -1669,7 +1810,7 @@
       jump(n.e.id);
     }
     // 8.0: the control panel. Hold goes to every tab; the switches write the shared settings
-    const CTL_NAMES = { read: 'Read aloud', mic: 'Mic after reading', send: 'Auto send', chimes: 'Chimes and alerts', duck: 'Quiet other tabs', vidpause: 'Pause videos', voice: 'ElevenLabs voice' };
+    const CTL_NAMES = { read: 'Read aloud', mic: 'Mic after reading', send: 'Auto send', chimes: 'Chimes and alerts', others: 'Other tabs', voice: 'ElevenLabs voice' };
     function toggleCtl(k) {
       const cur = ctlModel();
       if (k === 'hold') {
@@ -1681,6 +1822,17 @@
         return;
       }
       if (!(k in CTL_NAMES)) return;
+      if (k === 'others') {   // 8.4: pause, then turn down, then off, then pause again
+        const nx = { pause: 'lower', lower: 'off', off: 'pause' }[cur.others] || 'pause';
+        const c = lsGet(CFG_KEY, {});
+        c.duck = nx !== 'off';
+        if (nx !== 'off') c.duckMode = nx;
+        try { localStorage.setItem(CFG_KEY, JSON.stringify(c)); } catch (x) {}
+        send({ t: 'cfg' });
+        scr.paint(model());
+        scr.flash({ pause: 'Videos pause while we talk. Live and sports turn down', lower: 'Other tabs turn down while we talk', off: 'Other tabs are left alone' }[nx]);
+        return;
+      }
       const on = !cur[k];
       if (k === 'chimes') {
         const q2 = { quiet: !on, until: 0 };
@@ -1691,8 +1843,6 @@
         if (k === 'read') c.autoRead = on;
         else if (k === 'send') c.autoSend = on;
         else if (k === 'mic') { c.autoListen = on; if (on) delete c.listenOff; else c.listenOff = true; }
-        else if (k === 'duck') c.duck = on;
-        else if (k === 'vidpause') c.duckMode = on ? 'pause' : 'lower';   // 8.3
         else if (k === 'voice') c.el = on;
         try { localStorage.setItem(CFG_KEY, JSON.stringify(c)); } catch (x) {}
         send({ t: 'cfg' });
@@ -4404,6 +4554,7 @@
     // 7.9: Swipe Deck hands free
     if (/^(?:(?:open|start|review|run|do|go to|take me to|bring up|pull up|let's do|lets do|let's review)\s+)?(?:the\s+|my\s+)?(?:swipe ?decks?|swipe ?deck review|deck review|review (?:the |my )?deck)(?:\s+(?:hands free|please|now))*$/.test(flat)) return { kind: 'deck' };
     if (/^(next|next chat|next one|next please)$/.test(flat)) return { kind: 'next' };
+    if (/^(?:(?:run (?:a )?|do (?:a )?)?(?:video|videos|youtube|media|tv|sports) check|check (?:the |my )?(?:videos?|youtube|media|tv|sports)|is youtube (?:connected|working|on)|(?:are|is) (?:the |my )?videos? (?:connected|working))(?: please)?$/.test(flat)) return { kind: 'videoCheck' };   // 8.4
     // 8.2: links. "open", "open two", "open link three", "open the second link", "close page"
     {
       const om = flat.match(/^(?:open|pull up|show me|bring up)(?: (?:it|that|this))?(?: (?:the|a))?(?: (first|second|third|fourth|fifth|sixth|seventh|eighth|last))?(?: (?:link|page|one))?(?: (?:number )?([a-z]+|\d{1,2}))?(?: (?:link|page))?(?: please)?$/);
@@ -4612,6 +4763,7 @@
       return openDeck();
     }
     if (c.kind === 'update') return checkUpdate(true);   // 8.1.1
+    if (c.kind === 'videoCheck') return videoCheck();   // 8.4
     if (c.kind === 'openLink') return openLink(c.n === -1 ? chatLinks().length : c.n);   // 8.2
     if (c.kind === 'closePage') { post({ t: 'page-close', from: ME }); return say('Page closed.'); }
     if (c.kind === 'follow') { post({ t: 'follow' }); toast('Screen mode follows the voice again'); return; }   // 8.1
@@ -5643,21 +5795,21 @@
 
   // ---------- quiet other tabs while you talk (3.0) ----------
   const hasGM = typeof GM_setValue === 'function';
-  let ducked = false, duckAt = 0, duckHold = 0, duckLevel = 0, readHold = 0, duckSent = '';
+  let ducked = false, duckAt = 0, duckHold = 0, duckLevel = 0, readHold = 0, duckSent = '', duckKind = '';
   // 8.3: videos pause rather than turn down, unless you choose turn down
   const duckMode = () => (cfg.duckMode === 'lower' ? 'lower' : 'pause');
   // level is a share of each tab's own volume: 0 while you talk, a little while Claude reads
   const READ_LEVELS = [0.05, 0.1, 0.15, 0.25, 0.35, 0.5];
   const readLevel = () => (READ_LEVELS.includes(cfg.duckReadLevel) ? cfg.duckReadLevel : 0.25);
-  function duckPost(on, lvl) {
-    ducked = on; duckLevel = on ? (lvl || 0) : 0; duckAt = Date.now(); duckSent = duckMode();
-    try { if (hasGM) GM_setValue('chf_duck', { on, ts: duckAt, level: duckLevel, mode: duckSent }); } catch (e) {}
+  function duckPost(on, lvl, kind) {
+    ducked = on; duckLevel = on ? (lvl || 0) : 0; duckAt = Date.now(); duckSent = duckMode(); duckKind = on ? (kind || 'talk') : '';
+    try { if (hasGM) GM_setValue('chf_duck', { on, ts: duckAt, level: duckLevel, mode: duckSent, kind: duckKind }); } catch (e) {}
   }
   // turn the other tabs down just before the mic opens, so nothing leaks into the first words
   function duckSoon() {
     if (!hasGM || cfg.duck === false || tabOff || !isFloor()) return;
     duckHold = Date.now() + 3000;
-    if (!ducked || duckLevel !== 0) duckPost(true, 0);
+    if (!ducked || duckLevel !== 0 || duckKind !== 'talk') duckPost(true, 0, 'talk');
   }
   function syncDuck() {
     if (!hasGM) return;
@@ -5665,12 +5817,16 @@
     const reading = !held && cfg.duckReading !== false && (speaking > 0 || fbActive() || Date.now() < readHold || buttons('pause').length > 0 || agPlaying());
     const want = cfg.duck !== false && isFloor() && !tabOff && (talking || reading);
     const lvl = talking ? 0 : readLevel();
-    if (want !== ducked || (want && lvl !== duckLevel) || (want && duckSent !== duckMode())) duckPost(want, lvl);
-    else if (want && Date.now() - duckAt > 5000) duckPost(true, lvl);   // keep it fresh
+    // 8.4: a conversation pauses videos; a short Switcheroo line or chime only turns them down
+    let conversing = false;
+    try { conversing = fbActive() || buttons('pause').length > 0 || agPlaying() || askReading || announcingRed || earBusy() || DK.on; } catch (e) {}
+    const kind = talking ? 'talk' : conversing ? 'read' : 'line';
+    if (want !== ducked || (want && lvl !== duckLevel) || (want && duckSent !== duckMode()) || (want && kind !== duckKind)) duckPost(want, lvl, kind);
+    else if (want && Date.now() - duckAt > 5000) duckPost(true, lvl, kind);   // keep it fresh
   }
   function setDuckMode(m, spoken) {   // 8.3
     cfg.duckMode = m; save(cfg);
-    if (ducked) duckPost(true, duckLevel); else syncDuck();
+    if (ducked) duckPost(true, duckLevel, duckKind); else syncDuck();
     const msg = m === 'pause' ? 'Videos pause while we talk, and play on when it goes quiet.' : 'Videos turn down while we talk instead of pausing.';
     if (spoken) return say(msg);
     toast(msg);
@@ -5682,6 +5838,28 @@
     const msg = 'Other tabs at ' + Math.round(cfg.duckReadLevel * 100) + ' percent while Claude reads';
     if (spoken) return say(msg + (j === i ? ', and that is as far as it goes.' : '.'));
     toast(msg);
+  }
+  // 8.4: the video tabs that report in, fresh within the last half minute
+  const mediaTabs = new Map();
+  try { if (typeof GM_addValueChangeListener === 'function') GM_addValueChangeListener('chf_media_beat', (n, o, b) => { if (b && b.id) mediaTabs.set(b.id, b); }); } catch (e) {}
+  function liveMediaTabs() {
+    const now = Date.now();
+    for (const [id, b] of mediaTabs) if (now - (b.ts || 0) > 30000) mediaTabs.delete(id);
+    return [...mediaTabs.values()];
+  }
+  const siteName = (h) => /(^|\.)youtube\.com$/.test(h) ? (/^tv\./.test(h) ? 'YouTube TV' : 'YouTube') : /(^|\.)espn\.com$/.test(h) ? 'ESPN' : String(h || 'a site').replace(/\.(com|net|org|tv|co|com\.au|io)$/, '');
+  function mediaWord(b) {
+    if (b.rule === 'ignore') return 'is left alone';
+    if (b.rule === 'lower' || (b.rule === 'auto' && (b.live || duckMode() === 'lower'))) return b.live ? 'is live, so it turns down' : 'turns down';
+    return 'pauses while we talk';
+  }
+  function videoCheck() {
+    if (cfg.duck === false) return say('Quiet other tabs is off, so videos are left alone. Say quiet other tabs on, or flip it on HQ.');
+    const list = liveMediaTabs();
+    if (!list.length) return say("I don't hear from any video tabs. Play something for a few seconds and ask again. Still nothing means Tampermonkey isn't running on that site: click its icon on that page and allow it on all sites.");
+    const seen = new Set(), bits = [];
+    for (const b of list) { const k = b.site + '|' + mediaWord(b); if (seen.has(k)) continue; seen.add(k); bits.push(siteName(b.site) + ' ' + mediaWord(b)); }
+    return say(bits.slice(0, 4).join('. ') + '.');
   }
   // another tab started playing and may have taken the AirPods squeeze; take it back
   let reclaimedAt = 0;
@@ -5704,6 +5882,7 @@
         toast('Other tabs quiet while Claude reads: ' + (cfg.duckReading ? 'on' : 'off'));
       });
       GM_registerMenuCommand('Videos: pause or turn down', () => setDuckMode(duckMode() === 'pause' ? 'lower' : 'pause', false));
+      GM_registerMenuCommand('Video check: which tabs are connected', () => { if (!isFloor()) takeFloor('touch'); videoCheck(); });
       GM_registerMenuCommand('Other tabs quieter while Claude reads', () => stepRead(-1, false));
       GM_registerMenuCommand('Other tabs louder while Claude reads', () => stepRead(1, false));
     }
