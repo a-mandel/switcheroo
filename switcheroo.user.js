@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Claude Hands Free Text Mode
 // @namespace    andre.mandel
-// @version      8.4
+// @version      8.5
 // @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet.
 // @match        https://claude.ai/*
 // @match        *://*/*
@@ -35,7 +35,8 @@
                                 The notes wait in the box and go out with your next message.
     F8 (play/pause key)       same as a squeeze; double tap F8 = your turn mode on or off
     F9 (next track key)       your turn mode on or off (same signal as a double squeeze)
-    Option + Space            same thing from the keyboard
+    Space (8.5) or Option + Space  same thing from the keyboard. Plain Space only when you're not typing in a box.
+    Squeeze, F8 or Space, then "stop" / "abort" / "shut up" while Claude reads: drops that reading (8.5)
     Double or triple squeeze  your turn mode on or off: when Claude finishes reading,
     (or Option + Shift + L)   the mic opens by itself. Say nothing for 8 seconds and it closes.
                               3.4: the Switchboard says what's waiting first, then the mic opens.
@@ -310,6 +311,13 @@
     and Pause videos are now one switch, Other tabs: click through Pause, Turn down and Off. It shows how
     many video tabs are connected. No tabs connected while one is playing means
     Tampermonkey isn't running on that site: click its icon there and allow it on all sites.
+  8.5: ABORT A READING, AND SPACEBAR TALKS.
+    While Claude reads aloud: squeeze, press F8 or tap Space (the reading pauses right away), then say
+    "stop", "abort", "shut up", "skip it", "cancel", "enough" or "never mind". That reading is dropped for
+    good; it won't pick back up. Say anything else and it's a note, as before. "Pause", "hold on" and
+    "wait" still pause so you can pick it back up. Away from a reading, "shut up" is still Hold.
+    Spacebar alone now does what Option Space does (talk, again to send), whenever you're not typing
+    in a text box. Option Space still works.
   8.3: VIDEOS PAUSE WHILE WE TALK. YouTube or any other player in another tab pauses the moment you
     start talking or Claude starts reading, and plays on after about two and a half seconds of quiet,
     so it fills the gaps while Claude thinks. Only what Switcheroo paused comes back. Press play yourself
@@ -5293,6 +5301,17 @@
     return false;
   }
 
+  // 8.5: drop the reading that a squeeze just paused, for good: nothing resumes it
+  function abortReading(why) {
+    dlog('reading aborted', why || '');
+    try { fbStop(); } catch (e) {}
+    pausedEl = null;
+    noteMode = false;
+    try { hush(); } catch (e) {}
+    toast('Stopped reading');
+    if (cfg.autoListen) setTimeout(() => { try { openTurnMic('after abort'); } catch (e) {} }, 400);
+  }
+
   function toggleDictation() {
     try { dlog('squeeze', 'stop=' + buttons('stop').length + ' fb=' + fbActive() + ' pause=' + buttons('pause').length); } catch (x) {}
     if (!ownsFloor() && !buttons('stop').length) { dlog('squeeze ignored, not the floor'); return; }   // 6.0
@@ -5343,6 +5362,12 @@
       // 7.5: what you just said, apart from earlier notes. "pause" holds everything; a command runs
       const before = boxBefore.trim(), now = composerText().trim();
       const said = now.startsWith(before) ? now.slice(before.length).trim() : '';
+      const saidFlat = said ? said.toLowerCase().replace(/[.!?,;:]+/g, ' ').replace(/\s+/g, ' ').trim() : '';
+      if (saidFlat && ABORT_SAID.test(saidFlat)) {   // 8.5: drop this reading, keep earlier notes
+        await trimTail(boxBefore);
+        abortReading('said ' + saidFlat);
+        return;
+      }
       if (said && HOLD_SAID.test(said.toLowerCase().replace(/[.!?,;:]+/g, ' ').replace(/\s+/g, ' ').trim())) {   // 8.0
         await trimTail(boxBefore);
         setHold(true);
@@ -5378,6 +5403,8 @@
 
   // 7.6: next, take me to and new chat send your notes first, then go; everything else keeps them in the box
   const LEAVES = ['next', 'switch', 'newChat'];
+  // 8.5: said right after a squeeze that paused a reading: drop that reading for good
+  const ABORT_SAID = /^(?:uh |um |okay |ok |no |nah )?(?:abort|abort it|abort that|abort reading|stop|stop it|stop that|stop reading|stop talking|stop please|please stop|shut up|shut it|shut it down|cancel|cancel it|cancel that|skip|skip it|skip that|skip this|enough|that's enough|thats enough|okay enough|never mind|nevermind|forget it|kill it|drop it|be quiet|quiet|irrelevant|not relevant|no longer relevant)(?: please| now| thanks| thank you)?$/;
   const NOTE_PAUSE = /^(?:uh |um |okay |ok )?(?:pause|pause it|pause that|pause everything|pause all|pause all of it|pause please|pause for now|hold|hold on|hold it|hold everything|stop|stop everything|stop please|wait|wait please|paws|pose|pas|pods|pots|cause|pauls)[\s.,!?]*$/;
   // a dictated message is either a switchboard command or a message (maybe ending in "next")
   const isTail = (c) => !!c && (c.kind === 'sendNext' || c.kind === 'sendNew' || c.kind === 'sendGo');
@@ -6042,9 +6069,9 @@
   pill.type = 'button';
   pill.title = [
     'Click: take the floor here, or hands free off and on (Option Shift H)',
-    'F8 or squeeze: talk. Again, or pause, to send',
+    'F8, Space or squeeze: talk. Again, or pause, to send',
     'Say next, take me to name, status, snooze 10, go quiet, wake up',
-    'F8 or squeeze while Claude talks: quick note',
+    'F8, Space or squeeze while Claude talks: quick note, or say stop to drop the reading',
     'F8 or squeeze while an agenda take plays: note, then it resumes',
     'Double F8 or double squeeze: your turn mode (Option Shift L)',
     'Option Shift N: next chat   Option Shift B: board',
@@ -6105,6 +6132,24 @@
   const soonPlace = () => { setTimeout(placeBars, 40); setTimeout(placeBars, 200); };
   document.addEventListener('pointerdown', soonPlace, true);
   document.addEventListener('keydown', soonPlace, true);
+
+  // 8.5: plain Space talks, like a squeeze or F8, whenever you're not typing in a box
+  function typingIn(t) {
+    if (!t || t === document.body || t === document.documentElement) return false;
+    if (t.isContentEditable) return true;
+    return !!(t.closest && t.closest('input, textarea, select, [contenteditable=""], [contenteditable="true"], [role="textbox"], [role="combobox"], [role="searchbox"]'));
+  }
+  document.addEventListener('keydown', (e) => {
+    if (e.code !== 'Space' || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey || e.isComposing) return;
+    if (tabOff || typingIn(e.target)) return;
+    e.preventDefault(); e.stopPropagation(); if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+    if (e.repeat) return;
+    if (!isFloor()) takeFloor('touch');
+    toggleDictation();
+  }, true);
+  document.addEventListener('keyup', (e) => {
+    if (e.code === 'Space' && !e.altKey && !e.ctrlKey && !e.metaKey && !e.shiftKey && !tabOff && !typingIn(e.target)) { e.preventDefault(); e.stopPropagation(); }
+  }, true);
 
   // ---------- hotkeys ----------
   document.addEventListener('keydown', (e) => {
