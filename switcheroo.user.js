@@ -1103,11 +1103,14 @@
           while ((m = TOK.exec(t))) {
             any = true;
             if (m.index > lastI) frag.appendChild(document.createTextNode(t.slice(lastI, m.index)));
+            // the punctuation right after a word rides with it, so it dims and lights with the word
+            const tail = (/^[^\s\p{L}\p{N}]+/u.exec(t.slice(m.index + m[0].length)) || [''])[0];
             const sp = document.createElement('span');
-            sp.className = 'w'; sp.textContent = m[0];
+            sp.className = 'w'; sp.textContent = m[0] + tail;
             frag.appendChild(sp);
             out.push({ el: sp, k: tokNorm(m[0]), c: '' });
-            lastI = m.index + m[0].length;
+            lastI = m.index + m[0].length + tail.length;
+            TOK.lastIndex = lastI;
           }
           if (!any) continue;
           if (lastI < t.length) frag.appendChild(document.createTextNode(t.slice(lastI)));
