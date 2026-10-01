@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Claude Hands Free Text Mode
 // @namespace    andre.mandel
-// @version      8.2
-// @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply.
+// @version      8.3
+// @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet.
 // @match        https://claude.ai/*
 // @match        *://*/*
 // @grant        GM_xmlhttpRequest
@@ -298,6 +298,11 @@
     the transcript stays on the left, still glowing word by word. A site that won't show inside HQ opens in a
     window docked to the right half (allow pop-ups for claude.ai once so voice can open it). With no HQ open,
     "open" opens a tab. Agents write links as [short spoken label](url), so the readout says the label.
+  8.3: VIDEOS PAUSE WHILE WE TALK. YouTube or any other player in another tab pauses the moment you
+    start talking or Claude starts reading, and plays on after about two and a half seconds of quiet,
+    so it fills the gaps while Claude thinks. Only what Switcheroo paused comes back. Press play yourself
+    mid talk and it's left alone. HQ pill: Pause videos (off turns them down instead, the old way).
+    Say "pause videos" or "turn videos down" to switch.
   8.1.1: UPDATES ITSELF. Tampermonkey fetches new versions from github.com/a-mandel/switcheroo on its own.
     Say "update Switcheroo" to check now: a newer one opens Tampermonkey's update page, and one click on
     Update installs it. A new version is also announced once, on its own.
@@ -371,18 +376,56 @@
         try { el.volume = v; } catch (e) {}
       }
     }
+    // 8.3: PAUSE VIDEOS. Instead of turning down, playing videos pause while you talk or Claude
+    // reads, and play on again once it has been quiet a moment. Only what this script paused
+    // comes back; press play yourself mid talk and it's left alone until the next quiet.
+    let mode = 'lower', resumeTimer = 0, resuming = 0;
+    const held = new Set();            // players this script paused
+    let mine = new WeakSet();          // players you started yourself during this stretch
+    const RESUME_MS = 2500;            // the quiet that counts as downtime
+    function pauseAll() {
+      if (resumeTimer) { clearTimeout(resumeTimer); resumeTimer = 0; }
+      for (const el of media()) {
+        if (el.paused || el.ended || el.muted || mine.has(el)) continue;   // muted hover previews stay as they are
+        held.add(el);
+        try { el.pause(); } catch (e) {}
+      }
+    }
+    function resumeAll() {
+      resumeTimer = 0;
+      resuming = Date.now();
+      for (const el of held) {
+        if (!el.isConnected || !el.paused || el.ended) continue;
+        try { const p = el.play(); if (p && p.catch) p.catch(() => {}); } catch (e) {}
+      }
+      held.clear();
+      mine = new WeakSet();
+    }
+    function resumeSoon(ms) {
+      if (!held.size || resumeTimer) return;
+      resumeTimer = setTimeout(resumeAll, typeof ms === 'number' ? ms : RESUME_MS);
+    }
     function apply(v) {
       const on = !!(v && v.on && Date.now() - (v.ts || 0) < 20000);
       stamp = (v && v.ts) || 0;
-      if (on) { isDucked = true; level = typeof v.level === 'number' ? v.level : 0; duck(); }
-      else if (isDucked) { isDucked = false; restore(); }
+      const was = mode;
+      mode = v && v.mode === 'pause' ? 'pause' : 'lower';
+      if (on) {
+        isDucked = true; level = typeof v.level === 'number' ? v.level : 0;
+        if (mode === 'pause') { if (was !== 'pause') restore(); pauseAll(); }
+        else { if (was === 'pause') resumeAll(); duck(); }
+      } else {
+        if (isDucked) { isDucked = false; restore(); }
+        resumeSoon(v && v.resumeMs);
+      }
     }
     GM_addValueChangeListener('chf_duck', (name, oldV, newV) => apply(newV));
     try { apply(GM_getValue('chf_duck', null)); } catch (e) {}
-    // if the Claude tab vanished mid message, don't leave this tab silent
-    setInterval(() => { if (isDucked && Date.now() - stamp > 20000) { isDucked = false; restore(); } }, 3000);
+    // if the Claude tab vanished mid message, don't leave this tab silent or paused
+    setInterval(() => { if (isDucked && Date.now() - stamp > 20000) { isDucked = false; restore(); resumeSoon(0); } }, 3000);
     // 5.7: some players put their volume back on their own; keep it down while ducked
-    setInterval(() => { if (isDucked) duck(); }, 1000);
+    // 8.3: and in pause mode, a player that started itself (autoplay, next in queue) pauses too
+    setInterval(() => { if (isDucked) { if (mode === 'pause') pauseAll(); else duck(); } }, 1000);
     // an audible player can grab the AirPods squeeze; tell Claude so it can take it back
     const audible = (el) => !el.paused && !el.muted && (el.volume > 0 || saved.has(el));
     function tell(force) {
@@ -393,7 +436,11 @@
     document.addEventListener('play', (e) => {
       const el = e.target;
       if (!el || (el.tagName !== 'VIDEO' && el.tagName !== 'AUDIO')) return;
-      if (isDucked) duck();
+      if (isDucked && mode === 'pause') {
+        // a play we didn't make while you talk is you pressing play: leave it be
+        if (Date.now() - resuming > 1500 && navigator.userActivation && navigator.userActivation.isActive) { held.delete(el); mine.add(el); }
+        else if (!mine.has(el)) { held.add(el); try { el.pause(); } catch (x) {} return; }
+      } else if (isDucked) duck();
       if (audible(el)) tell(false);
     }, true);
     // 3.7: players that start muted and unmute later never fire play again
@@ -495,7 +542,8 @@
       ['mic', 'Mic after reading', 'Your mic opens by itself when a reading or a Switcheroo line ends'],
       ['send', 'Auto send', 'Dictation sends itself after a pause'],
       ['chimes', 'Chimes and alerts', 'Switcheroo chimes and tells you who needs you'],
-      ['duck', 'Lower other tabs', 'Other tabs playing sound are turned down while you talk or Claude reads'],
+      ['duck', 'Quiet other tabs', 'Other tabs playing sound go quiet while you talk or Claude reads'],
+      ['vidpause', 'Pause videos', 'On: YouTube and other players pause while you talk or Claude reads, then play on in the quiet. Off: they turn down instead'],
       ['voice', 'ElevenLabs voice', 'Replies read in the ElevenLabs voice; off uses Claude\'s own read aloud']
     ];
     const SM_HP = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 18v-6a9 9 0 0 1 18 0v6"></path><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path></svg>';
@@ -1458,7 +1506,7 @@
     function ctlModel() {
       const c = lsGet(CFG_KEY, {}), qt = lsGet('chf_sb_quiet', {}), h = lsGet('chf_hold', {});
       return { held: !!h.on, meeting: !!(h.on && h.meeting), read: c.autoRead !== false, mic: c.autoListen !== false, send: c.autoSend !== false,
-        chimes: !qt.quiet, duck: c.duck !== false, voice: c.el !== false };
+        chimes: !qt.quiet, duck: c.duck !== false, vidpause: c.duckMode !== 'lower', voice: c.el !== false };
     }
     // 8.1: the Swipe Deck, as the tab holding it reports it
     const DECK_URL = 'https://claude.ai/artifact/CbVwPd6sZh5MH2A7NUeMGP';
@@ -1621,7 +1669,7 @@
       jump(n.e.id);
     }
     // 8.0: the control panel. Hold goes to every tab; the switches write the shared settings
-    const CTL_NAMES = { read: 'Read aloud', mic: 'Mic after reading', send: 'Auto send', chimes: 'Chimes and alerts', duck: 'Lower other tabs', voice: 'ElevenLabs voice' };
+    const CTL_NAMES = { read: 'Read aloud', mic: 'Mic after reading', send: 'Auto send', chimes: 'Chimes and alerts', duck: 'Quiet other tabs', vidpause: 'Pause videos', voice: 'ElevenLabs voice' };
     function toggleCtl(k) {
       const cur = ctlModel();
       if (k === 'hold') {
@@ -1644,6 +1692,7 @@
         else if (k === 'send') c.autoSend = on;
         else if (k === 'mic') { c.autoListen = on; if (on) delete c.listenOff; else c.listenOff = true; }
         else if (k === 'duck') c.duck = on;
+        else if (k === 'vidpause') c.duckMode = on ? 'pause' : 'lower';   // 8.3
         else if (k === 'voice') c.el = on;
         try { localStorage.setItem(CFG_KEY, JSON.stringify(c)); } catch (x) {}
         send({ t: 'cfg' });
@@ -4368,6 +4417,9 @@
     if (/^(?:(?:please|can you|could you)\s+)?(?:update|upgrade|refresh|reinstall)\s+(?:the\s+|my\s+)?(?:switcheroo|switch a roo|switch roo|switchboard|script|hands free)(?:\s+(?:now|please))*$|^(?:check for (?:an? )?updates?|any updates?|is there an update)$/.test(flat)) return { kind: 'update' };   // 8.1.1
     if (/^(?:follow|follow along|follow me|follow the voice|follow the reading|follow it|follow again|keep up)$/.test(flat)) return { kind: 'follow' };   // 8.1
     if (/^(status|status check|what's the status|whats the status|board|switchboard|switcheroo)$/.test(flat)) return { kind: 'status' };
+    // 8.3: videos pause while we talk, or turn down instead
+    if (/^(?:(?:please )?pause (?:the |my )?(?:videos?|youtube|music)(?: (?:mode|instead|when (?:we|i) talk|while (?:we|i) talk))?|(?:videos?|youtube) (?:pause|pauses|pause mode|pause instead)|pause mode)(?: please)?$/.test(flat)) return { kind: 'duckMode', m: 'pause' };
+    if (/^(?:(?:please )?(?:turn|lower|duck) (?:the |my )?(?:videos?|youtube|music) down(?: instead)?|(?:lower|duck) (?:the |my )?(?:videos?|youtube|music)(?: instead)?|(?:videos?|youtube) (?:down|lower|duck)(?: instead)?|(?:don't|dont|do not) pause (?:the )?(?:videos?|youtube|music))(?: please)?$/.test(flat)) return { kind: 'duckMode', m: 'lower' };
     // 8.0: HOLD everything, and resume
     if (HOLD_SAID.test(flat)) return { kind: 'hold', meeting: /meeting/.test(flat) };
     if (UNHOLD_SAID.test(flat) || (held && /^(wake up|wake|i'm back|im back|resume switchboard|switchboard back on|switchboard on|resume switcheroo|switcheroo back on|switcheroo on)$/.test(flat))) return { kind: 'unhold' };
@@ -4552,6 +4604,7 @@
     if (c.kind === 'switch') return switchByName(c.name);
     if (c.kind === 'newChat') return newChat(c.project, false);
     if (c.kind === 'quieter') return stepRead(-1, true);
+    if (c.kind === 'duckMode') return setDuckMode(c.m, true);   // 8.3
     if (c.kind === 'deck') {   // 7.9 (8.1: a deck already open in another tab is used, not opened twice)
       if (DK.present) return deckStart('voice');
       const other = [...deckTabs].filter(([id, at]) => Date.now() - at < 15000).sort((a, b) => b[1] - a[1])[0];
@@ -4649,8 +4702,8 @@
   // screen mode writes the settings straight into this browser's store; pick them up here
   function reloadCfg() {
     const c = load();
-    for (const k of ['autoRead', 'autoSend', 'autoListen', 'listenOff', 'duck', 'duckReading', 'duckReadLevel', 'el']) {
-      if (k in c) cfg[k] = c[k]; else if (k === 'listenOff' || k === 'duck' || k === 'el' || k === 'duckReading') delete cfg[k];
+    for (const k of ['autoRead', 'autoSend', 'autoListen', 'listenOff', 'duck', 'duckMode', 'duckReading', 'duckReadLevel', 'el']) {
+      if (k in c) cfg[k] = c[k]; else if (k === 'listenOff' || k === 'duck' || k === 'duckMode' || k === 'el' || k === 'duckReading') delete cfg[k];
     }
     try { syncDuck(); } catch (e) {}
     paintPill(); paintBoard();
@@ -5590,13 +5643,15 @@
 
   // ---------- quiet other tabs while you talk (3.0) ----------
   const hasGM = typeof GM_setValue === 'function';
-  let ducked = false, duckAt = 0, duckHold = 0, duckLevel = 0, readHold = 0;
+  let ducked = false, duckAt = 0, duckHold = 0, duckLevel = 0, readHold = 0, duckSent = '';
+  // 8.3: videos pause rather than turn down, unless you choose turn down
+  const duckMode = () => (cfg.duckMode === 'lower' ? 'lower' : 'pause');
   // level is a share of each tab's own volume: 0 while you talk, a little while Claude reads
   const READ_LEVELS = [0.05, 0.1, 0.15, 0.25, 0.35, 0.5];
   const readLevel = () => (READ_LEVELS.includes(cfg.duckReadLevel) ? cfg.duckReadLevel : 0.25);
   function duckPost(on, lvl) {
-    ducked = on; duckLevel = on ? (lvl || 0) : 0; duckAt = Date.now();
-    try { if (hasGM) GM_setValue('chf_duck', { on, ts: duckAt, level: duckLevel }); } catch (e) {}
+    ducked = on; duckLevel = on ? (lvl || 0) : 0; duckAt = Date.now(); duckSent = duckMode();
+    try { if (hasGM) GM_setValue('chf_duck', { on, ts: duckAt, level: duckLevel, mode: duckSent }); } catch (e) {}
   }
   // turn the other tabs down just before the mic opens, so nothing leaks into the first words
   function duckSoon() {
@@ -5610,8 +5665,15 @@
     const reading = !held && cfg.duckReading !== false && (speaking > 0 || fbActive() || Date.now() < readHold || buttons('pause').length > 0 || agPlaying());
     const want = cfg.duck !== false && isFloor() && !tabOff && (talking || reading);
     const lvl = talking ? 0 : readLevel();
-    if (want !== ducked || (want && lvl !== duckLevel)) duckPost(want, lvl);
+    if (want !== ducked || (want && lvl !== duckLevel) || (want && duckSent !== duckMode())) duckPost(want, lvl);
     else if (want && Date.now() - duckAt > 5000) duckPost(true, lvl);   // keep it fresh
+  }
+  function setDuckMode(m, spoken) {   // 8.3
+    cfg.duckMode = m; save(cfg);
+    if (ducked) duckPost(true, duckLevel); else syncDuck();
+    const msg = m === 'pause' ? 'Videos pause while we talk, and play on when it goes quiet.' : 'Videos turn down while we talk instead of pausing.';
+    if (spoken) return say(msg);
+    toast(msg);
   }
   function stepRead(dir, spoken) {
     const i = READ_LEVELS.indexOf(readLevel());
@@ -5641,6 +5703,7 @@
         cfg.duckReading = cfg.duckReading === false; save(cfg); syncDuck();
         toast('Other tabs quiet while Claude reads: ' + (cfg.duckReading ? 'on' : 'off'));
       });
+      GM_registerMenuCommand('Videos: pause or turn down', () => setDuckMode(duckMode() === 'pause' ? 'lower' : 'pause', false));
       GM_registerMenuCommand('Other tabs quieter while Claude reads', () => stepRead(-1, false));
       GM_registerMenuCommand('Other tabs louder while Claude reads', () => stepRead(1, false));
     }
