@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Claude Hands Free Text Mode
 // @namespace    andre.mandel
-// @version      8.7.1
-// @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land.
+// @version      8.8.0
+// @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land. 8.8: one model for every open chat, by voice ("all chats to Sonnet") or from the HQ model pills.
 // @match        https://claude.ai/*
 // @match        *://*/*
 // @grant        GM_xmlhttpRequest
@@ -860,6 +860,10 @@
         '.smx .tgw{display:flex;flex-direction:column;gap:10px;padding:14px 18px;min-width:0}',
         '.smx .tgw .ck{font:600 15px var(--mf);letter-spacing:.24em;text-transform:uppercase;color:var(--mute)}',
         '.smx .tgs{display:grid;grid-template-columns:repeat(4,1fr);gap:10px 14px}',
+        '.smx .mdr{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;margin-top:6px}',
+        '.smx .mdr .md{padding:8px 18px;border:1.5px solid var(--mute);border-radius:999px;font:600 15px var(--mf);letter-spacing:.14em;text-transform:uppercase;color:var(--ink)}',
+        '.smx .mdr .md:hover{border-color:var(--ink)}',
+        '.smx .ctl.held .mdr{opacity:.45}',
         '.smx .tg{display:grid;grid-template-columns:auto 1fr;align-items:center;column-gap:12px;row-gap:8px;height:74px;padding:9px 16px;border:1px solid var(--line);background:var(--bg2);min-width:0}',
         '.smx .tg:hover{border-color:var(--ink)}',
         '.smx .tg .tl{grid-column:1/-1;min-width:0;font:600 19px/1.1 var(--bf);color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}',
@@ -1035,6 +1039,8 @@
         '<div class="ctl" hidden><button type="button" class="hold" data-ctl="hold"><span class="hk">Responses · live</span><span class="hv">Hold</span><span class="hs">Stops every tab until you resume</span></button>' +
         '<div class="tgw"><div class="ck">Controls · every tab follows</div><div class="tgs">' +
         SM_CTL.map((c) => '<button type="button" class="tg" data-ctl="' + c[0] + '" title="' + smEsc(c[2]) + '" aria-pressed="false"><span class="tl">' + smEsc(c[1]) + '</span><span class="sw"><i></i></span><span class="tv">OFF</span></button>').join('') +
+        '</div><div class="mdr"><span class="ck">Model · every chat</span>' +
+        ['Sonnet', 'Opus', 'Haiku', 'Fable'].map((n) => '<button type="button" class="md" data-model="' + n.toLowerCase() + '" title="Set every open chat to ' + n + '">' + n + '</button>').join('') +
         '</div></div></div>' +
         '<div class="dropov" hidden><div class="dpt">Drop on a chat</div><div class="dps">The center, or anywhere else, goes to the chat you are talking to</div></div>' +
         '<div class="toast" role="status"></div>';
@@ -1109,6 +1115,8 @@
         }
         const dc = ev.target.closest('[data-dk]');
         if (dc) { if (!dc.disabled) onAction({ t: 'deck', cmd: dc.getAttribute('data-dk'), deck: dc.getAttribute('data-deck') || '' }); return; }
+        const md = ev.target.closest('[data-model]');
+        if (md) { onAction({ t: 'model', name: md.getAttribute('data-model') }); return; }   // 8.8
         const c = ev.target.closest('[data-ctl]');
         if (c) { onAction({ t: 'ctl', k: c.getAttribute('data-ctl') }); return; }   // 8.0
         const j = ev.target.closest('[data-jump]');
@@ -1847,6 +1855,7 @@
       // 8.1: where the voice is, approvals answered, the deck
       else if (m.t === 'reading') { if (!m.from || m.from === floorId) scr.setReading(m.r && floorP && m.r.path === floorP.path ? m.r : null); }
       else if (m.t === 'follow') scr.follow();
+      else if (m.t === 'model-ack' && m.to === 'mirror' && mdq && m.token === mdq.token) mdq.acks.push(m);   // 8.8
       // 8.2: links and pages
       else if (m.t === 'links' && m.from) { linkReg.set(m.from, { id: m.from, title: m.title, name: m.name, path: m.path, biz: m.biz || '', links: m.links || [], at: Date.now() }); scr.paint(model()); }
       else if (m.t === 'page-open' && m.url) { send({ t: 'page-opened', to: m.from, ok: true }); openPage(m.url, m.label, m.n, m.from); }   // HQ has it
@@ -1977,8 +1986,23 @@
       scr.paint(model());
       scr.flash(!on ? 'Playing. Everything is back on' : meeting ? 'Meeting mode. Nothing talks, replies land here as text' : 'Paused. Nothing reads, talks or opens the mic');
     }
+    // 8.8: every open chat to one model; the chats answer, HQ tells you the tally
+    let mdq = null;
+    function modelFromHQ(name) {
+      if (mdq) { scr.flash('Still setting the last one'); return; }
+      const token = Math.random().toString(36).slice(2, 8), cap = name.charAt(0).toUpperCase() + name.slice(1);
+      mdq = { token, acks: [], t: setTimeout(() => modelDone(cap), 9000) };
+      send({ t: 'model', name, from: 'mirror', token });
+      scr.flash('Setting every chat to ' + cap + '…');
+    }
+    function modelDone(cap) {
+      const r = mdq; if (!r) return; mdq = null; clearTimeout(r.t);
+      const ok = r.acks.filter((a) => a.ok).length, bad = r.acks.filter((a) => !a.ok);
+      scr.flash(cap + ' set in ' + ok + (ok === 1 ? ' chat' : ' chats') + (bad.length ? ' · skipped ' + bad.slice(0, 3).map((a) => (a.name || 'a chat') + ' (' + (a.why || 'failed') + ')').join(', ') : ''));
+    }
     function act(a) {
-      if (a.t === 'center') setHoldFrom(!ctlModel().held, false);
+      if (a.t === 'model') modelFromHQ(a.name);
+      else if (a.t === 'center') setHoldFrom(!ctlModel().held, false);
       else if (a.t === 'meeting') { const c = ctlModel(); setHoldFrom(!(c.held && c.meeting), true); }
       else if (a.t === 'appr') approveFrom(a.k, a.id);
       else if (a.t === 'pick') pickFrom(a.key, a.n);
@@ -3909,6 +3933,10 @@
         break;
       case 'quiet': quiet = m.q || { quiet: false, until: 0 }; paintBoard(); break;
       case 'hold': applyHold(!!m.on); break;   // 8.0
+      case 'model':   // 8.8: set this chat's model, then report back
+        if (m.from !== ME) setModelHere(m.name).then((r) => post({ t: 'model-ack', to: m.from, token: m.token, id: ME, name: shortName(chatTitle()), ok: r.ok, why: r.why || '' }));
+        break;
+      case 'model-ack': if (m.to === ME && mdlRun && m.token === mdlRun.token) { mdlRun.acks.push(m); if (mdlRun.acks.length >= mdlRun.expect) mdlFinish(); } break;
       case 'cfg': reloadCfg(); break;          // 8.0: screen mode changed a setting
       case 'front': if (m.to === ME) bringToFront(); break;
       case 'deliver': if (m.to === ME) deliverHere(m); break;   // 8.7
@@ -4947,6 +4975,9 @@
     // 8.0: HOLD everything, and resume
     if (HOLD_SAID.test(flat)) return { kind: 'hold', meeting: /meeting/.test(flat) };
     if (UNHOLD_SAID.test(flat) || (held && /^(wake up|wake|i'm back|im back|resume switchboard|switchboard back on|switchboard on|resume switcheroo|switcheroo back on|switcheroo on)$/.test(flat))) return { kind: 'unhold' };
+    // 8.8: one model for every open chat
+    const mdm = flat.match(/^(?:please )?(?:(?:set|switch|change|put|move|make|use)\s+)?(?:all|every|each)(?: of)?(?: my| the)?(?: open)?\s*(?:chats?|tabs?|conversations?|models?)(?: models?)?\s+(?:to|over to|onto|on|use|using|be)\s+(?:the\s+)?(?:model\s+)?(sonnets?|sonet|opus|haiku|hiku|hi coup|hike you|fable|mythos)\b(?:\s+(\d(?:\.\d)?))?(?: please)?$/);
+    if (mdm) return { kind: 'allModels', name: mdm[1] };
     if (/^(go quiet|quiet|be quiet|quiet mode|hush|shh+)$/.test(flat)) return { kind: 'quiet' };
     // 7.2: hold the board for a few of your messages
     const BOARD = '(?:the )?(?:switchboard|switch board|switch boards|switchboards|switcheroo|switch a roo|switch roo|board|alerts?|notifications?|chimes?)';
@@ -5104,6 +5135,7 @@
     if ((c.kind === 'allow' || c.kind === 'deny' || c.kind === 'allowApp' || c.kind === 'needApp') && c.here && !voiceApproval()) {
       approval = { id: ME, key: sb.reqKey || '', folder: sb.folder || '', comp: sb.comp || null, name: shortName(chatTitle()), until: 0, voiceUntil: Date.now() + 5000 };
     }
+    if (c.kind === 'allModels') return modelAll(c.name);   // 8.8
     if (c.kind === 'allowApp') return approveApp(c.name);   // 8.1
     if (c.kind === 'approvalWord') {   // 8.1: aim it at the request that's waiting, or drop it
       const w = listTabs().filter((e) => e.on && e.state === 'red' && (e.reqKey || e.folder))
@@ -5190,6 +5222,67 @@
   setInterval(() => { if (isFloor()) checkUpdate(false); }, 3 * 3600000);
 
   function setQuiet(q) { quiet = q; lsPut(K_QUIET, q); post({ t: 'quiet', q }); paintBoard(); }
+
+  // ---------- 8.8: one model for every open chat ----------
+  // Each chat tab opens its own model picker and clicks the model named, then reports back.
+  // A chat that is mid reply or waiting on a card is skipped, and named in the summary.
+  const MODEL_RE = /\b(sonnet|opus|haiku|fable|mythos)\b/i;
+  const MODEL_ALIAS = { sonnets: 'sonnet', sonet: 'sonnet', hiku: 'haiku', 'hi coup': 'haiku', 'hike you': 'haiku' };
+  const modelWord = (n) => { const w = String(n || '').toLowerCase().trim(); return MODEL_ALIAS[w] || w; };
+  const modelBtn = () => [...document.querySelectorAll('button[aria-haspopup], button[data-testid*="model" i]')]
+    .find((b) => visible(b) && !b.closest('nav, header, [data-testid="user-message"], [data-testid="assistant-message"]') && MODEL_RE.test(b.textContent || '')) || null;
+  const modelItems = () => [...document.querySelectorAll('[role="menuitem"],[role="menuitemradio"],[role="option"]')].filter(visible);
+  function fullClick(el) {
+    for (const t of ['pointerdown', 'mousedown', 'pointerup', 'mouseup', 'click']) {
+      try { el.dispatchEvent(new MouseEvent(t, { bubbles: true, cancelable: true, view: window, button: 0 })); } catch (e) {}
+    }
+  }
+  const closeMenus = () => { try { document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', code: 'Escape', bubbles: true })); } catch (e) {} };
+  async function setModelHere(want) {
+    const w = modelWord(want);
+    try {
+      if (!composer()) return { ok: false, why: 'no chat' };
+      if (buttons('stop').length || sb.ask || sb.state === 'red') return { ok: false, why: 'busy' };
+      let b = modelBtn();
+      if (!b) return { ok: false, why: 'no picker' };
+      if ((b.textContent || '').toLowerCase().includes(w)) return { ok: true, why: 'already' };
+      fullClick(b);
+      let item = null;
+      for (let i = 0; i < 12 && !item; i++) {
+        await sleep(150);
+        item = modelItems().find((x) => (x.textContent || '').toLowerCase().includes(w)) || null;
+        if (!item && i === 5) { const more = modelItems().find((x) => /more models|other models|all models/i.test(x.textContent || '')); if (more) fullClick(more); }
+      }
+      if (!item) { closeMenus(); return { ok: false, why: 'not listed' }; }
+      fullClick(item);
+      await sleep(700);
+      closeMenus();
+      b = modelBtn();
+      return b && (b.textContent || '').toLowerCase().includes(w) ? { ok: true, why: '' } : { ok: false, why: 'unverified' };
+    } catch (e) { closeMenus(); return { ok: false, why: 'error' }; }
+  }
+  let mdlRun = null;
+  const capWord = (n) => { const w = modelWord(n); return w.charAt(0).toUpperCase() + w.slice(1); };
+  function mdlFinish() {
+    const r = mdlRun; if (!r) return; mdlRun = null; clearTimeout(r.t);
+    const set = r.acks.filter((a) => a.ok).length + (r.me && r.me.ok ? 1 : 0);
+    const bad = r.acks.filter((a) => !a.ok).concat(r.me && !r.me.ok ? [{ name: 'this chat', why: r.me.why }] : []);
+    const lost = Math.max(0, r.expect - r.acks.length);
+    let msg = capWord(r.name) + ' is set in ' + set + (set === 1 ? ' chat.' : ' chats.');
+    if (bad.length) msg += ' Skipped ' + bad.slice(0, 3).map((a) => (a.name || 'a chat') + ' (' + (a.why || 'failed') + ')').join(', ') + (bad.length > 3 ? ' and ' + (bad.length - 3) + ' more' : '') + '.';
+    if (lost) msg += ' ' + lost + ' did not answer.';
+    say(msg);
+  }
+  async function modelAll(name) {
+    if (mdlRun) return say('Still setting the last one.');
+    const token = Math.random().toString(36).slice(2, 8);
+    const expect = listTabs().filter((e) => e.on && e.chat && e.id !== ME).length;
+    mdlRun = { token, name, expect, acks: [], me: null, t: setTimeout(mdlFinish, 12000) };
+    post({ t: 'model', name, from: ME, token });
+    say('Setting every chat to ' + capWord(name) + '.');
+    mdlRun.me = await setModelHere(name);
+    if (mdlRun && mdlRun.acks.length >= mdlRun.expect) mdlFinish();
+  }
 
   // ---------- 8.0: HOLD, for every tab at once ----------
   // On hold nothing reads, talks, chimes or opens the mic by itself, and other tabs aren't turned
