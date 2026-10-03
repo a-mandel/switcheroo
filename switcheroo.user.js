@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Claude Hands Free Text Mode
 // @namespace    andre.mandel
-// @version      8.9.0
-// @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land. 8.8: one model for every open chat, by voice ("all chats to Sonnet") or from the HQ model pills. 8.9: Boot. The Switcheroo Chrome launcher opens HQ with your 10 most recent chats behind it and the mic ready, no clicks; or say "boot up".
+// @version      8.9.1
+// @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land. 8.8: one model for every open chat, by voice ("all chats to Sonnet") or from the HQ model pills. 8.9: Boot. The Switcheroo Chrome launcher opens HQ with your 10 most recent chats behind it and the mic ready, no clicks; or say "boot up". 8.9.1: "stop, new chat in Mississippi" works: a lead in no longer hides a command, and new chat finds every project, not just the sidebar.
 // @match        https://claude.ai/*
 // @match        *://*/*
 // @grant        GM_xmlhttpRequest
@@ -318,6 +318,11 @@
     "wait" still pause so you can pick it back up. Away from a reading, "shut up" is still Hold.
     Spacebar alone now does what Option Space does (talk, again to send), whenever you're not typing
     in a text box. Option Space still works.
+  8.9.1: NEW CHAT, HANDS FREE. A command after a lead in counts: "stop, new chat in Mississippi", "wait,
+    next", "okay so take me to Kelly". Only moves count this way (new chat, next, take me to a chat that
+    exists, boot, status), so a message that starts with "stop" or "no" still goes to Claude. "New chat in"
+    finds every project you have, not just the ones the sidebar shows; when it has to load the page, the
+    new chat takes the floor, says its name and opens the mic by itself.
   8.9: BOOT. One click on Switcheroo Chrome in the Dock (it also runs when the Mac starts) opens Chrome on
     claude.ai/new?switcheroo=boot. That tab becomes HQ, opens your 10 most recent chats as tabs behind it
     (any already open are skipped), and hands the floor to the newest one, which says Switcheroo is up and
@@ -5085,7 +5090,22 @@
     'freed', 'greed', 'treat', 'tweed', 'weed', "we'd", 'lead', 'led', 'need', 'feed', 'bleed', 'speed', 'plead', 'read', 'reading', 'ready', 're',
     'reread', 're read', 'redo', 'read it', 'breathe it', 'read that', 'three', 'free', 'tree'
   ].join('|') + ')(?: )?(?:again|a gain|agin|a gin|again\'?s|a game|the game|against|a gun|agan|again now|a again|and again)(?: please)?$|^(?:reagan|ray gun|regain|re gain|regan|reagan please|again|again please|one more)$');
+  // 8.9.1: a command said after a lead in ("stop, new chat in Mississippi", "wait, next") still counts.
+  // Only moves count this way, so a message that starts with "stop" or "no" still goes to Claude.
+  const LEAD_IN = /^\s*(?:(?:stop|stop it|stop that|stop reading|wait|hold on|hang on|no|nope|actually|and|now|then|okay|ok|alright|all right|so|uh+|um+|hey|switcheroo|hey switcheroo|cancel that|never mind|nevermind|scratch that|sorry)[\s.,;:!?-]+)+/i;
   function parseCommand(raw) {
+    const c = parseCommandCore(raw);
+    if (c) return c;
+    const t = String(raw || ''), rest = t.replace(LEAD_IN, '');
+    if (rest === t || !rest.trim()) return null;
+    const c2 = parseCommandCore(rest);
+    if (!c2) return null;
+    const ok = c2.kind === 'newChat' || c2.kind === 'next' || c2.kind === 'boot' || c2.kind === 'status' ||
+      (c2.kind === 'switch' && !!findDest(c2.name, false));
+    if (ok) { try { dlog('command after a lead in', t + ' => ' + c2.kind); } catch (e) {} return c2; }
+    return null;
+  }
+  function parseCommandCore(raw) {
     const t = String(raw || '').trim();
     // 4.3: a filler in front (uh, um, okay, so) no longer hides the command
     const flat = t.toLowerCase().replace(/[.!?,;:]+/g, ' ').replace(/\s+/g, ' ').trim()
@@ -5266,7 +5286,7 @@
   function trivialBody(k) {
     const w = String(k || '').toLowerCase().replace(/[^\p{L}\p{N}' ]/gu, ' ').replace(/\s+/g, ' ').trim();
     return !w || w.replace(/ /g, '').length <= 3 ||
-      /^(?:(?:uh+|um+|hmm+|okay|ok|so|and|then|next|alright|all right|right|yeah|yes|well|now)\s*)+$/.test(w);
+      /^(?:(?:uh+|um+|hmm+|okay|ok|so|and|then|next|alright|all right|right|yeah|yes|well|now|stop|stop it|stop that|stop reading|wait|hold on|hang on|nope|actually|sorry|never mind|nevermind|cancel that|scratch that|switcheroo)\s*)+$/.test(w);   // 8.9.1: lead ins
   }
 
   function clearComposer() {
@@ -5694,12 +5714,56 @@
     const q = normName(spoken).replace(/\s+project$/, '');
     return bestOf(projectLinks(), q, (p) => p.name);
   }
+  // 8.9.1: every project you have, not just the ones the sidebar shows, kept for ten minutes
+  const K_PROJ = 'chf_project_index';
+  async function projectIndex() {
+    const cur = lsJson(K_PROJ, null);
+    if (cur && Array.isArray(cur.list) && cur.list.length && Date.now() - cur.at < 10 * 60000) return cur.list;
+    try {
+      const org = await orgId();
+      if (!org) throw new Error('no org');
+      const r = await fetch('/api/organizations/' + org + '/projects', { credentials: 'include' });
+      if (!r.ok) throw new Error('status ' + r.status);
+      const j = await r.json();
+      const arr = Array.isArray(j) ? j : (j && Array.isArray(j.data) ? j.data : []);
+      const list = arr.filter((x) => x && x.uuid && x.name).map((x) => ({ id: String(x.uuid).toLowerCase(), name: String(x.name).slice(0, 120) }));
+      if (list.length) lsPut(K_PROJ, { at: Date.now(), list });
+      return list;
+    } catch (e) {
+      dlog('project index failed', String((e && e.message) || e));
+      return (cur && cur.list) || [];
+    }
+  }
+  async function findProject(spoken) {
+    const p = matchProject(spoken);
+    if (p) return p;
+    const q = normName(spoken).replace(/\s+project$/, '');
+    const hit = bestOf(await projectIndex(), q, (x) => x.name);
+    if (!hit) return null;
+    const el = [...document.querySelectorAll('a[href*="/project/"]')].find((a) => !ours(a) && (a.getAttribute('href') || '').toLowerCase().includes(hit.id)) || null;
+    return { id: hit.id, name: hit.name, el };
+  }
+  // 8.9.1: "new chat in X" had to load a page: the new chat takes the floor, says its name and opens the mic
+  const K_NEWCHAT = 'chf_newchat';
+  try {
+    const nc = JSON.parse(sessionStorage.getItem(K_NEWCHAT) || 'null');
+    sessionStorage.removeItem(K_NEWCHAT);
+    if (nc && Date.now() - (nc.at || 0) < 30000) (async () => {
+      for (let i = 0; i < 40 && !composer(); i++) await sleep(250);
+      await sleep(1200);
+      if (tabOff) return;
+      takeFloor('voice');
+      dlog('new chat by voice, after load', nc.label || '');
+      const ok = await say((nc.label || 'New chat') + '.');
+      if (!ok) openTurnMic('new chat by voice');
+    })();
+  } catch (e) {}
   async function newChat(spoken, sent) {
-    let target = null, label = 'New chat';
+    let target = null, label = 'New chat', url = '/new';
     if (spoken) {
-      const p = matchProject(spoken);
-      if (!p) { await say("I don't see a project called " + spoken + '. It needs to be in the sidebar.'); return; }
-      target = p.el; label = 'New chat in ' + shortName(p.name);
+      const p = await findProject(spoken);   // 8.9.1: the sidebar first, then every project you have
+      if (!p) { await say("I don't see a project called " + spoken + '.'); return; }
+      target = p.el; label = 'New chat in ' + shortName(p.name); url = '/project/' + p.id;
     } else {
       target = [...document.querySelectorAll('a[href="/new"], a[href$="/new"]')].find((a) => !ours(a)) || null;
     }
@@ -5709,7 +5773,11 @@
     if (keep && typeof GM_openInTab === 'function') {
       try { GM_openInTab(location.origin + oldPath, { active: false, insert: true, setParent: true }); } catch (e) {}
     }
-    if (!target) { location.assign('/new'); return; }
+    if (!target) {   // 8.9.1: the page has to load; the new chat picks up the floor and the mic when it does
+      try { sessionStorage.setItem(K_NEWCHAT, JSON.stringify({ at: Date.now(), label })); } catch (e) {}
+      location.assign(url);
+      return;
+    }
     target.click();
     for (let i = 0; i < 30; i++) { await sleep(200); if (location.pathname !== oldPath && composer()) break; }
     await sleep(300);
