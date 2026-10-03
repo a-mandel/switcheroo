@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Claude Hands Free Text Mode
 // @namespace    andre.mandel
-// @version      8.8.0
-// @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land. 8.8: one model for every open chat, by voice ("all chats to Sonnet") or from the HQ model pills.
+// @version      8.9.0
+// @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land. 8.8: one model for every open chat, by voice ("all chats to Sonnet") or from the HQ model pills. 8.9: Boot. The Switcheroo Chrome launcher opens HQ with your 10 most recent chats behind it and the mic ready, no clicks; or say "boot up".
 // @match        https://claude.ai/*
 // @match        *://*/*
 // @grant        GM_xmlhttpRequest
@@ -318,6 +318,13 @@
     "wait" still pause so you can pick it back up. Away from a reading, "shut up" is still Hold.
     Spacebar alone now does what Option Space does (talk, again to send), whenever you're not typing
     in a text box. Option Space still works.
+  8.9: BOOT. One click on Switcheroo Chrome in the Dock (it also runs when the Mac starts) opens Chrome on
+    claude.ai/new?switcheroo=boot. That tab becomes HQ, opens your 10 most recent chats as tabs behind it
+    (any already open are skipped), and hands the floor to the newest one, which says Switcheroo is up and
+    opens the mic. No clicks. Already running? Say "boot up" in any chat, click BOOT on HQ, or pick Boot in
+    the Tampermonkey menu. A boot HQ replaces an older HQ, so there's only ever one.
+    No click needed to talk: Switcheroo Chrome lets sound play without a click, so every chat it opens can
+    talk and take the AirPods straight away. In Chrome opened the plain way, a chat still needs one click.
   8.7.1: ONE MIC GRAB PER DICTATION. Every finish used to take the mic right back: Claude's finish button
     lingers a beat after it's clicked, and a new listener started on it the moment Claude let the mic go,
     so the mic flapped on and off and a stray listener could press finish on nothing. Now a listener starts
@@ -618,6 +625,21 @@
   // Everything it needs lives inside this function, because the rest of the script never runs there.
   const MIRROR_KEY = 'chf_mirror';
   let mirrorTab = false;
+  // 8.9: BOOT. The Switcheroo Chrome launcher opens claude.ai/new?switcheroo=boot. That tab becomes HQ and opens
+  // your most recent chats behind it. The flag comes off the address right away, so a reload doesn't boot again.
+  const BOOT_KEY = 'chf_boot';
+  try {
+    const bootRe = /[?&#]switcheroo[=-]boot\b/;
+    let nav = '';
+    try { nav = ((performance.getEntriesByType && performance.getEntriesByType('navigation')[0]) || {}).name || ''; } catch (e) {}
+    const inUrl = bootRe.test(location.search) || bootRe.test(location.hash);
+    if ((inUrl || bootRe.test(nav)) && !sessionStorage.getItem(BOOT_KEY + '_done')) {
+      sessionStorage.setItem(MIRROR_KEY, '1');
+      sessionStorage.setItem(BOOT_KEY, String(Date.now()));
+      sessionStorage.setItem(BOOT_KEY + '_done', '1');
+      if (inUrl) history.replaceState(history.state, '', location.pathname);
+    }
+  } catch (e) {}
   try { mirrorTab = sessionStorage.getItem(MIRROR_KEY) === '1'; } catch (e) {}
   if (mirrorTab) { runMirror(); return; }
 
@@ -982,6 +1004,9 @@
         '.smx .bar .lk{font:700 15px var(--mf);letter-spacing:.2em;border:1px solid var(--accent);padding:6px 12px;color:var(--accent);white-space:nowrap;flex:none;cursor:pointer}',
         '.smx .bar .lk.zero{border-color:var(--line);color:var(--mute)}',
         '.smx .bar .lk.on,.smx .bar .lk:hover{background:var(--accent);color:var(--bg);border-color:var(--accent)}',
+        // 8.9: the Boot pill
+        '.smx .bar .bt{font:700 15px var(--mf);letter-spacing:.2em;border:1px solid var(--line);padding:6px 12px;color:var(--mute);white-space:nowrap;flex:none;cursor:pointer}',
+        '.smx .bar .bt.on,.smx .bar .bt:hover{background:var(--accent);color:var(--bg);border-color:var(--accent)}',
         '.smx :where(.lnk button,.pgv button){all:unset;box-sizing:border-box;cursor:pointer}',
         '.smx .lnk button:focus-visible,.smx .pgv button:focus-visible{outline:3px solid var(--ink);outline-offset:2px}',
         '.smx .lnk{position:absolute;left:800px;top:100px;width:1100px;bottom:248px;z-index:4;border:1px solid var(--line);background:linear-gradient(var(--panel),var(--panel)),var(--bg);display:flex;flex-direction:column;min-height:0;box-shadow:0 18px 40px rgba(0,0,0,.25)}',
@@ -1033,7 +1058,7 @@
         '<div class="crow"><button type="button" class="cclip" title="Attach files">+</button><textarea class="cin" rows="1" placeholder="Type, paste or drop files" spellcheck="true"></textarea><button type="button" class="csend">SEND</button></div>' +
         '<input type="file" class="cfile" multiple hidden></div>' +
         '<div class="hint">say next · take me to · allow · silence · resume</div><button type="button" class="flw" hidden title="Follow the voice again">FOLLOW</button></div>' +
-        '<div class="bar"><span class="br" title="Light or dark (Option Shift D)"></span><span class="sb">Switcheroo</span><span class="dots"></span><span class="grow"></span><span class="nx" title="Go to the next chat (Option Shift N)"></span><span class="lk zero" title="Links from your chats. Say open, or open two">LINKS</span><span class="pz" title="Pause the Switchboard for two turns, or resume it">LIVE</span></div>' +
+        '<div class="bar"><span class="br" title="Light or dark (Option Shift D)"></span><span class="sb">Switcheroo</span><span class="dots"></span><span class="grow"></span><span class="nx" title="Go to the next chat (Option Shift N)"></span><span class="bt" title="Boot: open your 10 most recent chats behind HQ">BOOT</span><span class="lk zero" title="Links from your chats. Say open, or open two">LINKS</span><span class="pz" title="Pause the Switchboard for two turns, or resume it">LIVE</span></div>' +
         '<div class="stage"></div>' +
         '<div class="asks" hidden></div><div class="dkov" hidden></div><div class="lnk" hidden></div><div class="pgv" hidden></div>' +
         '<div class="ctl" hidden><button type="button" class="hold" data-ctl="hold"><span class="hk">Responses · live</span><span class="hv">Hold</span><span class="hs">Stops every tab until you resume</span></button>' +
@@ -1123,6 +1148,7 @@
         if (j) { onAction({ t: 'jump', id: j.getAttribute('data-jump') }); return; }
         if (ev.target.closest('.nx')) { onAction({ t: 'next' }); return; }
         if (ev.target.closest('.pz')) { onAction({ t: 'pause' }); return; }
+        if (ev.target.closest('.bar .bt')) { onAction({ t: 'boot' }); return; }   // 8.9
         // 8.2: links and pages
         if (ev.target.closest('.bar .lk')) { lnkOpen = !lnkOpen; lnkSig = ''; if (model) renderLinks(model); return; }
         const lc = ev.target.closest('[data-lnk]');
@@ -1693,6 +1719,7 @@
     let chan = null;
     try { chan = new BroadcastChannel('chf-switchboard-v25'); } catch (e) {}
     const send = (m) => { try { if (chan) chan.postMessage(m); } catch (e) {} };
+    const HQ_ID = Math.random().toString(36).slice(2, 10);   // 8.9: which HQ is which, for boot
     const lsGet = (k, d) => { try { return JSON.parse(localStorage.getItem(k)) || d; } catch (e) { return d; } };
     let zoom = 1;
     try { zoom = +localStorage.getItem('chf_mirror_zoom2') || 1; } catch (e) {}
@@ -1870,6 +1897,8 @@
       }
       else if (m.t === 'deck-act' && m.cmd) { dkLast = { cmd: m.cmd, at: Date.now() }; }
       else if (m.t === 'delivered' && m.to === 'mirror') gotDelivered(m);   // 8.7
+      else if (m.t === 'boot' && m.from) { send({ t: 'boot-ack', to: m.from }); bootRun('voice'); }   // 8.9: "boot up" in a chat
+      else if (m.t === 'hq-boot' && m.id && m.id !== HQ_ID) stepAside();                              // 8.9: a boot HQ replaces this one
     };
     // another tab changed a setting, the hold, or quiet mode
     window.addEventListener('storage', (e) => { if (/^chf_(config_v1|hold|sb_quiet)$/.test(e.key || '')) scr.paint(model()); });
@@ -2022,6 +2051,7 @@
       else if (a.t === 'pause') togglePause();
       else if (a.t === 'theme') flipTheme();
       else if (a.t === 'ctl') toggleCtl(a.k);   // 8.0
+      else if (a.t === 'boot') bootRun('pill');  // 8.9
     }
 
     // 8.7: HQ takes files and typing. A file dropped on a wedge or a rail lands in that chat's message
@@ -2200,8 +2230,102 @@
           location.reload();
         });
         GM_registerMenuCommand('Screen mode light or dark', flipTheme);
+        GM_registerMenuCommand('Boot: open my 10 most recent chats', () => bootRun('menu'));   // 8.9
       }
     } catch (e) {}
+
+    // ---------- 8.9: BOOT ----------
+    // Opens your most recent chats as tabs behind HQ, skips any already open, and hands the floor to the
+    // newest one, which says Switcheroo is up and opens the mic.
+    const BOOT_N = 10;
+    let booting = false;
+    const hqSleep = (ms) => new Promise((r) => setTimeout(r, ms));
+    // your most recent chats, newest first: Claude's own list, else the sidebar's Recents
+    async function recentChats(n) {
+      const out = [], seen = new Set();
+      const push = (uuid, name) => { if (uuid && !seen.has(uuid)) { seen.add(uuid); out.push({ uuid, name: name || '' }); } };
+      const getJson = async (url) => { const r = await fetch(url, { credentials: 'include', headers: { accept: 'application/json' } }); return r.ok ? r.json() : null; };
+      try {
+        let org = (/(?:^|;\s*)lastActiveOrg=([0-9a-f-]{36})/.exec(document.cookie) || [])[1] || '';
+        if (!org) {
+          const orgs = await getJson('/api/organizations');
+          const list = Array.isArray(orgs) ? orgs : [];
+          const o = list.find((x) => x && Array.isArray(x.capabilities) && x.capabilities.includes('chat')) || list[0];
+          org = (o && o.uuid) || '';
+        }
+        if (org) {
+          let list = await getJson('/api/organizations/' + org + '/chat_conversations?limit=' + (n + 10));
+          if (!list) list = await getJson('/api/organizations/' + org + '/chat_conversations');
+          if (list && !Array.isArray(list)) list = list.data || list.conversations || list.chat_conversations || [];
+          (list || []).filter((c) => c && c.uuid)
+            .sort((a, b) => (Date.parse(b.updated_at || 0) || 0) - (Date.parse(a.updated_at || 0) || 0))
+            .forEach((c) => push(c.uuid, c.name));
+        }
+      } catch (e) {}
+      if (out.length < n) {
+        document.querySelectorAll('a[href*="/chat/"]').forEach((a) => {
+          if (a.closest('#chf-mirror')) return;
+          const m = /\/chat\/([0-9a-f-]{36})/.exec(a.getAttribute('href') || '');
+          if (m) push(m[1], (a.innerText || '').trim());
+        });
+      }
+      return out.slice(0, n);
+    }
+    function bootPill(on) { try { const b = root.querySelector('.bar .bt'); if (b) b.classList.toggle('on', !!on); } catch (e) {} }
+    async function bootRun(why) {
+      if (booting) { scr.flash('Already booting'); return; }
+      booting = true; bootPill(true);
+      try {
+        scr.flash('Boot: finding your ' + BOOT_N + ' most recent chats');
+        send({ t: 'hello' });
+        // chats already open report in first, so they aren't opened twice. After a restart Chrome may still be
+        // bringing tabs back, so wait until the count holds still (up to 8 seconds)
+        const recentP = recentChats(BOOT_N);
+        let n0 = -1, still = 0;
+        for (let i = 0; i < (why === 'launch' ? 32 : 12); i++) {
+          await hqSleep(250);
+          const n1 = tabs().length;
+          still = n1 === n0 ? still + 1 : 0; n0 = n1;
+          if (i >= 9 && still >= 6) break;
+        }
+        const recent = await recentP;
+        if (!recent.length) { scr.flash("Boot couldn't find your recent chats. Open one and it lands here"); return; }
+        const openPaths = new Set(tabs().map((e) => e.path));
+        const fresh = recent.filter((c) => !openPaths.has('/chat/' + c.uuid));
+        for (const c of fresh) {
+          if (tabs().some((e) => e.path === '/chat/' + c.uuid)) continue;   // it just reported in
+          const url = 'https://claude.ai/chat/' + c.uuid;
+          try { GM_openInTab(url, { active: false, insert: true, setParent: true }); } catch (e) { try { window.open(url, '_blank', 'noopener'); } catch (x) {} }   // noopener: it mustn't inherit HQ
+          await hqSleep(350);
+        }
+        const had = recent.length - fresh.length;
+        scr.flash('Boot: opening ' + fresh.length + (fresh.length === 1 ? ' chat' : ' chats') + (had ? ', ' + had + ' already open' : ''));
+        // the newest chat takes the floor once it reports in, unless you're already talking in one
+        const f = lsGet('chf_sb_floor', null), cur = f && f.id ? reg.get(f.id) : null;
+        if (why !== 'launch' && cur && cur.on && cur.armed) { scr.flash('Boot done. ' + (cur.name || 'Your chat') + ' keeps the floor'); return; }
+        const path = '/chat/' + recent[0].uuid;
+        let e = null;
+        for (let i = 0; i < 100 && !(e = tabs().find((x) => x.path === path && x.on)); i++) await hqSleep(300);
+        if (!e) { scr.flash('Boot done. Click a chat to start talking'); return; }
+        await hqSleep(1200);   // let it finish drawing and sort out its sound
+        e = reg.get(e.id) || e;
+        try { localStorage.setItem('chf_sb_floor', JSON.stringify({ id: e.id, ts: Date.now() })); } catch (x) {}
+        send({ t: 'floor', to: e.id, from: 'mirror', why: 'boot', front: false, token: Math.random().toString(36).slice(2) });
+        floorId = e.id;
+        scr.paint(model());
+        const nm = e.name || 'your newest chat';
+        scr.flash(e.armed ? 'Boot done. ' + nm + ' has the floor. Go ahead' : 'Boot done. Click once in ' + nm + ' so it can talk');
+      } finally { booting = false; bootPill(false); }
+    }
+    // an older HQ steps aside for the one that just booted
+    function stepAside() {
+      try { sessionStorage.removeItem(MIRROR_KEY); } catch (x) {}
+      try { window.close(); } catch (x) {}
+      setTimeout(() => location.reload(), 400);
+    }
+    let bootAt = 0;
+    try { bootAt = +(sessionStorage.getItem(BOOT_KEY) || 0); sessionStorage.removeItem(BOOT_KEY); } catch (x) {}
+    if (bootAt && Date.now() - bootAt < 120000) { send({ t: 'hq-boot', id: HQ_ID }); setTimeout(() => bootRun('launch'), 1500); }
 
     mount();
     applyTheme();
@@ -2832,7 +2956,21 @@
   ssSet('chf_sb_born', String(BORN));
   let lastActive = +(ssGet('chf_sb_active') || 0);
   let touched = false;
-  const armedHere = () => (navigator.userActivation ? navigator.userActivation.hasBeenActive : touched);
+  // 8.9: Switcheroo Chrome lets sound play without a click. A tab where it can is ready to talk without one,
+  // so the chats Boot opens can take the AirPods and the mic straight away.
+  let soundFree = false;
+  try {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (AC) {
+      const ac = new AC();
+      setTimeout(() => {
+        soundFree = ac.state === 'running';
+        try { ac.close(); } catch (e) {}
+        if (soundFree) { try { publish(true); } catch (e) {} }
+      }, ac.state === 'running' ? 0 : 400);
+    }
+  } catch (e) {}
+  const armedHere = () => soundFree || (navigator.userActivation ? navigator.userActivation.hasBeenActive : touched);
 
   let floorId = (lsJson(K_FLOOR, {}) || {}).id || '';
   const isFloor = () => floorId === ME && !tabOff;
@@ -3940,6 +4078,7 @@
       case 'cfg': reloadCfg(); break;          // 8.0: screen mode changed a setting
       case 'front': if (m.to === ME) bringToFront(); break;
       case 'deliver': if (m.to === ME) deliverHere(m); break;   // 8.7
+      case 'boot-ack': if (m.to === ME) bootAckAt = Date.now(); break;   // 8.9
     }
   }
 
@@ -4076,6 +4215,18 @@
   }
 
   try { if (typeof GM_registerMenuCommand === 'function') GM_registerMenuCommand('Screen mode in this tab', enterScreenMode); } catch (e) {}
+  // 8.9: "boot up" from a chat. An open HQ opens your recent chats; with none open, a new tab becomes HQ and boots
+  let bootAckAt = 0;
+  async function bootFromChat() {
+    const t0 = Date.now();
+    post({ t: 'boot', from: ME });
+    for (let i = 0; i < 12 && bootAckAt < t0; i++) await sleep(100);
+    if (bootAckAt >= t0) { say('Booting. Your recent chats are opening behind HQ.'); return; }
+    const url = 'https://claude.ai/new?switcheroo=boot';
+    try { GM_openInTab(url, { active: true, insert: true }); } catch (e) { try { window.open(url, '_blank', 'noopener'); } catch (x) {} }
+    say('Booting. HQ is opening.');
+  }
+  try { if (typeof GM_registerMenuCommand === 'function') GM_registerMenuCommand('Boot: HQ and my 10 most recent chats', bootFromChat); } catch (e) {}
   // 8.6: HQ comes forward when we talk, your video when it plays on (needs the Switcheroo Tabs extension)
   try {
     if (typeof GM_registerMenuCommand === 'function') GM_registerMenuCommand('HQ and video trade places, on or off', () => {
@@ -4129,7 +4280,8 @@
       if (m.front) bringToFront();
       publish(true);
       mirrorPush(true);
-      if (m.why !== 'touch' && m.why !== 'elect') announceArrival();
+      if (m.why === 'boot') bootArrival();   // 8.9
+      else if (m.why !== 'touch' && m.why !== 'elect') announceArrival();
     } else {
       if (had) { pauseReading(); releaseAirPods(); }
       dropStaleDictation('floor moved to another tab');
@@ -4188,6 +4340,13 @@
     if (c && c.id === ME) { floorLostAt = 0; takeFloor('elect'); }
   }
 
+  // 8.9: Boot handed this chat the floor: say so and open the mic. Anything waiting here is read first.
+  async function bootArrival() {
+    computeLocal();
+    if (sb.state === 'red') { announceArrival(); return; }
+    const ok = await say('Switcheroo is up. ' + shortName(chatTitle()) + '.');
+    if (!ok) yourTurn();   // the line couldn't play: the mic still opens
+  }
   // arriving in a chat by voice: say its name, then read what it wants
   async function announceArrival() {
     askKeyRead = '';   // a question waiting here is read again when you arrive
@@ -4967,6 +5126,7 @@
       if (/^(?:close|hide|dismiss|shut)(?: the| this| that)? (?:page|link|window|viewer|site)(?: please)?$|^(?:close it|page close|close page please)$/.test(flat)) return { kind: 'closePage' };
     }
     if (/^(?:(?:please|can you|could you)\s+)?(?:update|upgrade|refresh|reinstall)\s+(?:the\s+|my\s+)?(?:switcheroo|switch a roo|switch roo|switchboard|script|hands free)(?:\s+(?:now|please))*$|^(?:check for (?:an? )?updates?|any updates?|is there an update)$/.test(flat)) return { kind: 'update' };   // 8.1.1
+    if (/^(?:please\s+)?(?:boot|boot up|bootup|boot it up|boot me up|reboot|start up|startup|boot switcheroo|boot up switcheroo|switcheroo boot|switcheroo boot up|open (?:my |the )?(?:ten |10 )?(?:most )?recent chats|open (?:my |the )?last (?:ten |10 )?chats)(?:\s+(?:please|now))*$/.test(flat)) return { kind: 'boot' };   // 8.9
     if (/^(?:follow|follow along|follow me|follow the voice|follow the reading|follow it|follow again|keep up)$/.test(flat)) return { kind: 'follow' };   // 8.1
     if (/^(status|status check|what's the status|whats the status|board|switchboard|switcheroo)$/.test(flat)) return { kind: 'status' };
     // 8.3: videos pause while we talk, or turn down instead
@@ -5168,6 +5328,7 @@
       return openDeck();
     }
     if (c.kind === 'update') return checkUpdate(true);   // 8.1.1
+    if (c.kind === 'boot') return bootFromChat();         // 8.9
     if (c.kind === 'videoCheck') return videoCheck();   // 8.4
     if (c.kind === 'openLink') return openLink(c.n === -1 ? chatLinks().length : c.n);   // 8.2
     if (c.kind === 'closePage') { post({ t: 'page-close', from: ME }); return say('Page closed.'); }
