@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Claude Hands Free Text Mode
 // @namespace    andre.mandel
-// @version      8.9.1
+// @version      8.9.2
 // @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land. 8.8: one model for every open chat, by voice ("all chats to Sonnet") or from the HQ model pills. 8.9: Boot. The Switcheroo Chrome launcher opens HQ with your 10 most recent chats behind it and the mic ready, no clicks; or say "boot up". 8.9.1: "stop, new chat in Mississippi" works: a lead in no longer hides a command, and new chat finds every project, not just the sidebar.
 // @match        https://claude.ai/*
 // @match        *://*/*
@@ -318,6 +318,9 @@
     "wait" still pause so you can pick it back up. Away from a reading, "shut up" is still Hold.
     Spacebar alone now does what Option Space does (talk, again to send), whenever you're not typing
     in a text box. Option Space still works.
+  8.9.2: LONG BELL. The mic bell kept losing its start while the AirPods switch over to the mic. New sound 21,
+    Long bell, strikes three times and rings about three seconds, so enough of it always gets through. It
+    replaces your mic bell once on update; "mic sound" still steps through all of them.
   8.9.1: NEW CHAT, HANDS FREE. A command after a lead in counts: "stop, new chat in Mississippi", "wait,
     next", "okay so take me to Kelly". Only moves count this way (new chat, next, take me to a chat that
     exists, boot, status), so a message that starts with "stop" or "no" still goes to Claude. "New chat in"
@@ -2843,7 +2846,7 @@
       src.start(t); src.stop(t + dur + 0.05);
     }
     // 7.0: each cue's level, measured so they all land about as loud as each other
-    const LEVEL = [1.35, 1.04, 1.48, 0.84, 0.75, 0.99, 3.13, 3.76, 1.6, 1.45, 1.62, 1.01, 0.8, 1.49, 0.98, 2.34, 0.93, 2.09, 1.72, 1.53];
+    const LEVEL = [1.35, 1.04, 1.48, 0.84, 0.75, 0.99, 3.13, 3.76, 1.6, 1.45, 1.62, 1.01, 0.8, 1.49, 0.98, 2.34, 0.93, 2.09, 1.72, 1.53, 0.55];   // 8.9.2: 21, Long bell
     const cues = [
       { name: 'Tick', note: 'The old tick, louder.', len: 0.2,
         play: (c, o, t) => tone(c, o, t, 1046.5, 0.14, { v: 0.5, a: 0.005 }) },
@@ -2884,7 +2887,15 @@
       { name: 'Swell', note: 'A soft synth rise.', len: 0.4,
         play: (c, o, t) => { tone(c, o, t, 440, 0.18, { type: 'sawtooth', v: 0.3, a: 0.12, lp: 400, lpTo: 3000, lpGlide: 0.15 }); tone(c, o, t, 660, 0.18, { type: 'sawtooth', v: 0.18, a: 0.12, lp: 400, lpTo: 3000, lpGlide: 0.15 }); } },
       { name: 'Roger', note: 'The radio over chirp, three steps up.', len: 0.3,
-        play: (c, o, t) => [1300, 1650, 2050].forEach((f, i) => tone(c, o, t + i * 0.055, f, i === 2 ? 0.1 : 0.045, { v: 0.35, a: 0.002 })) }
+        play: (c, o, t) => [1300, 1650, 2050].forEach((f, i) => tone(c, o, t + i * 0.055, f, i === 2 ? 0.1 : 0.045, { v: 0.35, a: 0.002 })) },
+      // 8.9.2: the AirPods swallow the first half second or so while they switch to the mic, so this one
+      // strikes three times and rings about three seconds: whatever gets clipped, you still hear the bell
+      { name: 'Long bell', note: 'A bell struck three times, rings about three seconds.', len: 3.3,
+        play: (c, o, t) => [0, 0.6, 1.2].forEach((d) => {
+          tone(c, o, t + d, 880, 2.0, { v: 0.35, a: 0.002 });
+          tone(c, o, t + d, 1760, 0.9, { v: 0.1, a: 0.002 });
+          tone(c, o, t + d, 2429, 0.6, { v: 0.12, a: 0.002 });
+        }) }
     ];
     // play(ctx, out, t) goes through a level stage so every cue matches
     return cues.map((c, i) => Object.assign({}, c, {
@@ -2895,6 +2906,9 @@
   const CUE_VOLS = [0.5, 0.7, 1, 1.4, 2];
   const cueNum = () => (Number.isInteger(cfg.micSound) && cfg.micSound >= 1 && cfg.micSound <= CUES.length ? cfg.micSound : 2);
   const cueVol = () => (CUE_VOLS.includes(cfg.cueVol) ? cfg.cueVol : 1);
+  // 8.9.2: André's mic bell kept getting cut off, so the long bell replaces whatever was picked, once.
+  // "Mic sound" still steps through all of them afterwards and the choice sticks.
+  if (!cfg.longBell892) { cfg.longBell892 = true; cfg.micSound = CUES.length; try { save(cfg); } catch (e) {} }
   function playCue(n) {
     try {
       if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
@@ -5275,7 +5289,7 @@
     if (up !== down) return { kind: 'cueVol', dir: up ? 1 : -1 };
     // "another one" means the next sound, not sound 1
     const n = nums.length && !(verb && nums.length === 1 && nums[0] === 'one') ? toNum(nums.join(' ')) : NaN;
-    if (isFinite(n) && n >= 1 && n <= 20) return { kind: 'cue', n };
+    if (isFinite(n) && n >= 1 && n <= CUES.length) return { kind: 'cue', n };   // 8.9.2: 21 is the long bell
     if (nums.length && !verb && !back) return null;   // "sound 25": not one of ours
     if (back) return { kind: 'cueStep', dir: -1 };
     if (verb) return { kind: 'cueStep', dir: 1 };
