@@ -2,7 +2,7 @@
 // @name         Claude Hands Free Text Mode
 // @namespace    andre.mandel
 // @version      8.9.2
-// @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land. 8.8: one model for every open chat, by voice ("all chats to Sonnet") or from the HQ model pills. 8.9: Boot. The Switcheroo Chrome launcher opens HQ with your 10 most recent chats behind it and the mic ready, no clicks; or say "boot up". 8.9.1: "stop, new chat in Mississippi" works: a lead in no longer hides a command, and new chat finds every project, not just the sidebar. 8.9.2: the mic bell is now the Long bell, struck three times so the AirPods can't clip it.
+// @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land. 8.8: one model for every open chat, by voice ("all chats to Sonnet") or from the HQ model pills. 8.9: Boot. The Switcheroo Chrome launcher opens HQ with your 10 most recent chats behind it and the mic ready, no clicks; or say "boot up". 8.9.1: "stop, new chat in Alder" works: a lead in no longer hides a command, and new chat finds every project, not just the sidebar. 8.9.2: the mic bell is now the Long bell, struck three times so the AirPods can't clip it.
 // @match        https://claude.ai/*
 // @match        *://*/*
 // @grant        GM_xmlhttpRequest
@@ -321,8 +321,8 @@
   8.9.2: LONG BELL. The mic bell kept losing its start while the AirPods switch over to the mic. New sound 21,
     Long bell, strikes three times and rings about three seconds, so enough of it always gets through. It
     replaces your mic bell once on update; "mic sound" still steps through all of them.
-  8.9.1: NEW CHAT, HANDS FREE. A command after a lead in counts: "stop, new chat in Mississippi", "wait,
-    next", "okay so take me to Kelly". Only moves count this way (new chat, next, take me to a chat that
+  8.9.1: NEW CHAT, HANDS FREE. A command after a lead in counts: "stop, new chat in Alder", "wait,
+    next", "okay so take me to Cedar". Only moves count this way (new chat, next, take me to a chat that
     exists, boot, status), so a message that starts with "stop" or "no" still goes to Claude. "New chat in"
     finds every project you have, not just the ones the sidebar shows; when it has to load the page, the
     new chat takes the floor, says its name and opens the mic by itself.
@@ -5104,7 +5104,7 @@
     'freed', 'greed', 'treat', 'tweed', 'weed', "we'd", 'lead', 'led', 'need', 'feed', 'bleed', 'speed', 'plead', 'read', 'reading', 'ready', 're',
     'reread', 're read', 'redo', 'read it', 'breathe it', 'read that', 'three', 'free', 'tree'
   ].join('|') + ')(?: )?(?:again|a gain|agin|a gin|again\'?s|a game|the game|against|a gun|agan|again now|a again|and again)(?: please)?$|^(?:reagan|ray gun|regain|re gain|regan|reagan please|again|again please|one more)$');
-  // 8.9.1: a command said after a lead in ("stop, new chat in Mississippi", "wait, next") still counts.
+  // 8.9.1: a command said after a lead in ("stop, new chat in Alder", "wait, next") still counts.
   // Only moves count this way, so a message that starts with "stop" or "no" still goes to Claude.
   const LEAD_IN = /^\s*(?:(?:stop|stop it|stop that|stop reading|wait|hold on|hang on|no|nope|actually|and|now|then|okay|ok|alright|all right|so|uh+|um+|hey|switcheroo|hey switcheroo|cancel that|never mind|nevermind|scratch that|sorry)[\s.,;:!?-]+)+/i;
   function parseCommand(raw) {
