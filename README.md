@@ -4,6 +4,14 @@ Hands free Claude in Chrome: dictation, read aloud, a switchboard for every Clau
 
 Install or update: open [switcheroo.user.js](https://raw.githubusercontent.com/a-mandel/switcheroo/main/switcheroo.user.js) with Tampermonkey installed. Tampermonkey keeps it current from this repo on its own. Say "update Switcheroo" to check right away.
 
+## Dark to light (9.3)
+
+The looks now run in order of brightness, darkest first and the whites at the end, with each band of dark looks sweeping through the colors so a step lands on a neighbor instead of a flash. A change fades from the old background to the new one.
+
+**Retro Sky** leads the list. It's retro futurist and its sky follows the time of day: violet night, rosy dawn, a pale peach morning, a bright blue noon, golden hour, then the sunset at dusk. HQ moves to it once with this update.
+
+**Follow the clock** (in the Look picker, or say "follow the clock") picks from your favorites by daylight: darkest at night, brightest at noon, easing between. Picking a look yourself turns it off; "clock off" does too. Look numbers changed with the new order; favorites keep.
+
 ## Views and looks (9.2)
 
 A pill rail sits over the stage. **View** steps through eleven ways to draw your chats: Pie, Radar, Puzzle, Seismograph, Mixer, Orbit, Lanes, Timeline, Departures, Honeycomb and Treemap. Tap the name for all of them, press Option Shift V, or say "radar view" or "next view". **Look** steps one look at a time either way; tap the name for every look as a tile in its own colors and type, favorites first, with a star to keep one. "Arrows step through" can keep the arrows to favorites. Say "look eight" to jump by number. Two new looks, Sketch and Sketch Night, are hand lettered architectural sketches.

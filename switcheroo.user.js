@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Claude Hands Free Text Mode
 // @namespace    andre.mandel
-// @version      9.2
-// @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land. 8.8: one model for every open chat, by voice ("all chats to Sonnet") or from the HQ model pills. 8.9: Boot. The Switcheroo Chrome launcher opens HQ with your 10 most recent chats behind it and the mic ready, no clicks; or say "boot up". 8.9.1: "stop, new chat in Alder" works: a lead in no longer hides a command, and new chat finds every project, not just the sidebar. 8.9.2: the mic bell is now the Long bell, struck three times so the AirPods can't clip it. 8.9.3: Retro, a third HQ look: sunset sky, a neon floor rolling toward you, chrome type. Click Look on the control panel, or say "retro look". 9.0: Chief of Staff joins HQ as the COS wedge and panel, and a fourth look, night drive, from the board. Say chief for the brief, what needs me for Start Here, done two to close a thread, undo to reopen it. 9.0.1: fifty looks. Each push of Look steps to the next one (right click goes back); say "next look", "previous look", "random look" or a look by name. And "next, over" heard as "next server" still jumps. 9.1: the CHxTLD Outbox joins HQ as the OUT wedge, and a click opens your drafts over the pie to read and edit; edits save back to the Outbox. Say "outbox" to hear them, "read draft two" to hear one. Nothing sends from HQ. 9.2: a View pill with eleven ways to draw your chats, a Look pill with a picker and favorites, two hand sketched looks, and Chief of Staff one tap away with Open chat on every Start Here card.
+// @version      9.3
+// @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land. 8.8: one model for every open chat, by voice ("all chats to Sonnet") or from the HQ model pills. 8.9: Boot. The Switcheroo Chrome launcher opens HQ with your 10 most recent chats behind it and the mic ready, no clicks; or say "boot up". 8.9.1: "stop, new chat in Alder" works: a lead in no longer hides a command, and new chat finds every project, not just the sidebar. 8.9.2: the mic bell is now the Long bell, struck three times so the AirPods can't clip it. 8.9.3: Retro, a third HQ look: sunset sky, a neon floor rolling toward you, chrome type. Click Look on the control panel, or say "retro look". 9.0: Chief of Staff joins HQ as the COS wedge and panel, and a fourth look, night drive, from the board. Say chief for the brief, what needs me for Start Here, done two to close a thread, undo to reopen it. 9.0.1: fifty looks. Each push of Look steps to the next one (right click goes back); say "next look", "previous look", "random look" or a look by name. And "next, over" heard as "next server" still jumps. 9.1: the CHxTLD Outbox joins HQ as the OUT wedge, and a click opens your drafts over the pie to read and edit; edits save back to the Outbox. Say "outbox" to hear them, "read draft two" to hear one. Nothing sends from HQ. 9.2: a View pill with eleven ways to draw your chats, a Look pill with a picker and favorites, two hand sketched looks, and Chief of Staff one tap away with Open chat on every Start Here card. 9.3: looks run dark to light, so stepping never jumps from black to white, and a change fades instead of cutting. Retro Sky, a retro futurist look whose sky follows the time of day. Follow the clock picks from your favorites by daylight; say "follow the clock".
 // @match        https://claude.ai/*
 // @match        *://*/*
 // @grant        GM_xmlhttpRequest
@@ -338,6 +338,12 @@
     and the arrows can keep to favorites. Two sketch looks, hand lettered, black on white and white on black. The Chief
     pill opens Chief of Staff any time (Option Shift C); the panel runs two columns, and every Start Here card has
     Open chat, or New chat with the thread typed in and not sent. "Look eight" jumps to a look by number.
+  9.3: DARK TO LIGHT. The looks now run in order of brightness: Retro Sky first, then the darkest looks, sweeping
+    through the colors band by band, up to the whites at the end, so a step lands on a neighbor instead of a flash.
+    A change fades from the old ground to the new one. Retro Sky is retro futurist and follows the time of day:
+    violet night, rosy dawn, a pale peach morning, a bright blue noon, golden hour, then the sunset at dusk. Follow
+    the clock (in the Look picker, or say "follow the clock") picks from your favorites by daylight, darkest at night,
+    brightest at noon; picking a look yourself turns it off. Look numbers changed; favorites keep.
   9.0: CHIEF OF STAFF. The Chief of Staff board joins HQ: a COS wedge and rail on the pie, sized by how many
     threads need you, and a click opens the brief and Start Here over the pie in the board's own look, each thread
     numbered with Mark done. If the board isn't open, the click opens it in a tab behind HQ. By voice in any chat:
@@ -860,7 +866,55 @@
       smLook('sketchnight', 'Sketch Night', 'sketch', 'fx-sketch', ['#121314', '#1b1c1e', '#9a9a96', '#f3f1ea', '#a6a49d', '#f3f1ea', '#ff6b5a', '#ffcc66', '#7cc4ff', '#3d3e41'], { v: {
         grid: 'rgba(243,241,234,.045)', dot: 'rgba(243,241,234,.09)', panel: 'rgba(22,23,25,.92)' } })
     ].forEach((t) => { SM_THEMES[t.id] = t; });
-    const SM_LOOKS = Object.keys(SM_THEMES);   // 9.0.1: the order Look steps through, CHxTLD, Tron, Retro, Night drive first
+    // 9.3: RETRO SKY. Retro futurist, and its sky follows the clock: violet night, rosy dawn, a pale morning,
+    // a bright blue noon, golden hour, then the sunset the Retro look is known for
+    const SM_PHASES = [[0, 'night', 'Night'], [300, 'dawn', 'Dawn'], [450, 'morning', 'Morning'], [660, 'midday', 'Noon'], [960, 'golden', 'Golden hour'], [1110, 'dusk', 'Dusk'], [1260, 'night', 'Night']];
+    function smPhase(d) {
+      d = d || new Date();
+      const m = d.getHours() * 60 + d.getMinutes();
+      let p = SM_PHASES[0];
+      for (const x of SM_PHASES) if (m >= x[0]) p = x;
+      return p;
+    }
+    const SM_SKY = {
+      night: ['fx-floor fx-stars fx-scan sh-neon sh-grad sh-stripe sh-chrome', ['#07051a', '#110c2c', '#2e2a5e', '#f2eeff', '#9a93c8', '#b26bff', '#ff4f7b', '#ffd36e', '#3ee8ff', '#2c2856']],
+      dawn: ['fx-floor fx-stars sh-neon sh-grad sh-stripe sh-chrome', ['#1d1230', '#2a1a40', '#5b3f73', '#fff0f5', '#d1b0c8', '#ff8fab', '#ff5e62', '#ffd27a', '#7fd8ff', '#4a3560']],
+      morning: ['lite fx-floor sh-grad sh-stripe', ['#fff3ea', '#ffe6d6', '#e8b9a0', '#2a1630', '#7a5a6e', '#ff5c8a', '#e8324f', '#d97a00', '#0089b8', '#e7cfc2'],
+        'radial-gradient(ellipse 34% 26% at 30% 58%,rgba(255,196,140,.55),transparent 72%),linear-gradient(180deg,#ffd9c7 0%,#ffeadf 34%,#fff3ea 56%,#fff3ea 100%)'],
+      midday: ['lite fx-floor sh-grad sh-stripe', ['#eaf7ff', '#d6efff', '#9fcde8', '#14193a', '#4f5f80', '#ff3e9a', '#e3264b', '#d27000', '#0088c8', '#c5dcea'],
+        'radial-gradient(ellipse 22% 18% at 50% 30%,rgba(255,255,255,.95),transparent 70%),linear-gradient(180deg,#8fd3ff 0%,#c7ebff 38%,#eaf7ff 56%,#eaf7ff 100%)'],
+      golden: ['fx-floor fx-sky sh-neon sh-grad sh-stripe sh-chrome', ['#1e0d07', '#2c140b', '#6b3420', '#fff1e2', '#d9ab8c', '#ff9a3c', '#ff4f3a', '#ffd166', '#39d5ff', '#4e2a1c']],
+      dusk: ['fx-floor fx-stars fx-scan sh-neon sh-grad sh-stripe sh-chrome', ['#0b0616', '#170d29', '#3d2a63', '#fbefff', '#ab98cf', '#ff3e9a', '#ff6a3d', '#ffc35a', '#35d3ff', '#3e3060']]
+    };
+    function smRetroSky(p) {
+      p = p || smPhase();
+      const k = SM_SKY[p[1]] || SM_SKY.dusk, t = smLook('retrosky', 'Retro Sky', 'arcade', k[0], k[1], { wf: 'Monoton', tag: 'RETRO SKY', v: k[2] ? { sky: k[2] } : {} });
+      t.look = 'Retro Sky · ' + p[2]; t.phase = p[1]; t.clock = true;
+      return t;
+    }
+    SM_THEMES.retrosky = smRetroSky();
+    // 9.3: every look in order from dark to light, so a step never jumps from black to white. The dark looks run in
+    // bands, each band sweeping through the colors and the next one sweeping back, so neighbors stay close in color.
+    // Retro Sky leads, since it follows the clock
+    const smLab = (h) => {
+      const [r, g, b] = smRgb(h).map((x) => { x /= 255; return x <= 0.04045 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4); });
+      const f = (u) => (u > 0.008856 ? Math.cbrt(u) : 7.787 * u + 16 / 116);
+      const X = f((r * 0.4124 + g * 0.3576 + b * 0.1805) / 0.95047), Y = f(r * 0.2126 + g * 0.7152 + b * 0.0722), Z = f((r * 0.0193 + g * 0.1192 + b * 0.9505) / 1.08883);
+      return [116 * Y - 16, 500 * (X - Y), 200 * (Y - Z)];
+    };
+    function smOrderLooks(ids) {
+      const hue = (v) => {
+        const c = [v.accent, v.work, v.need, v.bg].map(smLab), ch = c.map((x) => Math.hypot(x[1], x[2]));
+        const k = ch[0] > 20 ? 0 : ch.indexOf(Math.max(...ch));
+        return (Math.atan2(c[k][2], c[k][1]) * 180 / Math.PI + 380) % 360;
+      };
+      const info = ids.map((id) => ({ id, L: smLab(SM_THEMES[id].v.bg)[0], h: hue(SM_THEMES[id].v) }));
+      const dark = info.filter((x) => x.L < 50).sort((a, b) => a.L - b.L), lite = info.filter((x) => x.L >= 50).sort((a, b) => a.L - b.L || a.h - b.h);
+      const out = [];
+      for (let i = 0, band = 0; i < dark.length; i += 9, band++) out.push(...dark.slice(i, i + 9).sort((a, b) => (band % 2 ? b.h - a.h : a.h - b.h)));
+      return out.concat(lite).map((x) => x.id);
+    }
+    const SM_LOOKS = ['retrosky'].concat(smOrderLooks(Object.keys(SM_THEMES).filter((id) => id !== 'retrosky')));   // 9.3: dark to light   // 9.0.1: the order Look steps through, CHxTLD, Tron, Retro, Night drive first
     // fonts a look needs, fetched the first time you land on it; the startup set is already in hand
     const smFontAsked = new Set(['Orbitron', 'Exo 2', 'Rajdhani', 'Barlow', 'Share Tech Mono', 'Shippori Mincho', 'EB Garamond', 'JetBrains Mono', 'Audiowide', 'Monoton', 'Syncopate', 'Barlow Condensed']);
     const smFontBuf = new Map();
@@ -1422,6 +1476,10 @@
         '.smx .pik .vt b{display:block;font:700 18px var(--hf);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}',
         '.smx .pik .vt small{display:block;font:14px var(--mf);color:var(--mute);letter-spacing:.06em;margin-top:4px}',
         // 9.1: the views' moving parts
+        '.smx .lkfade{position:absolute;inset:0;z-index:60;pointer-events:none;opacity:1;transition:opacity .6s ease}',   // 9.3
+        '.smx .pik .pkb.clk.on{border-color:var(--wait);color:var(--wait);box-shadow:inset 0 -3px var(--wait)}',
+        '.smx .pik .lt .ltc{font:600 11px var(--mf);letter-spacing:.14em;text-transform:uppercase;opacity:.7}',
+        '.smx .pil .pn b .ck{color:var(--wait);margin-left:8px}',
         '.smx .stage .vsweep{animation:smspin 5s linear infinite}',
         '@keyframes smspin{to{transform:rotate(360deg)}}',
         '.smx .stage .vscroll{animation:smscroll 8s linear infinite}',
@@ -1635,7 +1693,9 @@
         fitNames();
       }
       function setTheme(t) {
+        const was = theme;
         theme = t;
+        if (was && was !== t && was.v && t.v && was.v.bg !== t.v.bg) lookFade(was.v.bg);   // 9.3
         const v = t.v;
         const vars = Object.keys(v).map((k) => '--' + k + ':' + v[k]).join(';') + ';--hf:' + t.f.hf + ';--bf:' + t.f.bf + ';--mf:' + t.f.mf + (t.f.wf ? ';--wf:' + t.f.wf : '');
         const fs = fx.style.getPropertyValue('--fs');
@@ -1679,6 +1739,8 @@
         if (pl) { onAction({ t: 'lookset', id: pl.getAttribute('data-pl') }); return; }
         const pv = ev.target.closest('[data-pv]');
         if (pv) { togglePick(''); onAction({ t: 'view', id: pv.getAttribute('data-pv') }); return; }
+        const pc2 = ev.target.closest('[data-clock]');   // 9.3
+        if (pc2) { onAction({ t: 'clock', on: pc2.getAttribute('data-clock') === 'on' }); return; }
         const ps = ev.target.closest('[data-step]');
         if (ps) { onAction({ t: 'lkstep', mode: ps.getAttribute('data-step') }); return; }
         if (ev.target.closest('[data-pik="close"]')) { togglePick(''); return; }
@@ -2458,11 +2520,22 @@
         ov.innerHTML = h; ov.hidden = false;
       }
 
+      // 9.3: the old look's ground fades away over the new one instead of cutting
+      function lookFade(c) {
+        try { if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return; } catch (e) {}
+        const d = document.createElement('div');
+        d.className = 'lkfade'; d.style.background = c;
+        fx.appendChild(d);
+        requestAnimationFrame(() => requestAnimationFrame(() => { d.style.opacity = '0'; }));
+        setTimeout(() => d.remove(), 800);
+      }
       // ---------- 9.1: the pill rail and the pickers ----------
       function renderRail(m) {
         const vw = SM_VIEWS.find((x) => x[0] === viewId) || SM_VIEWS[0];
         q('.vwp .pn b').textContent = vw[1];
-        q('.lkp .pn b').textContent = smPad(SM_LOOKS.indexOf(theme.id) + 1) + ' ' + (theme.look || theme.name || theme.id);
+        const lb = q('.lkp .pn b');
+        lb.textContent = smPad(SM_LOOKS.indexOf(theme.id) + 1) + ' ' + (theme.look || theme.name || theme.id);
+        if (m && m.looks && m.looks.clock) { const ck = document.createElement('span'); ck.className = 'ck'; ck.textContent = 'CLOCK'; lb.appendChild(ck); }   // 9.3
         const ce = ((m && m.tabs) || []).find((e) => e.chief), n = ce && !ce.closed ? ce.chiefN || 0 : 0;
         const cp = q('.prl .chp');
         cp.querySelector('span').textContent = 'Chief' + (n ? ' · ' + n : '');
@@ -2473,8 +2546,9 @@
       function renderPick(m) {
         const box = q('.pik');
         if (!pickOpen) { if (!box.hidden) { box.hidden = true; box.replaceChildren(); } pickSig = ''; return; }
-        const L = (m && m.looks) || {}, favs = (L.favs || []).filter((id) => SM_THEMES[id]), step = L.step === 'fav' && favs.length ? 'fav' : 'all';
-        const sig = JSON.stringify([pickOpen, viewId, theme.id, favs, step]);
+        const L = (m && m.looks) || {}, favs = SM_LOOKS.filter((id) => (L.favs || []).includes(id)), step = L.step === 'fav' && favs.length ? 'fav' : 'all';
+        const clock = !!L.clock;
+        const sig = JSON.stringify([pickOpen, viewId, theme.id, theme.look, favs, step, clock]);
         if (sig === pickSig) return;
         pickSig = sig;
         let h = '';
@@ -2487,15 +2561,16 @@
             const th = SM_THEMES[id], v = th.v, n = SM_LOOKS.indexOf(id) + 1;
             return '<div class="lt' + (id === theme.id ? ' on' : '') + '" style="background:' + v.bg + ';color:' + v.ink + ';border-color:' + v.line + '">' +
               '<button type="button" class="lta" data-pl="' + id + '" title="' + smEsc(th.look || th.name) + '"><span class="lsw2">' + [v.accent, v.need, v.wait, v.work].map((c2) => '<i style="background:' + c2 + '"></i>').join('') + '</span>' +
-              '<span class="ltn">' + smPad(n) + '</span><span class="ltl" style="font-family:' + smEsc(th.f.hf) + '">' + smEsc(th.look || th.name || id) + '</span></button>' +
+              '<span class="ltn">' + smPad(n) + '</span><span class="ltl" style="font-family:' + smEsc(th.f.hf) + '">' + smEsc(th.look || th.name || id) + '</span>' + (th.clock ? '<span class="ltc">follows the clock</span>' : '') + '</button>' +
               '<button type="button" class="ltf' + (favs.includes(id) ? ' on' : '') + '" data-fav="' + id + '" title="' + (favs.includes(id) ? 'Take out of favorites' : 'Add to favorites') + '">★</button></div>';
           };
           h = '<div class="pkh"><span class="pkt">Looks</span><span class="pks">Arrows step through</span>' +
             '<button type="button" class="pkb' + (step === 'all' ? ' on' : '') + '" data-step="all">All ' + SM_LOOKS.length + '</button>' +
             '<button type="button" class="pkb' + (step === 'fav' ? ' on' : '') + '" data-step="fav"' + (favs.length ? '' : ' disabled') + '>Favorites ' + favs.length + '</button>' +
+            '<button type="button" class="pkb clk' + (clock ? ' on' : '') + '" data-clock="' + (clock ? 'off' : 'on') + '" title="Picks from your favorites by the time of day: dark at night, bright at noon">Follow the clock ' + (clock ? 'on' : 'off') + '</button>' +
             '<span class="cg"></span><button type="button" class="pkb x" data-pik="close" title="Close">×</button></div><div class="pkl">' +
             (favs.length ? '<div class="pkc">Favorites</div><div class="pkg">' + favs.map(tile).join('') + '</div>' : '') +
-            '<div class="pkc">All looks · tap the star to keep one in favorites</div><div class="pkg">' + SM_LOOKS.map(tile).join('') + '</div></div>';
+            '<div class="pkc">All looks · dark to light · tap the star to keep one in favorites</div><div class="pkg">' + SM_LOOKS.map(tile).join('') + '</div></div>';
           SM_LOOKS.forEach((id) => smFontsFor(SM_THEMES[id]));   // each tile in its own type, fetched once
         }
         const sc = box.querySelector('.pkl'), keep = sc ? sc.scrollTop : 0;
@@ -3003,9 +3078,13 @@
         localStorage.setItem('chf_mirror_night9', '1');
         if (themeId !== 'retro') { themeId = 'night'; localStorage.setItem('chf_mirror_theme', 'night'); }
       }
+      if (!localStorage.getItem('chf_mirror_sky93')) {   // 9.3: Retro Sky once, the look that follows the time of day
+        localStorage.setItem('chf_mirror_sky93', '1');
+        themeId = 'retrosky'; localStorage.setItem('chf_mirror_theme', 'retrosky');
+      }
     } catch (e) {}
 
-    try { localStorage.setItem('chf_looks', JSON.stringify(SM_LOOKS.map((id) => [id, SM_THEMES[id].look]))); } catch (e) {}   // 9.0.1: voice finds looks by name
+    try { localStorage.setItem('chf_looks', JSON.stringify(SM_LOOKS.map((id) => [id, SM_THEMES[id].name || SM_THEMES[id].look]))); } catch (e) {}   // 9.0.1: voice finds looks by name
     const css = document.createElement('style');
     css.textContent = '#chf-mirror{position:fixed;inset:0;z-index:2147483000;overflow:hidden}\n' + smCss();
     const root = document.createElement('div');
@@ -3129,7 +3208,7 @@
       if (de) list.push(de);
       list.push(chiefEntry());   // 9.0
       list.push(outboxEntry());  // 9.1
-      return { tabs: list, floorId: floorId || (f && f.id) || '', floor: floorP, quiet: lsGet('chf_sb_quiet', {}), ctl: ctlModel(), deck: deckModel(), cos: chiefModel(), ox: outboxModel(), links: linkList(), looks: { favs, step: lkStep, view: viewIdHQ } };
+      return { tabs: list, floorId: floorId || (f && f.id) || '', floor: floorP, quiet: lsGet('chf_sb_quiet', {}), ctl: ctlModel(), deck: deckModel(), cos: chiefModel(), ox: outboxModel(), links: linkList(), looks: { favs, step: lkStep, view: viewIdHQ, clock: lookClock } };
     }
     // 8.2: a page opens on the right of HQ when the site allows it; otherwise in a window docked there
     let page = null, pageWin = null, pageGen = 0;
@@ -3249,6 +3328,7 @@
       else if (m.t === 'chief-launch' && m.th) { send({ t: 'chief-launch-ack', to: m.from, token: m.token }); chiefLaunch(m.th); }   // 9.1: Open chat on the board
       else if (m.t === 'view') { if (m.id) setViewHQ(m.id); else if (m.step) stepView(m.step); }   // 9.1: "radar view"
       else if (m.t === 'look-step' && m.dir) flipTheme(m.dir);
+      else if (m.t === 'look-clock') setClock(!!m.on);   // 9.3: "follow the clock"
       else if (m.t === 'outbox' && m.st) { ox = { from: m.from, st: m.st, at: Date.now() }; scr.paint(model()); }   // 9.1
       else if (m.t === 'outbox-ack' && m.to === 'mirror') outboxAckHQ(m);
       else if (m.t === 'ox-show') outboxOpenHQ();
@@ -3526,6 +3606,7 @@
       else if (a.t === 'lookset') setLook(a.id);
       else if (a.t === 'fav') toggleFav(a.id);
       else if (a.t === 'lkstep') setLkStep(a.mode);
+      else if (a.t === 'clock') setClock(a.on);   // 9.3
       else if (a.t === 'ox') outboxAct(a);                  // 9.1
       else if (a.t === 'page') openPage(a.url, a.label, a.n, 'mirror');   // 8.2
       else if (a.t === 'pageAct') { if (a.k === 'close') closePage(); else if (a.k === 'window' && page) { page.mode = dockWindow(page.url) ? 'window' : 'blocked'; scr.showPage(page); } }
@@ -3691,15 +3772,44 @@
     }
 
     // 8.9.3: three looks now. A click, Option Shift D or the menu steps CHxTLD, Tron, Retro
-    function setLook(id) {
+    // 9.3: Follow the clock picks from your favorites by daylight; Retro Sky changes its own sky. A minute tick keeps both current
+    let lookClock = false;
+    try { lookClock = localStorage.getItem('chf_look_clock') === 'on'; } catch (e) {}
+    function daylight(d) {   // 0 at night, 1 from mid morning to mid afternoon, ramps at dawn and dusk
+      d = d || new Date();
+      const h = d.getHours() + d.getMinutes() / 60;
+      return h < 5 || h >= 21 ? 0 : h < 9 ? (h - 5) / 4 : h < 16 ? 1 : (21 - h) / 5;
+    }
+    function clockPick() {
+      const fv = SM_LOOKS.filter((id) => favs.includes(id) && id !== 'retrosky').sort((x, y) => smLab(SM_THEMES[x].v.bg)[0] - smLab(SM_THEMES[y].v.bg)[0]);   // darkest first
+      if (!fv.length) return 'retrosky';
+      return fv[Math.round(daylight() * (fv.length - 1))];
+    }
+    function setClock(on, quiet) {
+      lookClock = !!on;
+      try { localStorage.setItem('chf_look_clock', lookClock ? 'on' : 'off'); } catch (x) {}
+      if (lookClock) { const id = clockPick(); if (id !== themeId) { themeId = id; try { localStorage.setItem('chf_mirror_theme', id); } catch (x) {} applyTheme(); } }
+      scr.paint(model());
+      if (!quiet) scr.flash(lookClock ? 'Following the clock: ' + SM_THEMES[themeId].look : 'Not following the clock');
+    }
+    function clockTick() {
+      const p = smPhase();
+      if (themeId === 'retrosky' && SM_THEMES.retrosky.phase !== p[1]) { SM_THEMES.retrosky = smRetroSky(p); applyTheme(); }
+      else if (SM_THEMES.retrosky.phase !== p[1]) SM_THEMES.retrosky = smRetroSky(p);
+      if (lookClock) { const id = clockPick(); if (id !== themeId) { themeId = id; try { localStorage.setItem('chf_mirror_theme', id); } catch (x) {} applyTheme(); scr.flash(SM_THEMES[id].look + ' for the time of day'); } }
+    }
+    setInterval(clockTick, 60000);
+    setTimeout(clockTick, 1200);   // catch up right after HQ opens
+    function setLook(id, keepClock) {
       if (!SM_THEMES[id]) return;
+      if (lookClock && !keepClock) setClock(false, true);   // a look you pick yourself wins over the clock
       themeId = id;
       try { localStorage.setItem('chf_mirror_theme', themeId); } catch (x) {}
       applyTheme();
       scr.flash(SM_THEMES[id].look + ' · ' + (SM_LOOKS.indexOf(id) + 1) + ' of ' + SM_LOOKS.length);
     }
     function flipTheme(dir) {   // 9.0.1: forward, or back one on a right click (9.1: just your favorites, when that's how the arrows step)
-      const d = dir === -1 ? -1 : 1, fv = favs.filter((id) => SM_THEMES[id]);
+      const d = dir === -1 ? -1 : 1, fv = SM_LOOKS.filter((id) => favs.includes(id));   // 9.3: favorites in the same dark to light order
       const ring = lkStep === 'fav' && fv.length ? fv : SM_LOOKS, n = ring.length, i = ring.indexOf(themeId);
       setLook(i < 0 ? ring[d === 1 ? 0 : n - 1] : ring[(i + d + n) % n]);
     }
@@ -6989,6 +7099,8 @@
     // 8.8: one model for every open chat
     const mdm = flat.match(/^(?:please )?(?:(?:set|switch|change|put|move|make|use)\s+)?(?:all|every|each)(?: of)?(?: my| the)?(?: open)?\s*(?:chats?|tabs?|conversations?|models?)(?: models?)?\s+(?:to|over to|onto|on|use|using|be)\s+(?:the\s+)?(?:model\s+)?(sonnets?|sonet|opus|haiku|hiku|hi coup|hike you|fable|mythos)\b(?:\s+(\d(?:\.\d)?))?(?: please)?$/);
     if (mdm) return { kind: 'allModels', name: mdm[1] };
+    if (CLOCK_ON.test(flat)) return { kind: 'lookClock', on: true };   // 9.3
+    if (CLOCK_OFF.test(flat)) return { kind: 'lookClock', on: false };
     const vwc = viewParse(flat);   // 9.1: HQ's view
     if (vwc) return vwc;
     const lkc = lookParse(flat);   // 8.9.3, 9.0.1: HQ's look
@@ -7125,6 +7237,8 @@
     post({ t: 'view', id });
     return say(VIEW_NAMES[id] + ' view.');
   }
+  const CLOCK_ON = /^(?:please )?(?:(?:turn on |start |use |switch to |go to )?(?:follow(?:ing)? the (?:clock|time of day|time)|time of day (?:looks?|mode|colors?)|clock (?:mode|looks?)|auto(?:matic)? looks?)(?: on| mode)?)(?: please)?$/;
+  const CLOCK_OFF = /^(?:please )?(?:(?:stop|quit|don't|dont) follow(?:ing)? the (?:clock|time of day|time)|(?:clock|time of day|auto) (?:mode |looks? )?off|turn off (?:the )?(?:clock|time of day|auto) (?:mode|looks?))(?: please)?$/;
   const LOOK_NUM = /^(?:please )?(?:(?:go to|switch to|show me|try|jump to|set|use|give me) )?(?:the )?look (?:number )?([a-z]+(?: [a-z]+)?|\d{1,2})(?: please)?$/;
   function lookParse(flat) {
     const ln = flat.match(LOOK_NUM);   // 9.1: "look eight", "go to look number twenty"
@@ -7142,7 +7256,7 @@
     let ids = l.map((x) => x[0]);
     if (!c.id && c.step !== 'rand') {   // 9.1: next and previous keep to favorites when that's how HQ's arrows step
       try {
-        const fv = JSON.parse(localStorage.getItem('chf_look_favs') || '[]').filter((id) => ids.includes(id));
+        const f0 = JSON.parse(localStorage.getItem('chf_look_favs') || '[]'), fv = ids.filter((id) => f0.includes(id));   // 9.3: dark to light
         if (localStorage.getItem('chf_look_step') === 'fav' && fv.length) ids = fv;
       } catch (e) {}
     }
@@ -7262,7 +7376,12 @@
     if (c.kind === 'quieter') return stepRead(-1, true);
     if (c.kind === 'duckMode') return setDuckMode(c.m, true);   // 8.3
     if (c.kind === 'look') return setHqLook(c);
-    if (c.kind === 'view') return setHqView(c);                 // 9.1                 // 8.9.3, 9.0.1
+    if (c.kind === 'view') return setHqView(c);                 // 9.1
+    if (c.kind === 'lookClock') {                                // 9.3
+      try { localStorage.setItem('chf_look_clock', c.on ? 'on' : 'off'); } catch (e) {}
+      post({ t: 'look-clock', on: c.on });
+      return say(c.on ? 'Following the clock.' : 'Not following the clock.');
+    }                 // 8.9.3, 9.0.1
     if (c.kind === 'deck') {   // 7.9 (8.1: a deck already open in another tab is used, not opened twice)
       if (DK.present) return deckStart('voice');
       const other = [...deckTabs].filter(([id, at]) => Date.now() - at < 15000).sort((a, b) => b[1] - a[1])[0];
