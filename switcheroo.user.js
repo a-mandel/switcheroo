@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Claude Hands Free Text Mode
 // @namespace    andre.mandel
-// @version      9.4
-// @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land. 8.8: one model for every open chat, by voice ("all chats to Sonnet") or from the HQ model pills. 8.9: Boot. The Switcheroo Chrome launcher opens HQ with your 10 most recent chats behind it and the mic ready, no clicks; or say "boot up". 8.9.1: "stop, new chat in Alder" works: a lead in no longer hides a command, and new chat finds every project, not just the sidebar. 8.9.2: the mic bell is now the Long bell, struck three times so the AirPods can't clip it. 8.9.3: Retro, a third HQ look: sunset sky, a neon floor rolling toward you, chrome type. Click Look on the control panel, or say "retro look". 9.0: Chief of Staff joins HQ as the COS wedge and panel, and a fourth look, night drive, from the board. Say chief for the brief, what needs me for Start Here, done two to close a thread, undo to reopen it. 9.0.1: fifty looks. Each push of Look steps to the next one (right click goes back); say "next look", "previous look", "random look" or a look by name. And "next, over" heard as "next server" still jumps. 9.1: the CHxTLD Outbox joins HQ as the OUT wedge, and a click opens your drafts over the pie to read and edit; edits save back to the Outbox. Say "outbox" to hear them, "read draft two" to hear one. Nothing sends from HQ. 9.2: a View pill with eleven ways to draw your chats, a Look pill with a picker and favorites, two hand sketched looks, and Chief of Staff one tap away with Open chat on every Start Here card. 9.3: looks run dark to light, so stepping never jumps from black to white, and a change fades instead of cutting. Retro Sky, a retro futurist look whose sky follows the time of day. Follow the clock picks from your favorites by daylight; say "follow the clock". 9.4: a second Outbox, ANDRÉ MANDEL, on its own letterhead beside the CHxTLD one, both one tap away on the pill rail ("mandel outbox"); and ten new looks: Trace, Marker, Charcoal, Chalkboard, Funnies, Space Opera, Overdrive, Dime Novel, Desert Neon, Bunker.
+// @version      9.4.1
+// @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land. 8.8: one model for every open chat, by voice ("all chats to Sonnet") or from the HQ model pills. 8.9: Boot. The Switcheroo Chrome launcher opens HQ with your 10 most recent chats behind it and the mic ready, no clicks; or say "boot up". 8.9.1: "stop, new chat in Alder" works: a lead in no longer hides a command, and new chat finds every project, not just the sidebar. 8.9.2: the mic bell is now the Long bell, struck three times so the AirPods can't clip it. 8.9.3: Retro, a third HQ look: sunset sky, a neon floor rolling toward you, chrome type. Click Look on the control panel, or say "retro look". 9.0: Chief of Staff joins HQ as the COS wedge and panel, and a fourth look, night drive, from the board. Say chief for the brief, what needs me for Start Here, done two to close a thread, undo to reopen it. 9.0.1: fifty looks. Each push of Look steps to the next one (right click goes back); say "next look", "previous look", "random look" or a look by name. And "next, over" heard as "next server" still jumps. 9.1: the CHxTLD Outbox joins HQ as the OUT wedge, and a click opens your drafts over the pie to read and edit; edits save back to the Outbox. Say "outbox" to hear them, "read draft two" to hear one. Nothing sends from HQ. 9.2: a View pill with eleven ways to draw your chats, a Look pill with a picker and favorites, two hand sketched looks, and Chief of Staff one tap away with Open chat on every Start Here card. 9.3: looks run dark to light, so stepping never jumps from black to white, and a change fades instead of cutting. Retro Sky, a retro futurist look whose sky follows the time of day. Follow the clock picks from your favorites by daylight; say "follow the clock". 9.4: a second Outbox, ANDRÉ MANDEL, on its own letterhead beside the CHxTLD one, both one tap away on the pill rail ("mandel outbox"); and ten new looks: Trace, Marker, Charcoal, Chalkboard, Funnies, Space Opera, Overdrive, Dime Novel, Desert Neon, Bunker. 9.4.1: Chief of Staff wears HQ's look; Night drive keeps the board's own.
 // @match        https://claude.ai/*
 // @match        *://*/*
 // @grant        GM_xmlhttpRequest
@@ -344,6 +344,10 @@
     violet night, rosy dawn, a pale peach morning, a bright blue noon, golden hour, then the sunset at dusk. Follow
     the clock (in the Look picker, or say "follow the clock") picks from your favorites by daylight, darkest at night,
     brightest at noon; picking a look yourself turns it off. Look numbers changed; favorites keep.
+  9.4.1: CHIEF WEARS THE LOOK. The Chief of Staff panel on HQ now takes HQ's look: Blueprint gives a
+    blueprint Chief, grid and all; Desert Modern, Brutalist or Charcoal give a light Chief in those colors and
+    faces; rounded, thick, blocky, cut and art deco panels carry over, and the sketch looks draw it dashed.
+    Night drive keeps the board's own look, and only the looks with a floor keep the sunset scene.
   9.4: TWO OUTBOXES. The ANDRÉ MANDEL Outbox joins the CHxTLD one as its own lane: its own page, its own AMO wedge, and
     its own letterhead over the pie (brush A, Tenor caps, graphite on trace). Every relay, save and answer carries the
     lane, so a draft never lands in the wrong one. CHxTLD and Mandel pills sit beside Chief on the rail, with counts;
@@ -1458,7 +1462,7 @@
         '.smx.sh-deco :is(.tx,.ctl){outline:1px solid var(--accent);outline-offset:-8px}',
         '.smx.sh-deco .bar{border-color:var(--accent)}',
         '.smx.sh-deco :is(.ttl,.bar .sb){letter-spacing:.12em}',
-        // 9.0: Chief of Staff over the pie. It always wears the board's night drive look, whatever the HQ look
+        // 9.0: Chief of Staff over the pie, in the board's night drive look (9.4.1: on Night drive; other looks lend it theirs, below)
         '.smx.cosing .stage{opacity:.14;filter:blur(2px)}',
         '.smx.cosing .asks,.smx.cosing .dkov{display:none}',
         // 9.1: the pill rail over the stage: Chief on the left, View and Look on the right
@@ -1615,6 +1619,37 @@
         '.smx .cos .cac{display:flex;flex-direction:column;gap:6px;align-self:center}',
         '.smx .cos .cbn.hi{border-color:var(--k-cyan);color:var(--k-cyan)}',
         '.smx .cos .chn{flex:none;text-align:center;font:500 15px var(--k-l);letter-spacing:.3em;text-transform:lowercase;color:var(--k-dim)}',
+        // 9.4.1: Chief of Staff wears HQ's look. Night drive keeps the board's own; every other look lends the
+        // panel its colors, faces, ground and panel shape. The sunset scene stays only on the looks with a floor.
+        '.smx:not(.night) .cos{--k-bg:var(--bg);--k-panel:var(--bg2);--k-panel2:var(--bg2);--k-line:var(--line);--k-fg:var(--ink);--k-dim:var(--mute);--k-cyan:var(--work);--k-violet:var(--accent);--k-mag:var(--accent);--k-sun:var(--need);--k-gold:var(--wait);--k-d:var(--hf);--k-b:var(--bf);--k-l:var(--mf);background:radial-gradient(900px 380px at 50% -14%,var(--glowbg),transparent 70%),var(--bg);box-shadow:0 18px 40px rgba(0,0,0,.25)}',
+        '.smx:not(.night) .cos::before{background:var(--stripe,linear-gradient(90deg,var(--work),var(--accent) 50%,var(--need)))}',
+        '.smx:not(.night) .cos .cmk{color:var(--k-fg);-webkit-text-stroke:0}',
+        '.smx:not(.night) .cos .cbn:hover{box-shadow:none}',
+        '.smx:not(.night) .cos .cr.hot{border-color:var(--k-sun);box-shadow:inset 3px 0 0 var(--k-sun)}',
+        '.smx:not(.night) .cos .cst.blocked{border-color:var(--k-mag);background:transparent}',
+        '.smx:not(.night) .cos .gl{filter:drop-shadow(0 0 24px var(--glowc2))}',
+        '.smx:not(.night) .cos .fl{background:linear-gradient(180deg,var(--glowbg),var(--k-panel) 75%);box-shadow:0 -6px 22px -6px var(--glowc2)}',
+        '.smx:not(.night):not(.fx-floor) .cos :is(.sc,.gl,.fl){display:none}',
+        '.smx:not(.night):not(.fx-floor) .cos .cbody .cbr{padding-bottom:18px}',
+        '.smx.lt:not(.night) .cos{--k-chx:#a4520f;--k-per:#5a45c0;box-shadow:0 18px 40px rgba(0,0,0,.12)}',
+        // the look's ground shows through: blueprint grid, dots, scan lines already lie over everything
+        '.smx.fx-blue .cos{background:linear-gradient(var(--dot) 1px,transparent 1px) 0 0/192px 192px,linear-gradient(90deg,var(--dot) 1px,transparent 1px) 0 0/192px 192px,linear-gradient(var(--grid) 1px,transparent 1px) 0 0/24px 24px,linear-gradient(90deg,var(--grid) 1px,transparent 1px) 0 0/24px 24px,var(--bg)}',
+        '.smx.fx-blue .cos :is(.cbr,.cr){background:var(--panel)}',
+        '.smx.fx-dots .cos{background:radial-gradient(var(--dot) 1.4px,transparent 1.7px) 0 0/28px 28px,var(--bg)}',
+        '.smx.fx-sketch .cos{background:linear-gradient(var(--grid) 1px,transparent 1px) 0 0/24px 24px,linear-gradient(90deg,var(--grid) 1px,transparent 1px) 0 0/24px 24px,var(--bg);border-style:dashed;box-shadow:none}',
+        '.smx.fx-sketch .cos :is(.cbr,.cr,.cbn,.cem,.cst){border-style:dashed}',
+        '.smx.fx-sketch.sk-2 .cos,.smx.fx-sketch.sk-2 .cos :is(.cbr,.cr,.cbn,.cem,.cst){border-style:solid;border-width:2px}',
+        // panel shapes carry over
+        '.smx.sh-round .cos{border-radius:18px}',
+        '.smx.sh-round .cos :is(.cbr,.cr,.cem){border-radius:12px}',
+        '.smx.sh-round .cos :is(.cbn,.cst){border-radius:999px}',
+        '.smx.sh-thick .cos,.smx.sh-thick .cos :is(.cbr,.cr,.cbn){border-width:2px}',
+        '.smx.sh-block .cos :is(.cbr,.cr){box-shadow:5px 5px 0 var(--line)}',
+        '.smx.sh-under .cos{border-top:4px solid var(--accent)}',
+        '.smx.sh-cut .cos{clip-path:polygon(0 0,calc(100% - 26px) 0,100% 26px,100% 100%,26px 100%,0 calc(100% - 26px))}',
+        '.smx.sh-cut .cos :is(.cr,.cbn){clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px))}',
+        '.smx.sh-deco .cos{outline:1px solid var(--accent);outline-offset:-8px}',
+        '.smx.sh-neon .cos{box-shadow:0 0 0 1px var(--glowbg),0 0 30px -8px var(--glowc2)}',
         // 9.1: the CHxTLD Outbox over the pie. It always wears the Outbox's white mail look, whatever the HQ look
         '.smx.oxing .stage{opacity:.14;filter:blur(2px)}',
         '.smx.oxing .asks,.smx.oxing .dkov{display:none}',
@@ -1776,7 +1811,7 @@
         const vars = Object.keys(v).map((k) => '--' + k + ':' + v[k]).join(';') + ';--hf:' + t.f.hf + ';--bf:' + t.f.bf + ';--mf:' + t.f.mf + (t.f.wf ? ';--wf:' + t.f.wf : '');
         const fs = fx.style.getPropertyValue('--fs');
         fx.setAttribute('style', vars + (fs ? ';--fs:' + fs : ''));
-        fx.className = 'smx ' + t.id + (t.cls ? ' ' + t.cls : '') + (askSig ? ' asking' : '') + (dkOpen ? ' decking' : '') + (cosOpen ? ' cosing' : '') + (oxOpen ? ' oxing' : '');
+        fx.className = 'smx ' + t.id + (t.cls ? ' ' + t.cls : '') + (smLab(v.bg)[0] > 60 ? ' lt' : '') + (askSig ? ' asking' : '') + (dkOpen ? ' decking' : '') + (cosOpen ? ' cosing' : '') + (oxOpen ? ' oxing' : '');
         cosSig = '';
         const lk = q('.tg.lk3');   // 9.0.1: four of the look's colors, its number and name
         if (lk) {
