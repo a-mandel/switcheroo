@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Claude Hands Free Text Mode
 // @namespace    andre.mandel
-// @version      9.0.1
-// @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land. 8.8: one model for every open chat, by voice ("all chats to Sonnet") or from the HQ model pills. 8.9: Boot. The Switcheroo Chrome launcher opens HQ with your 10 most recent chats behind it and the mic ready, no clicks; or say "boot up". 8.9.1: "stop, new chat in Alder" works: a lead in no longer hides a command, and new chat finds every project, not just the sidebar. 8.9.2: the mic bell is now the Long bell, struck three times so the AirPods can't clip it. 8.9.3: Retro, a third HQ look: sunset sky, a neon floor rolling toward you, chrome type. Click Look on the control panel, or say "retro look". 9.0: Chief of Staff joins HQ as the COS wedge and panel, and a fourth look, night drive, from the board. Say chief for the brief, what needs me for Start Here, done two to close a thread, undo to reopen it. 9.0.1: fifty looks. Each push of Look steps to the next one (right click goes back); say "next look", "previous look", "random look" or a look by name. And "next, over" heard as "next server" still jumps.
+// @version      9.1.0
+// @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land. 8.8: one model for every open chat, by voice ("all chats to Sonnet") or from the HQ model pills. 8.9: Boot. The Switcheroo Chrome launcher opens HQ with your 10 most recent chats behind it and the mic ready, no clicks; or say "boot up". 8.9.1: "stop, new chat in Alder" works: a lead in no longer hides a command, and new chat finds every project, not just the sidebar. 8.9.2: the mic bell is now the Long bell, struck three times so the AirPods can't clip it. 8.9.3: Retro, a third HQ look: sunset sky, a neon floor rolling toward you, chrome type. Click Look on the control panel, or say "retro look". 9.0: Chief of Staff joins HQ as the COS wedge and panel, and a fourth look, night drive, from the board. Say chief for the brief, what needs me for Start Here, done two to close a thread, undo to reopen it. 9.0.1: fifty looks. Each push of Look steps to the next one (right click goes back); say "next look", "previous look", "random look" or a look by name. And "next, over" heard as "next server" still jumps. 9.1: the CHxTLD Outbox joins HQ as the OUT wedge, and a click opens your drafts over the pie to read and edit; edits save back to the Outbox. Say "outbox" to hear them, "read draft two" to hear one. Nothing sends from HQ.
 // @match        https://claude.ai/*
 // @match        *://*/*
 // @grant        GM_xmlhttpRequest
@@ -318,6 +318,13 @@
     "wait" still pause so you can pick it back up. Away from a reading, "shut up" is still Hold.
     Spacebar alone now does what Option Space does (talk, again to send), whenever you're not typing
     in a text box. Option Space still works.
+  9.1: OUTBOX. The CHxTLD Outbox joins HQ, the way Chief of Staff did: an OUT wedge and rail on the pie, lit
+    while drafts are ready, and a click opens the drafts over the pie in the Outbox's own white mail look. Click
+    one to edit it right there: subject and body save back to the Outbox a moment after you stop typing, or on
+    Save or Cmd S. If Claude saves a newer version while you type, nothing lands on top of you; a bar offers
+    Load it or Keep mine. Copy for Gmail puts the body and your signature on the clipboard. If the Outbox isn't
+    open, the click opens it in a tab behind HQ, so Switcheroo is all you keep in front. By voice in any chat:
+    "outbox" reads what's waiting and opens the panel, "read draft two" reads one. Nothing sends from HQ.
   9.0.1: FIFTY LOOKS. The Look tile on the control panel now steps through 50 looks: CHxTLD, Tron, Retro
     and Night drive first, then synthwave floors, green and amber terminals, blueprint, sonar, deep space, Bauhaus,
     Swiss, brutalist, art deco, mid century, Tahoe, Sierra granite, redwood, fog city and more. Each one
@@ -879,6 +886,7 @@
     const smKind = (e) => {
       if (e && e.deck) return e.deckN > 0 ? 'question' : 'idle';   // 8.1: the Swipe Deck rides along as a wedge
       if (e && e.chief) return !e.closed && e.chiefN > 0 ? 'question' : 'idle';   // 9.0: and Chief of Staff
+      if (e && e.outbox) return !e.closed && e.oxN > 0 ? 'question' : 'idle';   // 9.1: and the Outbox, lit while drafts are ready
       if (!e || e.on === false) return 'idle';
       if (e.state === 'red') return 'need';
       if (e.state === 'yellow') return e.ask ? 'question' : e.seen ? 'turn' : 'wait';
@@ -914,6 +922,7 @@
     function smStatus(e, k) {
       if (e && e.deck) return e.deckN ? (e.nVisual || 0) + ' visual · ' + (e.nAudio || 0) + ' audio' : 'Clear';
       if (e && e.chief) return e.closed ? 'Not open · click to open' : (e.nNeeds || 0) + ' need you' + (e.nBlocked ? ' · ' + e.nBlocked + ' blocked' : '') + ' · ' + (e.nRun || 0) + ' running';
+      if (e && e.outbox) return e.closed ? 'Not open · click to open' : (e.oxN || 0) + ' ready · ' + (e.nHold || 0) + ' on hold';   // 9.1
       if (k === 'need') return e.folder ? 'Needs a folder' : e.reqKey ? 'Needs approval' : 'Urgent';
       if (k === 'question') return 'Question';
       if (k === 'wait') return 'Waiting';
@@ -930,7 +939,7 @@
     const smWaits = (k) => k === 'need' || k === 'question' || k === 'wait';
     // the chat a click on NEXT (or saying next) lands on: requests first, then the longest wait
     function smNext(tabs, fid) {
-      return tabs.map((e, i) => ({ e, i, k: smKind(e) })).filter((x) => !x.e.deck && !x.e.chief && x.e.id !== fid && (smWaits(x.k) || x.k === 'turn'))
+      return tabs.map((e, i) => ({ e, i, k: smKind(e) })).filter((x) => !x.e.deck && !x.e.chief && !x.e.outbox && x.e.id !== fid && (smWaits(x.k) || x.k === 'turn'))
         .sort((x, y) => smRank(x.e, x.k) - smRank(y.e, y.k) || (x.e.since || 0) - (y.e.since || 0))[0] || null;
     }
     // 8.0: the switches in the control panel: key, label, what it does
@@ -1383,6 +1392,59 @@
         '.smx .cos .cnx{font:18px/1.3 var(--k-b);color:var(--k-dim);overflow:hidden;white-space:nowrap;text-overflow:ellipsis}',
         '.smx .cos .cem{padding:16px 18px;border:1px dashed var(--k-line);color:var(--k-dim);font:19px var(--k-b)}',
         '.smx .cos .chn{flex:none;text-align:center;font:500 15px var(--k-l);letter-spacing:.3em;text-transform:lowercase;color:var(--k-dim)}',
+        // 9.1: the CHxTLD Outbox over the pie. It always wears the Outbox's white mail look, whatever the HQ look
+        '.smx.oxing .stage{opacity:.14;filter:blur(2px)}',
+        '.smx.oxing .asks,.smx.oxing .dkov{display:none}',
+        '.smx .oxp{--o-ink:#1f1f1f;--o-text:#222;--o-mute:#5f6368;--o-hair:#e3e3e3;--o-panel:#f6f8fc;--o-or:#f96819;--o-hold:#8a5a00;--o-holds:#fff4dc;--o-rdy:#1e6b3a;--o-rdys:#e6f4ea;--o-sent:#174ea6;--o-sents:#e8f0fe;--o-err:#b3261e;--o-f:Helvetica,Arial,"Liberation Sans",sans-serif;position:absolute;left:800px;top:100px;width:1100px;bottom:248px;z-index:3;display:flex;flex-direction:column;background:#fff;color:var(--o-text);font-family:var(--o-f);text-transform:none;letter-spacing:0;border:1px solid var(--o-hair);box-shadow:0 18px 40px rgba(0,0,0,.35);overflow:hidden}',
+        '.smx .oxp::before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:var(--o-or)}',
+        '.smx .oxp [hidden]{display:none!important}',
+        '.smx :where(.oxp button){all:unset;box-sizing:border-box;cursor:pointer}',
+        '.smx .oxp button:focus-visible{outline:2px solid var(--o-or);outline-offset:2px}',
+        '.smx .oxp .g{flex:1}',
+        '.smx .oxp .oxh{flex:none;display:flex;align-items:center;gap:14px;padding:24px 28px 16px;border-bottom:1px solid var(--o-hair)}',
+        '.smx .oxp .oxbr{font:700 24px var(--o-f);letter-spacing:6px;color:var(--o-ink);white-space:nowrap}',
+        '.smx .oxp .oxbr span{color:var(--o-or)}',
+        '.smx .oxp .oxbr small{font:400 20px var(--o-f);letter-spacing:.5px;color:var(--o-mute);margin-left:14px}',
+        '.smx .oxp .oxct{font:18px var(--o-f);color:var(--o-mute);white-space:nowrap}',
+        '.smx .oxp .oxwt{display:flex}',
+        '.smx .oxp .oxbn{height:42px;padding:0 20px;display:inline-flex;align-items:center;justify-content:center;font:600 18px var(--o-f);color:var(--o-ink);border:1px solid #dadce0;border-radius:21px;background:#fff;white-space:nowrap}',
+        '.smx .oxp .oxbn:hover{background:var(--o-panel)}',
+        '.smx .oxp .oxbn.pri{background:var(--o-or);border-color:var(--o-or);color:#fff}',
+        '.smx .oxp .oxbn.pri:hover{background:#e55c10}',
+        '.smx .oxp .oxbn.cx{width:42px;padding:0;font-size:26px;font-weight:400}',
+        '.smx .oxp .oxbn.wt{background:#fce8e6;border-color:#f6aea9;color:var(--o-err)}',
+        '.smx .oxp .oxb{flex:1;min-height:0;overflow:auto;padding:6px 28px 22px;scrollbar-width:thin}',
+        '.smx .oxp .oxr{display:grid;grid-template-columns:44px 1fr;column-gap:14px;width:100%;padding:18px 8px;border-bottom:1px solid var(--o-hair)}',
+        '.smx .oxp .oxr:hover{background:var(--o-panel)}',
+        '.smx .oxp .oxn{font:700 26px/1.25 var(--o-f);color:var(--o-or);text-align:center}',
+        '.smx .oxp .oxm{min-width:0;display:flex;flex-direction:column;gap:6px}',
+        '.smx .oxp .oxt{display:flex;align-items:center;gap:12px;min-width:0}',
+        '.smx .oxp .oxc{font:16px var(--o-f);padding:4px 10px;border-radius:5px;background:#f1f3f4;color:var(--o-mute);white-space:nowrap}',
+        '.smx .oxp .oxc.ready{background:var(--o-rdys);color:var(--o-rdy)}.smx .oxp .oxc.hold{background:var(--o-holds);color:var(--o-hold)}.smx .oxp .oxc.sent{background:var(--o-sents);color:var(--o-sent)}',
+        '.smx .oxp .oxto{font:18px var(--o-f);color:var(--o-mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}',
+        '.smx .oxp .oxw{font:16px var(--o-f);color:var(--o-mute);white-space:nowrap}',
+        '.smx .oxp .oxs{display:block;font:600 24px/1.3 var(--o-f);color:var(--o-ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}',
+        '.smx .oxp .oxx{font:19px/1.4 var(--o-f);color:var(--o-mute);overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}',
+        '.smx .oxp .oxem{padding:60px 0;text-align:center;font:20px var(--o-f);color:var(--o-mute)}',
+        '.smx .oxp .oxwait{padding:90px 20px;text-align:center;display:flex;flex-direction:column;gap:12px;font:24px var(--o-f);color:var(--o-ink)}',
+        '.smx .oxp .oxwait small{font:18px var(--o-f);color:var(--o-mute)}',
+        '.smx .oxp .oxtb{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 0 4px}',
+        '.smx .oxp .oxth{font:16px var(--o-f);color:var(--o-mute)}',
+        '.smx .oxp .oxsub{display:block;width:100%;font:400 30px/1.3 var(--o-f);color:var(--o-ink);border:0;outline:0;background:transparent;padding:8px 0;margin:6px 0 10px;border-radius:0}',
+        '.smx .oxp .oxsub:focus{box-shadow:inset 0 -2px 0 var(--o-or)}',
+        '.smx .oxp .oxfr{display:flex;gap:14px;align-items:flex-start;margin-bottom:8px}',
+        '.smx .oxp .oxav{flex:0 0 48px;height:48px;border-radius:50%;background:var(--o-or);color:#fff;display:grid;place-items:center;font:700 18px var(--o-f)}',
+        '.smx .oxp .oxwho{min-width:0;font:18px/1.45 var(--o-f);color:var(--o-mute);overflow-wrap:anywhere}',
+        '.smx .oxp .oxwho b{color:var(--o-ink)}',
+        '.smx .oxp .oxnew{display:flex;gap:12px;align-items:center;flex-wrap:wrap;background:var(--o-panel);border:1px solid #d3e3fd;border-radius:10px;padding:12px 16px;margin:8px 0;font:18px var(--o-f);color:var(--o-ink)}',
+        '.smx .oxp .oxbody{display:block;width:100%;min-height:240px;font:20px/1.5 var(--o-f);color:#000;border:0;outline:0;background:transparent;resize:none;overflow:hidden;white-space:pre-wrap;padding:8px 0;border-radius:0}',
+        '.smx .oxp .oxbody:focus{box-shadow:inset 3px 0 0 var(--o-or);padding-left:14px}',
+        '.smx .oxp .oxsig{font:16px/1.45 Arial,Helvetica,sans-serif;color:#000;padding:6px 0 4px}',
+        '.smx .oxp .oxsig div{min-height:1.45em}',
+        '.smx .oxp .oxsig .o{color:var(--o-or);font-weight:700}.smx .oxp .oxsig .m{letter-spacing:5px;font-weight:700}.smx .oxp .oxsig .m i{font-style:normal;color:var(--o-or)}.smx .oxp .oxsig .d{color:#787878}',
+        '.smx .oxp .oxst{flex:none;min-height:50px;padding:12px 28px;border-top:1px solid var(--o-hair);font:18px var(--o-f);color:var(--o-mute)}',
+        '.smx .oxp .oxst.err{color:var(--o-err)}',
+        '.smx .oxp .oxhn{flex:none;text-align:center;padding:12px;font:16px var(--o-f);letter-spacing:.06em;color:var(--o-mute);border-top:1px solid var(--o-hair)}',
         // 9.0: the night drive look for all of HQ: sunset rules over the panels, the outlined wordmark, Chief's faces
         '.smx.night .gridbg{background:radial-gradient(1400px 600px at 50% -12%,rgba(143,116,255,.2),transparent 70%),linear-gradient(var(--grid) 1px,transparent 1px) 0 0/48px 48px,linear-gradient(90deg,var(--grid) 1px,transparent 1px) 0 0/48px 48px}',
         '.smx.night :is(.tx,.bar,.ctl)::before{content:"";position:absolute;left:-1px;right:-1px;top:-1px;height:3px;background:linear-gradient(90deg,#52d9ff,#8f74ff 35%,#ff4f9e 68%,#ff9447);pointer-events:none}',
@@ -1427,7 +1489,7 @@
         '<div class="hint">say next · take me to · chief · allow · resume</div><button type="button" class="flw" hidden title="Follow the voice again">FOLLOW</button></div>' +
         '<div class="bar"><span class="br" title="Next look (Option Shift D)"></span><span class="sb">Switche<b>roo</b></span><span class="dots"></span><span class="grow"></span><span class="nx" title="Go to the next chat (Option Shift N)"></span><span class="bt" title="Boot: open your 10 most recent chats behind HQ">BOOT</span><span class="lk zero" title="Links from your chats. Say open, or open two">LINKS</span><span class="pz" title="Pause the Switchboard for two turns, or resume it">LIVE</span></div>' +
         '<div class="stage"></div>' +
-        '<div class="asks" hidden></div><div class="dkov" hidden></div><div class="cos" hidden></div><div class="lnk" hidden></div><div class="pgv" hidden></div>' +
+        '<div class="asks" hidden></div><div class="dkov" hidden></div><div class="cos" hidden></div><div class="oxp" hidden></div><div class="lnk" hidden></div><div class="pgv" hidden></div>' +
         '<div class="ctl" hidden><button type="button" class="hold" data-ctl="hold"><span class="hk">Responses · live</span><span class="hv">Hold</span><span class="hs">Stops every tab until you resume</span></button>' +
         '<div class="tgw"><div class="ck">Controls · every tab follows</div><div class="tgs">' +
         SM_CTL.map((c) => '<button type="button" class="tg" data-ctl="' + c[0] + '" title="' + smEsc(c[2]) + '" aria-pressed="false"><span class="tl">' + smEsc(c[1]) + '</span><span class="sw"><i></i></span><span class="tv">OFF</span></button>').join('') +
@@ -1445,6 +1507,7 @@
       let askSig = '', armAlways = '', armT = null, multiSel = new Set(), multiKey = '';
       let dkSig = '', dkOpen = false, lpT = null, lpFired = false;
       let cosSig = '', cosOpen = false;   // 9.0
+      let oxSig = '', oxOpen = false, oxEd = null;   // 9.1
       let lnkOpen = false, lnkSig = '', lnkBiz = '';   // 8.2
       let msgScrollAt = 0, lastTextSig = '';
 
@@ -1463,7 +1526,7 @@
         const vars = Object.keys(v).map((k) => '--' + k + ':' + v[k]).join(';') + ';--hf:' + t.f.hf + ';--bf:' + t.f.bf + ';--mf:' + t.f.mf + (t.f.wf ? ';--wf:' + t.f.wf : '');
         const fs = fx.style.getPropertyValue('--fs');
         fx.setAttribute('style', vars + (fs ? ';--fs:' + fs : ''));
-        fx.className = 'smx ' + t.id + (t.cls ? ' ' + t.cls : '') + (askSig ? ' asking' : '') + (dkOpen ? ' decking' : '') + (cosOpen ? ' cosing' : '');
+        fx.className = 'smx ' + t.id + (t.cls ? ' ' + t.cls : '') + (askSig ? ' asking' : '') + (dkOpen ? ' decking' : '') + (cosOpen ? ' cosing' : '') + (oxOpen ? ' oxing' : '');
         cosSig = '';
         const lk = q('.tg.lk3');   // 9.0.1: four of the look's colors, its number and name
         if (lk) {
@@ -1519,6 +1582,8 @@
         }
         const cc = ev.target.closest('[data-cos]');   // 9.0
         if (cc) { if (!cc.disabled) onAction({ t: 'cos', cmd: cc.getAttribute('data-cos'), id: cc.getAttribute('data-id') || '', n: +cc.getAttribute('data-n') || 0 }); return; }
+        const oc = ev.target.closest('[data-ox]');   // 9.1
+        if (oc) { if (!oc.disabled) oxClick(oc.getAttribute('data-ox'), oc.getAttribute('data-id') || ''); return; }
         const dc = ev.target.closest('[data-dk]');
         if (dc) { if (!dc.disabled) onAction({ t: 'deck', cmd: dc.getAttribute('data-dk'), deck: dc.getAttribute('data-deck') || '' }); return; }
         const md = ev.target.closest('[data-model]');
@@ -1591,17 +1656,17 @@
           const dx = el - cx, dy = ay - cy, d = Math.hypot(dx, dy) || 1, ex = cx + dx / d * (R + 22), ey = cy + dy / d * (R + 22);
           lines += '<polyline points="' + x0 + ',' + smF1(ay) + ' ' + el + ',' + smF1(ay) + ' ' + smF1(ex) + ',' + smF1(ey) + '" fill="none" stroke="' + (hot ? col : v.line) + '" stroke-width="' + (hot ? 2.5 : 1.5) + '" stroke-opacity="' + (hot ? 0.9 : 0.8) + '"></polyline>' +
             '<circle cx="' + smF1(ex) + '" cy="' + smF1(ey) + '" r="5" fill="' + col + '"></circle>';
-          const name = e.deck ? 'SD SWIPE DECK' : e.chief ? 'COS CHIEF OF STAFF' : smPad(i + 1) + ' ' + smTrunc(e.title || e.name || 'Claude', 40);
+          const name = e.deck ? 'SD SWIPE DECK' : e.chief ? 'COS CHIEF OF STAFF' : e.outbox ? 'OUT OUTBOX' : smPad(i + 1) + ' ' + smTrunc(e.title || e.name || 'Claude', 40);
           const barY = ay - 8, fill = k === 'work' ? 'url(#' + P + 'work)' : k === 'idle' ? 'none' : 'url(#' + P + (SM_COLKEY[k]) + ')';
-          const w0 = e.deck ? Math.round(W * Math.min(1, (e.deckN || 0) / 12)) : e.chief ? Math.round(W * Math.min(1, (e.chiefN || 0) / 8)) : k === 'need' ? W : k === 'work' ? W : k === 'idle' ? 0 : Math.round(W * Math.min(1, Math.max(0.06, (Date.now() - (e.since || Date.now())) / 600000)));
+          const w0 = e.deck ? Math.round(W * Math.min(1, (e.deckN || 0) / 12)) : e.chief ? Math.round(W * Math.min(1, (e.chiefN || 0) / 8)) : e.outbox ? Math.round(W * Math.min(1, (e.oxN || 0) / 6)) : k === 'need' ? W : k === 'work' ? W : k === 'idle' ? 0 : Math.round(W * Math.min(1, Math.max(0.06, (Date.now() - (e.since || Date.now())) / 600000)));
           rails += '<g class="hit" data-jump="' + smEsc(e.id) + '"><rect class="hitbg" x="' + (x0 - 12) + '" y="' + smF1(y - 10) + '" width="' + (W + 24) + '" height="' + smF1(hb + 20) + '" fill="' + v.ink + '" fill-opacity="0"></rect>';
           if (e.id === floorId) rails += '<rect x="' + (x0 - 12) + '" y="' + smF1(y - 10) + '" width="' + (W + 24) + '" height="' + smF1(hb + 20) + '" fill="none" stroke="' + v.ink + '" stroke-width="2"></rect>';
           rails += '<text class="rn" data-i="' + i + '" data-full="' + smEsc(name.toUpperCase()) + '" x="' + x0 + '" y="' + smF1(barY - 18) + '" font-size="' + (t.f.rs || 21) + '" font-weight="' + (t.f.rf ? 600 : 700) + '" fill="' + (k === 'idle' ? v.mute : v.ink) + '" font-family=\'' + (t.f.rf || t.f.hf) + '\' dominant-baseline="central" letter-spacing="' + (t.f.rl || 0.4) + '">' + smEsc(name.toUpperCase()) + '</text>';
-          const timed = !e.deck && !e.chief && (smWaits(k) || k === 'turn');
-          const right = e.deck ? (e.deckN || 0) + ' OPEN' : e.chief ? (e.closed ? 'OPEN IT' : e.chiefN ? e.chiefN + ' NEED YOU' : 'CLEAR') : timed ? smClock(Date.now() - (e.since || Date.now())) : k === 'work' ? 'LIVE' : '';
+          const timed = !e.deck && !e.chief && !e.outbox && (smWaits(k) || k === 'turn');
+          const right = e.deck ? (e.deckN || 0) + ' OPEN' : e.chief ? (e.closed ? 'OPEN IT' : e.chiefN ? e.chiefN + ' NEED YOU' : 'CLEAR') : e.outbox ? (e.closed ? 'OPEN IT' : e.oxN ? e.oxN + ' READY' : 'CLEAR') : timed ? smClock(Date.now() - (e.since || Date.now())) : k === 'work' ? 'LIVE' : '';
           rails += '<text class="rr" data-i="' + i + '" x="' + (x0 + W) + '" y="' + smF1(barY - 18) + '" font-size="18" fill="' + col + '" font-family=\'' + t.f.mf + '\' dominant-baseline="central" text-anchor="end"' + (timed ? ' data-since="' + (e.since || 0) + '"' : '') + '>' + right + '</text>';
           rails += '<rect x="' + x0 + '" y="' + smF1(barY) + '" width="' + W + '" height="16" fill="' + v.line + '"></rect>';
-          if (w0) rails += '<rect x="' + x0 + '" y="' + smF1(barY) + '" width="' + w0 + '" height="16" fill="' + fill + '"' + (k === 'need' ? ' class="pulse"' : '') + (!e.deck && !e.chief && (k === 'question' || k === 'wait' || k === 'turn') ? ' data-grow="' + (e.since || 0) + '"' : '') + '></rect>';
+          if (w0) rails += '<rect x="' + x0 + '" y="' + smF1(barY) + '" width="' + w0 + '" height="16" fill="' + fill + '"' + (k === 'need' ? ' class="pulse"' : '') + (!e.deck && !e.chief && !e.outbox && (k === 'question' || k === 'wait' || k === 'turn') ? ' data-grow="' + (e.since || 0) + '"' : '') + '></rect>';
           if (hb >= 84) rails += smTxt(x0, barY + 40, smStatus(e, k) + (e.id === floorId ? ' · floor' : ''), 18, col, t.f.mf, '');
           rails += '</g>';
         });
@@ -1616,10 +1681,10 @@
           const gap = list.length > 1 ? 1.2 : 0;
           pie += '<path class="hit" data-jump="' + smEsc(e.id) + '" d="' + smSector(Math.round(R * 0.3), Math.round(r), a + gap, a + span - gap) + '" fill="' + col + '" fill-opacity="' + smF1(0.18 + 0.72 * SM_SAT[k]) + '" stroke="' + col + '" stroke-width="2"' + (k === 'need' ? ' class="pulse"' : '') + '></path>';
           const lp = smPol(R * 0.3 + (r - R * 0.3) * 0.55, a + span / 2);
-          if (span > 9) pie += smTxt(lp[0], lp[1], e.deck ? 'SD' : e.chief ? 'COS' : smPad(i + 1), e.chief ? 22 : 26, SM_SAT[k] > 0.8 && t.onSat ? t.onSat : v.ink, t.f.mf, ' text-anchor="middle" pointer-events="none"');
+          if (span > 9) pie += smTxt(lp[0], lp[1], e.deck ? 'SD' : e.chief ? 'COS' : e.outbox ? 'OUT' : smPad(i + 1), e.chief || e.outbox ? 22 : 26, SM_SAT[k] > 0.8 && t.onSat ? t.onSat : v.ink, t.f.mf, ' text-anchor="middle" pointer-events="none"');
           a += span;
         }
-        const waiting = list.filter((e) => !e.deck && !e.chief && e.id !== floorId && smWaits(smKind(e))).length;
+        const waiting = list.filter((e) => !e.deck && !e.chief && !e.outbox && e.id !== floorId && smWaits(smKind(e))).length;
         // 8.1: the center is a button. Click to pause everything (or play again), hold it down for meeting mode
         const rc = R * 0.27;
         pie += '<g class="hit ctr" data-center="1"><title>' + (ex.held ? 'Play: everything comes back' : 'Pause everything. Hold down for meeting mode') + '</title>' +
@@ -1705,11 +1770,12 @@
         }
         // the stage, redrawn only when something on it changed so the animations keep running
         const ex = { held: !!(ct && ct.held), meeting: !!(ct && ct.held && ct.meeting) };
-        const sig = t.id + H + '|' + fid + '|' + ex.held + ex.meeting + '|' + tabs.map((e) => [e.id, e.title, e.state, e.seen, e.ask, e.on, e.reqKey, e.folder, e.since, e.deckN, e.nVisual, e.chiefN, e.nRun, e.closed].join('~')).join('|');
+        const sig = t.id + H + '|' + fid + '|' + ex.held + ex.meeting + '|' + tabs.map((e) => [e.id, e.title, e.state, e.seen, e.ask, e.on, e.reqKey, e.folder, e.since, e.deckN, e.nVisual, e.chiefN, e.nRun, e.closed, e.oxN, e.nHold].join('~')).join('|');
         if (sig !== stageSig) { stageSig = sig; q('.stage').innerHTML = stage(tabs, fid, ex); fitNames(); }
         renderAsks(m);   // 8.1
         renderDeck(m);   // 8.1
         renderCos(m);    // 9.0
+        renderOx(m);     // 9.1
         renderLinks(m);  // 8.2
       }
 
@@ -1764,7 +1830,7 @@
       // ---------- 8.1: approvals and question cards, answered with a click ----------
       function renderAsks(m) {
         if (!m) return;
-        const box = q('.asks'), tabs = (m.tabs || []).filter((e) => !e.deck && !e.chief);
+        const box = q('.asks'), tabs = (m.tabs || []).filter((e) => !e.deck && !e.chief && !e.outbox);
         const reqs = tabs.map((e, i) => ({ e, i })).filter((x) => x.e.on !== false && x.e.state === 'red' && (x.e.reqKey || x.e.folder))
           .sort((a, b) => (b.e.id === m.floorId) - (a.e.id === m.floorId) || (a.e.since || 0) - (b.e.since || 0));
         const ask = !reqs.length && m.floor && m.floor.ask && m.floor.ask.opts && m.floor.ask.opts.length ? m.floor.ask : null;
@@ -1821,7 +1887,7 @@
         if (open !== dkOpen) { dkOpen = open; fx.classList.toggle('decking', open); }
         if (!open) { if (!ov.hidden) { ov.hidden = true; ov.replaceChildren(); dkSig = ''; } return; }
         const st = d.st || {}, c = st.card || null;
-        const waitReq = (m.tabs || []).filter((e) => !e.deck && !e.chief && e.on !== false && e.state === 'red' && (e.reqKey || e.folder)).length;
+        const waitReq = (m.tabs || []).filter((e) => !e.deck && !e.chief && !e.outbox && e.on !== false && e.state === 'red' && (e.reqKey || e.folder)).length;
         const sig = JSON.stringify([st.deck, st.remaining, st.nAudio, st.nVisual, st.canBack, d.on, d.alive, c && c.id, st.loaded, waitReq]);
         if (sig === dkSig) return;
         dkSig = sig;
@@ -1880,7 +1946,7 @@
         if (open !== cosOpen) { cosOpen = open; fx.classList.toggle('cosing', open); }
         if (!open) { if (!ov.hidden) { ov.hidden = true; ov.replaceChildren(); cosSig = ''; } return; }
         const st = c.alive ? c.st : null;
-        const waitReq = (m.tabs || []).filter((e) => !e.deck && !e.chief && e.on !== false && e.state === 'red' && (e.reqKey || e.folder)).length;
+        const waitReq = (m.tabs || []).filter((e) => !e.deck && !e.chief && !e.outbox && e.on !== false && e.state === 'red' && (e.reqKey || e.folder)).length;
         const now = new Date();
         const sig = JSON.stringify([st, c.alive, c.opening, waitReq, cosDate(now)]);
         if (sig === cosSig) return;
@@ -1922,6 +1988,239 @@
         const more = (k.needs || 0) + (k.blocked || 0) - rows.length;
         h += '</div><div class="chn">' + (more > 0 ? '+' + more + ' more on the board · ' : '') + 'say chief · what needs me · done two · undo</div>';
         ov.innerHTML = h; ov.hidden = false;
+      }
+
+      // ---------- 9.1: the CHxTLD Outbox over the pie, in the Outbox's own white mail look ----------
+      // A list of drafts; a click opens one to edit. Edits save back to the Outbox tab a moment after you stop
+      // typing, or on Save or Cmd S. A newer version saved elsewhere never lands on top of your typing: a bar
+      // offers Load it or Keep mine. Nothing here sends mail; Copy for Gmail puts the body and signature on the clipboard.
+      const oxPT = (iso) => {
+        if (!iso) return '';
+        try {
+          const p = {};
+          new Intl.DateTimeFormat('en-US', { timeZone: 'America/Los_Angeles', month: 'numeric', day: 'numeric', year: '2-digit', hour: 'numeric', minute: '2-digit' }).formatToParts(new Date(iso)).forEach((x) => { p[x.type] = x.value; });
+          return p.month + '/' + p.day + '/' + p.year + ' ' + p.hour + ':' + p.minute + ' ' + (p.dayPeriod || '');
+        } catch (e) { return ''; }
+      };
+      const oxWho = (s) => String(s || '').split(',').map((x) => { x = x.trim(); const mm = x.match(/^"?([^"<]+?)"?\s*</); return mm ? mm[1].trim() : x; }).filter(Boolean).join(', ');
+      const oxSame = (a, b) => !!a && !!b && a.subject === b.subject && a.body === b.body;
+      const oxChip = (d, long) => d.status === 'sent' ? 'Sent ' + oxPT(d.sent_at) : d.status === 'hold' ? 'On hold' : long ? 'Ready, waiting on authorize send' : 'Ready';
+      const oxOrder = (ds) => { ds = ds || []; return ds.filter((d) => d.status !== 'sent').concat(ds.filter((d) => d.status === 'sent')); };
+      const oxCounts = (st) => { const k = (st && st.counts) || {}; return st && st.loaded ? (k.ready || 0) + ' ready · ' + (k.hold || 0) + ' on hold' + (k.sent ? ' · ' + k.sent + ' sent' : '') : ''; };
+      const oxHead = () => '<div class="oxh"><div class="oxbr">ch <span>x</span> tld<small>Outbox</small></div><div class="oxct"></div><span class="g"></span><span class="oxwt"></span>' +
+        '<button type="button" class="oxbn" data-ox="tab" title="Bring the Outbox tab forward">Open outbox</button><button type="button" class="oxbn cx" data-ox="close" title="Close">×</button></div>';
+      function oxHeadFill(ov, st, waitReq) {
+        const ct = ov.querySelector('.oxct'); if (ct) ct.textContent = oxCounts(st);
+        const w = ov.querySelector('.oxwt'), k = String(waitReq);
+        if (w && w.getAttribute('data-k') !== k) {
+          w.setAttribute('data-k', k);
+          w.innerHTML = waitReq ? '<button type="button" class="oxbn wt" data-ox="close" title="Close the Outbox to answer it">' + waitReq + (waitReq === 1 ? ' approval waits' : ' approvals wait') + '</button>' : '';
+        }
+      }
+      // the signature, drawn from the Outbox's plain text copy, escaped line by line
+      function oxSigHtml(t) {
+        return String(t || '').split('\n').map((ln) => {
+          const x = smEsc(ln);
+          if (/^_{6,}$/.test(ln.trim())) return '<div class="o">' + x + '</div>';
+          if (/^ch x tld$/i.test(ln.trim())) return '<div class="m">ch <i>x</i> tld</div>';
+          if (/cleverhomes by|\d{3}\.\d{3}\.\d{4}|\bave\b|\bst\b/i.test(ln)) return '<div class="d">' + x + '</div>';
+          return '<div>' + x + '</div>';
+        }).join('');
+      }
+      function oxSay(msg, err) {
+        const e = oxEd; if (!e || !e.stEl) return;
+        e.stEl.className = 'oxst' + (err ? ' err' : '');
+        e.stEl.textContent = msg;
+      }
+      function oxGrow(t) {
+        const b = t.closest('.oxb'), y = b ? b.scrollTop : 0;
+        t.style.height = 'auto';
+        t.style.height = (t.scrollHeight + 4) + 'px';
+        if (b && b.scrollTop !== y) b.scrollTop = y;
+      }
+      const oxLocal = (e) => ({ subject: e.sub.value, body: e.body.value });
+      function oxApply(e, v) {
+        e.sub.value = v.subject; e.body.value = v.body;
+        e.server = { subject: v.subject, body: v.body }; e.pending = null; e.newer.hidden = true; e.dirty = false;
+        oxGrow(e.body);
+      }
+      function oxFill(e, d, st) {
+        e.chip.className = 'oxc ' + d.status;
+        e.chip.textContent = oxChip(d, true);
+        e.th.textContent = d.thread ? 'Reply in ' + d.thread : 'New message';
+        e.to.textContent = 'to ' + (d.to || '') + (d.cc ? '  ·  cc ' + d.cc : '');
+        const sg = (st && st.sigText) || '';
+        if (e.sigText !== sg) { e.sigText = sg; e.sig.innerHTML = oxSigHtml(sg); const nm = sg.split('\n').map((x) => x.trim()).find((x) => x && !/^_+$/.test(x)); e.who.textContent = nm ? nm.replace(/,.*$/, '') : 'You'; }
+      }
+      function oxEdit(id) {
+        const st = model && model.ox && model.ox.st;
+        const d = st && (st.drafts || []).find((x) => x.id === id);
+        if (!d) { flash('That draft changed. Look again'); return; }
+        const ov = q('.oxp');
+        ov.innerHTML = oxHead() + '<div class="oxb"><div class="oxtb"><button type="button" class="oxbn" data-ox="back">‹ All drafts</button><span class="oxc st"></span><span class="oxth"></span><span class="g"></span>' +
+          '<button type="button" class="oxbn" data-ox="copy" title="Copies the body and your signature, ready to paste into Gmail">Copy for Gmail</button>' +
+          '<button type="button" class="oxbn pri" data-ox="save" title="Save to the Outbox (Cmd S)">Save</button></div>' +
+          '<input class="oxsub" aria-label="Subject" spellcheck="true">' +
+          '<div class="oxfr"><div class="oxav">AM</div><div class="oxwho"><b class="oxme">You</b><div class="oxto2"></div></div></div>' +
+          '<div class="oxnew" hidden><span>A newer version was saved in the Outbox.</span><button type="button" class="oxbn" data-ox="load">Load it</button><button type="button" class="oxbn" data-ox="keep">Keep mine</button></div>' +
+          '<textarea class="oxbody" aria-label="Message" spellcheck="true"></textarea><div class="oxsig"></div></div>' +
+          '<div class="oxst" aria-live="polite"></div>';
+        const qq = (s) => ov.querySelector(s);
+        const e = { id, sub: qq('.oxsub'), body: qq('.oxbody'), chip: qq('.oxc.st'), th: qq('.oxth'), to: qq('.oxto2'), who: qq('.oxme'), newer: qq('.oxnew'), sig: qq('.oxsig'), stEl: qq('.oxst'),
+          sigText: null, server: null, saving: null, pending: null, dirty: false, timer: null, tok: '', again: false, forceNext: false, retry: false, leaving: false, savedAt: '' };
+        oxEd = e;
+        oxFill(e, d, st);
+        oxApply(e, { subject: d.subject || '', body: d.body || '' });
+        oxSay(d.edited_by ? 'Last edit by ' + d.edited_by + ', ' + oxPT(d.updated_at) : 'Type straight in. Edits save to the Outbox on their own.');
+        const onEdit = () => {
+          e.dirty = true; oxSay('Editing…'); oxGrow(e.body);
+          clearTimeout(e.timer); e.timer = setTimeout(() => { e.timer = null; oxSave(false); }, 1500);
+        };
+        e.body.addEventListener('input', onEdit);
+        e.sub.addEventListener('input', onEdit);
+        oxHeadFill(ov, st, ((model && model.tabs) || []).filter((x) => !x.deck && !x.chief && !x.outbox && x.on !== false && x.state === 'red' && (x.reqKey || x.folder)).length);
+        requestAnimationFrame(() => oxGrow(e.body));
+      }
+      function oxSave(force) {
+        const e = oxEd; if (!e) return;
+        clearTimeout(e.timer); e.timer = null;
+        if (e.tok) { e.again = true; if (force) e.forceNext = true; return; }   // one save at a time; the next follows the answer
+        const v = oxLocal(e);
+        if (!force && oxSame(v, e.server)) { e.dirty = false; oxSay(e.savedAt ? 'Saved to the Outbox at ' + e.savedAt : 'No changes to save'); oxDone(e); return; }
+        const token = Math.random().toString(36).slice(2, 10);
+        e.tok = token; e.saving = v;
+        oxSay('Saving…');
+        onAction({ t: 'ox', cmd: 'save', id: e.id, subject: v.subject, body: v.body, base: e.server, force: !!force, token });
+      }
+      function oxDone(e) { if (e.leaving && !e.dirty && !e.tok) { e.leaving = false; if (oxEd === e) oxLeave(); } }
+      function oxLeave() { if (oxEd) clearTimeout(oxEd.timer); oxEd = null; oxSig = ''; if (model) renderOx(model); }
+      function oxAck(m) {
+        const e = oxEd;
+        if (!e || !m || m.token !== e.tok) return;   // an older save, or a draft no longer open
+        e.tok = '';
+        const v = e.saving; e.saving = null;
+        if (m.ok) {
+          e.server = v; e.retry = false;
+          if (oxSame(oxLocal(e), v)) e.dirty = false;
+          e.pending = null; e.newer.hidden = true;
+          e.savedAt = (oxPT(m.at || new Date().toISOString()).split(' ').slice(1).join(' ')) || 'just now';
+          oxSay('Saved to the Outbox at ' + e.savedAt);
+          if (e.again) { e.again = false; const f = e.forceNext; e.forceNext = false; oxSave(f); return; }
+          oxDone(e);
+          return;
+        }
+        e.again = false; e.forceNext = false; e.leaving = false;
+        if (m.why === 'changed') {
+          if (m.current) e.pending = { subject: String(m.current.subject || ''), body: String(m.current.body || '') };
+          e.newer.hidden = false;
+          oxSay('Not saved yet. The Outbox has a newer version: Load it, or Keep mine to save yours over it.', true);
+        } else {
+          e.retry = m.why === 'closed' || m.why === 'timeout';
+          oxSay(m.why === 'closed' ? "Not saved. The Outbox isn't open; it saves as soon as the Outbox is back. Click Open outbox." :
+            m.why === 'timeout' ? "Not saved. The Outbox didn't answer; it tries again when it hears from it." :
+            m.why === 'gone' ? 'Not saved. That draft is gone from the Outbox. Copy your text if you need it.' :
+            m.why === 'readonly' ? 'Not saved. The Outbox is read only in that tab.' : 'Not saved. Click Save to try again.', true);
+        }
+        if (q('.oxp').hidden) flash('An Outbox draft did not save. Open the OUT wedge to see it');
+      }
+      // what the Outbox says now, laid against what you're typing
+      function oxSync(st) {
+        const e = oxEd, d = (st.drafts || []).find((x) => x.id === e.id);
+        if (!d) { if (!e.goneSaid) { e.goneSaid = true; oxSay('This draft is gone from the Outbox. Copy your text if you need it.', true); } return; }
+        e.goneSaid = false;
+        oxFill(e, d, st);
+        const remote = { subject: String(d.subject || ''), body: String(d.body || '') };
+        if (e.retry && e.dirty && !e.tok) { e.retry = false; oxSave(false); return; }
+        if (oxSame(remote, e.server)) return;                                                   // nothing new
+        if (oxSame(remote, e.saving) || oxSame(remote, oxLocal(e))) { e.server = remote; return; }  // our own save, echoing back
+        if (e.dirty || e.tok) { e.pending = remote; e.newer.hidden = false; return; }             // never on top of your typing
+        oxApply(e, remote);                                                                       // idle: take the newer version
+        oxSay('Updated from the Outbox, ' + oxPT(d.updated_at) + (d.edited_by ? ', by ' + d.edited_by : ''));
+      }
+      async function oxCopy() {
+        const e = oxEd; if (!e) return;
+        const st = model && model.ox && model.ox.st;
+        const sigHtml = (st && st.sigHtml) || '', sigText = (st && st.sigText) || '';
+        const paras = e.body.value.split(/\n\s*\n/).map((p) => '<p style="margin:0 0 14px">' + smEsc(p).replace(/\n/g, '<br>') + '</p>');
+        const html = '<div style="font-family:Helvetica,Arial,sans-serif;font-size:13px;line-height:1.4;color:#000;">' + paras.join('') + '</div>' + sigHtml;
+        const text = e.body.value + (sigText ? '\n\n' + sigText : '');
+        try {
+          if (window.ClipboardItem && navigator.clipboard && navigator.clipboard.write) {
+            await navigator.clipboard.write([new ClipboardItem({ 'text/html': new Blob([html], { type: 'text/html' }), 'text/plain': new Blob([text], { type: 'text/plain' }) })]);
+          } else await navigator.clipboard.writeText(text);
+          oxSay('Copied with your signature. Paste into Gmail.');
+        } catch (x) { e.body.focus(); e.body.select(); oxSay('Copy was blocked here. The text is selected: press Cmd C.', true); }
+      }
+      function oxClick(k, id) {
+        if (k === 'edit') { oxEdit(id); return; }
+        if (k === 'tab') { onAction({ t: 'ox', cmd: 'tab' }); return; }
+        if (k === 'close') { if (oxEd && (oxEd.dirty || oxEd.timer)) oxSave(false); onAction({ t: 'ox', cmd: 'close' }); return; }
+        const e = oxEd; if (!e) return;
+        if (k === 'back') {
+          if (e.dirty || e.tok || e.timer) { e.leaving = true; oxSave(false); if (oxEd === e && e.leaving) oxSay('Saving, then back to all drafts…'); return; }
+          oxLeave(); return;
+        }
+        if (k === 'save') { oxSave(false); return; }
+        if (k === 'copy') { oxCopy(); return; }
+        if (k === 'load') { if (e.pending) { clearTimeout(e.timer); e.timer = null; oxApply(e, e.pending); oxSay('Loaded the Outbox version.'); } return; }
+        if (k === 'keep') { e.pending = null; e.newer.hidden = true; oxSave(true); }
+      }
+      function renderOx(m) {
+        const c = m && m.ox, ov = q('.oxp');
+        const open = !!(c && c.open);
+        if (open !== oxOpen) { oxOpen = open; fx.classList.toggle('oxing', open); }
+        if (!open) {   // hidden, not thrown away: a draft you were editing is still there when you come back
+          if (!ov.hidden) { ov.hidden = true; if (oxEd && (oxEd.dirty || oxEd.timer)) oxSave(false); }
+          return;
+        }
+        const st = c.alive ? c.st : null;
+        const waitReq = (m.tabs || []).filter((e) => !e.deck && !e.chief && !e.outbox && e.on !== false && e.state === 'red' && (e.reqKey || e.folder)).length;
+        if (oxEd && !ov.contains(oxEd.body)) oxEd = null;
+        if (oxEd) {
+          ov.hidden = false;
+          oxHeadFill(ov, st, waitReq);
+          if (st && st.loaded) oxSync(st);
+          else if (!oxEd.tok && !oxEd.closedSaid) { oxEd.closedSaid = true; oxSay("The Outbox tab isn't open. Your text stays here; it saves when the Outbox is back.", true); }
+          if (st && st.loaded) oxEd.closedSaid = false;
+          return;
+        }
+        if (!st || !st.loaded) {
+          const sig = 'w|' + !!c.opening + '|' + !!st;
+          if (sig !== oxSig || ov.hidden) {
+            oxSig = sig;
+            ov.innerHTML = oxHead() + '<div class="oxb"><div class="oxwait">' + (c.opening ? 'Opening the Outbox in a tab behind this one.' : st ? 'Loading the Outbox.' : 'The Outbox isn\'t open.') +
+              '<small>' + (c.opening || st ? 'Your drafts land here in a few seconds.' : 'Click Open outbox, or say outbox.') + '</small></div></div><div class="oxhn">say outbox · read draft one · nothing sends from here</div>';
+          }
+          oxHeadFill(ov, st, waitReq);
+          ov.hidden = false;
+          return;
+        }
+        const ds = oxOrder(st.drafts);
+        const sig = JSON.stringify([ds.map((d) => [d.id, d.subject, String(d.body || '').slice(0, 300), d.to, d.cc, d.status, d.updated_at, d.sent_at])]);
+        if (sig !== oxSig || ov.hidden) {
+          oxSig = sig;
+          let h = oxHead() + '<div class="oxb">';
+          if (!ds.length) h += '<div class="oxem">No drafts yet. Claude drops new ones here.</div>';
+          ds.forEach((d, i) => {
+            h += '<button type="button" class="oxr" data-ox="edit" data-id="' + smEsc(d.id) + '"><span class="oxn">' + (i + 1) + '</span><span class="oxm"><span class="oxt">' +
+              '<span class="oxc ' + smEsc(d.status) + '">' + smEsc(oxChip(d)) + '</span><span class="oxto">to ' + smEsc(oxWho(d.to)) + (d.cc ? ' · cc ' + smEsc(oxWho(d.cc)) : '') + '</span>' +
+              '<span class="g"></span><span class="oxw">' + smEsc(oxPT(d.updated_at)) + '</span></span>' +
+              '<span class="oxs">' + smEsc(d.subject || '(no subject)') + '</span><span class="oxx">' + smEsc(String(d.body || '').replace(/\s+/g, ' ').slice(0, 260)) + '</span></span></button>';
+          });
+          h += '</div><div class="oxhn">click a draft to edit · say outbox · read draft one · nothing sends from here</div>';
+          ov.innerHTML = h;
+        }
+        oxHeadFill(ov, st, waitReq);
+        ov.hidden = false;
+      }
+      // 9.1: keys typed in the Outbox editor stay there, so claude.ai underneath never takes them. Cmd S saves
+      for (const ty of ['keydown', 'keyup', 'keypress', 'paste']) {
+        window.addEventListener(ty, (ev) => {
+          const tg = ev.target;
+          if (!(tg && tg.closest && tg.closest('.oxp') && fx.contains(tg))) return;
+          if (ty === 'keydown' && (ev.metaKey || ev.ctrlKey) && !ev.altKey && /^s$/i.test(ev.key || '')) { ev.preventDefault(); oxSave(false); }
+          ev.stopPropagation(); if (ev.stopImmediatePropagation) ev.stopImmediatePropagation();
+        }, true);
       }
 
       // ---------- 8.1: the transcript follows the voice, word by word ----------
@@ -2130,7 +2429,7 @@
       }
 
       setTheme(theme);
-      return { el: fx, fit, setTheme, setZoom, paint, tick, setHtml, clearHtml, flash, setReading, follow, showPage, scale: () => (fx.getBoundingClientRect().width / 1920) || 1 };
+      return { el: fx, fit, setTheme, setZoom, paint, tick, setHtml, clearHtml, flash, setReading, follow, showPage, oxAck, scale: () => (fx.getBoundingClientRect().width / 1920) || 1 };
     }
 
     // Rajdhani, Barlow and Share Tech Mono for the dark look. Claude's page blocks outside font
@@ -2243,6 +2542,22 @@
       const c = ch.st.counts || {};
       return Object.assign(base, { closed: false, chiefN: (c.needs || 0) + (c.blocked || 0), nNeeds: c.needs || 0, nBlocked: c.blocked || 0, nRun: c.running || 0 });
     }
+    // 9.1: the CHxTLD Outbox, as the tab holding it reports it. The OUT wedge is always on the pie, lit while
+    // drafts are ready; a click opens them over the pie to read and edit. Nothing here sends mail or touches Gmail.
+    const OUTBOX_URL = 'https://claude.ai/artifact/S1cg22eqDYW7qKScqj3gRn';
+    let ox = null, oxManual = false, oxOpening = 0;
+    const oxAlive = () => !!ox && Date.now() - ox.at < 20000;
+    function outboxModel() {
+      if (!oxManual) return null;
+      const alive = oxAlive();
+      return { open: true, alive, st: alive ? ox.st : null, opening: !alive && Date.now() - oxOpening < 30000 };
+    }
+    function outboxEntry() {
+      const base = { id: '__outbox', outbox: true, title: 'Outbox', name: 'Outbox', on: true, born: 0 };
+      if (!oxAlive() || !ox.st || !ox.st.loaded) return Object.assign(base, { closed: true, oxN: 0, nHold: 0 });
+      const c = ox.st.counts || {};
+      return Object.assign(base, { closed: false, oxN: c.ready || 0, nHold: c.hold || 0 });
+    }
     // 8.2: links every chat reported, by tab
     const linkReg = new Map();
     function linkList() {
@@ -2254,7 +2569,8 @@
       const f = lsGet('chf_sb_floor', null), list = tabs(), de = deckEntry();
       if (de) list.push(de);
       list.push(chiefEntry());   // 9.0
-      return { tabs: list, floorId: floorId || (f && f.id) || '', floor: floorP, quiet: lsGet('chf_sb_quiet', {}), ctl: ctlModel(), deck: deckModel(), cos: chiefModel(), links: linkList() };
+      list.push(outboxEntry());  // 9.1
+      return { tabs: list, floorId: floorId || (f && f.id) || '', floor: floorP, quiet: lsGet('chf_sb_quiet', {}), ctl: ctlModel(), deck: deckModel(), cos: chiefModel(), ox: outboxModel(), links: linkList() };
     }
     // 8.2: a page opens on the right of HQ when the site allows it; otherwise in a window docked there
     let page = null, pageWin = null, pageGen = 0;
@@ -2371,6 +2687,9 @@
       else if (m.t === 'deck-act' && m.cmd) { dkLast = { cmd: m.cmd, at: Date.now() }; }
       else if (m.t === 'chief' && m.st) { ch = { from: m.from, st: m.st, at: Date.now() }; scr.paint(model()); }   // 9.0
       else if (m.t === 'chief-ack' && m.to === 'mirror') chiefAckHQ(m);
+      else if (m.t === 'outbox' && m.st) { ox = { from: m.from, st: m.st, at: Date.now() }; scr.paint(model()); }   // 9.1
+      else if (m.t === 'outbox-ack' && m.to === 'mirror') outboxAckHQ(m);
+      else if (m.t === 'ox-show') outboxOpenHQ();
       else if (m.t === 'delivered' && m.to === 'mirror') gotDelivered(m);   // 8.7
       else if (m.t === 'boot' && m.from) { send({ t: 'boot-ack', to: m.from }); bootRun('voice'); }   // 8.9: "boot up" in a chat
       else if (m.t === 'hq-boot' && m.id && m.id !== HQ_ID) stepAside();                              // 8.9: a boot HQ replaces this one
@@ -2384,6 +2703,7 @@
     function jump(id) {
       if (id === '__deck') { deckOpen(); return; }   // 8.1
       if (id === '__chief') { chiefOpenHQ(); return; }   // 9.0
+      if (id === '__outbox') { outboxOpenHQ(); return; }   // 9.1
       const e = reg.get(id);
       if (!e) return;
       if (id === floorId) { scr.flash('Already here'); return; }
@@ -2464,7 +2784,7 @@
     }
     // 8.1: the deck. Buttons answer the card on screen; Voice starts or stops the read aloud review
     function deckOpen() {
-      dkManual = true; chManual = false;   // 9.0: one panel over the pie at a time
+      dkManual = true; chManual = false; oxManual = false;   // 9.0: one panel over the pie at a time
       if (!dkAlive()) {
         if (Date.now() - dkOpening > 15000) {
           dkOpening = Date.now();
@@ -2488,7 +2808,7 @@
     }
     // 9.0: Chief of Staff over the pie. Mark done goes to the board's tab; Read it hands the brief to the chat you're talking to
     function chiefOpenHQ() {
-      chManual = true; dkManual = false;
+      chManual = true; dkManual = false; oxManual = false;
       if (!chAlive() && Date.now() - chOpening > 15000) {
         chOpening = Date.now();
         try { GM_openInTab(CHIEF_URL, { active: false, insert: true }); } catch (e) { window.open(CHIEF_URL, '_blank'); }
@@ -2523,6 +2843,36 @@
         setTimeout(() => { if (chPend.delete(token)) scr.flash("Chief didn't answer. Check the board"); }, 9000);
       }
     }
+    // 9.1: the Outbox over the pie. Save goes to the Outbox's tab, which writes the draft; Open outbox brings that tab forward
+    function outboxOpenHQ() {
+      oxManual = true; dkManual = false; chManual = false;
+      if (!oxAlive() && Date.now() - oxOpening > 15000) {
+        oxOpening = Date.now();
+        try { GM_openInTab(OUTBOX_URL, { active: false, insert: true }); } catch (e) { window.open(OUTBOX_URL, '_blank'); }
+        scr.flash('Opening the Outbox in a tab behind this one');
+      }
+      scr.paint(model());
+    }
+    const oxPend = new Set();   // saves waiting on the Outbox's answer
+    function outboxAct(a) {
+      if (a.cmd === 'close') { oxManual = false; scr.paint(model()); return; }
+      if (a.cmd === 'tab') {
+        if (oxAlive()) { send({ t: 'front', to: ox.from }); scr.flash('The Outbox is in its own tab'); return; }
+        oxOpening = Date.now();
+        try { GM_openInTab(OUTBOX_URL, { active: true, insert: true }); } catch (e) { window.open(OUTBOX_URL, '_blank'); }
+        return;
+      }
+      if (a.cmd !== 'save') return;
+      if (!oxAlive()) {
+        if (Date.now() - oxOpening > 15000) { oxOpening = Date.now(); try { GM_openInTab(OUTBOX_URL, { active: false, insert: true }); } catch (e) {} }
+        scr.oxAck({ token: a.token, ok: false, why: 'closed' });
+        return;
+      }
+      oxPend.add(a.token);
+      send({ t: 'outbox-cmd', to: ox.from, from: 'mirror', cmd: 'save', id: a.id, subject: a.subject, body: a.body, base: a.base || null, force: !!a.force, token: a.token });
+      setTimeout(() => { if (oxPend.delete(a.token)) scr.oxAck({ token: a.token, ok: false, why: 'timeout' }); }, 9000);
+    }
+    function outboxAckHQ(m) { if (oxPend.delete(m.token)) scr.oxAck(m); }
     function chiefAckHQ(m) {
       const p = chPend.get(m.token);
       if (!p) return;
@@ -2560,6 +2910,7 @@
       else if (a.t === 'pick') pickFrom(a.key, a.n);
       else if (a.t === 'deck') deckCmd(a.cmd, a.deck);
       else if (a.t === 'cos') chiefAct(a.cmd, a.id, a.n);   // 9.0
+      else if (a.t === 'ox') outboxAct(a);                  // 9.1
       else if (a.t === 'page') openPage(a.url, a.label, a.n, 'mirror');   // 8.2
       else if (a.t === 'pageAct') { if (a.k === 'close') closePage(); else if (a.k === 'window' && page) { page.mode = dockWindow(page.url) ? 'window' : 'blocked'; scr.showPage(page); } }
       else if (a.t === 'biz') {   // 8.2: this chat belongs to that practice, remembered in this browser
@@ -2614,6 +2965,7 @@
       if (!id) { scr.flash('No chat to send to yet. Click into a chat once'); return ''; }
       if (id === '__deck') { scr.flash('Swipe Deck does not take files'); return ''; }
       if (id === '__chief') { scr.flash('Chief of Staff does not take files'); return ''; }   // 9.0
+      if (id === '__outbox') { scr.flash('The Outbox does not take files'); return ''; }       // 9.1
       if (!reg.has(id)) { scr.flash('That chat closed. Pick another'); return ''; }
       const token = Math.random().toString(36).slice(2);
       const list = [...(files || [])];
@@ -2702,7 +3054,7 @@
         const el = id ? e.target.closest('[data-jump]') : null;
         if (el !== dHot) { if (dHot) dHot.classList.remove('dhot'); dHot = el; if (el) el.classList.add('dhot'); }
         const to = id || cTarget();
-        cx.ovt.textContent = id === '__deck' ? 'Swipe Deck does not take files' : id === '__chief' ? 'Chief of Staff does not take files' : to ? 'Drop to send to ' + cName(to) : 'Drop on a chat';
+        cx.ovt.textContent = id === '__deck' ? 'Swipe Deck does not take files' : id === '__chief' ? 'Chief of Staff does not take files' : id === '__outbox' ? 'The Outbox does not take files' : to ? 'Drop to send to ' + cName(to) : 'Drop on a chat';
         cx.ov.hidden = false; cx.fx.classList.add('dragging');
         clearTimeout(dOffT); dOffT = setTimeout(dragEnd, 400);
       };
@@ -2715,7 +3067,7 @@
         dragEnd();
         const fs = [...(e.dataTransfer.files || [])];
         if (!fs.length) return;
-        if (id && id !== '__deck' && id !== '__chief') cTo = id === floorId ? '' : id;
+        if (id && id !== '__deck' && id !== '__chief' && id !== '__outbox') cTo = id === floorId ? '' : id;
         deliver(id || cTarget(), fs, '', false);
       }, true);
       setInterval(paintCmp, 1000);
@@ -4665,6 +5017,117 @@
   const CHIEF_SAID = /^(?:(?:open|read|run|play|give me|start|pull up|bring up|show me|read me|let's hear|lets hear|what's|whats|what is|what does|check)\s+)?(?:the\s+|my\s+)?(?:chief|chief of staff|chiefs|chief's|chief of staff's)(?:\s+(?:brief|briefing|update|report|board|status|say|says))?(?:\s+(?:please|now))*$|^(?:(?:read|play|give me|what's|whats|what is)\s+)?(?:the\s+|my\s+|today's\s+|todays\s+)?(?:morning |daily )?(?:brief|briefing)(?:\s+(?:please|now))*$/;
   const CHIEF_NEEDS = /^(?:(?:what|whats|what's|what is)\s+(?:needs|need|is waiting on|waiting on|waits on|is waiting for|waiting for|needs a call from)\s+me(?:\s+(?:today|now|first))?|what needs me|what's on my plate|whats on my plate|start here|read start here|(?:chief|chief of staff)(?:'s)? start here)(?:\s+please)?$/;
 
+  // ---------- 9.1: CHxTLD Outbox ----------
+  // The Outbox page tells the claude.ai tab around it which drafts it holds. That tab passes them to every tab,
+  // so HQ draws the OUT wedge and an editor over the pie, and "outbox" reads them aloud in any chat.
+  // HQ only ever saves a draft's subject and body back. Nothing here sends mail or touches Gmail.
+  const OUTBOX_URL = 'https://claude.ai/artifact/S1cg22eqDYW7qKScqj3gRn';
+  const OX = { present: false, src: null, st: null, asked: new Map() };   // this tab holds the Outbox
+  const OXF = { st: null, from: '', at: 0, list: [], readAt: 0, want: '', wantN: 0, wantAt: 0, openAt: 0 };   // the Outbox as this tab hears it
+  function oxSend(cmd, extra) {
+    if (!OX.src) return false;
+    try { OX.src.postMessage(Object.assign({ type: 'outbox:cmd', v: 1, cmd }, extra || {}), '*'); return true; } catch (e) { return false; }
+  }
+  function oxPing(w, depth) {
+    if (depth > 4) return;
+    let n = 0; try { n = w.length; } catch (e) { return; }
+    for (let i = 0; i < n; i++) {
+      try { w[i].postMessage({ type: 'outbox:cmd', v: 1, cmd: 'hello' }, '*'); oxPing(w[i], depth + 1); } catch (e) {}
+    }
+  }
+  if (/\/artifact\//.test(location.pathname)) {
+    let ops = 0;
+    const opT = setInterval(() => { if (OX.present || ++ops > 45) { clearInterval(opT); return; } oxPing(window, 0); }, 2000);
+  }
+  window.addEventListener('message', (e) => {
+    const d = e.data;
+    if (!d || typeof d !== 'object' || typeof d.type !== 'string' || d.type.indexOf('outbox:') !== 0 || e.source === window) return;
+    OX.src = e.source;
+    if (!OX.present) { OX.present = true; dlog('outbox', 'found'); }
+    if (d.type === 'outbox:hello') { oxSend('hello'); return; }
+    if (d.type === 'outbox:state') { OX.st = d; oxRelay(); return; }
+    if (d.type === 'outbox:ack') {
+      const to = OX.asked.get(d.token); OX.asked.delete(d.token);
+      const cur = d.current && typeof d.current === 'object' ? { subject: String(d.current.subject || ''), body: String(d.current.body || '') } : null;
+      if (to) post({ t: 'outbox-ack', to, token: d.token, cmd: d.cmd, id: d.id, ok: !!d.ok, why: String(d.why || ''), current: cur, at: String(d.at || '') });
+    }
+  });
+  const oxStr = (x, n) => String(x == null ? '' : x).slice(0, n);
+  function oxRelay() {
+    if (!OX.present || !OX.st) return;
+    const s = OX.st, c = s.counts || {};
+    const drafts = (Array.isArray(s.drafts) ? s.drafts : []).slice(0, 24).map((d) => ({
+      id: oxStr(d.id, 120), subject: oxStr(d.subject, 400), body: oxStr(d.body, 40000), to: oxStr(d.to, 600), cc: oxStr(d.cc, 600), thread: oxStr(d.thread, 300),
+      status: d.status === 'sent' ? 'sent' : d.status === 'hold' ? 'hold' : 'ready', order: +d.order || 99,
+      updated_at: oxStr(d.updated_at, 40), edited_by: oxStr(d.edited_by, 120), sent_at: oxStr(d.sent_at, 40) }));
+    const st = { loaded: !!s.loaded, canWrite: !!s.canWrite, drafts, counts: { ready: +c.ready || 0, hold: +c.hold || 0, sent: +c.sent || 0, total: +c.total || drafts.length },
+      sigHtml: oxStr(s.sigHtml, 12000), sigText: oxStr(s.sigText, 2000), note: oxStr(s.note, 300) };
+    post({ t: 'outbox', from: ME, st });
+    oxHeard({ from: ME, st });   // a channel never hears itself
+  }
+  setInterval(() => { if (OX.present) oxRelay(); }, 5000);
+  // a save from HQ, for the Outbox this tab holds
+  function oxFromTab(m) {
+    if (m.cmd !== 'save') return;
+    if (!OX.present) { if (m.from) post({ t: 'outbox-ack', to: m.from, token: m.token, cmd: m.cmd, id: m.id, ok: false, why: 'closed' }); return; }
+    OX.asked.set(m.token, m.from);
+    oxSend('save', { id: m.id, subject: String(m.subject == null ? '' : m.subject), body: String(m.body == null ? '' : m.body), base: m.base || null, force: !!m.force, token: m.token });
+  }
+  const oxAliveT = () => !!OXF.st && Date.now() - OXF.at < 20000;
+  function oxHeard(m) {
+    OXF.st = m.st; OXF.from = m.from; OXF.at = Date.now();
+    if (OXF.want && m.st.loaded && Date.now() - OXF.wantAt < 45000) { const w = OXF.want, n = OXF.wantN; OXF.want = ''; if (w === 'read') oxRead(n); else oxList(); }
+  }
+  // spoken lines
+  const oxWhoSaid = (s) => String(s || '').split(',').map((x) => { x = x.trim(); const mm = x.match(/^"?([^"<]+?)"?\s*</); return mm ? mm[1].trim() : x.replace(/@.*$/, ''); }).filter(Boolean).join(' and ');
+  const oxOpenDrafts = () => (OXF.st.drafts || []).filter((d) => d.status !== 'sent');
+  function oxOpen(want, n) {
+    OXF.want = want; OXF.wantN = n || 0; OXF.wantAt = Date.now();
+    if (Date.now() - OXF.openAt < 20000) return say('The Outbox is opening. One moment.');
+    OXF.openAt = Date.now();
+    try { GM_openInTab(OUTBOX_URL, { active: false, insert: true }); } catch (e) { window.open(OUTBOX_URL, '_blank'); }
+    return say('Opening the Outbox. One moment.');
+  }
+  function oxList() {
+    if (!oxAliveT()) return oxOpen('list');
+    const s = OXF.st;
+    if (!s.loaded) { OXF.want = 'list'; OXF.wantAt = Date.now(); return say('The Outbox is still loading. One moment.'); }
+    post({ t: 'ox-show' });   // HQ opens the drafts over the pie
+    const ds = oxOpenDrafts(), c = s.counts || {};
+    OXF.list = ds.map((d) => d.id); OXF.readAt = Date.now();
+    if (!ds.length) return say('The Outbox is empty.');
+    const bits = ['Outbox.', (c.ready || 0) + ' ready' + (c.hold ? ', ' + c.hold + ' on hold' : '') + '.'];
+    ds.slice(0, 6).forEach((d, i) => bits.push('Number ' + (i + 1) + ', ' + (d.status === 'hold' ? 'on hold' : 'ready') + ', to ' + (oxWhoSaid(d.to) || 'no one yet') + '. ' + chiefEnd(d.subject || 'No subject')));
+    bits.push(ds.length === 1 ? 'Say read the draft to hear it.' : 'Say read draft and the number to hear one.');
+    return say(bits.join(' '));
+  }
+  function oxRead(n) {
+    if (!oxAliveT()) return oxOpen('read', n);
+    const s = OXF.st;
+    if (!s.loaded) { OXF.want = 'read'; OXF.wantN = n || 0; OXF.wantAt = Date.now(); return say('The Outbox is still loading. One moment.'); }
+    const ds = oxOpenDrafts();
+    const ids = OXF.list.length && Date.now() - OXF.readAt < 10 * 60000 ? OXF.list : ds.map((d) => d.id);
+    if (!ids.length) return say('The Outbox is empty.');
+    if (!n) { if (ids.length === 1) n = 1; else return say('Which one? Say read draft and the number, 1 to ' + ids.length + '.'); }
+    const d = (s.drafts || []).find((x) => x.id === ids[n - 1]);
+    if (!d) return say('There is no draft ' + n + '. The Outbox has ' + ids.length + '.');
+    post({ t: 'ox-show' });
+    return say('Draft ' + n + ', to ' + (oxWhoSaid(d.to) || 'no one yet') + '. ' + chiefEnd(d.subject || 'No subject') + ' ' + String(d.body || '').replace(/\s*\n\s*/g, ' ').trim());
+  }
+  const OX_SAID = /^(?:(?:open|read|check|show|show me|pull up|bring up|go to|take me to|what's in|whats in|what is in|read me)\s+)?(?:the\s+|my\s+)?(?:outbox|out box|outbox drafts|out box drafts)(?:\s+(?:please|now))*$|^(?:read|check|show me|read me)\s+(?:my\s+)?(?:email\s+)?drafts(?:\s+please)?$/;
+  const OX_NW = '(one|won|first|1|two|to|too|second|2|three|third|3|four|for|fourth|4|five|fifth|5|six|sixth|6)';
+  const OX_N = Object.assign({}, CHIEF_N, { six: 6, sixth: 6, '6': 6 });
+  const OX_READ_RES = [
+    new RegExp('^(?:read|play|read me|let me hear|hear)(?: me)?(?: the)? (outbox )?draft(?: number)? ' + OX_NW + '(?: please)?$'),
+    new RegExp('^(outbox )?draft(?: number)? ' + OX_NW + '$')
+  ];
+  function oxReadSaid(flat) {
+    const fresh = OXF.list.length && Date.now() - OXF.readAt < 10 * 60000;
+    for (const re of OX_READ_RES) { const m = flat.match(re); if (m && (fresh || m[1])) return { kind: 'oxRead', n: OX_N[m[2]] || 0 }; }
+    if (fresh && /^(?:read|play|read me)(?: me)? (?:the|that|this) draft(?: please)?$/.test(flat)) return { kind: 'oxRead', n: 0 };
+    return null;
+  }
+
   function computeLocal() {
     if (location.pathname !== sb.path) { sb.path = location.pathname; restoreChat(); initReady(); }
     const prev = sb.state;
@@ -4773,6 +5236,8 @@
       case 'chief-cmd': if (m.to === ME) chiefFromTab(m); break;
       case 'chief-ack': if (m.to === ME) chiefAcked(m); break;
       case 'chief-say': if (m.to === ME) chiefSay(m.what); break;
+      case 'outbox': if (m.st && m.from !== ME) oxHeard(m); break;                                     // 9.1
+      case 'outbox-cmd': if (m.to === ME) oxFromTab(m); break;
       case 'follow': break;
       case 'approved':
         if (m.to === ME && pendingApprove) { const pa = pendingApprove; pendingApprove = null; say(m.ok ? (pa.comp ? 'Allowed ' + appList(pa.comp) + ' for this session.' : 'Allowed.') : 'That request changed, so I left it alone.'); }
@@ -5843,6 +6308,8 @@
     // 7.9: Swipe Deck hands free
     if (/^(?:(?:open|start|review|run|do|go to|take me to|bring up|pull up|let's do|lets do|let's review)\s+)?(?:the\s+|my\s+)?(?:swipe ?decks?|swipe ?deck review|deck review|review (?:the |my )?deck)(?:\s+(?:hands free|please|now))*$/.test(flat)) return { kind: 'deck' };
     // 9.0: Chief of Staff. "chief" reads the brief, "what needs me" reads Start Here, "done two" closes one
+    if (OX_SAID.test(flat)) return { kind: 'outbox' };   // 9.1: "outbox" lists the drafts, "read draft two" reads one
+    { const orx = oxReadSaid(flat); if (orx) return orx; }
     if (CHIEF_SAID.test(flat)) return { kind: 'chief' };
     if (CHIEF_NEEDS.test(flat)) return { kind: 'chiefNeeds' };
     { const cd = chiefDoneSaid(flat); if (cd) return cd; }
@@ -6115,6 +6582,8 @@
     if (c.kind === 'chiefNeeds') return chiefNeeds();
     if (c.kind === 'chiefDone') return chiefDone(c.n);
     if (c.kind === 'chiefUndo') return chiefUndo();
+    if (c.kind === 'outbox') return oxList();             // 9.1
+    if (c.kind === 'oxRead') return oxRead(c.n);
     if (c.kind === 'update') return checkUpdate(true);   // 8.1.1
     if (c.kind === 'boot') return bootFromChat();         // 8.9
     if (c.kind === 'videoCheck') return videoCheck();   // 8.4
