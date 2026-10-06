@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Claude Hands Free Text Mode
 // @namespace    andre.mandel
-// @version      9.3
-// @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land. 8.8: one model for every open chat, by voice ("all chats to Sonnet") or from the HQ model pills. 8.9: Boot. The Switcheroo Chrome launcher opens HQ with your 10 most recent chats behind it and the mic ready, no clicks; or say "boot up". 8.9.1: "stop, new chat in Alder" works: a lead in no longer hides a command, and new chat finds every project, not just the sidebar. 8.9.2: the mic bell is now the Long bell, struck three times so the AirPods can't clip it. 8.9.3: Retro, a third HQ look: sunset sky, a neon floor rolling toward you, chrome type. Click Look on the control panel, or say "retro look". 9.0: Chief of Staff joins HQ as the COS wedge and panel, and a fourth look, night drive, from the board. Say chief for the brief, what needs me for Start Here, done two to close a thread, undo to reopen it. 9.0.1: fifty looks. Each push of Look steps to the next one (right click goes back); say "next look", "previous look", "random look" or a look by name. And "next, over" heard as "next server" still jumps. 9.1: the CHxTLD Outbox joins HQ as the OUT wedge, and a click opens your drafts over the pie to read and edit; edits save back to the Outbox. Say "outbox" to hear them, "read draft two" to hear one. Nothing sends from HQ. 9.2: a View pill with eleven ways to draw your chats, a Look pill with a picker and favorites, two hand sketched looks, and Chief of Staff one tap away with Open chat on every Start Here card. 9.3: looks run dark to light, so stepping never jumps from black to white, and a change fades instead of cutting. Retro Sky, a retro futurist look whose sky follows the time of day. Follow the clock picks from your favorites by daylight; say "follow the clock".
+// @version      9.4
+// @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land. 8.8: one model for every open chat, by voice ("all chats to Sonnet") or from the HQ model pills. 8.9: Boot. The Switcheroo Chrome launcher opens HQ with your 10 most recent chats behind it and the mic ready, no clicks; or say "boot up". 8.9.1: "stop, new chat in Alder" works: a lead in no longer hides a command, and new chat finds every project, not just the sidebar. 8.9.2: the mic bell is now the Long bell, struck three times so the AirPods can't clip it. 8.9.3: Retro, a third HQ look: sunset sky, a neon floor rolling toward you, chrome type. Click Look on the control panel, or say "retro look". 9.0: Chief of Staff joins HQ as the COS wedge and panel, and a fourth look, night drive, from the board. Say chief for the brief, what needs me for Start Here, done two to close a thread, undo to reopen it. 9.0.1: fifty looks. Each push of Look steps to the next one (right click goes back); say "next look", "previous look", "random look" or a look by name. And "next, over" heard as "next server" still jumps. 9.1: the CHxTLD Outbox joins HQ as the OUT wedge, and a click opens your drafts over the pie to read and edit; edits save back to the Outbox. Say "outbox" to hear them, "read draft two" to hear one. Nothing sends from HQ. 9.2: a View pill with eleven ways to draw your chats, a Look pill with a picker and favorites, two hand sketched looks, and Chief of Staff one tap away with Open chat on every Start Here card. 9.3: looks run dark to light, so stepping never jumps from black to white, and a change fades instead of cutting. Retro Sky, a retro futurist look whose sky follows the time of day. Follow the clock picks from your favorites by daylight; say "follow the clock". 9.4: a second Outbox, ANDRÉ MANDEL, on its own letterhead beside the CHxTLD one, both one tap away on the pill rail ("mandel outbox"); and ten new looks: Trace, Marker, Charcoal, Chalkboard, Funnies, Space Opera, Overdrive, Dime Novel, Desert Neon, Bunker.
 // @match        https://claude.ai/*
 // @match        *://*/*
 // @grant        GM_xmlhttpRequest
@@ -344,6 +344,12 @@
     violet night, rosy dawn, a pale peach morning, a bright blue noon, golden hour, then the sunset at dusk. Follow
     the clock (in the Look picker, or say "follow the clock") picks from your favorites by daylight, darkest at night,
     brightest at noon; picking a look yourself turns it off. Look numbers changed; favorites keep.
+  9.4: TWO OUTBOXES. The ANDRÉ MANDEL Outbox joins the CHxTLD one as its own lane: its own page, its own AMO wedge, and
+    its own letterhead over the pie (brush A, Tenor caps, graphite on trace). Every relay, save and answer carries the
+    lane, so a draft never lands in the wrong one. CHxTLD and Mandel pills sit beside Chief on the rail, with counts;
+    panels now open under the rail so you can hop between them. Say "mandel outbox" (or "practice outbox") to hear
+    those drafts; "outbox" is still CHxTLD. Ten new looks: the sketch family by how sketchy (Trace, Sketch, Marker,
+    Charcoal, Chalkboard, Funnies comic ink) and five genre looks (Space Opera, Overdrive, Dime Novel, Desert Neon, Bunker).
   9.0: CHIEF OF STAFF. The Chief of Staff board joins HQ: a COS wedge and rail on the pie, sized by how many
     threads need you, and a click opens the brief and Start Here over the pie in the board's own look, each thread
     numbered with Mark done. If the board isn't open, the click opens it in a tab behind HQ. By voice in any chat:
@@ -732,7 +738,9 @@
     // A look is a palette, a font kit, a background and a panel shape. CHxTLD and Tron are drawn by hand
     // above; everything else comes from smLook, which works the glows, panels and gradients out of ten colors:
     // ground, second ground, lines, ink, muted ink, accent, needs you, your turn, working, idle.
+    const SM_AM_LOGO = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="-8.9 -9.9 375.8 539.8"> <g fill="currentColor"><path fill-rule="evenodd" d="M347 448.9 C346.5 448.8 346 448.6 345 448 C344.6 447.7 343.9 447.4 343.5 447.2 C342.5 446.9 340.2 445.7 339.1 445 C338.6 444.6 338 444.3 337.4 444.1 C336.3 443.7 336.1 443.6 335.2 443 C334.7 442.7 334.1 442.4 333.5 442.2 C332.9 442 332.2 441.6 331.8 441.4 C331.1 440.9 328.7 439.5 327.5 438.9 C327.1 438.7 326.5 438.3 326.1 438.1 C325.7 437.8 324.3 437 323 436.3 C321.6 435.6 320.3 434.8 320 434.7 C319.7 434.5 319.1 434.2 318.8 434 C318.4 433.8 317.7 433.4 317.3 433.1 C316.9 432.8 315.9 432.2 315 431.8 C314.1 431.3 313.1 430.7 312.5 430.4 C311.5 429.7 311.2 429.5 310 429 C309.5 428.8 308.8 428.4 308.4 428.1 C308 427.8 307.2 427.4 306.8 427.1 C306.3 426.9 305.6 426.4 305.1 426.1 C304.3 425.6 303.9 425.3 300.8 423.7 C298.6 422.6 297.1 421.6 296 420.8 C295.5 420.3 294.6 419.7 294.1 419.4 C293.6 419.1 292.9 418.7 292.6 418.4 C292.2 418.1 291.5 417.7 291 417.4 C290.6 417.1 289.6 416.4 288.8 415.9 C288.1 415.4 287 414.7 286.4 414.3 C285.8 413.9 284.6 413.1 283.7 412.6 C282.9 412.1 281.8 411.4 281.4 411.1 C280.9 410.8 280.2 410.3 279.9 410.1 C279.5 409.9 278.2 409 277 408.2 C275.7 407.4 273.9 406.2 272.9 405.6 C271.9 405 270.6 404.2 270.1 403.8 C269.7 403.4 268.9 402.9 268.5 402.6 C268.1 402.4 267.4 401.9 267 401.6 C265.9 400.9 264.7 400.1 264 399.6 C263.6 399.4 262.5 398.6 261.5 398 C260.5 397.3 258.8 396.2 257.8 395.6 C256.9 395.1 255.7 394.4 255.4 394.1 C255 393.8 254.3 393.4 253.9 393.1 C253.5 392.9 252.8 392.4 252.3 392.1 C251.9 391.8 251.3 391.4 251 391.2 C250.2 390.7 249.7 390.3 248.7 389.5 C248.2 389.1 247.3 388.4 246.8 388 C246.1 387.6 245.3 386.9 244.7 386.3 C241.7 383.4 240.1 382 239 381.3 C238 380.6 237.3 380 235.4 378.3 C234.5 377.4 233.3 376.4 232.8 376 C232.2 375.7 231.4 375 230.8 374.5 C228.9 372.7 227.8 371.8 226.8 371.1 C226.2 370.7 225.3 369.9 224.8 369.4 C222.3 367.1 221.6 366.6 220.8 366 C219.8 365.3 219.4 365 216.9 362.7 C214.7 360.6 213.9 360 212.6 359 C211.4 358.1 209.8 356.7 205.8 352.7 C203.3 350.2 202.6 349.6 201.8 349 C200.9 348.4 200.2 347.7 196.3 343.9 C193.9 341.5 191.7 339.3 191.4 338.9 C191.2 338.6 190.8 338.1 190.6 337.8 C190 337 188.9 335.8 184.7 331.5 C182.8 329.5 180.6 327.3 179.9 326.5 C179.1 325.8 178.2 324.6 177.7 324 C176.1 322 173.4 319.3 171.8 318.2 C170.9 317.5 170.6 317.2 168 314.8 C165.2 312.2 164.5 311.4 163.8 309.8 C163.6 309.3 163.3 308.6 163 308.2 C162.5 307.4 161.7 305.8 159.9 302.3 C158.6 299.8 158.4 299.4 157.2 298 C156.7 297.4 156.1 296.5 155.7 296 C155.1 295.1 154.5 294.4 153.1 292.8 C152.7 292.4 152.1 291.6 151.8 291.1 C150.6 289.4 149.5 288.4 148.2 287.9 C147.1 287.4 146.6 287.3 144.1 287.2 C142.8 287.1 141.5 287 141.1 286.9 C139.9 286.7 139.2 286.8 135.8 287.8 C134.8 288 133.8 288.1 133 287.9 C132.4 287.8 132 287.6 130.6 286.8 C129.4 286.2 129.2 286.2 125.1 286.1 C118.6 286 114.6 286.3 112.4 286.8 C111.2 287.1 110.4 287.3 109.2 287.4 C108.8 287.4 108 287.5 107.3 287.7 C106.2 287.9 105.9 287.9 103.7 288 C101 288.1 100.3 288.1 98.2 288.3 C96.2 288.5 85.4 288.5 83.2 288.3 C80.2 288.1 77.8 288 71 288 C64.2 288 62.7 288.1 61.7 288.3 C61 288.4 58.1 289.7 57.1 290.2 C56.8 290.4 56 290.8 55.5 291.1 C54.9 291.4 54.1 291.8 53.7 292.1 C52.8 292.7 52.6 292.8 51.3 293.1 C48.9 293.6 47.5 294.8 46.7 297.1 C46.3 298.2 46.2 298.5 46.2 303.3 C46.1 307.9 46.1 307.9 45.9 309 C45.5 310.5 45.5 312.5 45.8 313.8 C46.1 315.1 46.1 316.2 46.2 322.9 C46.3 332.4 46.4 344.9 46.5 349.2 C46.6 352.7 46.6 353.1 46.8 353.8 C47 354.6 47 354.6 47 370.7 C47 387.8 47 386.6 46.6 388.8 C46.5 389.3 46.5 391 46.4 395.1 C46.1 407.5 46.1 406.7 45.8 408.1 C45.5 409.5 45.4 413.2 45.2 423.3 C45.2 427.2 45.1 429.4 45.1 429.7 C44.8 430.9 44.1 431.7 42.3 432.6 C41 433.2 41.1 433.2 37.4 433.2 C33.1 433.3 32.8 433.2 30.8 432.4 C29.3 431.8 28.7 431.2 28.3 429.9 C28 429 28 428.7 27.9 424.3 C27.8 420.2 27.6 413.9 27.5 410.5 C27.4 408.6 27.4 408.2 27.2 407.2 C26.9 406 26.9 406 26.8 400.2 C26.6 381.6 26.6 381.4 26.8 348.1 C26.9 338 26.9 338 27.1 337 C27.5 335.3 27.5 332.7 27.5 307.8 C27.4 285.4 27.4 285.4 27.2 284.3 C26.9 283 26.8 281.9 26.7 277.4 C26.6 273.4 26.6 272.4 26.3 271.1 C26.1 270.5 25.9 269.3 25.9 268.5 C25.7 267 25.6 266.5 25.3 265 C25 264.2 25 263.8 24.9 262.7 C24.8 259.9 24.7 259.6 24.2 258 C24 257.5 23.8 256.5 23.6 255.8 C23.5 255.2 23.4 254.3 23.2 253.9 C23.1 253.4 23.1 252.7 23 251.4 C22.8 247.6 22.6 245.7 22.2 244.3 C21.9 243 21.9 242.8 21.7 239.5 C21.6 236.5 21.5 236.2 21.2 234.5 C21 233.6 20.9 229.2 20.8 220.2 C20.8 216 20.8 215.8 21.2 214 C21.5 213 21.6 212.3 21.8 210.3 C21.9 209.1 21.9 208.7 22.4 207.4 C22.6 206.9 22.9 206.2 23 205.8 C23.2 205.5 23.5 204.9 23.8 204.5 C24.6 203.2 24.9 202.4 26.4 197.5 C27.1 195.2 27.5 194.5 29.1 192.2 C29.4 191.9 29.7 191.3 29.9 190.9 C30.1 190.6 30.6 189.9 30.9 189.4 C31.2 188.9 31.6 188.3 31.8 188 C32.5 186.6 33.6 185.4 34.5 185 C35.9 184.4 37.5 184.5 38.8 185.3 C39.5 185.7 41 187.3 42 188.7 C42.5 189.3 43.3 190.3 43.8 190.8 C45.8 192.9 46 193.2 46.4 193.7 C46.9 194.4 48.2 196.8 48.5 197.5 C48.8 198.4 48.9 198.7 49.1 200.2 C49.2 201.3 49.3 201.8 49.7 202.8 C49.9 203.4 50.2 204.3 50.3 204.8 C50.4 205.2 50.8 206.1 51.1 206.7 C51.8 208.3 51.9 208.6 52.1 209.6 C52.2 210.1 52.5 211 52.7 211.6 C53.2 212.9 53.2 213.4 53.3 215.9 C53.4 218.5 53.3 218.8 52.5 220.8 C52.4 221.1 52.2 221.8 52.1 222.4 C52 222.9 51.8 223.8 51.6 224.3 C51.5 224.9 51.3 225.6 51.2 226 C51.1 226.4 51 227.3 50.8 228 C50.4 229.6 50.4 230.2 50.2 233.9 C50.1 237.4 50.1 238 49.8 239.4 C49.4 240.8 49.1 243.2 49 247 C48.9 249 48.9 249.1 48.5 250.6 C48.3 251.5 48 252.7 47.8 253.3 C47.3 254.8 47.2 255.6 47.1 257.7 C47 260.5 47.2 261.1 48.4 262.3 C49.1 263.1 49.7 263.5 50.6 263.8 C51.5 264.2 51.9 264.4 52.7 265 C53.6 265.5 53.7 265.6 55.1 266 C55.7 266.2 56.5 266.4 56.8 266.5 C57.2 266.6 58 266.8 58.6 266.9 C59.3 266.9 60.3 267.1 61 267.3 C62.1 267.5 62.1 267.5 70.9 267.5 C79.6 267.5 79.6 267.5 80.9 267.3 C81.9 267.1 82.6 267 83.9 266.9 C86.9 266.8 89 266.6 90 266.4 C91.2 266.2 91.9 266.2 92.8 266.4 C93.9 266.6 95.1 266.7 97 266.9 C98.2 267 99.2 267.1 100.1 267.3 C101.3 267.5 101.9 267.6 103.4 267.7 C105.6 267.8 106.1 267.8 107.5 268.2 C109.7 268.8 111.9 268.9 118.6 268.9 C124.9 269 124.8 269 125.8 268.2 C127.3 267.1 127.9 265.8 127.9 263.9 C127.9 262.3 127.7 261.6 126.5 260.2 C126.1 259.7 125.5 258.8 125.1 258.3 C124.7 257.7 124.2 257 123.9 256.7 C123.6 256.3 123.2 255.7 122.9 255.3 C122.1 254 121.2 252.9 119.5 251.1 C119 250.6 118.3 249.7 117.9 249.1 C117.5 248.5 116.8 247.6 116.4 247.1 C116 246.6 115.3 245.7 115 245.2 C114.6 244.6 113.9 243.7 113.5 243.3 C112.6 242.3 112.2 241.7 111.6 240.8 C111.1 240 110.8 239.7 109.6 238.4 C109.2 237.9 108.5 237 108.2 236.5 C107.8 235.9 107.2 235.2 107 234.8 C106.7 234.4 106.1 233.7 105.8 233.1 C105.5 232.6 104.8 231.7 104.4 231.1 C103.9 230.6 103.3 229.8 103 229.3 C102.7 228.8 102.2 228.1 102 227.8 C101.7 227.4 101.2 226.7 100.9 226.2 C100.7 225.8 100 224.8 99.5 224.2 C98.9 223.6 98.2 222.6 97.8 222 C96.7 220.2 95.6 218.7 94.8 217.6 C94.4 217.1 93.9 216.3 93.6 215.8 C93.3 215.4 92.8 214.6 92.3 214.1 C91.9 213.5 91.2 212.6 90.9 212.1 C90.6 211.6 90.1 210.9 89.8 210.6 C89.6 210.2 89.1 209.6 88.8 209.1 C88.6 208.6 88 207.8 87.7 207.4 C86.6 206.2 86.3 205.7 85.9 204.9 C85.6 203.9 85.4 203.6 84.9 202.8 C84.5 202.2 82.8 199 81.4 196.2 C80.9 195.3 80.3 194.2 80.1 193.9 C79.5 193.1 79.2 192.4 78.9 191.6 C78.6 190.8 77.4 188.5 76.8 187.6 C76.5 187.1 76.1 186.3 75.9 185.9 C75.5 184.9 75.2 184.3 74.8 183.7 C74.4 183.2 73.9 182.2 71.8 178.2 C71.1 176.7 70.3 175.2 70 174.8 C69.3 173.8 69.1 173.3 68.8 172.2 C68.7 171.6 68.4 170.7 68.1 170.1 C67.8 169.4 67.4 168.6 67.2 168 C67 167.5 66.7 166.7 66.5 166.2 C66.2 165.8 65.9 165 65.7 164.5 C65.5 164.1 65.1 163.2 64.8 162.7 C64.3 161.8 64.1 161.4 63.7 160.2 C63.6 159.9 63.3 159.3 63 158.9 C62.4 158 62.3 157.7 61.9 156.8 C61.6 155.9 60.3 153.2 59.6 152.2 C59.4 151.8 59.1 151.2 58.9 150.6 C58.7 150.1 58.3 149.3 58 148.7 C57.8 148.2 57.4 147.3 57.1 146.8 C56.9 146.3 56.6 145.7 56.4 145.3 C55.7 144 54.1 140.8 53.8 139.8 C53.6 139.2 53.2 138.4 52.8 137.8 C52.5 137.3 52.1 136.4 51.9 135.9 C51.7 135.3 51.3 134.5 51 134.1 C50.2 132.7 49.1 130.7 48.8 129.6 C48.6 129 48.2 128.3 47.9 127.7 C47.2 126.6 47 126.2 46.9 124.9 C46.7 123.6 46.5 122.9 45.8 121.8 C45.5 121.2 45.2 120.5 45 119.8 C44.8 119.2 44.2 117.9 43.4 116.2 C42.7 114.8 42 113.3 41.8 112.9 C41.5 112 41.4 111.7 40.9 110.9 C40.7 110.6 40.2 109.8 39.9 109.3 C39.4 108.3 38.7 107.1 37.3 104.8 C36.7 103.8 35.7 102.1 35.2 101.1 C35 100.6 34.4 99.5 33.9 98.8 C33.4 98.1 32.9 97.2 32.6 96.8 C32.4 96.4 31.8 95.7 31.4 95.1 C30.6 94.2 29.8 93.1 28 90.5 C27.5 89.8 26.7 88.7 26.2 88.1 C24.6 86.1 21.8 81.8 20.5 79.4 C20 78.5 19.3 77.3 19 76.8 C18.6 76.2 18.2 75.4 17.9 74.8 C17.6 73.9 17.3 73.5 16.8 72.7 C16.5 72.2 15.4 70.2 14.8 69.2 C14.7 68.8 14.2 68.1 13.9 67.6 C13.5 67 13.1 66.3 12.9 65.7 C12.6 65.1 12.2 64.3 11.8 63.7 C11 62.4 10.2 60.8 9.1 58.6 C8.3 56.9 8.1 56.4 7.8 54.8 C7.7 54.5 7.4 53.6 7.1 53 C6.3 51.3 6.1 50.4 6 48.8 C5.9 48.4 5.8 47.5 5.8 47 C5.5 45.3 5.6 36.5 5.8 35.3 C6 34 6.2 33.5 6.9 32.5 C8.3 30.5 8.6 29.5 8.7 26.8 C8.8 24.6 8.9 23.9 9.6 22.3 C10.4 20.5 11.1 19.4 12 18.2 C12.3 17.9 12.7 17.3 12.9 16.9 C13.2 16.5 13.6 15.8 13.9 15.3 C14.5 14.4 14.9 13.8 15.9 12 C16.7 10.4 18.4 7.9 19.1 7.1 C20.2 6.1 22 5 23.2 4.8 C23.7 4.7 24.1 4.7 25.6 4.7 C27.6 4.7 27.9 4.8 29.2 5.4 C29.7 5.6 30.4 5.9 31 6.1 C31.6 6.3 32.2 6.6 32.8 7 C33.5 7.4 34 7.6 34.8 7.9 C35.4 8.1 36.4 8.5 36.9 8.8 C38.2 9.4 38.9 9.6 40.2 9.8 C41.4 9.9 41.5 10 43.6 10.7 C46.4 11.8 47.2 12.3 48.5 14.3 C49.9 16.4 52 18.6 55.2 21.3 C57.2 22.9 60.1 26.1 60.7 27.2 C61 27.8 61.8 29.9 62 30.6 C62.2 31.6 62.1 32.9 61.6 34.2 C61.1 35.8 61.1 36.1 61.1 40.3 C61.1 44.3 61.2 44.8 61.7 46.7 C62 47.9 62.1 48.4 62.2 51.6 C62.3 53.2 62.4 53.7 62.8 55.1 C63 55.5 63.2 56.3 63.2 56.9 C63.3 57.4 63.5 58.3 63.7 58.9 C64 60.1 64 60.9 64.2 67.5 C64.3 74.6 64.3 74.3 65.1 76.4 C65.4 77.2 65.8 78.3 66 78.9 C66.1 79.5 66.4 80.3 66.6 80.8 C67 81.7 67 82 67.2 83.2 C67.4 84.1 67.6 84.7 68.2 86 C68.7 87 68.9 87.7 69.1 88.7 C69.3 90 69.3 90.1 70 91.4 C70.6 92.7 70.8 93.3 71 94.5 C71.3 95.9 71.3 96 73.1 99.7 C73.5 100.5 74 101.6 74.2 102.2 C74.4 102.8 74.7 103.4 75.1 104.1 C75.4 104.7 75.9 105.5 76.1 106.2 C76.6 107.4 77.7 109.7 78.2 110.5 C78.7 111.2 79 111.9 79.2 113 C79.4 113.7 79.7 114.4 80 115.1 C80.5 116.2 80.8 117.1 81.1 118.3 C81.2 118.8 81.6 119.7 82 120.4 C83.7 124 84 124.6 84.2 125.2 C84.5 125.9 84.8 126.6 85.2 127.3 C85.5 127.7 86.3 129.3 87.2 131 C88.1 132.8 89.1 134.9 89.3 135.4 C89.5 136 89.7 136.5 90.5 137.7 C90.7 138.1 90.9 138.6 91 139 C91.4 139.8 91.7 140.5 92 141 C92.2 141.2 92.6 141.9 92.9 142.6 C93.9 144.4 94.7 145.9 95.3 146.7 C95.6 147.1 96 147.9 96.2 148.4 C96.4 148.9 96.9 149.7 97.2 150.3 C97.6 150.8 98 151.5 98.1 151.7 C98.2 151.9 98.6 152.5 99 153 C99.6 154 100 154.6 101 156.5 C101.4 157.2 101.8 158 102.1 158.4 C102.6 159.2 102.8 159.5 103.1 160.5 C103.3 161 103.7 161.9 103.9 162.4 C104.2 162.9 104.6 163.7 104.8 164.2 C105.3 165.3 106.6 167.6 107.2 168.5 C107.4 168.8 107.8 169.4 108.1 169.8 C108.3 170.2 108.8 170.9 109.1 171.4 C109.4 171.8 109.8 172.5 110.1 172.9 C110.6 173.9 111.7 175.6 112.2 176.4 C112.4 176.8 112.9 177.4 113.1 177.9 C113.4 178.3 113.8 179 114.1 179.4 C114.6 180.1 114.8 180.4 115.2 181.4 C115.4 181.8 115.8 182.5 116.1 183 C116.8 184.3 117.8 186.2 118.2 187.3 C118.4 187.9 118.8 188.7 119.1 189.1 C119.6 190 119.9 190.5 120.2 191.5 C120.4 191.8 120.7 192.5 121 192.9 C121.5 193.7 121.8 194.2 122.8 196 C123.1 196.7 123.8 197.7 124.1 198.2 C124.5 198.8 125 199.5 125.1 199.8 C125.3 200.1 125.7 200.7 126 201.1 C126.6 202.1 126.8 202.4 127.1 203.4 C127.3 203.8 127.7 204.9 128.2 205.8 C130.1 209.8 130.5 210.6 131.2 211.5 C131.5 212 132.2 213.1 132.7 213.9 C133.2 214.7 133.9 215.9 134.4 216.6 C135.5 218.4 136.3 219.5 137 220.7 C137.3 221.2 137.8 222 138.1 222.4 C138.7 223.2 140 225.5 141.5 228.4 C142 229.5 142.8 230.8 143.1 231.4 C143.4 231.9 144.1 232.9 144.5 233.7 C145.5 235.2 147.3 238.1 148.2 239.3 C148.6 239.7 149 240.4 149.2 240.7 C149.4 241 150 241.9 150.6 242.6 C151.7 244.1 153.2 246.3 154 247.6 C154.3 248.1 154.8 248.8 155.1 249.2 C155.3 249.5 155.9 250.3 156.3 250.9 C156.7 251.5 157.4 252.5 157.8 253 C158.2 253.6 158.9 254.5 159.3 255.1 C159.7 255.7 160.3 256.6 160.6 257.1 C160.9 257.6 161.3 258.2 161.5 258.5 C161.7 258.8 162.2 259.4 162.6 259.9 C163 260.4 163.5 261 163.6 261.2 C163.8 261.4 164.2 262.1 164.6 262.7 C165 263.4 165.6 264.3 166 264.8 C166.3 265.3 166.8 266 167.2 266.4 C168.4 267.8 168.7 268.1 169.2 268.9 C170.1 270.2 171.2 271.4 174.1 274.6 C174.8 275.3 175.7 276.3 176 276.8 C176.8 278 177.6 278.8 179.4 280.7 C181.1 282.4 181.6 282.8 183.2 283.9 C183.8 284.3 184.7 284.9 185.1 285.3 C185.5 285.6 186.3 286.2 186.9 286.7 C187.9 287.3 191.1 289.9 192.2 291 C192.7 291.5 193.2 292.1 194.1 293.7 C195.8 296.5 198.3 300.2 199.5 301.7 C199.9 302.2 201.4 303.8 202.8 305.2 C208.6 311 209.3 311.8 210.1 312.8 C211 313.9 211.2 314.2 218 321.1 C235 338.4 242.2 345.6 246.8 350.1 C251.9 355 251.9 355 253.2 355.9 C254.1 356.6 255 357.4 257.3 359.7 C262.6 364.9 265.5 367.6 267 368.8 C267.4 369.2 268.1 369.8 268.4 370.2 C269.3 371.3 271.4 373.2 272.3 373.9 C272.9 374.3 274.3 375.7 276.8 378.1 C282.1 383.5 283.7 384.9 285.2 386 C285.8 386.4 286.8 387.3 288.1 388.5 C291.8 392 293.6 393.6 295.2 394.9 C295.9 395.3 296.8 396.1 297.3 396.6 C301.3 400.4 302.8 401.8 304.3 402.9 C305 403.4 306.1 404.3 306.8 405 C308.5 406.5 309.1 407 310.1 407.8 C310.6 408.2 312.1 409.4 313.4 410.6 C316.1 413.2 317.1 414.1 317.8 414.6 C319.1 415.5 319.6 415.9 320.7 417 C322.7 418.8 323.2 419.2 324.1 419.9 C325 420.5 325.5 420.9 327.1 422.4 C328.2 423.4 329.2 424.2 330.3 425 C330.8 425.3 331.9 426.1 332.6 426.8 C333.4 427.5 334.5 428.4 335.1 428.9 C336.1 429.6 336.6 430 338.9 432 C339.4 432.4 340.2 433.1 340.8 433.5 C341.4 434 342.3 434.6 342.7 435 C343.1 435.3 343.7 435.8 343.9 436.1 C344.2 436.3 344.8 436.7 345.2 437 C345.6 437.2 346.3 437.7 346.7 437.9 C347.1 438.2 347.8 438.8 348.3 439.1 C349.4 439.8 350.5 440.7 351.2 441.5 C352.2 442.7 352.4 443.3 352.3 444.8 C352.3 445.8 352.3 445.9 352 446.5 C351.6 447.2 350.7 448.1 350.1 448.5 C349.3 448.9 348.1 449.1 347 448.9 Z M45.2 71.7 L44.2 69.1 L44.1 69 L44.1 69 L44.2 68.9 L44.2 68.8 L44.2 68.8 L44.3 68.8 L44.4 68.8 L44.4 68.8 L44.5 68.8 L44.5 68.8 L44.6 68.9 L44.6 68.9 L45.6 71.6 L46.6 74.2 L47.7 76.9 L48.7 79.5 L49.7 82.2 L50.8 84.8 L51.8 87.5 L52.9 90.2 L53.9 92.8 L55 95.5 L56.1 98.1 L57.2 100.8 L58.3 103.4 L59.4 106.1 L60.6 108.7 L61.7 111.4 L62.9 114 L64 116.7 L65.2 119.4 L66.4 122 L67.6 124.7 L68.8 127.3 L70 130 L71.2 132.6 L72.4 135.3 L73.7 137.9 L74.9 140.6 L76.2 143.2 L77.5 145.9 L78.8 148.6 L80.1 151.2 L81.4 153.9 L82.8 156.5 L84.1 159.2 L85.5 161.8 L86.9 164.5 L88.3 167.1 L89.7 169.8 L91.1 172.4 L92.5 175.1 L94 177.8 L95.5 180.4 L96.9 183.1 L98.4 185.7 L100 188.4 L101.5 191 L103 193.7 L104.6 196.3 L106.2 199 L107.8 201.6 L109.4 204.3 L111 207 L112.6 209.6 L114.3 212.3 L116 214.9 L117.7 217.6 L119.4 220.2 L121.1 222.9 L122.9 225.5 L124.6 228.2 L126.4 230.8 L128.2 233.5 L130.1 236.2 L131.9 238.8 L133.8 241.5 L135.6 244.1 L137.5 246.8 L139.5 249.4 L141.4 252.1 L143.4 254.7 L145.3 257.4 L147.3 260 L149.4 262.7 L151.4 265.4 L153.5 268 L155.5 270.7 L157.7 273.3 L159.8 276 L161.9 278.6 L164.1 281.3 L166.3 283.9 L168.5 286.6 L170.7 289.2 L173 291.9 L175.3 294.6 L177.6 297.2 L179.9 299.9 L182.3 302.5 L184.6 305.2 L187 307.8 L189.5 310.5 L191.9 313.1 L194.4 315.8 L196.9 318.4 L199.4 321.1 L202 323.8 L204.5 326.4 L207.1 329.1 L209.7 331.7 L212.4 334.4 L215.1 337 L217.8 339.7 L220.5 342.3 L223.2 345 L226 347.6 L228.8 350.3 L231.6 353 L234.5 355.6 L237.4 358.3 L240.3 360.9 L243.2 363.6 L246.2 366.2 L249.2 368.9 L252.2 371.5 L255.3 374.2 L258.4 376.8 L261.5 379.5 L264.6 382.2 L267.8 384.8 L267.8 384.9 L267.8 384.9 L267.9 385 L267.9 385 L267.8 385.1 L267.8 385.2 L267.8 385.2 L267.7 385.2 L267.6 385.2 L267.6 385.2 L267.5 385.2 L267.5 385.2 L264.3 382.5 L264.3 382.5 L261.1 379.9 L261.1 379.9 L258 377.2 L258 377.2 L255 374.6 L255 374.6 L251.9 371.9 L251.9 371.9 L248.9 369.3 L248.9 369.3 L245.9 366.6 L245.9 366.6 L242.9 363.9 L242.9 363.9 L240 361.3 L240 361.3 L237.1 358.6 L237.1 358.6 L234.2 356 L234.2 356 L231.3 353.3 L231.3 353.3 L228.5 350.7 L228.5 350.7 L225.7 348 L225.7 348 L222.9 345.3 L222.9 345.3 L220.1 342.7 L220.1 342.7 L217.4 340 L217.4 340 L214.7 337.4 L214.7 337.4 L212 334.7 L212 334.7 L209.4 332.1 L209.4 332.1 L206.8 329.4 L206.8 329.4 L204.2 326.8 L204.2 326.8 L201.6 324.1 L201.6 324.1 L199 321.4 L199 321.4 L196.5 318.8 L196.5 318.8 L194 316.1 L194 316.1 L191.6 313.5 L191.6 313.5 L189.1 310.8 L189.1 310.8 L186.7 308.2 L186.7 308.2 L184.3 305.5 L184.3 305.5 L181.9 302.8 L181.9 302.8 L179.5 300.2 L179.5 300.2 L177.2 297.5 L177.2 297.5 L174.9 294.9 L174.9 294.9 L172.6 292.2 L172.6 292.2 L170.4 289.6 L170.4 289.6 L168.1 286.9 L168.1 286.9 L165.9 284.3 L165.9 284.3 L163.7 281.6 L163.7 281.6 L161.5 278.9 L161.5 278.9 L159.4 276.3 L159.4 276.3 L157.3 273.6 L157.3 273.6 L155.2 271 L155.2 271 L153.1 268.3 L153.1 268.3 L151 265.7 L151 265.7 L149 263 L149 263 L146.9 260.3 L146.9 260.3 L144.9 257.7 L144.9 257.7 L143 255 L143 255 L141 252.4 L141 252.4 L139.1 249.7 L139.1 249.7 L137.1 247.1 L137.1 247.1 L135.2 244.4 L135.2 244.4 L133.3 241.8 L133.3 241.7 L131.5 239.1 L131.5 239.1 L129.6 236.4 L129.6 236.4 L127.8 233.8 L127.8 233.8 L126 231.1 L126 231.1 L124.2 228.5 L124.2 228.5 L122.5 225.8 L122.5 225.8 L120.7 223.2 L120.7 223.2 L119 220.5 L119 220.5 L117.3 217.8 L117.3 217.8 L115.6 215.2 L115.6 215.2 L113.9 212.5 L113.9 212.5 L112.2 209.9 L112.2 209.9 L110.6 207.2 L110.6 207.2 L108.9 204.6 L108.9 204.6 L107.3 201.9 L107.3 201.9 L105.7 199.2 L105.7 199.2 L104.2 196.6 L104.2 196.6 L102.6 193.9 L102.6 193.9 L101.1 191.3 L101.1 191.3 L99.5 188.6 L99.5 188.6 L98 186 L98 186 L96.5 183.3 L96.5 183.3 L95 180.7 L95 180.7 L93.6 178 L93.6 178 L92.1 175.3 L92.1 175.3 L90.7 172.7 L90.7 172.7 L89.2 170 L89.2 170 L87.8 167.4 L87.8 167.4 L86.4 164.7 L86.4 164.7 L85.1 162.1 L85.1 162.1 L83.7 159.4 L83.7 159.4 L82.3 156.7 L82.3 156.7 L81 154.1 L81 154.1 L79.7 151.4 L79.7 151.4 L78.4 148.8 L78.4 148.8 L77.1 146.1 L77.1 146.1 L75.8 143.5 L75.8 143.5 L74.5 140.8 L74.5 140.8 L73.2 138.1 L73.2 138.1 L72 135.5 L72 135.5 L70.7 132.8 L70.7 132.8 L69.5 130.2 L69.5 130.2 L68.3 127.5 L68.3 127.5 L67.1 124.9 L67.1 124.9 L65.9 122.2 L65.9 122.2 L64.7 119.6 L64.7 119.6 L63.6 116.9 L63.6 116.9 L62.4 114.2 L62.4 114.2 L61.2 111.6 L61.2 111.6 L60.1 108.9 L60.1 108.9 L59 106.3 L59 106.3 L57.9 103.6 L57.9 103.6 L56.8 101 L56.8 101 L55.7 98.3 L55.7 98.3 L54.6 95.6 L54.6 95.6 L53.5 93 L53.5 93 L52.4 90.3 L52.4 90.3 L51.4 87.7 L51.4 87.7 L50.3 85 L50.3 85 L49.3 82.4 L49.3 82.4 L48.2 79.7 L48.2 79.7 L47.2 77.1 L47.2 77.1 L46.2 74.4 L46.2 74.4 L45.2 71.7 Z"/><path d="M31.1 471.9H26.9V515.1H29.6V479.8H29.8L48.9 515.9H50L69.6 480.1H69.8V515.1H75.5V471.9H71.2L51.2 509H50.9Z M125.7 502.4 131.6 515.1H137.6L117.5 471.9H114.4L96.1 515.1H98.9L104.4 502.4ZM124.4 499.6H105.5L114.4 478.8H114.7Z M193.1 471.9V504.9H192.9L158.6 471.1H158.3V515.1H161.1V482.1H161.3L195.7 515.9H196V471.9Z M216.6 515.1V471.9H230.8Q236 471.9 240.2 473.5Q244.5 475.1 247.6 478Q250.6 480.9 252.3 484.8Q254 488.8 254 493.4Q254 498.1 252.3 502.1Q250.5 506.1 247.4 509Q244.4 511.9 240.3 513.5Q236.2 515.1 231.6 515.1ZM222.2 512.4H229Q234.1 512.4 237.7 510.7Q241.2 509 243.5 506.3Q245.8 503.6 246.8 500.2Q247.9 496.8 247.9 493.5Q247.9 489.8 246.7 486.4Q245.4 482.9 243 480.3Q240.7 477.7 237.1 476.1Q233.6 474.6 229 474.6H222.2Z M274.6 471.9V515.1H302.6V511.7H280.3V493.6H299.4V490.8H280.3V475.3H302.6V471.9Z M323.2 515.1V471.9H328.8V511.7H351.1V515.1Z" stroke="#151412" stroke-width="1.7" stroke-linejoin="miter"/></g> </svg> ';   // 9.4: the ANDRÉ MANDEL brush A, for that Outbox's panel
     const SM_FONT_SPEC = {   // Google Fonts, asked for one family at a time the first time a look needs it
+      'Tenor Sans': 'Tenor+Sans', 'Cormorant Garamond': 'Cormorant+Garamond:ital,wght@1,400;1,500',   // 9.4: ANDRÉ MANDEL letterhead
       'Michroma': 'Michroma', 'Oswald': 'Oswald:wght@400;600;700', 'Bebas Neue': 'Bebas+Neue', 'Inter': 'Inter:wght@400;500;600;700',
       'Space Grotesk': 'Space+Grotesk:wght@400;500;600;700', 'Space Mono': 'Space+Mono:wght@400;700', 'Syne': 'Syne:wght@400;600;700;800',
       'DM Sans': 'DM+Sans:wght@400;500;600;700', 'DM Mono': 'DM+Mono:wght@400;500', 'Playfair Display': 'Playfair+Display:wght@400;600;700',
@@ -741,7 +749,11 @@
       'Silkscreen': 'Silkscreen:wght@400;700', 'Major Mono Display': 'Major+Mono+Display', 'Unbounded': 'Unbounded:wght@400;600;700',
       'Manrope': 'Manrope:wght@400;500;600;700', 'Bungee': 'Bungee', 'Work Sans': 'Work+Sans:wght@400;500;600;700',
       'Chakra Petch': 'Chakra+Petch:wght@400;500;600;700', 'Archivo Black': 'Archivo+Black', 'Big Shoulders Display': 'Big+Shoulders+Display:wght@500;700;800',
-      'Architects Daughter': 'Architects+Daughter'   // 9.1: hand lettering for the sketch looks
+      'Architects Daughter': 'Architects+Daughter',   // 9.1: hand lettering for the sketch looks
+      // 9.4: more hands and genres
+      'Kalam': 'Kalam:wght@300;400;700', 'Gochi Hand': 'Gochi+Hand', 'Patrick Hand': 'Patrick+Hand', 'Permanent Marker': 'Permanent+Marker',
+      'Bangers': 'Bangers', 'Comic Neue': 'Comic+Neue:wght@400;700', 'Cabin Sketch': 'Cabin+Sketch:wght@400;700', 'Oxanium': 'Oxanium:wght@400;600;700',
+      'Racing Sans One': 'Racing+Sans+One', 'Alfa Slab One': 'Alfa+Slab+One', 'Rye': 'Rye', 'Special Elite': 'Special+Elite', 'Barlow': 'Barlow:wght@400;500;600;700'
     };
     const SM_KITS = {   // headings, body, numbers
       grid: ['Orbitron', 'Exo 2', 'Share Tech Mono'], arcade: ['Audiowide', 'Exo 2', 'Share Tech Mono'], wide: ['Michroma', 'Barlow', 'Share Tech Mono'],
@@ -752,10 +764,14 @@
       pixel: ['Silkscreen', 'Space Mono', 'Space Mono'], round: ['Unbounded', 'Manrope', 'JetBrains Mono'], sign: ['Bungee', 'Work Sans', 'Space Mono'],
       mil: ['Chakra Petch', 'Chakra Petch', 'Share Tech Mono'], brut: ['Archivo Black', 'Inter', 'JetBrains Mono'],
       shoulders: ['Big Shoulders Display', 'Barlow', 'JetBrains Mono'], zen: ['Shippori Mincho', 'Shippori Mincho', 'DM Mono'],
-      sketch: ['Architects Daughter', 'Architects Daughter', 'Architects Daughter']   // 9.1
+      sketch: ['Architects Daughter', 'Architects Daughter', 'Architects Daughter'],   // 9.1
+      pencil: ['Kalam', 'Kalam', 'Kalam'], charcoal: ['Gochi Hand', 'Gochi Hand', 'Patrick Hand'], marker: ['Permanent Marker', 'Patrick Hand', 'Patrick Hand'],   // 9.4
+      funnies: ['Bangers', 'Comic Neue', 'Comic Neue'], chalk: ['Cabin Sketch', 'Patrick Hand', 'Patrick Hand'], opera: ['Oxanium', 'Exo 2', 'Share Tech Mono'],
+      drive: ['Racing Sans One', 'Barlow', 'Share Tech Mono'], dime: ['Alfa Slab One', 'Lora', 'IBM Plex Mono'], saloon: ['Rye', 'Barlow', 'Share Tech Mono'],
+      bunker: ['Special Elite', 'IBM Plex Mono', 'VT323']
     };
     const SM_WIDE = /^(arcade|wide|draft|round|sign|pixel|brut)$/;   // wide faces: the big HOLD word steps down a size
-    const smStack = (n, kind) => '"' + n + '",' + (kind === 'm' ? '"SF Mono",Menlo,ui-monospace,monospace' : /Playfair|Lora|Cinzel|Garamond|Mincho/.test(n) ? 'Georgia,serif' : /Architects/.test(n) ? '"Bradley Hand","Segoe Print","Comic Sans MS",cursive' : 'Arial,sans-serif');
+    const smStack = (n, kind) => '"' + n + '",' + (kind === 'm' ? '"SF Mono",Menlo,ui-monospace,monospace' : /Playfair|Lora|Cinzel|Garamond|Mincho/.test(n) ? 'Georgia,serif' : /Architects|Kalam|Hand|Marker|Comic|Cabin Sketch|Bangers/.test(n) ? '"Bradley Hand","Segoe Print","Comic Sans MS",cursive' : /Slab|Rye|Elite/.test(n) ? 'Georgia,serif' : 'Arial,sans-serif');
     function smKit(k, wf) {
       const a = SM_KITS[k] || SM_KITS.grid;
       return { hf: smStack(a[0]), bf: smStack(a[1]), mf: smStack(a[2], 'm'), wf: wf ? smStack(wf) : '', fams: a.concat(wf ? [wf] : []) };
@@ -864,7 +880,26 @@
       smLook('sketch', 'Sketch', 'sketch', 'lite fx-sketch', ['#f7f5ef', '#efece4', '#57544d', '#1d1c1a', '#6d6a63', '#1d1c1a', '#c8342a', '#d98a1c', '#2a5d9c', '#c9c5ba'], { v: {
         grid: 'rgba(29,28,26,.05)', dot: 'rgba(29,28,26,.1)', panel: 'rgba(250,249,245,.92)' } }),
       smLook('sketchnight', 'Sketch Night', 'sketch', 'fx-sketch', ['#121314', '#1b1c1e', '#9a9a96', '#f3f1ea', '#a6a49d', '#f3f1ea', '#ff6b5a', '#ffcc66', '#7cc4ff', '#3d3e41'], { v: {
-        grid: 'rgba(243,241,234,.045)', dot: 'rgba(243,241,234,.09)', panel: 'rgba(22,23,25,.92)' } })
+        grid: 'rgba(243,241,234,.045)', dot: 'rgba(243,241,234,.09)', panel: 'rgba(22,23,25,.92)' } }),
+      // 9.4: the sketch family by how sketchy: Trace barely wobbles, Sketch is the middle, Marker is bold felt tip,
+      // Charcoal smudges and shakes, Chalkboard is heavy chalk on a green board, Funnies is comic ink on newsprint
+      smLook('trace', 'Trace', 'pencil', 'lite fx-sketch sk-1', ['#fcfcfa', '#f3f2ee', '#a3a19a', '#2b2a28', '#7a7872', '#2b2a28', '#d0443a', '#d9962a', '#3f6fa8', '#dcd9d1'], { v: {
+        grid: 'rgba(43,42,40,.03)', dot: 'rgba(43,42,40,.07)', panel: 'rgba(252,252,250,.94)' } }),
+      smLook('marker', 'Marker', 'marker', 'lite fx-sketch sk-2 sh-thick', ['#ffffff', '#f5f5f3', '#222222', '#111111', '#555555', '#111111', '#e8322a', '#f5a300', '#1f6fd1', '#cfcfcf'], { v: {
+        grid: 'rgba(0,0,0,0)', dot: 'rgba(17,17,17,.06)', panel: 'rgba(255,255,255,.95)' } }),
+      smLook('charcoal', 'Charcoal', 'charcoal', 'lite fx-sketch sk-3', ['#e9e6df', '#dedad1', '#3b3a37', '#121211', '#55534e', '#121211', '#a8241b', '#b97a12', '#23466e', '#b9b4a8'], { v: {
+        grid: 'rgba(18,18,17,.04)', dot: 'rgba(18,18,17,.08)', panel: 'rgba(236,233,226,.93)' } }),
+      smLook('chalk', 'Chalkboard', 'chalk', 'fx-sketch sk-3 sk-chalk', ['#1f3a2f', '#25443a', '#a9b8ae', '#f1f2ea', '#b5c2b8', '#f1f2ea', '#ff8f80', '#ffe08a', '#9ed4ff', '#3d5a4e'], { v: {
+        grid: 'rgba(241,242,234,.03)', dot: 'rgba(241,242,234,.06)', panel: 'rgba(31,58,47,.93)' } }),
+      smLook('funnies', 'Funnies', 'funnies', 'lite fx-comic sh-thick', ['#f6eed8', '#efe3c4', '#1a1a1a', '#151515', '#4a4438', '#e23b2e', '#e23b2e', '#f2b705', '#1f63c6', '#cbbf9f'], { v: {
+        dot: 'rgba(226,59,46,.16)', panel: '#fffaf0' } }),
+      // 9.4: genre looks, each an original take on a mood: space opera, 80s overdrive, a dime novel cover,
+      // a desert bar's neon after dark, a dystopian bunker's terminal
+      smLook('opera', 'Space Opera', 'opera', 'fx-stars sh-cut', ['#04050a', '#0b0e18', '#2a3550', '#e9eef8', '#8e9ab5', '#ffc94a', '#ff5a47', '#ffc94a', '#7fc8ff', '#26304a']),
+      smLook('overdrive', 'Overdrive', 'drive', 'fx-floor sh-chrome sh-grad sh-stripe', ['#0c0604', '#1a0d07', '#4a2a18', '#fff3e8', '#c9a58c', '#ff7a1a', '#ff3b2f', '#ffc23d', '#4fd6ff', '#3a2418']),
+      smLook('dime', 'Dime Novel', 'dime', 'lite sh-thick', ['#efe2c2', '#e6d5ad', '#5a4630', '#2a1d12', '#6e5a41', '#b8321f', '#b8321f', '#c98a12', '#2f5872', '#cdb98e']),
+      smLook('desertneon', 'Desert Neon', 'saloon', 'fx-sky sh-neon', ['#120a14', '#1f1020', '#4a2840', '#ffeef6', '#c49bb4', '#ff3b6b', '#ff3b6b', '#ffb23d', '#34e0c8', '#3c2236']),
+      smLook('bunker', 'Bunker', 'bunker', 'fx-scan fx-crt', ['#0d110c', '#151b13', '#2e3a28', '#d5e6c6', '#8ea381', '#9bdc5c', '#e0563a', '#e6b33e', '#9bdc5c', '#28331f'])
     ].forEach((t) => { SM_THEMES[t.id] = t; });
     // 9.3: RETRO SKY. Retro futurist, and its sky follows the clock: violet night, rosy dawn, a pale morning,
     // a bright blue noon, golden hour, then the sunset the Retro look is known for
@@ -1442,6 +1477,10 @@
         '.smx .chp i{width:10px;height:10px;border-radius:50%;background:var(--line)}',
         '.smx .chp.hot i{background:var(--need);animation:smpulse 1.6s ease-in-out infinite}',
         '.smx .chp:hover,.smx .chp.on{background:var(--accent);color:var(--bg)}',
+        '.smx .oxq{display:flex;align-items:center;gap:9px;height:42px;padding:0 16px;border-radius:999px;border:1px solid var(--line);color:var(--ink);font:700 14px var(--mf);letter-spacing:.16em;text-transform:uppercase;background:var(--panel);white-space:nowrap}',   // 9.4
+        '.smx .oxq i{width:9px;height:9px;border-radius:50%;background:var(--line)}',
+        '.smx .oxq.hot i{background:var(--wait)}',
+        '.smx .oxq:hover,.smx .oxq.on{border-color:var(--ink);background:var(--ink);color:var(--bg)}',
         '.smx .ctr:hover .cb{stroke:var(--ink)}',
         // 9.1: the pickers
         '.smx .pik{position:absolute;left:800px;top:148px;width:1100px;bottom:20px;z-index:7;border:1px solid var(--line);background:linear-gradient(var(--panel),var(--panel)),var(--bg);display:flex;flex-direction:column;box-shadow:0 18px 40px rgba(0,0,0,.3);color:var(--ink)}',
@@ -1493,8 +1532,25 @@
         '.smx.fx-sketch .stage svg{filter:url(#smwob)}',
         '.smx.fx-sketch :is(.tx,.bar,.ctl,.asks){border-color:transparent;box-shadow:none}',
         '.smx.fx-sketch :is(.tx,.bar,.ctl,.asks)::after{content:"";position:absolute;inset:-10px;pointer-events:none;z-index:1;background:linear-gradient(var(--line),var(--line)) 0 10px/100% 1.5px no-repeat,linear-gradient(var(--line),var(--line)) 0 calc(100% - 10px)/100% 1.5px no-repeat,linear-gradient(var(--line),var(--line)) 10px 0/1.5px 100% no-repeat,linear-gradient(var(--line),var(--line)) calc(100% - 10px) 0/1.5px 100% no-repeat}',
-        '.smx.fx-sketch :is(.tg,.pil,.chp,.cin,.cdst,.cclip,.ab,.dkb button,.md){border-style:dashed}',
+        '.smx.fx-sketch :is(.tg,.pil,.chp,.oxq,.cin,.cdst,.cclip,.ab,.dkb button,.md){border-style:dashed}',
         '.smx.fx-sketch .ttl{letter-spacing:.02em}',
+        // 9.4: how sketchy. sk-1 barely wobbles and draws hairlines; sk-2 is felt tip; sk-3 shakes, doubles its lines and smudges
+        '.smx.fx-sketch.sk-1 .stage svg{filter:url(#smwob1)}',
+        '.smx.fx-sketch.sk-1 :is(.tx,.bar,.ctl,.asks)::after{opacity:.55}',
+        '.smx.fx-sketch.sk-2 .stage svg{filter:none}',
+        '.smx.fx-sketch.sk-2 :is(.tx,.bar,.ctl,.asks)::after{inset:-4px;background:linear-gradient(var(--line),var(--line)) 0 4px/100% 3px no-repeat,linear-gradient(var(--line),var(--line)) 0 calc(100% - 4px)/100% 3px no-repeat,linear-gradient(var(--line),var(--line)) 4px 0/3px 100% no-repeat,linear-gradient(var(--line),var(--line)) calc(100% - 4px) 0/3px 100% no-repeat}',
+        '.smx.fx-sketch.sk-2 :is(.tg,.pil,.chp,.oxq,.cin,.cdst,.cclip,.ab,.dkb button,.md){border-style:solid;border-width:2px}',
+        '.smx.fx-sketch.sk-3 .stage svg{filter:url(#smwob3)}',
+        '.smx.fx-sketch.sk-3 :is(.tx,.bar,.ctl,.asks)::before{content:"";position:absolute;inset:-14px -6px -6px -14px;pointer-events:none;z-index:1;background:linear-gradient(var(--line),var(--line)) 0 14px/100% 1px no-repeat,linear-gradient(var(--line),var(--line)) 14px 0/1px 100% no-repeat;opacity:.5;transform:rotate(-.25deg)}',
+        '.smx.fx-sketch.sk-3 :is(.tx,.bar,.ctl,.asks)::after{transform:rotate(.2deg)}',
+        '.smx.fx-sketch.sk-3 .gridbg{background-image:radial-gradient(ellipse 40% 30% at 22% 30%,var(--dot),transparent 70%),radial-gradient(ellipse 35% 25% at 78% 72%,var(--dot),transparent 70%),linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:auto,auto,24px 24px,24px 24px}',
+        '.smx.sk-chalk .gridbg{background-image:radial-gradient(ellipse 50% 30% at 30% 40%,rgba(241,242,234,.05),transparent 70%),radial-gradient(ellipse 40% 26% at 70% 70%,rgba(241,242,234,.04),transparent 70%)}',
+        // 9.4: Funnies. Comic ink: halftone dots, heavy black outlines, panels that cast a hard offset shadow
+        '.smx.fx-comic .gridbg{background-image:radial-gradient(var(--dot) 1.6px,transparent 1.9px);background-size:11px 11px}',
+        '.smx.fx-comic :is(.tx,.bar,.ctl,.asks){border:3px solid var(--ink);box-shadow:7px 7px 0 var(--ink)}',
+        '.smx.fx-comic :is(.tg,.pil,.chp,.oxq,.cin,.cdst,.cclip,.ab,.dkb button,.md){border-width:2px;border-color:var(--ink)}',
+        '.smx.fx-comic .ttl{letter-spacing:.04em}',
+        '.smx.fx-comic .stage svg :is(path,circle){paint-order:stroke}',
         '.smx .cos{--k-bg:#0a0912;--k-panel:#100e1c;--k-panel2:#19143a;--k-line:#2a2647;--k-fg:#ece8f6;--k-dim:#8f8aad;--k-cyan:#52d9ff;--k-violet:#8f74ff;--k-mag:#ff4f9e;--k-sun:#ff9447;--k-gold:#ffd36e;--k-chx:#ffcf6a;--k-per:#b49bff;--k-d:"Syncopate","Orbitron",Arial,sans-serif;--k-b:"Barlow","Exo 2",Arial,sans-serif;--k-l:"Barlow Condensed","Rajdhani","Arial Narrow",sans-serif;position:absolute;left:800px;top:100px;width:1100px;bottom:20px;z-index:3;display:flex;flex-direction:column;gap:14px;padding:20px 24px 14px;background:radial-gradient(900px 380px at 50% -14%,rgba(143,116,255,.22),transparent 70%),var(--k-bg);border:1px solid var(--k-line);color:var(--k-fg);font-family:var(--k-b);box-shadow:0 18px 40px rgba(0,0,0,.35);overflow:hidden}',
         '.smx .cos::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,var(--k-cyan),var(--k-violet) 35%,var(--k-mag) 68%,var(--k-sun))}',
         '.smx :where(.cos button){all:unset;box-sizing:border-box;cursor:pointer}',
@@ -1611,6 +1667,25 @@
         '.smx .oxp .oxsig .o{color:var(--o-or);font-weight:700}.smx .oxp .oxsig .m{letter-spacing:5px;font-weight:700}.smx .oxp .oxsig .m i{font-style:normal;color:var(--o-or)}.smx .oxp .oxsig .d{color:#787878}',
         '.smx .oxp .oxst{flex:none;min-height:50px;padding:12px 28px;border-top:1px solid var(--o-hair);font:18px var(--o-f);color:var(--o-mute)}',
         '.smx .oxp .oxst.err{color:var(--o-err)}',
+        '.smx .oxp.am{--o-ink:#151412;--o-text:#222;--o-mute:#5b5a57;--o-hair:#d9d8d4;--o-panel:#f2f1ee;--o-or:#151412;--o-rdy:#2f5d46;--o-rdys:#e3ece6;--o-hold:#7a5a14;--o-holds:#f3ecdc;--o-sent:#3d4f6b;--o-sents:#e4e8ef;--o-d:"Tenor Sans","Helvetica Neue",Arial,sans-serif;--o-s:"Cormorant Garamond",Garamond,"Times New Roman",serif;background:#f7f7f5}',   // 9.4
+        '.smx .oxp.am::before{height:1px}',
+        '.smx .oxp.am .oxh{border-bottom-color:var(--o-ink)}',
+        '.smx .oxp.am .oxbr{display:flex;align-items:flex-end;gap:16px;font:400 22px var(--o-d);letter-spacing:.32em;text-transform:uppercase}',
+        '.smx .oxp.am .oxbr small{font:italic 400 26px var(--o-s);letter-spacing:0;text-transform:none;margin-left:2px}',
+        '.smx .oxp.am .aml{display:block;width:40px;height:58px;color:var(--o-ink)}.smx .oxp.am .aml svg{display:block;width:100%;height:100%}',
+        '.smx .oxp.am .oxbn{border-radius:0;border-color:var(--o-ink);font:400 15px var(--o-d);letter-spacing:.16em;text-transform:uppercase;background:#fff}',
+        '.smx .oxp.am .oxbn:hover{background:var(--o-panel)}',
+        '.smx .oxp.am .oxbn.pri{background:var(--o-ink);color:#f7f7f5}.smx .oxp.am .oxbn.pri:hover{background:#3a3936}',
+        '.smx .oxp.am .oxbn.cx{font:400 26px var(--o-d)}',
+        '.smx .oxp.am .oxr{background:#fff;border:1px solid var(--o-hair);margin-top:12px;padding:18px 12px}',
+        '.smx .oxp.am .oxn{font:400 26px/1.25 var(--o-d)}',
+        '.smx .oxp.am .oxs,.smx .oxp.am .oxsub{font-family:var(--o-d);font-weight:400;letter-spacing:.02em}',
+        '.smx .oxp.am .oxc{border-radius:0;font:400 13px var(--o-d);letter-spacing:.14em;text-transform:uppercase;padding:6px 10px}',
+        '.smx .oxp.am .oxav{border-radius:0;background:transparent;border:1px solid var(--o-ink);color:var(--o-ink);padding:6px}.smx .oxp.am .oxav svg{width:100%;height:100%}',
+        '.smx .oxp.am .oxwait,.smx .oxp.am .oxem{font:italic 400 28px var(--o-s);color:var(--o-mute)}',
+        '.smx .oxp.am .oxhn{font:400 13px var(--o-d);letter-spacing:.2em;text-transform:uppercase}',
+        '.smx .oxp.am .oxsig .o{color:var(--o-ink);font-weight:400}',
+        '.smx .cos,.smx .oxp{top:152px}',   // 9.4: the pill rail stays in view, so Chief and both Outboxes are one tap apart
         '.smx .oxp .oxhn{flex:none;text-align:center;padding:12px;font:16px var(--o-f);letter-spacing:.06em;color:var(--o-mute);border-top:1px solid var(--o-hair)}',
         // 9.0: the night drive look for all of HQ: sunset rules over the panels, the outlined wordmark, Chief's faces
         '.smx.night .gridbg{background:radial-gradient(1400px 600px at 50% -12%,rgba(143,116,255,.2),transparent 70%),linear-gradient(var(--grid) 1px,transparent 1px) 0 0/48px 48px,linear-gradient(90deg,var(--grid) 1px,transparent 1px) 0 0/48px 48px}',
@@ -1655,10 +1730,11 @@
         '<input type="file" class="cfile" multiple hidden></div>' +
         '<div class="hint">say next · take me to · chief · allow · resume</div><button type="button" class="flw" hidden title="Follow the voice again">FOLLOW</button></div>' +
         '<div class="bar"><span class="br" title="Next look (Option Shift D)"></span><span class="sb">Switche<b>roo</b></span><span class="dots"></span><span class="grow"></span><span class="nx" title="Go to the next chat (Option Shift N)"></span><span class="bt" title="Boot: open your 10 most recent chats behind HQ">BOOT</span><span class="lk zero" title="Links from your chats. Say open, or open two">LINKS</span><span class="pz" title="Pause the Switchboard for two turns, or resume it">LIVE</span></div>' +
-        '<div class="prl"><button type="button" class="chp" title="Chief of Staff, any time. Or say chief (Option Shift C)"><i></i><span>Chief</span></button><span class="gr"></span>' +   // 9.1
+        '<div class="prl"><button type="button" class="chp" title="Chief of Staff, any time. Or say chief (Option Shift C)"><i></i><span>Chief</span></button>' +
+          '<button type="button" class="oxq" data-oxq="ch" title="CHxTLD Outbox"><i></i><span>CHxTLD</span></button><button type="button" class="oxq am" data-oxq="am" title="ANDRÉ MANDEL Outbox"><i></i><span>Mandel</span></button><span class="gr"></span>' +   // 9.1
         '<span class="pil vwp"><button type="button" data-vw="-1" title="Previous view">‹</button><button type="button" class="pn" data-vw="pick" title="Every view (Option Shift V steps)"><i>View</i><b>Pie</b></button><button type="button" data-vw="1" title="Next view">›</button></span>' +
         '<span class="pil lkp"><button type="button" data-lk="-1" title="Previous look">‹</button><button type="button" class="pn" data-lk="pick" title="Every look, favorites first (Option Shift D steps)"><i>Look</i><b></b></button><button type="button" data-lk="1" title="Next look">›</button></span></div>' +
-        '<svg class="smdefs" width="0" height="0" aria-hidden="true" style="position:absolute"><filter id="smwob" x="-2%" y="-2%" width="104%" height="104%"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="7" result="n"></feTurbulence><feDisplacementMap in="SourceGraphic" in2="n" scale="3" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap></filter></svg>' +
+        '<svg class="smdefs" width="0" height="0" aria-hidden="true" style="position:absolute"><filter id="smwob" x="-2%" y="-2%" width="104%" height="104%"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="7" result="n"></feTurbulence><feDisplacementMap in="SourceGraphic" in2="n" scale="3" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap></filter><filter id="smwob1" x="-2%" y="-2%" width="104%" height="104%"><feTurbulence type="fractalNoise" baseFrequency=".05" numOctaves="1" seed="3" result="n"></feTurbulence><feDisplacementMap in="SourceGraphic" in2="n" scale="1.2" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap></filter><filter id="smwob3" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency=".028" numOctaves="3" seed="11" result="n"></feTurbulence><feDisplacementMap in="SourceGraphic" in2="n" scale="6.5" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap></filter></svg>' +
         '<div class="stage"></div>' +
         '<div class="asks" hidden></div><div class="dkov" hidden></div><div class="cos" hidden></div><div class="oxp" hidden></div><div class="pik" hidden></div><div class="lnk" hidden></div><div class="pgv" hidden></div>' +
         '<div class="ctl" hidden><button type="button" class="hold" data-ctl="hold"><span class="hk">Responses · live</span><span class="hv">Hold</span><span class="hs">Stops every tab until you resume</span></button>' +
@@ -1679,7 +1755,7 @@
       let dkSig = '', dkOpen = false, lpT = null, lpFired = false;
       let cosSig = '', cosOpen = false;   // 9.0
       let pickOpen = '', pickSig = '';    // 9.1: '' or view or look
-      let oxSig = '', oxOpen = false, oxEd = null;   // 9.1
+      let oxSig = '', oxOpen = false, oxEd = null, oxLaneP = 'ch';   // 9.1; 9.4: which Outbox is open
       let lnkOpen = false, lnkSig = '', lnkBiz = '';   // 8.2
       let msgScrollAt = 0, lastTextSig = '';
 
@@ -1729,6 +1805,8 @@
         if (ev.target.closest('.flw')) { follow(); return; }
         // 9.1: the pill rail and the pickers
         if (ev.target.closest('.prl .chp')) { onAction({ t: cosOpen ? 'cos' : 'jump', cmd: 'close', id: '__chief' }); return; }
+        const oq = ev.target.closest('.prl [data-oxq]');   // 9.4: either Outbox, one tap
+        if (oq) { const l = oq.getAttribute('data-oxq'); onAction(oxOpen && oxLaneP === l ? { t: 'ox', cmd: 'close', lane: l } : { t: 'jump', id: l === 'am' ? '__amoutbox' : '__outbox' }); return; }
         const vw = ev.target.closest('[data-vw]');
         if (vw) { const a = vw.getAttribute('data-vw'); if (a === 'pick') togglePick('view'); else onAction({ t: 'view', step: +a }); return; }
         const lp = ev.target.closest('[data-lk]');
@@ -1826,8 +1904,8 @@
       // pauses or plays everything (hold it for meeting mode), and the clocks tick once a second.
       let viewId = 'pie';
       const vSide = (e) => !!(e.deck || e.chief || e.outbox);   // the wedges that aren't chats
-      const vTitle = (e) => e.deck ? 'Swipe Deck' : e.chief ? 'Chief of Staff' : e.outbox ? 'Outbox' : String(e.title || e.name || 'Claude');
-      const vShort = (e, i) => e.deck ? 'SD' : e.chief ? 'COS' : e.outbox ? 'OUT' : smPad(i + 1);
+      const vTitle = (e) => e.deck ? 'Swipe Deck' : e.chief ? 'Chief of Staff' : e.outbox ? (e.lane === 'am' ? 'ANDRÉ MANDEL Outbox' : 'CHxTLD Outbox') : String(e.title || e.name || 'Claude');
+      const vShort = (e, i) => e.deck ? 'SD' : e.chief ? 'COS' : e.outbox ? (e.lane === 'am' ? 'AMO' : 'OUT') : smPad(i + 1);
       const vName = (e, i) => vShort(e, i) + ' ' + vTitle(e);
       function vRight(e, k) {
         const timed = !vSide(e) && (smWaits(k) || k === 'turn');
@@ -2181,7 +2259,7 @@
           const dx = el - cx, dy = ay - cy, d = Math.hypot(dx, dy) || 1, ex = cx + dx / d * (R + 22), ey = cy + dy / d * (R + 22);
           lines += '<polyline points="' + x0 + ',' + smF1(ay) + ' ' + el + ',' + smF1(ay) + ' ' + smF1(ex) + ',' + smF1(ey) + '" fill="none" stroke="' + (hot ? col : v.line) + '" stroke-width="' + (hot ? 2.5 : 1.5) + '" stroke-opacity="' + (hot ? 0.9 : 0.8) + '"></polyline>' +
             '<circle cx="' + smF1(ex) + '" cy="' + smF1(ey) + '" r="5" fill="' + col + '"></circle>';
-          const name = e.deck ? 'SD SWIPE DECK' : e.chief ? 'COS CHIEF OF STAFF' : e.outbox ? 'OUT OUTBOX' : smPad(i + 1) + ' ' + smTrunc(e.title || e.name || 'Claude', 40);
+          const name = e.deck ? 'SD SWIPE DECK' : e.chief ? 'COS CHIEF OF STAFF' : e.outbox ? (e.lane === 'am' ? 'AMO ANDRÉ MANDEL OUTBOX' : 'OUT CHxTLD OUTBOX') : smPad(i + 1) + ' ' + smTrunc(e.title || e.name || 'Claude', 40);
           const barY = ay - 8, fill = k === 'work' ? 'url(#' + P + 'work)' : k === 'idle' ? 'none' : 'url(#' + P + (SM_COLKEY[k]) + ')';
           const w0 = e.deck ? Math.round(W * Math.min(1, (e.deckN || 0) / 12)) : e.chief ? Math.round(W * Math.min(1, (e.chiefN || 0) / 8)) : e.outbox ? Math.round(W * Math.min(1, (e.oxN || 0) / 6)) : k === 'need' ? W : k === 'work' ? W : k === 'idle' ? 0 : Math.round(W * Math.min(1, Math.max(0.06, (Date.now() - (e.since || Date.now())) / 600000)));
           rails += '<g class="hit" data-jump="' + smEsc(e.id) + '"><rect class="hitbg" x="' + (x0 - 12) + '" y="' + smF1(y - 10) + '" width="' + (W + 24) + '" height="' + smF1(hb + 20) + '" fill="' + v.ink + '" fill-opacity="0"></rect>';
@@ -2206,7 +2284,7 @@
           const gap = list.length > 1 ? 1.2 : 0;
           pie += '<path class="hit" data-jump="' + smEsc(e.id) + '" d="' + smSector(Math.round(R * 0.3), Math.round(r), a + gap, a + span - gap) + '" fill="' + col + '" fill-opacity="' + smF1(0.18 + 0.72 * SM_SAT[k]) + '" stroke="' + col + '" stroke-width="2"' + (k === 'need' ? ' class="pulse"' : '') + '></path>';
           const lp = smPol(R * 0.3 + (r - R * 0.3) * 0.55, a + span / 2);
-          if (span > 9) pie += smTxt(lp[0], lp[1], e.deck ? 'SD' : e.chief ? 'COS' : e.outbox ? 'OUT' : smPad(i + 1), e.chief || e.outbox ? 22 : 26, SM_SAT[k] > 0.8 && t.onSat ? t.onSat : v.ink, t.f.mf, ' text-anchor="middle" pointer-events="none"');
+          if (span > 9) pie += smTxt(lp[0], lp[1], e.deck ? 'SD' : e.chief ? 'COS' : e.outbox ? (e.lane === 'am' ? 'AMO' : 'OUT') : smPad(i + 1), e.chief || e.outbox ? 22 : 26, SM_SAT[k] > 0.8 && t.onSat ? t.onSat : v.ink, t.f.mf, ' text-anchor="middle" pointer-events="none"');
           a += span;
         }
         const waiting = list.filter((e) => !e.deck && !e.chief && !e.outbox && e.id !== floorId && smWaits(smKind(e))).length;
@@ -2540,6 +2618,11 @@
         const cp = q('.prl .chp');
         cp.querySelector('span').textContent = 'Chief' + (n ? ' · ' + n : '');
         cp.classList.toggle('hot', n > 0); cp.classList.toggle('on', cosOpen);
+        q('.prl').querySelectorAll('[data-oxq]').forEach((b) => {   // 9.4
+          const l = b.getAttribute('data-oxq'), oe = ((m && m.tabs) || []).find((e) => e.outbox && (e.lane || 'ch') === l), k = oe && !oe.closed ? oe.oxN || 0 : 0;
+          b.querySelector('span').textContent = (l === 'am' ? 'Mandel' : 'CHxTLD') + (k ? ' · ' + k : '');
+          b.classList.toggle('hot', k > 0); b.classList.toggle('on', oxOpen && oxLaneP === l);
+        });
         q('.vwp .pn').classList.toggle('on', pickOpen === 'view'); q('.lkp .pn').classList.toggle('on', pickOpen === 'look');
       }
       function togglePick(w) { pickOpen = pickOpen === w ? '' : w; pickSig = ''; if (model) { renderPick(model); renderRail(model); } }
@@ -2595,7 +2678,7 @@
       const oxChip = (d, long) => d.status === 'sent' ? 'Sent ' + oxPT(d.sent_at) : d.status === 'hold' ? 'On hold' : long ? 'Ready, waiting on authorize send' : 'Ready';
       const oxOrder = (ds) => { ds = ds || []; return ds.filter((d) => d.status !== 'sent').concat(ds.filter((d) => d.status === 'sent')); };
       const oxCounts = (st) => { const k = (st && st.counts) || {}; return st && st.loaded ? (k.ready || 0) + ' ready · ' + (k.hold || 0) + ' on hold' + (k.sent ? ' · ' + k.sent + ' sent' : '') : ''; };
-      const oxHead = () => '<div class="oxh"><div class="oxbr">ch <span>x</span> tld<small>Outbox</small></div><div class="oxct"></div><span class="g"></span><span class="oxwt"></span>' +
+      const oxHead = () => '<div class="oxh">' + (oxLaneP === 'am' ? '<div class="oxbr"><span class="aml">' + SM_AM_LOGO + '</span>André Mandel<small>Outbox</small></div>' : '<div class="oxbr">ch <span>x</span> tld<small>Outbox</small></div>') + '<div class="oxct"></div><span class="g"></span><span class="oxwt"></span>' +
         '<button type="button" class="oxbn" data-ox="tab" title="Bring the Outbox tab forward">Open outbox</button><button type="button" class="oxbn cx" data-ox="close" title="Close">×</button></div>';
       function oxHeadFill(ov, st, waitReq) {
         const ct = ov.querySelector('.oxct'); if (ct) ct.textContent = oxCounts(st);
@@ -2611,7 +2694,8 @@
           const x = smEsc(ln);
           if (/^_{6,}$/.test(ln.trim())) return '<div class="o">' + x + '</div>';
           if (/^ch x tld$/i.test(ln.trim())) return '<div class="m">ch <i>x</i> tld</div>';
-          if (/cleverhomes by|\d{3}\.\d{3}\.\d{4}|\bave\b|\bst\b/i.test(ln)) return '<div class="d">' + x + '</div>';
+          if (/^andr[eé] mandel$/i.test(ln.trim())) return '<div class="m">' + x + '</div>';   // 9.4
+          if (/cleverhomes by|\d{3}\.\d{3}\.\d{4}|\bave\b|\bst\b|residential design|northern california|@/i.test(ln)) return '<div class="d">' + x + '</div>';
           return '<div>' + x + '</div>';
         }).join('');
       }
@@ -2649,12 +2733,12 @@
           '<button type="button" class="oxbn" data-ox="copy" title="Copies the body and your signature, ready to paste into Gmail">Copy for Gmail</button>' +
           '<button type="button" class="oxbn pri" data-ox="save" title="Save to the Outbox (Cmd S)">Save</button></div>' +
           '<input class="oxsub" aria-label="Subject" spellcheck="true">' +
-          '<div class="oxfr"><div class="oxav">AM</div><div class="oxwho"><b class="oxme">You</b><div class="oxto2"></div></div></div>' +
+          '<div class="oxfr"><div class="oxav">' + (oxLaneP === 'am' ? SM_AM_LOGO : 'AM') + '</div><div class="oxwho"><b class="oxme">You</b><div class="oxto2"></div></div></div>' +
           '<div class="oxnew" hidden><span>A newer version was saved in the Outbox.</span><button type="button" class="oxbn" data-ox="load">Load it</button><button type="button" class="oxbn" data-ox="keep">Keep mine</button></div>' +
           '<textarea class="oxbody" aria-label="Message" spellcheck="true"></textarea><div class="oxsig"></div></div>' +
           '<div class="oxst" aria-live="polite"></div>';
         const qq = (s) => ov.querySelector(s);
-        const e = { id, sub: qq('.oxsub'), body: qq('.oxbody'), chip: qq('.oxc.st'), th: qq('.oxth'), to: qq('.oxto2'), who: qq('.oxme'), newer: qq('.oxnew'), sig: qq('.oxsig'), stEl: qq('.oxst'),
+        const e = { id, lane: oxLaneP, sub: qq('.oxsub'), body: qq('.oxbody'), chip: qq('.oxc.st'), th: qq('.oxth'), to: qq('.oxto2'), who: qq('.oxme'), newer: qq('.oxnew'), sig: qq('.oxsig'), stEl: qq('.oxst'),
           sigText: null, server: null, saving: null, pending: null, dirty: false, timer: null, tok: '', again: false, forceNext: false, retry: false, leaving: false, savedAt: '' };
         oxEd = e;
         oxFill(e, d, st);
@@ -2678,7 +2762,7 @@
         const token = Math.random().toString(36).slice(2, 10);
         e.tok = token; e.saving = v;
         oxSay('Saving…');
-        onAction({ t: 'ox', cmd: 'save', id: e.id, subject: v.subject, body: v.body, base: e.server, force: !!force, token });
+        onAction({ t: 'ox', cmd: 'save', lane: e.lane || oxLaneP, id: e.id, subject: v.subject, body: v.body, base: e.server, force: !!force, token });
       }
       function oxDone(e) { if (e.leaving && !e.dirty && !e.tok) { e.leaving = false; if (oxEd === e) oxLeave(); } }
       function oxLeave() { if (oxEd) clearTimeout(oxEd.timer); oxEd = null; oxSig = ''; if (model) renderOx(model); }
@@ -2741,8 +2825,8 @@
       }
       function oxClick(k, id) {
         if (k === 'edit') { oxEdit(id); return; }
-        if (k === 'tab') { onAction({ t: 'ox', cmd: 'tab' }); return; }
-        if (k === 'close') { if (oxEd && (oxEd.dirty || oxEd.timer)) oxSave(false); onAction({ t: 'ox', cmd: 'close' }); return; }
+        if (k === 'tab') { onAction({ t: 'ox', cmd: 'tab', lane: oxLaneP }); return; }
+        if (k === 'close') { if (oxEd && (oxEd.dirty || oxEd.timer)) oxSave(false); onAction({ t: 'ox', cmd: 'close', lane: oxLaneP }); return; }
         const e = oxEd; if (!e) return;
         if (k === 'back') {
           if (e.dirty || e.tok || e.timer) { e.leaving = true; oxSave(false); if (oxEd === e && e.leaving) oxSay('Saving, then back to all drafts…'); return; }
@@ -2757,6 +2841,13 @@
         const c = m && m.ox, ov = q('.oxp');
         const open = !!(c && c.open);
         if (open !== oxOpen) { oxOpen = open; fx.classList.toggle('oxing', open); }
+        const lane = c && c.lane === 'am' ? 'am' : 'ch';   // 9.4: the other Outbox: save what's typed, then switch letterheads
+        if (open && lane !== oxLaneP) {
+          if (oxEd) { if (oxEd.dirty || oxEd.timer) oxSave(false); clearTimeout(oxEd.timer); oxEd = null; }
+          oxLaneP = lane; oxSig = ''; ov.innerHTML = '';
+        }
+        ov.classList.toggle('am', oxLaneP === 'am');
+        if (open && oxLaneP === 'am') smFontsFor({ f: { fams: ['Tenor Sans', 'Cormorant Garamond'] } });
         if (!open) {   // hidden, not thrown away: a draft you were editing is still there when you come back
           if (!ov.hidden) { ov.hidden = true; if (oxEd && (oxEd.dirty || oxEd.timer)) oxSave(false); }
           return;
@@ -2773,18 +2864,18 @@
           return;
         }
         if (!st || !st.loaded) {
-          const sig = 'w|' + !!c.opening + '|' + !!st;
+          const sig = 'w|' + oxLaneP + '|' + !!c.opening + '|' + !!st;
           if (sig !== oxSig || ov.hidden) {
             oxSig = sig;
             ov.innerHTML = oxHead() + '<div class="oxb"><div class="oxwait">' + (c.opening ? 'Opening the Outbox in a tab behind this one.' : st ? 'Loading the Outbox.' : 'The Outbox isn\'t open.') +
-              '<small>' + (c.opening || st ? 'Your drafts land here in a few seconds.' : 'Click Open outbox, or say outbox.') + '</small></div></div><div class="oxhn">say outbox · read draft one · nothing sends from here</div>';
+              '<small>' + (c.opening || st ? 'Your drafts land here in a few seconds.' : 'Click Open outbox, or say ' + (oxLaneP === 'am' ? 'mandel outbox' : 'outbox') + '.') + '</small></div></div><div class="oxhn">say ' + (oxLaneP === 'am' ? 'mandel outbox' : 'outbox') + ' · read draft one · nothing sends from here</div>';
           }
           oxHeadFill(ov, st, waitReq);
           ov.hidden = false;
           return;
         }
         const ds = oxOrder(st.drafts);
-        const sig = JSON.stringify([ds.map((d) => [d.id, d.subject, String(d.body || '').slice(0, 300), d.to, d.cc, d.status, d.updated_at, d.sent_at])]);
+        const sig = JSON.stringify([oxLaneP, ds.map((d) => [d.id, d.subject, String(d.body || '').slice(0, 300), d.to, d.cc, d.status, d.updated_at, d.sent_at])]);
         if (sig !== oxSig || ov.hidden) {
           oxSig = sig;
           let h = oxHead() + '<div class="oxb">';
@@ -2795,7 +2886,7 @@
               '<span class="g"></span><span class="oxw">' + smEsc(oxPT(d.updated_at)) + '</span></span>' +
               '<span class="oxs">' + smEsc(d.subject || '(no subject)') + '</span><span class="oxx">' + smEsc(String(d.body || '').replace(/\s+/g, ' ').slice(0, 260)) + '</span></span></button>';
           });
-          h += '</div><div class="oxhn">click a draft to edit · say outbox · read draft one · nothing sends from here</div>';
+          h += '</div><div class="oxhn">click a draft to edit · say ' + (oxLaneP === 'am' ? 'mandel outbox' : 'outbox') + ' · read draft one · nothing sends from here</div>';
           ov.innerHTML = h;
         }
         oxHeadFill(ov, st, waitReq);
@@ -3182,18 +3273,22 @@
     }
     // 9.1: the CHxTLD Outbox, as the tab holding it reports it. The OUT wedge is always on the pie, lit while
     // drafts are ready; a click opens them over the pie to read and edit. Nothing here sends mail or touches Gmail.
-    const OUTBOX_URL = 'https://claude.ai/artifact/S1cg22eqDYW7qKScqj3gRn';
-    let ox = null, oxManual = false, oxOpening = 0;
-    const oxAlive = () => !!ox && Date.now() - ox.at < 20000;
+    // 9.4: and the ANDRÉ MANDEL Outbox, its own lane, its own tab, its own letterhead. The two never share a draft
+    const OUTBOX_URLS = { ch: 'https://claude.ai/artifact/S1cg22eqDYW7qKScqj3gRn', am: 'https://claude.ai/artifact/NZ5VthFKGWUwMEWSoXKxCy' };
+    const OX_ID = { ch: '__outbox', am: '__amoutbox' }, OX_NAME = { ch: 'the CHxTLD Outbox', am: 'the ANDRÉ MANDEL Outbox' };
+    const oxL = (l) => (l === 'am' ? 'am' : 'ch');
+    const oxs = { ch: null, am: null }, oxOpening = { ch: 0, am: 0 };
+    let oxManual = false;   // false, or the lane open over the pie
+    const oxAlive = (l) => !!oxs[l] && Date.now() - oxs[l].at < 20000;
     function outboxModel() {
       if (!oxManual) return null;
-      const alive = oxAlive();
-      return { open: true, alive, st: alive ? ox.st : null, opening: !alive && Date.now() - oxOpening < 30000 };
+      const l = oxL(oxManual), alive = oxAlive(l);
+      return { open: true, lane: l, alive, st: alive ? oxs[l].st : null, opening: !alive && Date.now() - oxOpening[l] < 30000 };
     }
-    function outboxEntry() {
-      const base = { id: '__outbox', outbox: true, title: 'Outbox', name: 'Outbox', on: true, born: 0 };
-      if (!oxAlive() || !ox.st || !ox.st.loaded) return Object.assign(base, { closed: true, oxN: 0, nHold: 0 });
-      const c = ox.st.counts || {};
+    function outboxEntry(l) {
+      const base = { id: OX_ID[l], outbox: true, lane: l, title: l === 'am' ? 'ANDRÉ MANDEL Outbox' : 'CHxTLD Outbox', name: l === 'am' ? 'ANDRÉ MANDEL Outbox' : 'CHxTLD Outbox', on: true, born: 0 };
+      if (!oxAlive(l) || !oxs[l].st || !oxs[l].st.loaded) return Object.assign(base, { closed: true, oxN: 0, nHold: 0 });
+      const c = oxs[l].st.counts || {};
       return Object.assign(base, { closed: false, oxN: c.ready || 0, nHold: c.hold || 0 });
     }
     // 8.2: links every chat reported, by tab
@@ -3207,7 +3302,8 @@
       const f = lsGet('chf_sb_floor', null), list = tabs(), de = deckEntry();
       if (de) list.push(de);
       list.push(chiefEntry());   // 9.0
-      list.push(outboxEntry());  // 9.1
+      list.push(outboxEntry('ch'));  // 9.1
+      list.push(outboxEntry('am'));  // 9.4
       return { tabs: list, floorId: floorId || (f && f.id) || '', floor: floorP, quiet: lsGet('chf_sb_quiet', {}), ctl: ctlModel(), deck: deckModel(), cos: chiefModel(), ox: outboxModel(), links: linkList(), looks: { favs, step: lkStep, view: viewIdHQ, clock: lookClock } };
     }
     // 8.2: a page opens on the right of HQ when the site allows it; otherwise in a window docked there
@@ -3329,9 +3425,9 @@
       else if (m.t === 'view') { if (m.id) setViewHQ(m.id); else if (m.step) stepView(m.step); }   // 9.1: "radar view"
       else if (m.t === 'look-step' && m.dir) flipTheme(m.dir);
       else if (m.t === 'look-clock') setClock(!!m.on);   // 9.3: "follow the clock"
-      else if (m.t === 'outbox' && m.st) { ox = { from: m.from, st: m.st, at: Date.now() }; scr.paint(model()); }   // 9.1
+      else if (m.t === 'outbox' && m.st) { oxs[oxL(m.lane)] = { from: m.from, st: m.st, at: Date.now() }; scr.paint(model()); }   // 9.1, 9.4
       else if (m.t === 'outbox-ack' && m.to === 'mirror') outboxAckHQ(m);
-      else if (m.t === 'ox-show') outboxOpenHQ();
+      else if (m.t === 'ox-show') outboxOpenHQ(m.lane);
       else if (m.t === 'delivered' && m.to === 'mirror') gotDelivered(m);   // 8.7
       else if (m.t === 'boot' && m.from) { send({ t: 'boot-ack', to: m.from }); bootRun('voice'); }   // 8.9: "boot up" in a chat
       else if (m.t === 'hq-boot' && m.id && m.id !== HQ_ID) stepAside();                              // 8.9: a boot HQ replaces this one
@@ -3346,7 +3442,7 @@
     function jump(id) {
       if (id === '__deck') { deckOpen(); return; }   // 8.1
       if (id === '__chief') { chiefOpenHQ(); return; }   // 9.0
-      if (id === '__outbox') { outboxOpenHQ(); return; }   // 9.1
+      if (id === '__outbox' || id === '__amoutbox') { outboxOpenHQ(id === '__amoutbox' ? 'am' : 'ch'); return; }   // 9.1, 9.4
       const e = reg.get(id);
       if (!e) return;
       if (id === floorId) { scr.flash('Already here'); return; }
@@ -3536,32 +3632,34 @@
       } finally { launching = false; }
     }
     // 9.1: the Outbox over the pie. Save goes to the Outbox's tab, which writes the draft; Open outbox brings that tab forward
-    function outboxOpenHQ() {
-      oxManual = true; dkManual = false; chManual = false;
-      if (!oxAlive() && Date.now() - oxOpening > 15000) {
-        oxOpening = Date.now();
-        try { GM_openInTab(OUTBOX_URL, { active: false, insert: true }); } catch (e) { window.open(OUTBOX_URL, '_blank'); }
-        scr.flash('Opening the Outbox in a tab behind this one');
+    function outboxOpenHQ(lane) {
+      const l = oxL(lane);
+      oxManual = l; dkManual = false; chManual = false;
+      if (!oxAlive(l) && Date.now() - oxOpening[l] > 15000) {
+        oxOpening[l] = Date.now();
+        try { GM_openInTab(OUTBOX_URLS[l], { active: false, insert: true }); } catch (e) { window.open(OUTBOX_URLS[l], '_blank'); }
+        scr.flash('Opening ' + OX_NAME[l] + ' in a tab behind this one');
       }
       scr.paint(model());
     }
     const oxPend = new Set();   // saves waiting on the Outbox's answer
     function outboxAct(a) {
+      const l = oxL(a.lane || oxManual);
       if (a.cmd === 'close') { oxManual = false; scr.paint(model()); return; }
       if (a.cmd === 'tab') {
-        if (oxAlive()) { send({ t: 'front', to: ox.from }); scr.flash('The Outbox is in its own tab'); return; }
-        oxOpening = Date.now();
-        try { GM_openInTab(OUTBOX_URL, { active: true, insert: true }); } catch (e) { window.open(OUTBOX_URL, '_blank'); }
+        if (oxAlive(l)) { send({ t: 'front', to: oxs[l].from }); scr.flash(OX_NAME[l].replace(/^the/, 'The') + ' is in its own tab'); return; }
+        oxOpening[l] = Date.now();
+        try { GM_openInTab(OUTBOX_URLS[l], { active: true, insert: true }); } catch (e) { window.open(OUTBOX_URLS[l], '_blank'); }
         return;
       }
       if (a.cmd !== 'save') return;
-      if (!oxAlive()) {
-        if (Date.now() - oxOpening > 15000) { oxOpening = Date.now(); try { GM_openInTab(OUTBOX_URL, { active: false, insert: true }); } catch (e) {} }
+      if (!oxAlive(l)) {
+        if (Date.now() - oxOpening[l] > 15000) { oxOpening[l] = Date.now(); try { GM_openInTab(OUTBOX_URLS[l], { active: false, insert: true }); } catch (e) {} }
         scr.oxAck({ token: a.token, ok: false, why: 'closed' });
         return;
       }
       oxPend.add(a.token);
-      send({ t: 'outbox-cmd', to: ox.from, from: 'mirror', cmd: 'save', id: a.id, subject: a.subject, body: a.body, base: a.base || null, force: !!a.force, token: a.token });
+      send({ t: 'outbox-cmd', lane: l, to: oxs[l].from, from: 'mirror', cmd: 'save', id: a.id, subject: a.subject, body: a.body, base: a.base || null, force: !!a.force, token: a.token });
       setTimeout(() => { if (oxPend.delete(a.token)) scr.oxAck({ token: a.token, ok: false, why: 'timeout' }); }, 9000);
     }
     function outboxAckHQ(m) { if (oxPend.delete(m.token)) scr.oxAck(m); }
@@ -3662,7 +3760,7 @@
       if (!id) { scr.flash('No chat to send to yet. Click into a chat once'); return ''; }
       if (id === '__deck') { scr.flash('Swipe Deck does not take files'); return ''; }
       if (id === '__chief') { scr.flash('Chief of Staff does not take files'); return ''; }   // 9.0
-      if (id === '__outbox') { scr.flash('The Outbox does not take files'); return ''; }       // 9.1
+      if (id === '__outbox' || id === '__amoutbox') { scr.flash('The Outbox does not take files'); return ''; }       // 9.1
       if (!reg.has(id)) { scr.flash('That chat closed. Pick another'); return ''; }
       const token = Math.random().toString(36).slice(2);
       const list = [...(files || [])];
@@ -3751,7 +3849,7 @@
         const el = id ? e.target.closest('[data-jump]') : null;
         if (el !== dHot) { if (dHot) dHot.classList.remove('dhot'); dHot = el; if (el) el.classList.add('dhot'); }
         const to = id || cTarget();
-        cx.ovt.textContent = id === '__deck' ? 'Swipe Deck does not take files' : id === '__chief' ? 'Chief of Staff does not take files' : id === '__outbox' ? 'The Outbox does not take files' : to ? 'Drop to send to ' + cName(to) : 'Drop on a chat';
+        cx.ovt.textContent = id === '__deck' ? 'Swipe Deck does not take files' : id === '__chief' ? 'Chief of Staff does not take files' : (id === '__outbox' || id === '__amoutbox') ? 'The Outbox does not take files' : to ? 'Drop to send to ' + cName(to) : 'Drop on a chat';
         cx.ov.hidden = false; cx.fx.classList.add('dragging');
         clearTimeout(dOffT); dOffT = setTimeout(dragEnd, 400);
       };
@@ -3764,7 +3862,7 @@
         dragEnd();
         const fs = [...(e.dataTransfer.files || [])];
         if (!fs.length) return;
-        if (id && id !== '__deck' && id !== '__chief' && id !== '__outbox') cTo = id === floorId ? '' : id;
+        if (id && id !== '__deck' && id !== '__chief' && id !== '__outbox' && id !== '__amoutbox') cTo = id === floorId ? '' : id;
         deliver(id || cTarget(), fs, '', false);
       }, true);
       setInterval(paintCmp, 1000);
@@ -5780,12 +5878,18 @@
   // The Outbox page tells the claude.ai tab around it which drafts it holds. That tab passes them to every tab,
   // so HQ draws the OUT wedge and an editor over the pie, and "outbox" reads them aloud in any chat.
   // HQ only ever saves a draft's subject and body back. Nothing here sends mail or touches Gmail.
-  const OUTBOX_URL = 'https://claude.ai/artifact/S1cg22eqDYW7qKScqj3gRn';
-  const OX = { present: false, src: null, st: null, asked: new Map() };   // this tab holds the Outbox
-  const OXF = { st: null, from: '', at: 0, list: [], readAt: 0, want: '', wantN: 0, wantAt: 0, openAt: 0 };   // the Outbox as this tab hears it
-  function oxSend(cmd, extra) {
-    if (!OX.src) return false;
-    try { OX.src.postMessage(Object.assign({ type: 'outbox:cmd', v: 1, cmd }, extra || {}), '*'); return true; } catch (e) { return false; }
+  // 9.4: two lanes. "ch" is the CHxTLD Outbox, "am" the ANDRÉ MANDEL Outbox. Each page says which it is (the CHxTLD
+  // page predates lanes, so no lane means ch); every relay, save and answer carries the lane, so the two never mix.
+  const OX_URLS = { ch: 'https://claude.ai/artifact/S1cg22eqDYW7qKScqj3gRn', am: 'https://claude.ai/artifact/NZ5VthFKGWUwMEWSoXKxCy' };
+  const OX_SPOKEN = { ch: 'The Clever Homes outbox', am: 'The André Mandel outbox' };
+  const oxLane = (x) => (x === 'am' ? 'am' : 'ch');
+  const OXL = { ch: { present: false, src: null, st: null, asked: new Map() }, am: { present: false, src: null, st: null, asked: new Map() } };   // the Outbox this tab holds
+  const OXFL = { ch: { st: null, from: '', at: 0, openAt: 0, want: '', wantN: 0, wantAt: 0 }, am: { st: null, from: '', at: 0, openAt: 0, want: '', wantN: 0, wantAt: 0 } };   // as this tab hears them
+  const OXR = { list: [], lane: 'ch', readAt: 0 };   // the last list read aloud
+  function oxSend(lane, cmd, extra) {
+    const X = OXL[lane];
+    if (!X.src) return false;
+    try { X.src.postMessage(Object.assign({ type: 'outbox:cmd', v: 1, lane, cmd }, extra || {}), '*'); return true; } catch (e) { return false; }
   }
   function oxPing(w, depth) {
     if (depth > 4) return;
@@ -5796,84 +5900,94 @@
   }
   if (/\/artifact\//.test(location.pathname)) {
     let ops = 0;
-    const opT = setInterval(() => { if (OX.present || ++ops > 45) { clearInterval(opT); return; } oxPing(window, 0); }, 2000);
+    const opT = setInterval(() => { if (OXL.ch.present || OXL.am.present || ++ops > 45) { clearInterval(opT); return; } oxPing(window, 0); }, 2000);
   }
   window.addEventListener('message', (e) => {
     const d = e.data;
-    if (!d || typeof d !== 'object' || typeof d.type !== 'string' || d.type.indexOf('outbox:') !== 0 || e.source === window) return;
-    OX.src = e.source;
-    if (!OX.present) { OX.present = true; dlog('outbox', 'found'); }
-    if (d.type === 'outbox:hello') { oxSend('hello'); return; }
-    if (d.type === 'outbox:state') { OX.st = d; oxRelay(); return; }
+    if (!d || typeof d !== 'object' || typeof d.type !== 'string' || d.type.indexOf('outbox:') !== 0 || d.type === 'outbox:cmd' || e.source === window) return;
+    const lane = oxLane(d.lane), X = OXL[lane];
+    X.src = e.source;
+    if (!X.present) { X.present = true; dlog('outbox', 'found ' + lane); }
+    if (d.type === 'outbox:hello') { oxSend(lane, 'hello'); return; }
+    if (d.type === 'outbox:state') { X.st = d; oxRelay(lane); return; }
     if (d.type === 'outbox:ack') {
-      const to = OX.asked.get(d.token); OX.asked.delete(d.token);
+      const to = X.asked.get(d.token); X.asked.delete(d.token);
       const cur = d.current && typeof d.current === 'object' ? { subject: String(d.current.subject || ''), body: String(d.current.body || '') } : null;
-      if (to) post({ t: 'outbox-ack', to, token: d.token, cmd: d.cmd, id: d.id, ok: !!d.ok, why: String(d.why || ''), current: cur, at: String(d.at || '') });
+      if (to) post({ t: 'outbox-ack', lane, to, token: d.token, cmd: d.cmd, id: d.id, ok: !!d.ok, why: String(d.why || ''), current: cur, at: String(d.at || '') });
     }
   });
   const oxStr = (x, n) => String(x == null ? '' : x).slice(0, n);
-  function oxRelay() {
-    if (!OX.present || !OX.st) return;
-    const s = OX.st, c = s.counts || {};
+  function oxRelay(lane) {
+    const X = OXL[lane];
+    if (!X.present || !X.st) return;
+    const s = X.st, c = s.counts || {};
     const drafts = (Array.isArray(s.drafts) ? s.drafts : []).slice(0, 24).map((d) => ({
       id: oxStr(d.id, 120), subject: oxStr(d.subject, 400), body: oxStr(d.body, 40000), to: oxStr(d.to, 600), cc: oxStr(d.cc, 600), thread: oxStr(d.thread, 300),
       status: d.status === 'sent' ? 'sent' : d.status === 'hold' ? 'hold' : 'ready', order: +d.order || 99,
       updated_at: oxStr(d.updated_at, 40), edited_by: oxStr(d.edited_by, 120), sent_at: oxStr(d.sent_at, 40) }));
     const st = { loaded: !!s.loaded, canWrite: !!s.canWrite, drafts, counts: { ready: +c.ready || 0, hold: +c.hold || 0, sent: +c.sent || 0, total: +c.total || drafts.length },
       sigHtml: oxStr(s.sigHtml, 12000), sigText: oxStr(s.sigText, 2000), note: oxStr(s.note, 300) };
-    post({ t: 'outbox', from: ME, st });
-    oxHeard({ from: ME, st });   // a channel never hears itself
+    post({ t: 'outbox', lane, from: ME, st });
+    oxHeard({ lane, from: ME, st });   // a channel never hears itself
   }
-  setInterval(() => { if (OX.present) oxRelay(); }, 5000);
+  setInterval(() => { for (const l of ['ch', 'am']) if (OXL[l].present) oxRelay(l); }, 5000);
   // a save from HQ, for the Outbox this tab holds
   function oxFromTab(m) {
     if (m.cmd !== 'save') return;
-    if (!OX.present) { if (m.from) post({ t: 'outbox-ack', to: m.from, token: m.token, cmd: m.cmd, id: m.id, ok: false, why: 'closed' }); return; }
-    OX.asked.set(m.token, m.from);
-    oxSend('save', { id: m.id, subject: String(m.subject == null ? '' : m.subject), body: String(m.body == null ? '' : m.body), base: m.base || null, force: !!m.force, token: m.token });
+    const lane = oxLane(m.lane), X = OXL[lane];
+    if (!X.present) { if (m.from) post({ t: 'outbox-ack', lane, to: m.from, token: m.token, cmd: m.cmd, id: m.id, ok: false, why: 'closed' }); return; }
+    X.asked.set(m.token, m.from);
+    oxSend(lane, 'save', { id: m.id, subject: String(m.subject == null ? '' : m.subject), body: String(m.body == null ? '' : m.body), base: m.base || null, force: !!m.force, token: m.token });
   }
-  const oxAliveT = () => !!OXF.st && Date.now() - OXF.at < 20000;
+  const oxAliveT = (lane) => !!OXFL[lane].st && Date.now() - OXFL[lane].at < 20000;
   function oxHeard(m) {
-    OXF.st = m.st; OXF.from = m.from; OXF.at = Date.now();
-    if (OXF.want && m.st.loaded && Date.now() - OXF.wantAt < 45000) { const w = OXF.want, n = OXF.wantN; OXF.want = ''; if (w === 'read') oxRead(n); else oxList(); }
+    const lane = oxLane(m.lane), F = OXFL[lane];
+    F.st = m.st; F.from = m.from; F.at = Date.now();
+    if (F.want && m.st.loaded && Date.now() - F.wantAt < 45000) { const w = F.want, n = F.wantN; F.want = ''; if (w === 'read') oxRead(n, lane); else oxList(lane); }
   }
   // spoken lines
   const oxWhoSaid = (s) => String(s || '').split(',').map((x) => { x = x.trim(); const mm = x.match(/^"?([^"<]+?)"?\s*</); return mm ? mm[1].trim() : x.replace(/@.*$/, ''); }).filter(Boolean).join(' and ');
-  const oxOpenDrafts = () => (OXF.st.drafts || []).filter((d) => d.status !== 'sent');
-  function oxOpen(want, n) {
-    OXF.want = want; OXF.wantN = n || 0; OXF.wantAt = Date.now();
-    if (Date.now() - OXF.openAt < 20000) return say('The Outbox is opening. One moment.');
-    OXF.openAt = Date.now();
-    try { GM_openInTab(OUTBOX_URL, { active: false, insert: true }); } catch (e) { window.open(OUTBOX_URL, '_blank'); }
-    return say('Opening the Outbox. One moment.');
+  const oxOpenDrafts = (lane) => (OXFL[lane].st.drafts || []).filter((d) => d.status !== 'sent');
+  function oxOpen(lane, want, n) {
+    const F = OXFL[lane], nm = OX_SPOKEN[lane];
+    F.want = want; F.wantN = n || 0; F.wantAt = Date.now();
+    if (Date.now() - F.openAt < 20000) return say(nm + ' is opening. One moment.');
+    F.openAt = Date.now();
+    try { GM_openInTab(OX_URLS[lane], { active: false, insert: true }); } catch (e) { window.open(OX_URLS[lane], '_blank'); }
+    return say('Opening ' + nm.replace(/^The/, 'the') + '. One moment.');
   }
-  function oxList() {
-    if (!oxAliveT()) return oxOpen('list');
-    const s = OXF.st;
-    if (!s.loaded) { OXF.want = 'list'; OXF.wantAt = Date.now(); return say('The Outbox is still loading. One moment.'); }
-    post({ t: 'ox-show' });   // HQ opens the drafts over the pie
-    const ds = oxOpenDrafts(), c = s.counts || {};
-    OXF.list = ds.map((d) => d.id); OXF.readAt = Date.now();
-    if (!ds.length) return say('The Outbox is empty.');
-    const bits = ['Outbox.', (c.ready || 0) + ' ready' + (c.hold ? ', ' + c.hold + ' on hold' : '') + '.'];
+  function oxList(lane) {
+    lane = oxLane(lane);
+    if (!oxAliveT(lane)) return oxOpen(lane, 'list');
+    const s = OXFL[lane].st, nm = OX_SPOKEN[lane];
+    if (!s.loaded) { OXFL[lane].want = 'list'; OXFL[lane].wantAt = Date.now(); return say(nm + ' is still loading. One moment.'); }
+    post({ t: 'ox-show', lane });   // HQ opens the drafts over the pie
+    const ds = oxOpenDrafts(lane), c = s.counts || {};
+    OXR.list = ds.map((d) => d.id); OXR.lane = lane; OXR.readAt = Date.now();
+    if (!ds.length) return say(nm + ' is empty.');
+    const bits = [nm + '.', (c.ready || 0) + ' ready' + (c.hold ? ', ' + c.hold + ' on hold' : '') + '.'];
     ds.slice(0, 6).forEach((d, i) => bits.push('Number ' + (i + 1) + ', ' + (d.status === 'hold' ? 'on hold' : 'ready') + ', to ' + (oxWhoSaid(d.to) || 'no one yet') + '. ' + chiefEnd(d.subject || 'No subject')));
     bits.push(ds.length === 1 ? 'Say read the draft to hear it.' : 'Say read draft and the number to hear one.');
     return say(bits.join(' '));
   }
-  function oxRead(n) {
-    if (!oxAliveT()) return oxOpen('read', n);
-    const s = OXF.st;
-    if (!s.loaded) { OXF.want = 'read'; OXF.wantN = n || 0; OXF.wantAt = Date.now(); return say('The Outbox is still loading. One moment.'); }
-    const ds = oxOpenDrafts();
-    const ids = OXF.list.length && Date.now() - OXF.readAt < 10 * 60000 ? OXF.list : ds.map((d) => d.id);
-    if (!ids.length) return say('The Outbox is empty.');
+  function oxRead(n, lane) {
+    const fresh = OXR.list.length && Date.now() - OXR.readAt < 10 * 60000;
+    lane = oxLane(lane || (fresh ? OXR.lane : 'ch'));
+    if (!oxAliveT(lane)) return oxOpen(lane, 'read', n);
+    const s = OXFL[lane].st, nm = OX_SPOKEN[lane];
+    if (!s.loaded) { OXFL[lane].want = 'read'; OXFL[lane].wantN = n || 0; OXFL[lane].wantAt = Date.now(); return say(nm + ' is still loading. One moment.'); }
+    const ds = oxOpenDrafts(lane);
+    const ids = fresh && OXR.lane === lane ? OXR.list : ds.map((d) => d.id);
+    if (!ids.length) return say(nm + ' is empty.');
     if (!n) { if (ids.length === 1) n = 1; else return say('Which one? Say read draft and the number, 1 to ' + ids.length + '.'); }
     const d = (s.drafts || []).find((x) => x.id === ids[n - 1]);
-    if (!d) return say('There is no draft ' + n + '. The Outbox has ' + ids.length + '.');
-    post({ t: 'ox-show' });
+    if (!d) return say('There is no draft ' + n + '. ' + nm + ' has ' + ids.length + '.');
+    post({ t: 'ox-show', lane });
     return say('Draft ' + n + ', to ' + (oxWhoSaid(d.to) || 'no one yet') + '. ' + chiefEnd(d.subject || 'No subject') + ' ' + String(d.body || '').replace(/\s*\n\s*/g, ' ').trim());
   }
-  const OX_SAID = /^(?:(?:open|read|check|show|show me|pull up|bring up|go to|take me to|what's in|whats in|what is in|read me)\s+)?(?:the\s+|my\s+)?(?:outbox|out box|outbox drafts|out box drafts)(?:\s+(?:please|now))*$|^(?:read|check|show me|read me)\s+(?:my\s+)?(?:email\s+)?drafts(?:\s+please)?$/;
+  // 9.4: "mandel outbox", "andre mandel outbox", "practice outbox", "personal outbox" open the ANDRÉ MANDEL Outbox
+  const AM_OX_SAID = /^(?:(?:open|read|check|show|show me|pull up|bring up|go to|take me to|what's in|whats in|what is in|read me)\s+)?(?:the\s+|my\s+)?(?:andre mandel|andré mandel|andre|andré|mandel|practice|private practice|personal|a m)(?:'s|s)?\s+(?:outbox|out box)(?:\s+drafts)?(?:\s+(?:please|now))*$/;
+  const OX_SAID = /^(?:(?:open|read|check|show|show me|pull up|bring up|go to|take me to|what's in|whats in|what is in|read me)\s+)?(?:the\s+|my\s+)?(?:(?:clever homes|c h x|chx|chxtld|work)\s+)?(?:outbox|out box|outbox drafts|out box drafts)(?:\s+(?:please|now))*$|^(?:read|check|show me|read me)\s+(?:my\s+)?(?:email\s+)?drafts(?:\s+please)?$/;
   const OX_NW = '(one|won|first|1|two|to|too|second|2|three|third|3|four|for|fourth|4|five|fifth|5|six|sixth|6)';
   const OX_N = Object.assign({}, CHIEF_N, { six: 6, sixth: 6, '6': 6 });
   const OX_READ_RES = [
@@ -5881,7 +5995,7 @@
     new RegExp('^(outbox )?draft(?: number)? ' + OX_NW + '$')
   ];
   function oxReadSaid(flat) {
-    const fresh = OXF.list.length && Date.now() - OXF.readAt < 10 * 60000;
+    const fresh = OXR.list.length && Date.now() - OXR.readAt < 10 * 60000;
     for (const re of OX_READ_RES) { const m = flat.match(re); if (m && (fresh || m[1])) return { kind: 'oxRead', n: OX_N[m[2]] || 0 }; }
     if (fresh && /^(?:read|play|read me)(?: me)? (?:the|that|this) draft(?: please)?$/.test(flat)) return { kind: 'oxRead', n: 0 };
     return null;
@@ -7068,6 +7182,7 @@
     // 7.9: Swipe Deck hands free
     if (/^(?:(?:open|start|review|run|do|go to|take me to|bring up|pull up|let's do|lets do|let's review)\s+)?(?:the\s+|my\s+)?(?:swipe ?decks?|swipe ?deck review|deck review|review (?:the |my )?deck)(?:\s+(?:hands free|please|now))*$/.test(flat)) return { kind: 'deck' };
     // 9.0: Chief of Staff. "chief" reads the brief, "what needs me" reads Start Here, "done two" closes one
+    if (AM_OX_SAID.test(flat)) return { kind: 'outbox', lane: 'am' };   // 9.4
     if (OX_SAID.test(flat)) return { kind: 'outbox' };   // 9.1: "outbox" lists the drafts, "read draft two" reads one
     { const orx = oxReadSaid(flat); if (orx) return orx; }
     if (CHIEF_SAID.test(flat)) return { kind: 'chief' };
@@ -7392,7 +7507,7 @@
     if (c.kind === 'chiefNeeds') return chiefNeeds();
     if (c.kind === 'chiefDone') return chiefDone(c.n);
     if (c.kind === 'chiefUndo') return chiefUndo();
-    if (c.kind === 'outbox') return oxList();             // 9.1
+    if (c.kind === 'outbox') return oxList(c.lane || 'ch');   // 9.1, 9.4
     if (c.kind === 'oxRead') return oxRead(c.n);
     if (c.kind === 'update') return checkUpdate(true);   // 8.1.1
     if (c.kind === 'boot') return bootFromChat();         // 8.9

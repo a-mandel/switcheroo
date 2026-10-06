@@ -4,6 +4,12 @@ Hands free Claude in Chrome: dictation, read aloud, a switchboard for every Clau
 
 Install or update: open [switcheroo.user.js](https://raw.githubusercontent.com/a-mandel/switcheroo/main/switcheroo.user.js) with Tampermonkey installed. Tampermonkey keeps it current from this repo on its own. Say "update Switcheroo" to check right away.
 
+## Two outboxes, ten looks (9.4)
+
+The **ANDRÉ MANDEL Outbox** is a second outbox for private practice mail, beside the CHxTLD one. It has its own page, its own AMO wedge on the pie, and opens over the pie on its own letterhead. Each outbox keeps its own lane: every relay, save and answer names which one it belongs to, so a draft never crosses over. **CHxTLD** and **Mandel** pills sit beside Chief on the rail with their ready counts, and the panels open under the rail so you can hop between them. Say "mandel outbox" or "practice outbox" for the ANDRÉ MANDEL drafts; "outbox" is still CHxTLD. Nothing sends from either.
+
+Ten new looks. The sketch family now runs by how sketchy it is: Trace (a light pencil), Sketch, Marker (bold felt tip), Charcoal (smudged and shaky), Chalkboard and Funnies (comic ink on newsprint). Five genre looks: Space Opera, Overdrive, Dime Novel, Desert Neon and Bunker.
+
 ## Dark to light (9.3)
 
 The looks now run in order of brightness, darkest first and the whites at the end, with each band of dark looks sweeping through the colors so a step lands on a neighbor instead of a flash. A change fades from the old background to the new one.
