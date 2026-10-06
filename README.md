@@ -4,6 +4,12 @@ Hands free Claude in Chrome: dictation, read aloud, a switchboard for every Clau
 
 Install or update: open [switcheroo.user.js](https://raw.githubusercontent.com/a-mandel/switcheroo/main/switcheroo.user.js) with Tampermonkey installed. Tampermonkey keeps it current from this repo on its own. Say "update Switcheroo" to check right away.
 
+## Views and looks (9.2)
+
+A pill rail sits over the stage. **View** steps through eleven ways to draw your chats: Pie, Radar, Puzzle, Seismograph, Mixer, Orbit, Lanes, Timeline, Departures, Honeycomb and Treemap. Tap the name for all of them, press Option Shift V, or say "radar view" or "next view". **Look** steps one look at a time either way; tap the name for every look as a tile in its own colors and type, favorites first, with a star to keep one. "Arrows step through" can keep the arrows to favorites. Say "look eight" to jump by number. Two new looks, Sketch and Sketch Night, are hand lettered architectural sketches.
+
+The **Chief** pill opens Chief of Staff any time (Option Shift C). Start Here runs the full height, and every card has Open chat, or New chat with the thread typed in and not sent.
+
 ## Outbox (9.1)
 
 The CHxTLD Outbox joins HQ the way Chief of Staff did. An OUT wedge and rail sit on the pie, lit while drafts are ready. Click it and your drafts open over the pie in the Outbox's white mail look. Click one to edit it right there: subject and body save back to the Outbox a moment after you stop typing, or on Save or Cmd S. If a newer version lands while you type, a bar offers Load it or Keep mine, so nothing gets typed over. Copy for Gmail puts the body and your signature on the clipboard. If the Outbox isn't open anywhere, the click opens it in a tab behind HQ.

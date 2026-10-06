@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Claude Hands Free Text Mode
 // @namespace    andre.mandel
-// @version      9.1.0
-// @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land. 8.8: one model for every open chat, by voice ("all chats to Sonnet") or from the HQ model pills. 8.9: Boot. The Switcheroo Chrome launcher opens HQ with your 10 most recent chats behind it and the mic ready, no clicks; or say "boot up". 8.9.1: "stop, new chat in Alder" works: a lead in no longer hides a command, and new chat finds every project, not just the sidebar. 8.9.2: the mic bell is now the Long bell, struck three times so the AirPods can't clip it. 8.9.3: Retro, a third HQ look: sunset sky, a neon floor rolling toward you, chrome type. Click Look on the control panel, or say "retro look". 9.0: Chief of Staff joins HQ as the COS wedge and panel, and a fourth look, night drive, from the board. Say chief for the brief, what needs me for Start Here, done two to close a thread, undo to reopen it. 9.0.1: fifty looks. Each push of Look steps to the next one (right click goes back); say "next look", "previous look", "random look" or a look by name. And "next, over" heard as "next server" still jumps. 9.1: the CHxTLD Outbox joins HQ as the OUT wedge, and a click opens your drafts over the pie to read and edit; edits save back to the Outbox. Say "outbox" to hear them, "read draft two" to hear one. Nothing sends from HQ.
+// @version      9.2
+// @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land. 8.8: one model for every open chat, by voice ("all chats to Sonnet") or from the HQ model pills. 8.9: Boot. The Switcheroo Chrome launcher opens HQ with your 10 most recent chats behind it and the mic ready, no clicks; or say "boot up". 8.9.1: "stop, new chat in Alder" works: a lead in no longer hides a command, and new chat finds every project, not just the sidebar. 8.9.2: the mic bell is now the Long bell, struck three times so the AirPods can't clip it. 8.9.3: Retro, a third HQ look: sunset sky, a neon floor rolling toward you, chrome type. Click Look on the control panel, or say "retro look". 9.0: Chief of Staff joins HQ as the COS wedge and panel, and a fourth look, night drive, from the board. Say chief for the brief, what needs me for Start Here, done two to close a thread, undo to reopen it. 9.0.1: fifty looks. Each push of Look steps to the next one (right click goes back); say "next look", "previous look", "random look" or a look by name. And "next, over" heard as "next server" still jumps. 9.1: the CHxTLD Outbox joins HQ as the OUT wedge, and a click opens your drafts over the pie to read and edit; edits save back to the Outbox. Say "outbox" to hear them, "read draft two" to hear one. Nothing sends from HQ. 9.2: a View pill with eleven ways to draw your chats, a Look pill with a picker and favorites, two hand sketched looks, and Chief of Staff one tap away with Open chat on every Start Here card.
 // @match        https://claude.ai/*
 // @match        *://*/*
 // @grant        GM_xmlhttpRequest
@@ -332,6 +332,12 @@
     goes forward, a right click goes back. By voice: "next look", "previous look", "random look", or
     a name, like "blueprint look" or "change the look to aurora". A look's fonts load the first time
     you land on it. Also: "next, over" heard as "next server" now jumps instead of landing as text.
+  9.2: VIEWS AND LOOKS. A pill rail over the stage. View steps through eleven ways to draw your chats: Pie, Radar,
+    Puzzle, Seismograph, Mixer, Orbit, Lanes, Timeline, Departures, Honeycomb, Treemap (Option Shift V, or "radar view").
+    Look steps one look at a time either way; its name opens every look as a tile in its own colors, favorites first,
+    and the arrows can keep to favorites. Two sketch looks, hand lettered, black on white and white on black. The Chief
+    pill opens Chief of Staff any time (Option Shift C); the panel runs two columns, and every Start Here card has
+    Open chat, or New chat with the thread typed in and not sent. "Look eight" jumps to a look by number.
   9.0: CHIEF OF STAFF. The Chief of Staff board joins HQ: a COS wedge and rail on the pie, sized by how many
     threads need you, and a click opens the brief and Start Here over the pie in the board's own look, each thread
     numbered with Mark done. If the board isn't open, the click opens it in a tab behind HQ. By voice in any chat:
@@ -728,7 +734,8 @@
       'Cinzel': 'Cinzel:wght@400;600;700', 'Poiret One': 'Poiret+One', 'Josefin Sans': 'Josefin+Sans:wght@400;600;700', 'VT323': 'VT323',
       'Silkscreen': 'Silkscreen:wght@400;700', 'Major Mono Display': 'Major+Mono+Display', 'Unbounded': 'Unbounded:wght@400;600;700',
       'Manrope': 'Manrope:wght@400;500;600;700', 'Bungee': 'Bungee', 'Work Sans': 'Work+Sans:wght@400;500;600;700',
-      'Chakra Petch': 'Chakra+Petch:wght@400;500;600;700', 'Archivo Black': 'Archivo+Black', 'Big Shoulders Display': 'Big+Shoulders+Display:wght@500;700;800'
+      'Chakra Petch': 'Chakra+Petch:wght@400;500;600;700', 'Archivo Black': 'Archivo+Black', 'Big Shoulders Display': 'Big+Shoulders+Display:wght@500;700;800',
+      'Architects Daughter': 'Architects+Daughter'   // 9.1: hand lettering for the sketch looks
     };
     const SM_KITS = {   // headings, body, numbers
       grid: ['Orbitron', 'Exo 2', 'Share Tech Mono'], arcade: ['Audiowide', 'Exo 2', 'Share Tech Mono'], wide: ['Michroma', 'Barlow', 'Share Tech Mono'],
@@ -738,10 +745,11 @@
       deco: ['Poiret One', 'Josefin Sans', 'DM Mono'], midcen: ['Josefin Sans', 'Josefin Sans', 'DM Mono'], crt: ['VT323', 'IBM Plex Mono', 'IBM Plex Mono'],
       pixel: ['Silkscreen', 'Space Mono', 'Space Mono'], round: ['Unbounded', 'Manrope', 'JetBrains Mono'], sign: ['Bungee', 'Work Sans', 'Space Mono'],
       mil: ['Chakra Petch', 'Chakra Petch', 'Share Tech Mono'], brut: ['Archivo Black', 'Inter', 'JetBrains Mono'],
-      shoulders: ['Big Shoulders Display', 'Barlow', 'JetBrains Mono'], zen: ['Shippori Mincho', 'Shippori Mincho', 'DM Mono']
+      shoulders: ['Big Shoulders Display', 'Barlow', 'JetBrains Mono'], zen: ['Shippori Mincho', 'Shippori Mincho', 'DM Mono'],
+      sketch: ['Architects Daughter', 'Architects Daughter', 'Architects Daughter']   // 9.1
     };
     const SM_WIDE = /^(arcade|wide|draft|round|sign|pixel|brut)$/;   // wide faces: the big HOLD word steps down a size
-    const smStack = (n, kind) => '"' + n + '",' + (kind === 'm' ? '"SF Mono",Menlo,ui-monospace,monospace' : /Playfair|Lora|Cinzel|Garamond|Mincho/.test(n) ? 'Georgia,serif' : 'Arial,sans-serif');
+    const smStack = (n, kind) => '"' + n + '",' + (kind === 'm' ? '"SF Mono",Menlo,ui-monospace,monospace' : /Playfair|Lora|Cinzel|Garamond|Mincho/.test(n) ? 'Georgia,serif' : /Architects/.test(n) ? '"Bradley Hand","Segoe Print","Comic Sans MS",cursive' : 'Arial,sans-serif');
     function smKit(k, wf) {
       const a = SM_KITS[k] || SM_KITS.grid;
       return { hf: smStack(a[0]), bf: smStack(a[1]), mf: smStack(a[2], 'm'), wf: wf ? smStack(wf) : '', fams: a.concat(wf ? [wf] : []) };
@@ -844,7 +852,13 @@
       // loud
       smLook('tokyo', 'Neon Tokyo', 'sign', 'fx-sky fx-scan sh-neon sh-grad', ['#0b0714', '#150d24', '#3a2456', '#fdf0ff', '#b39ad1', '#ff2fd6', '#ff3860', '#ffe14d', '#22e4ff', '#35244e']),
       smLook('pixel', 'Pixel Arcade', 'pixel', 'fx-scan fx-dots sh-thick', ['#101018', '#191927', '#33334d', '#f5f5ff', '#9a9ac2', '#7cff4f', '#ff4f6d', '#ffd84f', '#4fc3ff', '#2e2e45']),
-      smLook('whiteroom', 'White Room', 'wide', 'lite', ['#f7f7f5', '#ededea', '#d6d6d2', '#111111', '#6a6a66', '#e2231a', '#e2231a', '#e0961a', '#2a5d9c', '#cfcfca'])
+      smLook('whiteroom', 'White Room', 'wide', 'lite', ['#f7f7f5', '#ededea', '#d6d6d2', '#111111', '#6a6a66', '#e2231a', '#e2231a', '#e0961a', '#2a5d9c', '#cfcfca']),
+      // 9.1: architectural sketches. Hand lettering, vellum grid, lines that overshoot the corners and wobble like a pencil.
+      // Graphite on trace, redline for what needs you, blue pencil for working; and the same on a blackline sheet
+      smLook('sketch', 'Sketch', 'sketch', 'lite fx-sketch', ['#f7f5ef', '#efece4', '#57544d', '#1d1c1a', '#6d6a63', '#1d1c1a', '#c8342a', '#d98a1c', '#2a5d9c', '#c9c5ba'], { v: {
+        grid: 'rgba(29,28,26,.05)', dot: 'rgba(29,28,26,.1)', panel: 'rgba(250,249,245,.92)' } }),
+      smLook('sketchnight', 'Sketch Night', 'sketch', 'fx-sketch', ['#121314', '#1b1c1e', '#9a9a96', '#f3f1ea', '#a6a49d', '#f3f1ea', '#ff6b5a', '#ffcc66', '#7cc4ff', '#3d3e41'], { v: {
+        grid: 'rgba(243,241,234,.045)', dot: 'rgba(243,241,234,.09)', panel: 'rgba(22,23,25,.92)' } })
     ].forEach((t) => { SM_THEMES[t.id] = t; });
     const SM_LOOKS = Object.keys(SM_THEMES);   // 9.0.1: the order Look steps through, CHxTLD, Tron, Retro, Night drive first
     // fonts a look needs, fetched the first time you land on it; the startup set is already in hand
@@ -943,6 +957,24 @@
         .sort((x, y) => smRank(x.e, x.k) - smRank(y.e, y.k) || (x.e.since || 0) - (y.e.since || 0))[0] || null;
     }
     // 8.0: the switches in the control panel: key, label, what it does
+    // 9.1: the ways HQ can draw your chats. The View pill steps through them; its name opens them all
+    const SM_VIEWS = [['pie', 'Pie', 'Wedges and load rails'], ['radar', 'Radar', 'Rings by need, a sweep'], ['puzzle', 'Puzzle', 'A piece per chat'],
+      ['seismo', 'Seismograph', 'Traces that quake'], ['mixer', 'Mixer', 'Channel strips and meters'], ['orbit', 'Orbit', 'Close orbits need you'],
+      ['lanes', 'Lanes', 'Four columns'], ['timeline', 'Timeline', 'Twenty minute bars'], ['board', 'Departures', 'Split flap, urgent first'],
+      ['hive', 'Honeycomb', 'Hex cells round the hub'], ['treemap', 'Treemap', 'Ground by need']];
+    const SM_VIEW_ICON = {   // 44 by 44 glyphs for the picker, drawn in the accent
+      pie: '<circle cx="22" cy="22" r="17"/><path d="M22 22 L22 5 M22 22 L37 30 M22 22 L8 32"/>',
+      radar: '<circle cx="22" cy="22" r="17"/><circle cx="22" cy="22" r="10"/><path d="M22 22 L34 10"/><circle cx="30" cy="27" r="2.5" fill="currentColor"/>',
+      puzzle: '<path d="M8 12 h9 c0 -5 7 -5 7 0 h9 v9 c5 0 5 7 0 7 v9 h-9 c0 -5 -7 -5 -7 0 h-9 Z"/>',
+      seismo: '<path d="M4 22 h7 l3 -10 l4 20 l4 -26 l4 30 l3 -14 h11"/>',
+      mixer: '<path d="M11 6 v32 M22 6 v32 M33 6 v32"/><rect x="7" y="24" width="8" height="5"/><rect x="18" y="12" width="8" height="5"/><rect x="29" y="18" width="8" height="5"/>',
+      orbit: '<ellipse cx="22" cy="22" rx="18" ry="8"/><circle cx="22" cy="22" r="5" fill="currentColor"/><circle cx="37" cy="25" r="3"/>',
+      lanes: '<rect x="5" y="7" width="7" height="30"/><rect x="15" y="7" width="7" height="20"/><rect x="25" y="7" width="7" height="25"/><rect x="35" y="7" width="4" height="12"/>',
+      timeline: '<path d="M6 11 h32 M14 22 h24 M24 33 h14"/><path d="M38 6 v32" stroke-dasharray="2 3"/>',
+      board: '<rect x="5" y="8" width="34" height="9"/><rect x="5" y="20" width="34" height="9"/><rect x="5" y="32" width="34" height="5"/><path d="M5 12.5 h34 M5 24.5 h34"/>',
+      hive: '<path d="M22 6 l7 4 v8 l-7 4 l-7 -4 v-8 Z M13 21 l7 4 v8 l-7 4 l-7 -4 v-8 Z M31 21 l7 4 v8 l-7 4 l-7 -4 v-8 Z"/>',
+      treemap: '<rect x="5" y="6" width="34" height="32"/><path d="M24 6 v32 M5 24 h19 M24 17 h15 M32 17 v21"/>'
+    };
     const SM_CTL = [
       ['read', 'Read aloud', 'New replies are read to you as they finish'],
       ['mic', 'Mic after', 'Your mic opens by itself when a reading or a Switcheroo line ends'],
@@ -1055,7 +1087,7 @@
         '.smx .bar .nx.clear{color:var(--mute)}',
         '.smx .bar .pz{font:15px var(--mf);letter-spacing:.2em;border:1px solid var(--line);padding:6px 12px;color:var(--mute);white-space:nowrap;flex:none}',
         '.smx .bar .pz.on{color:var(--need);border-color:var(--need)}',
-        '.smx .stage{position:absolute;left:800px;top:100px;width:1100px;bottom:248px}',
+        '.smx .stage{position:absolute;left:800px;top:152px;width:1100px;bottom:248px}',   // 9.1: under the pill rail
         '.smx .stage svg{width:100%;height:100%;display:block;overflow:visible}',
         '.smx .pulse{animation:smpulse 1.6s ease-in-out infinite}',
         '@keyframes smpulse{50%{opacity:.5}}',
@@ -1116,8 +1148,8 @@
         '.smx.light .tg .sw i{box-shadow:0 1px 2px rgba(0,0,0,.25)}',
         '.smx .bar .pz.held{background:var(--need);color:var(--bg);border-color:var(--need)}',
         // 8.1: approvals and question cards, clickable
-        '.smx .asks{position:absolute;left:800px;top:100px;width:1100px;height:300px;border:1px solid var(--line);background:var(--panel);padding:20px 26px;display:flex;flex-direction:column;gap:12px;overflow:hidden;box-shadow:inset 4px 0 0 var(--need)}',
-        '.smx.asking .stage{top:416px}',
+        '.smx .asks{position:absolute;left:800px;top:152px;width:1100px;height:300px;border:1px solid var(--line);background:var(--panel);padding:20px 26px;display:flex;flex-direction:column;gap:12px;overflow:hidden;box-shadow:inset 4px 0 0 var(--need)}',
+        '.smx.asking .stage{top:468px}',   // 9.1: approvals sit under the pill rail
         '.smx :where(.asks button,.dkov button,.flw){all:unset;box-sizing:border-box;cursor:pointer}',
         '.smx .asks button:focus-visible,.smx .dkov button:focus-visible,.smx .flw:focus-visible{outline:3px solid var(--ink);outline-offset:2px}',
         '.smx .asks .ak{font:600 17px var(--mf);letter-spacing:.18em;text-transform:uppercase;color:var(--need)}',
@@ -1340,7 +1372,72 @@
         // 9.0: Chief of Staff over the pie. It always wears the board's night drive look, whatever the HQ look
         '.smx.cosing .stage{opacity:.14;filter:blur(2px)}',
         '.smx.cosing .asks,.smx.cosing .dkov{display:none}',
-        '.smx .cos{--k-bg:#0a0912;--k-panel:#100e1c;--k-panel2:#19143a;--k-line:#2a2647;--k-fg:#ece8f6;--k-dim:#8f8aad;--k-cyan:#52d9ff;--k-violet:#8f74ff;--k-mag:#ff4f9e;--k-sun:#ff9447;--k-gold:#ffd36e;--k-chx:#ffcf6a;--k-per:#b49bff;--k-d:"Syncopate","Orbitron",Arial,sans-serif;--k-b:"Barlow","Exo 2",Arial,sans-serif;--k-l:"Barlow Condensed","Rajdhani","Arial Narrow",sans-serif;position:absolute;left:800px;top:100px;width:1100px;bottom:248px;z-index:3;display:flex;flex-direction:column;gap:14px;padding:20px 24px 14px;background:radial-gradient(900px 380px at 50% -14%,rgba(143,116,255,.22),transparent 70%),var(--k-bg);border:1px solid var(--k-line);color:var(--k-fg);font-family:var(--k-b);box-shadow:0 18px 40px rgba(0,0,0,.35);overflow:hidden}',
+        // 9.1: the pill rail over the stage: Chief on the left, View and Look on the right
+        '.smx .prl{position:absolute;left:800px;top:100px;width:1100px;height:44px;display:flex;align-items:center;gap:12px}',
+        '.smx :where(.prl button,.pik button){all:unset;box-sizing:border-box;cursor:pointer}',
+        '.smx .prl button:focus-visible,.smx .pik button:focus-visible{outline:3px solid var(--ink);outline-offset:2px}',
+        '.smx .prl .gr{flex:1}',
+        '.smx .pil{display:flex;align-items:stretch;height:42px;border:1px solid var(--line);background:var(--panel);border-radius:999px;overflow:hidden}',
+        '.smx .pil>button{display:flex;align-items:center;justify-content:center;padding:0 15px;font:700 22px/1 var(--mf);color:var(--mute)}',
+        '.smx .pil>button:hover{color:var(--accent);background:var(--bg2)}',
+        '.smx .pil .pn{gap:10px;padding:0 18px;border-left:1px solid var(--line);border-right:1px solid var(--line);min-width:150px}',
+        '.smx .pil .pn i{font:600 13px var(--mf);font-style:normal;letter-spacing:.2em;text-transform:uppercase;color:var(--mute)}',
+        '.smx .pil .pn b{font:700 16px var(--mf);letter-spacing:.12em;text-transform:uppercase;color:var(--ink);white-space:nowrap;max-width:260px;overflow:hidden;text-overflow:ellipsis}',
+        '.smx .pil .pn.on{background:var(--bg2);box-shadow:inset 0 -3px var(--accent)}',
+        '.smx .chp{display:flex;align-items:center;gap:10px;height:42px;padding:0 20px;border-radius:999px;border:1px solid var(--accent);color:var(--accent);font:700 15px var(--mf);letter-spacing:.2em;text-transform:uppercase;background:var(--panel)}',
+        '.smx .chp i{width:10px;height:10px;border-radius:50%;background:var(--line)}',
+        '.smx .chp.hot i{background:var(--need);animation:smpulse 1.6s ease-in-out infinite}',
+        '.smx .chp:hover,.smx .chp.on{background:var(--accent);color:var(--bg)}',
+        '.smx .ctr:hover .cb{stroke:var(--ink)}',
+        // 9.1: the pickers
+        '.smx .pik{position:absolute;left:800px;top:148px;width:1100px;bottom:20px;z-index:7;border:1px solid var(--line);background:linear-gradient(var(--panel),var(--panel)),var(--bg);display:flex;flex-direction:column;box-shadow:0 18px 40px rgba(0,0,0,.3);color:var(--ink)}',
+        '.smx .pik .pkh{display:flex;align-items:center;gap:10px;padding:14px 20px;border-bottom:1px solid var(--line);flex:none}',
+        '.smx .pik .pkt{font:700 22px var(--hf);letter-spacing:.16em;text-transform:uppercase;margin-right:12px}',
+        '.smx .pik .pks{font:600 14px var(--mf);letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}',
+        '.smx .pik .pkb{height:36px;padding:0 14px;display:flex;align-items:center;border:1px solid var(--line);font:700 14px var(--mf);letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}',
+        '.smx .pik .pkb.on{border-color:var(--accent);color:var(--accent);box-shadow:inset 0 -3px var(--accent)}',
+        '.smx .pik .pkb[disabled]{opacity:.4;cursor:default}',
+        '.smx .pik .pkb.x{width:36px;justify-content:center;font-size:20px;padding:0}',
+        '.smx .pik .cg{flex:1}',
+        '.smx .pik .pkl{flex:1;min-height:0;overflow:auto;padding:4px 20px 22px;scrollbar-width:thin;scrollbar-color:var(--line) transparent}',
+        '.smx .pik .pkc{margin:16px 0 10px;font:600 14px var(--mf);letter-spacing:.2em;text-transform:uppercase;color:var(--mute)}',
+        '.smx .pik .pkg{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}',
+        '.smx .pik .lt{position:relative;border:1px solid;min-width:0}',
+        '.smx .pik .lt.on{outline:3px solid var(--accent);outline-offset:2px}',
+        '.smx .pik .lta{display:flex;flex-direction:column;gap:6px;width:100%;padding:12px 14px;min-width:0}',
+        '.smx .pik .lta:hover{filter:brightness(1.08)}',
+        '.smx .pik .lsw2{display:flex;gap:4px}',
+        '.smx .pik .lsw2 i{width:22px;height:10px;display:block}',
+        '.smx .pik .ltn{font:700 13px var(--mf);letter-spacing:.14em;opacity:.7}',
+        '.smx .pik .ltl{font-size:19px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}',
+        '.smx .pik .ltf{position:absolute;right:6px;top:4px;padding:4px 6px;font-size:21px;line-height:1;opacity:.3;text-shadow:0 0 2px rgba(0,0,0,.6)}',
+        '.smx .pik .ltf:hover{opacity:.8}',
+        '.smx .pik .ltf.on{opacity:1;color:#ffc83d}',
+        '.smx .pik .vg{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}',
+        '.smx .pik .vt{display:flex;align-items:center;gap:14px;padding:14px 16px;border:1px solid var(--line);min-width:0;background:var(--bg2)}',
+        '.smx .pik .vt:hover{border-color:var(--ink)}',
+        '.smx .pik .vt.on{border-color:var(--accent);box-shadow:inset 0 -3px var(--accent)}',
+        '.smx .pik .vt svg{width:44px;height:44px;flex:none;color:var(--accent)}',
+        '.smx .pik .vt span{min-width:0}',
+        '.smx .pik .vt b{display:block;font:700 18px var(--hf);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}',
+        '.smx .pik .vt small{display:block;font:14px var(--mf);color:var(--mute);letter-spacing:.06em;margin-top:4px}',
+        // 9.1: the views' moving parts
+        '.smx .stage .vsweep{animation:smspin 5s linear infinite}',
+        '@keyframes smspin{to{transform:rotate(360deg)}}',
+        '.smx .stage .vscroll{animation:smscroll 8s linear infinite}',
+        '@keyframes smscroll{to{transform:translateX(-740px)}}',
+        '.smx .stage .vflick{animation:smflick 1.1s steps(2) infinite}',
+        '@keyframes smflick{50%{opacity:.45}}',
+        '.smx .stage .vflap{transform-box:fill-box;transform-origin:center;animation:smflap .5s cubic-bezier(.2,.7,.3,1) both}',
+        '@keyframes smflap{from{transform:scaleY(0)}}',
+        // 9.1: the sketch looks. Vellum grid, a pencil wobble on the drawing, construction lines that run past the corners
+        '.smx.fx-sketch .gridbg{background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px),linear-gradient(var(--dot) 1px,transparent 1px),linear-gradient(90deg,var(--dot) 1px,transparent 1px);background-size:12px 12px,12px 12px,60px 60px,60px 60px}',
+        '.smx.fx-sketch .stage svg{filter:url(#smwob)}',
+        '.smx.fx-sketch :is(.tx,.bar,.ctl,.asks){border-color:transparent;box-shadow:none}',
+        '.smx.fx-sketch :is(.tx,.bar,.ctl,.asks)::after{content:"";position:absolute;inset:-10px;pointer-events:none;z-index:1;background:linear-gradient(var(--line),var(--line)) 0 10px/100% 1.5px no-repeat,linear-gradient(var(--line),var(--line)) 0 calc(100% - 10px)/100% 1.5px no-repeat,linear-gradient(var(--line),var(--line)) 10px 0/1.5px 100% no-repeat,linear-gradient(var(--line),var(--line)) calc(100% - 10px) 0/1.5px 100% no-repeat}',
+        '.smx.fx-sketch :is(.tg,.pil,.chp,.cin,.cdst,.cclip,.ab,.dkb button,.md){border-style:dashed}',
+        '.smx.fx-sketch .ttl{letter-spacing:.02em}',
+        '.smx .cos{--k-bg:#0a0912;--k-panel:#100e1c;--k-panel2:#19143a;--k-line:#2a2647;--k-fg:#ece8f6;--k-dim:#8f8aad;--k-cyan:#52d9ff;--k-violet:#8f74ff;--k-mag:#ff4f9e;--k-sun:#ff9447;--k-gold:#ffd36e;--k-chx:#ffcf6a;--k-per:#b49bff;--k-d:"Syncopate","Orbitron",Arial,sans-serif;--k-b:"Barlow","Exo 2",Arial,sans-serif;--k-l:"Barlow Condensed","Rajdhani","Arial Narrow",sans-serif;position:absolute;left:800px;top:100px;width:1100px;bottom:20px;z-index:3;display:flex;flex-direction:column;gap:14px;padding:20px 24px 14px;background:radial-gradient(900px 380px at 50% -14%,rgba(143,116,255,.22),transparent 70%),var(--k-bg);border:1px solid var(--k-line);color:var(--k-fg);font-family:var(--k-b);box-shadow:0 18px 40px rgba(0,0,0,.35);overflow:hidden}',
         '.smx .cos::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,var(--k-cyan),var(--k-violet) 35%,var(--k-mag) 68%,var(--k-sun))}',
         '.smx :where(.cos button){all:unset;box-sizing:border-box;cursor:pointer}',
         '.smx .cos button:focus-visible{outline:2px solid var(--k-cyan);outline-offset:2px}',
@@ -1375,7 +1472,7 @@
         '.smx .cos .csh{flex:none;font:700 14px var(--k-d);letter-spacing:.2em;text-transform:uppercase;display:flex;gap:14px;align-items:baseline}',
         '.smx .cos .csh small{font:500 15px var(--k-l);letter-spacing:.14em;color:var(--k-dim)}',
         '.smx .cos .crs{flex:1;min-height:0;overflow:auto;display:flex;flex-direction:column;gap:10px;scrollbar-width:thin;scrollbar-color:var(--k-line) transparent}',
-        '.smx .cos .cr{flex:none;display:grid;grid-template-columns:40px 1fr;column-gap:12px;align-items:start;padding:12px 16px;border:1px solid var(--k-line);background:var(--k-panel)}',
+        '.smx .cos .cr{flex:none;display:grid;grid-template-columns:40px 1fr auto;column-gap:12px;align-items:start;padding:12px 16px;border:1px solid var(--k-line);background:var(--k-panel)}',
         '.smx .cos .cr.hot{border-color:rgba(255,148,71,.5);box-shadow:0 0 28px -14px var(--k-mag)}',
         '.smx .cos .ci{font:700 26px/1.2 var(--k-d);color:var(--k-sun);text-align:center}',
         '.smx .cos .cbd{min-width:0;display:flex;flex-direction:column;gap:4px}',
@@ -1391,6 +1488,18 @@
         '.smx .cos .ctt{font:600 22px/1.25 var(--k-b);overflow:hidden;white-space:nowrap;text-overflow:ellipsis}',
         '.smx .cos .cnx{font:18px/1.3 var(--k-b);color:var(--k-dim);overflow:hidden;white-space:nowrap;text-overflow:ellipsis}',
         '.smx .cos .cem{padding:16px 18px;border:1px dashed var(--k-line);color:var(--k-dim);font:19px var(--k-b)}',
+        // 9.1: two columns, so Start Here gets the full height: the brief on the left, the threads on the right
+        '.smx .cos .cbody{flex:1;min-height:0;display:grid;grid-template-columns:400px 1fr;gap:18px}',
+        '.smx .cos .cbody .cbr{min-height:0;padding-bottom:200px;justify-content:flex-start}',
+        '.smx .cos .cbody .sc{top:auto;height:186px;width:100%;-webkit-mask:none;mask:none}',
+        '.smx .cos .cbody .gl{left:50%;width:150px;height:150px}',
+        '.smx .cos .cbody .chd{-webkit-line-clamp:4;font-size:26px}',
+        '.smx .cos .cbody li span{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}',
+        '.smx .cos .cbody .cct{flex-wrap:wrap;gap:6px 18px}',
+        '.smx .cos .ccol{min-height:0;min-width:0;display:flex;flex-direction:column;gap:10px}',
+        '.smx .cos .cr{grid-template-columns:40px 1fr auto}',
+        '.smx .cos .cac{display:flex;flex-direction:column;gap:6px;align-self:center}',
+        '.smx .cos .cbn.hi{border-color:var(--k-cyan);color:var(--k-cyan)}',
         '.smx .cos .chn{flex:none;text-align:center;font:500 15px var(--k-l);letter-spacing:.3em;text-transform:lowercase;color:var(--k-dim)}',
         // 9.1: the CHxTLD Outbox over the pie. It always wears the Outbox's white mail look, whatever the HQ look
         '.smx.oxing .stage{opacity:.14;filter:blur(2px)}',
@@ -1488,8 +1597,12 @@
         '<input type="file" class="cfile" multiple hidden></div>' +
         '<div class="hint">say next · take me to · chief · allow · resume</div><button type="button" class="flw" hidden title="Follow the voice again">FOLLOW</button></div>' +
         '<div class="bar"><span class="br" title="Next look (Option Shift D)"></span><span class="sb">Switche<b>roo</b></span><span class="dots"></span><span class="grow"></span><span class="nx" title="Go to the next chat (Option Shift N)"></span><span class="bt" title="Boot: open your 10 most recent chats behind HQ">BOOT</span><span class="lk zero" title="Links from your chats. Say open, or open two">LINKS</span><span class="pz" title="Pause the Switchboard for two turns, or resume it">LIVE</span></div>' +
+        '<div class="prl"><button type="button" class="chp" title="Chief of Staff, any time. Or say chief (Option Shift C)"><i></i><span>Chief</span></button><span class="gr"></span>' +   // 9.1
+        '<span class="pil vwp"><button type="button" data-vw="-1" title="Previous view">‹</button><button type="button" class="pn" data-vw="pick" title="Every view (Option Shift V steps)"><i>View</i><b>Pie</b></button><button type="button" data-vw="1" title="Next view">›</button></span>' +
+        '<span class="pil lkp"><button type="button" data-lk="-1" title="Previous look">‹</button><button type="button" class="pn" data-lk="pick" title="Every look, favorites first (Option Shift D steps)"><i>Look</i><b></b></button><button type="button" data-lk="1" title="Next look">›</button></span></div>' +
+        '<svg class="smdefs" width="0" height="0" aria-hidden="true" style="position:absolute"><filter id="smwob" x="-2%" y="-2%" width="104%" height="104%"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="7" result="n"></feTurbulence><feDisplacementMap in="SourceGraphic" in2="n" scale="3" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap></filter></svg>' +
         '<div class="stage"></div>' +
-        '<div class="asks" hidden></div><div class="dkov" hidden></div><div class="cos" hidden></div><div class="oxp" hidden></div><div class="lnk" hidden></div><div class="pgv" hidden></div>' +
+        '<div class="asks" hidden></div><div class="dkov" hidden></div><div class="cos" hidden></div><div class="oxp" hidden></div><div class="pik" hidden></div><div class="lnk" hidden></div><div class="pgv" hidden></div>' +
         '<div class="ctl" hidden><button type="button" class="hold" data-ctl="hold"><span class="hk">Responses · live</span><span class="hv">Hold</span><span class="hs">Stops every tab until you resume</span></button>' +
         '<div class="tgw"><div class="ck">Controls · every tab follows</div><div class="tgs">' +
         SM_CTL.map((c) => '<button type="button" class="tg" data-ctl="' + c[0] + '" title="' + smEsc(c[2]) + '" aria-pressed="false"><span class="tl">' + smEsc(c[1]) + '</span><span class="sw"><i></i></span><span class="tv">OFF</span></button>').join('') +
@@ -1507,6 +1620,7 @@
       let askSig = '', armAlways = '', armT = null, multiSel = new Set(), multiKey = '';
       let dkSig = '', dkOpen = false, lpT = null, lpFired = false;
       let cosSig = '', cosOpen = false;   // 9.0
+      let pickOpen = '', pickSig = '';    // 9.1: '' or view or look
       let oxSig = '', oxOpen = false, oxEd = null;   // 9.1
       let lnkOpen = false, lnkSig = '', lnkBiz = '';   // 8.2
       let msgScrollAt = 0, lastTextSig = '';
@@ -1553,6 +1667,21 @@
         // 8.1: the pie's center: a click is play or pause, a long press is meeting mode
         if (ev.target.closest('[data-center]')) { if (lpFired) { lpFired = false; return; } onAction({ t: 'center' }); return; }
         if (ev.target.closest('.flw')) { follow(); return; }
+        // 9.1: the pill rail and the pickers
+        if (ev.target.closest('.prl .chp')) { onAction({ t: cosOpen ? 'cos' : 'jump', cmd: 'close', id: '__chief' }); return; }
+        const vw = ev.target.closest('[data-vw]');
+        if (vw) { const a = vw.getAttribute('data-vw'); if (a === 'pick') togglePick('view'); else onAction({ t: 'view', step: +a }); return; }
+        const lp = ev.target.closest('[data-lk]');
+        if (lp) { const a = lp.getAttribute('data-lk'); if (a === 'pick') togglePick('look'); else onAction({ t: 'theme', dir: +a }); return; }
+        const fv = ev.target.closest('[data-fav]');
+        if (fv) { onAction({ t: 'fav', id: fv.getAttribute('data-fav') }); return; }
+        const pl = ev.target.closest('[data-pl]');
+        if (pl) { onAction({ t: 'lookset', id: pl.getAttribute('data-pl') }); return; }
+        const pv = ev.target.closest('[data-pv]');
+        if (pv) { togglePick(''); onAction({ t: 'view', id: pv.getAttribute('data-pv') }); return; }
+        const ps = ev.target.closest('[data-step]');
+        if (ps) { onAction({ t: 'lkstep', mode: ps.getAttribute('data-step') }); return; }
+        if (ev.target.closest('[data-pik="close"]')) { togglePick(''); return; }
         const ap = ev.target.closest('[data-appr]');
         if (ap) {
           const k = ap.getAttribute('data-appr'), id = ap.getAttribute('data-id');
@@ -1630,11 +1759,340 @@
       }
       function setZoom(z) { fx.style.setProperty('--fs', Math.round(26 * z) + 'px'); }
 
+      // ---------- 9.1: VIEWS. The same chats drawn eleven ways; the View pill steps through them ----------
+      // Every view gets the same list, colors and clicks as the pie: a click on a chat jumps there, the hub
+      // pauses or plays everything (hold it for meeting mode), and the clocks tick once a second.
+      let viewId = 'pie';
+      const vSide = (e) => !!(e.deck || e.chief || e.outbox);   // the wedges that aren't chats
+      const vTitle = (e) => e.deck ? 'Swipe Deck' : e.chief ? 'Chief of Staff' : e.outbox ? 'Outbox' : String(e.title || e.name || 'Claude');
+      const vShort = (e, i) => e.deck ? 'SD' : e.chief ? 'COS' : e.outbox ? 'OUT' : smPad(i + 1);
+      const vName = (e, i) => vShort(e, i) + ' ' + vTitle(e);
+      function vRight(e, k) {
+        const timed = !vSide(e) && (smWaits(k) || k === 'turn');
+        const txt = e.deck ? (e.deckN || 0) + ' OPEN' : e.chief ? (e.closed ? 'OPEN IT' : e.chiefN ? e.chiefN + ' NEED YOU' : 'CLEAR') :
+          e.outbox ? (e.closed ? 'OPEN IT' : e.oxN ? e.oxN + ' READY' : 'CLEAR') :
+          timed ? smClock(Date.now() - (e.since || Date.now())) : k === 'work' ? 'LIVE' : '';
+        return { txt, attr: timed ? ' data-since="' + (e.since || 0) + '"' : '' };
+      }
+      // text that trims itself to a width once the font is in (fitNames)
+      const vFit = (x, y, s, w, size, fill, font, extra) => '<text class="fit" data-w="' + Math.round(w) + '" data-full="' + smEsc(s) + '" x="' + smF1(x) + '" y="' + smF1(y) +
+        '" font-size="' + size + '" fill="' + fill + '" font-family=\'' + font + '\' dominant-baseline="central"' + (extra == null ? '' : extra) + '>' + smEsc(s) + '</text>';
+      const vHitBg = (x, y, w, h, v) => '<rect class="hitbg" x="' + smF1(x) + '" y="' + smF1(y) + '" width="' + smF1(w) + '" height="' + smF1(h) + '" fill="' + v.ink + '" fill-opacity="0"></rect>';
+      const vFloor = (x, y, w, h, v) => '<rect x="' + smF1(x) + '" y="' + smF1(y) + '" width="' + smF1(w) + '" height="' + smF1(h) + '" fill="none" stroke="' + v.ink + '" stroke-width="2"></rect>';
+      // the hub: the pie's center, as a button any view can carry. Drawn at radius 74, scaled by the view
+      function vHub(c) {
+        const { t, v, ex, waiting } = c;
+        let o = '<g class="hit ctr" data-center="1"><title>' + (ex.held ? 'Play: everything comes back' : 'Pause everything. Hold down for meeting mode') + '</title>' +
+          '<circle class="cb" r="74" fill="' + (ex.held ? v.need : v.bg2) + '" stroke="' + (ex.held ? v.need : v.line) + '" stroke-width="' + (ex.held ? 4 : 2) + '"></circle>';
+        if (ex.held) o += '<path d="M-14,-34 L22,-14 L-14,6 Z" fill="' + v.bg + '"></path>' + smTxt(0, 30, ex.meeting ? 'MEETING' : 'PAUSED', 16, v.bg, t.f.mf, ' text-anchor="middle" letter-spacing="3" font-weight="700"');
+        else o += '<rect x="-13" y="-46" width="9" height="24" fill="' + v.ink + '"></rect><rect x="4" y="-46" width="9" height="24" fill="' + v.ink + '"></rect>' +
+          smTxt(0, 2, smPad(waiting), 42, waiting ? v.need : v.mute, t.f.hf, ' text-anchor="middle" font-weight="700"') + smTxt(0, 38, 'NEED YOU', 14, v.mute, t.f.mf, ' text-anchor="middle" letter-spacing="3"');
+        return o + '</g>';
+      }
+      // a header band for the views that read top to bottom: the hub, the view's name, and the color key
+      function vHead(c, title, sub) {
+        const { t, v } = c;
+        let o = '<g transform="translate(38,38) scale(.42)">' + vHub(c) + '</g>' +
+          smTxt(86, 26, title.toUpperCase(), 21, v.ink, t.f.hf, ' font-weight="700" letter-spacing="2"') + smTxt(86, 52, sub, 14, v.mute, t.f.mf, ' letter-spacing="1"');
+        [['need', 'NEEDS YOU'], ['wait', 'YOUR TURN'], ['work', 'WORKING'], ['idle', 'IDLE']].forEach(([k, l], j) => {
+          const x = 610 + j * 120;
+          o += '<circle cx="' + x + '" cy="38" r="7" fill="' + v[k] + '"></circle>' + smTxt(x + 14, 38, l, 13, v.mute, t.f.mf, ' letter-spacing="1"');
+        });
+        return o;
+      }
+      const vEmpty = (c, y) => smTxt(550, y, 'No chats yet. Open one and it lands here', 22, c.v.mute, c.t.f.mf, ' text-anchor="middle" letter-spacing="1"');
+      const vRing = (k) => (k === 'need' || k === 'question' ? 0 : k === 'wait' || k === 'turn' ? 1 : k === 'work' ? 2 : 3);
+      const vSat = (k) => SM_SAT[k] || 0.2;
+      const vFillOp = (k) => smF1(0.12 + 0.44 * vSat(k));
+      function vHash(s) { let h = 2166136261; for (const ch of String(s)) { h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619); } return h >>> 0; }
+      function vRand(seed) { let x = seed || 1; return () => { x ^= x << 13; x >>>= 0; x ^= x >> 17; x ^= x << 5; x >>>= 0; return x / 4294967296; }; }
+
+      // RADAR: rings by what each chat needs, needs you at the center; a sweep goes round, the list sits right
+      function vRadar(c) {
+        const { t, v, list, fid, H } = c;
+        const R = Math.min(H / 2 - 24, 300), cx = R + 34, cy = H / 2;
+        const bands = [0.44, 0.66, 0.86, 1], spots = [0.33, 0.55, 0.76, 0.93], names = ['NEEDS YOU', 'YOUR TURN', 'WORKING', 'IDLE'];
+        let o = '<circle cx="' + cx + '" cy="' + cy + '" r="' + smF1(R * 1.2) + '" fill="url(#' + c.P + 'g)"></circle><g transform="translate(' + smF1(cx) + ',' + smF1(cy) + ')">';
+        bands.forEach((b, j) => {
+          o += '<circle r="' + smF1(R * b) + '" fill="none" stroke="' + v.line + '" stroke-width="' + (j === 3 ? 2 : 1.2) + '"' + (j === 3 ? '' : ' stroke-dasharray="4 7"') + '></circle>' +
+            smTxt(0, -R * b + 13, names[j], 12, v.mute, t.f.mf, ' text-anchor="middle" letter-spacing="2"');
+        });
+        o += '<line x1="' + smF1(-R) + '" y1="0" x2="' + smF1(R) + '" y2="0" stroke="' + v.line + '" stroke-opacity=".6"></line><line x1="0" y1="' + smF1(-R) + '" x2="0" y2="' + smF1(R) + '" stroke="' + v.line + '" stroke-opacity=".6"></line>' + smTicks(t, R, 72, 6, 6);
+        o += '<g class="vsweep">' + [[-42, -28, 0.05], [-28, -14, 0.1], [-14, 0, 0.2]].map(([a0, a1, op]) => '<path d="' + smSector(0, Math.round(R), a0, a1) + '" fill="' + v.accent + '" fill-opacity="' + op + '"></path>').join('') +
+          '<line x1="0" y1="0" x2="0" y2="' + smF1(-R) + '" stroke="' + v.accent + '" stroke-width="2" stroke-opacity=".8"></line></g>';
+        const byRing = [[], [], [], []];
+        list.forEach((e, i) => byRing[vRing(smKind(e))].push(i));
+        const pos = {};
+        byRing.forEach((ids, j) => ids.forEach((i, n) => { pos[i] = smPol(R * spots[j], (n / ids.length) * 360 + j * 37 + 18); }));
+        list.forEach((e, i) => {
+          const k = smKind(e), col = smCol(t, k), p = pos[i], r = 9 + 11 * vSat(k);
+          o += '<g class="hit" data-jump="' + smEsc(e.id) + '"><circle cx="' + smF1(p[0]) + '" cy="' + smF1(p[1]) + '" r="' + smF1(r + 12) + '" fill="' + v.ink + '" fill-opacity="0" class="hitbg"></circle>' +
+            (k === 'need' ? '<circle class="pulse" cx="' + smF1(p[0]) + '" cy="' + smF1(p[1]) + '" r="' + smF1(r + 9) + '" fill="' + col + '" fill-opacity=".25"></circle>' : '') +
+            '<circle cx="' + smF1(p[0]) + '" cy="' + smF1(p[1]) + '" r="' + smF1(r) + '" fill="' + col + '" fill-opacity="' + smF1(0.35 + 0.6 * vSat(k)) + '" stroke="' + col + '" stroke-width="2"></circle>' +
+            (e.id === fid ? '<circle cx="' + smF1(p[0]) + '" cy="' + smF1(p[1]) + '" r="' + smF1(r + 6) + '" fill="none" stroke="' + v.ink + '" stroke-width="2"></circle>' : '') +
+            smTxt(p[0] + r + 7, p[1], vShort(e, i), 17, v.ink, t.f.mf, ' font-weight="700"') + '</g>';
+        });
+        o += '<g transform="scale(' + smF1(Math.max(0.3, R * 0.2 / 74)) + ')">' + vHub(c) + '</g></g>';
+        // the list on the right
+        const x0 = cx + R + 56, W = 1080 - x0, n = list.length, rh = n ? Math.min(58, (H - 30) / n) : 58, y0 = Math.max(16, H / 2 - rh * n / 2);
+        list.forEach((e, i) => {
+          const k = smKind(e), col = smCol(t, k), y = y0 + i * rh, rt = vRight(e, k);
+          o += '<g class="hit" data-jump="' + smEsc(e.id) + '">' + vHitBg(x0 - 10, y, W + 14, rh - 4, v) + (e.id === fid ? vFloor(x0 - 10, y, W + 14, rh - 4, v) : '') +
+            '<circle cx="' + smF1(x0 + 6) + '" cy="' + smF1(y + rh / 2 - 2) + '" r="7" fill="' + col + '"' + (k === 'need' ? ' class="pulse"' : '') + '></circle>' +
+            vFit(x0 + 22, y + rh / 2 - 2, vName(e, i).toUpperCase(), W - 110, 17, k === 'idle' ? v.mute : v.ink, t.f.rf || t.f.mf, ' font-weight="700"') +
+            '<text x="' + smF1(x0 + W) + '" y="' + smF1(y + rh / 2 - 2) + '" font-size="15" fill="' + col + '" font-family=\'' + t.f.mf + '\' dominant-baseline="central" text-anchor="end"' + rt.attr + '>' + smEsc(rt.txt) + '</text></g>';
+        });
+        return o;
+      }
+
+      // PUZZLE: every chat a jigsaw piece; the pieces lock together, brighter the more a chat needs you
+      function vPuzzleEdge(ax, ay, bx, by, nx, ny, d, s) {
+        if (!d) return ' L' + smF1(bx) + ',' + smF1(by);
+        const p = (u, h) => smF1(ax + (bx - ax) * u + nx * h * d * s) + ',' + smF1(ay + (by - ay) * u + ny * h * d * s);
+        return ' L' + p(0.37, 0) + ' C' + p(0.41, 0.35) + ' ' + p(0.29, 1) + ' ' + p(0.5, 1) + ' C' + p(0.71, 1) + ' ' + p(0.59, 0.35) + ' ' + p(0.63, 0) + ' L' + smF1(bx) + ',' + smF1(by);
+      }
+      function vPuzzle(c) {
+        const { t, v, list, fid, H } = c, n = list.length;
+        let o = vHead(c, 'Puzzle', 'one piece per chat · brighter needs you more');
+        if (!n) return o + vEmpty(c, H / 2);
+        const cols = Math.max(1, Math.ceil(Math.sqrt(n * 1.8))), rows = Math.ceil(n / cols);
+        const top = 92, aw = 1100 - 90, ah = H - top - 34;
+        const w = Math.min(230, aw / cols), h = Math.min(176, ah / rows), s = Math.min(w, h) * 0.19;
+        const gx = (1100 - cols * w) / 2, gy = top + (ah - rows * h) / 2 + 10;
+        const dirH = (r, q) => ((r + q) % 2 ? 1 : -1), dirV = (r, q) => ((r + q) % 2 ? -1 : 1);
+        list.forEach((e, i) => {
+          const r = Math.floor(i / cols), q = i % cols, x = gx + q * w, y = gy + r * h;
+          const eT = r === 0 ? 0 : -dirH(r - 1, q), eB = (r === rows - 1 || i + cols >= n) ? 0 : dirH(r, q);
+          const eL = q === 0 ? 0 : -dirV(r, q - 1), eR = (q === cols - 1 || i + 1 >= n) ? 0 : dirV(r, q);
+          const d = 'M' + smF1(x) + ',' + smF1(y) + vPuzzleEdge(x, y, x + w, y, 0, -1, eT, s) + vPuzzleEdge(x + w, y, x + w, y + h, 1, 0, eR, s) +
+            vPuzzleEdge(x + w, y + h, x, y + h, 0, 1, eB, s) + vPuzzleEdge(x, y + h, x, y, -1, 0, eL, s) + ' Z';
+          const k = smKind(e), col = smCol(t, k), rt = vRight(e, k);
+          o += '<g class="hit" data-jump="' + smEsc(e.id) + '"><path d="' + d + '" fill="' + col + '" fill-opacity="' + vFillOp(k) + '" stroke="' + (e.id === fid ? v.ink : col) + '" stroke-width="' + (e.id === fid ? 3.5 : 2) + '"' + (k === 'need' ? ' class="pulse"' : '') + '></path>' +
+            smTxt(x + w / 2, y + h * 0.33, vShort(e, i), Math.round(Math.min(34, h * 0.24)), v.ink, t.f.hf, ' text-anchor="middle" font-weight="700"') +
+            vFit(x + w / 2, y + h * 0.56, vTitle(e), w - 40, Math.round(Math.min(18, h * 0.13)), v.ink, t.f.bf, ' text-anchor="middle"') +
+            '<text x="' + smF1(x + w / 2) + '" y="' + smF1(y + h * 0.76) + '" font-size="' + Math.round(Math.min(14, h * 0.1)) + '" fill="' + col + '" font-family=\'' + t.f.mf + '\' dominant-baseline="central" text-anchor="middle"' + rt.attr + '>' + smEsc(rt.txt || smStatus(e, k)) + '</text></g>';
+        });
+        return o;
+      }
+
+      // SEISMOGRAPH: one trace per chat, rolling left. The more a chat needs you, the bigger the quake
+      function vSeismo(c) {
+        const { t, v, list, fid, H } = c, n = list.length;
+        let o = vHead(c, 'Seismograph', 'one trace per chat · the bigger the quake, the more it needs you');
+        if (!n) return o + vEmpty(c, H / 2);
+        const top = 86, X0 = 330, TW = 740, rh = Math.min(92, (H - top - 16) / n);
+        const AMP = { need: 1, question: 0.8, wait: 0.56, turn: 0.36, work: 0.22, idle: 0.04 }, DUR = { need: 4, question: 5, wait: 7, turn: 9, work: 8, idle: 22 };
+        for (let m = 0; m <= 10; m++) o += '<line x1="' + (X0 + m * TW / 10) + '" y1="' + top + '" x2="' + (X0 + m * TW / 10) + '" y2="' + smF1(top + rh * n) + '" stroke="' + v.line + '" stroke-opacity=".45" stroke-dasharray="2 6"></line>';
+        list.forEach((e, i) => {
+          const k = smKind(e), col = smCol(t, k), y = top + i * rh, cy = y + rh / 2, A = rh * 0.42 * (AMP[k] || 0.1), rnd = vRand(vHash(e.id) || 7), rt = vRight(e, k);
+          let pts = '', yv = 0;
+          for (let x = 0; x <= TW; x += 5) {
+            const ph = x / TW * Math.PI * 2;
+            if (k === 'work') yv = Math.sin(ph * 9) * 0.35 + (x % 148 < 10 ? (rnd() - 0.5) * 2 : 0);
+            else if (k === 'idle') yv = (rnd() - 0.5) * 0.4;
+            else { const burst = (Math.sin(ph * 3 + (vHash(e.id) % 7)) + 1) / 2; yv = (rnd() - 0.5) * 2 * (0.25 + 0.75 * burst * burst); }
+            if (x === 0 || x >= TW) yv = 0;
+            pts += (pts ? ' ' : '') + smF1(x) + ',' + smF1(-yv * A);
+          }
+          const pts2 = pts.split(' ').map((pp) => { const [a, b] = pp.split(','); return smF1(+a + TW) + ',' + b; }).join(' ');
+          o += '<clipPath id="' + c.P + 'sc' + i + '"><rect x="' + X0 + '" y="' + smF1(y) + '" width="' + TW + '" height="' + smF1(rh) + '"></rect></clipPath>';
+          o += '<g class="hit" data-jump="' + smEsc(e.id) + '">' + vHitBg(10, y + 1, 1080, rh - 2, v) + (e.id === fid ? vFloor(10, y + 1, 1080, rh - 2, v) : '') +
+            '<line x1="' + X0 + '" y1="' + smF1(cy) + '" x2="' + (X0 + TW) + '" y2="' + smF1(cy) + '" stroke="' + v.line + '"></line>' +
+            '<g clip-path="url(#' + c.P + 'sc' + i + ')"><g transform="translate(' + X0 + ',' + smF1(cy) + ')"><g class="vscroll" style="animation-duration:' + (DUR[k] || 9) + 's"><polyline points="' + pts + ' ' + pts2 + '" fill="none" stroke="' + col + '" stroke-width="' + (k === 'need' ? 2.4 : 1.8) + '" stroke-linejoin="round"></polyline></g></g></g>' +
+            '<circle cx="' + (X0 + TW) + '" cy="' + smF1(cy) + '" r="5" fill="' + col + '"' + (k === 'need' ? ' class="pulse"' : '') + '></circle>' +
+            vFit(24, y + rh * 0.36, vName(e, i).toUpperCase(), 280, Math.round(Math.min(18, rh * 0.26)), k === 'idle' ? v.mute : v.ink, t.f.rf || t.f.mf, ' font-weight="700"') +
+            '<text x="24" y="' + smF1(y + rh * 0.7) + '" font-size="' + Math.round(Math.min(14, rh * 0.2)) + '" fill="' + col + '" font-family=\'' + t.f.mf + '\' dominant-baseline="central"' + rt.attr + '>' + smEsc(rt.txt || smStatus(e, k)) + '</text></g>';
+        });
+        return o;
+      }
+
+      // MIXER: a channel strip per chat, like a desk. The meter climbs the more a chat needs you; the peak lamp is an approval
+      function vMixer(c) {
+        const { t, v, list, fid, H } = c, n = list.length;
+        let o = vHead(c, 'Mixer', 'one channel per chat · the hotter the meter, the more it needs you');
+        if (!n) return o + vEmpty(c, H / 2);
+        const top = 86, cw = Math.min(124, 1060 / n), x0 = (1100 - n * cw) / 2, sh = H - top - 14, S = 18, mt = top + 34, mh = sh - 140, seg = mh / S;
+        list.forEach((e, i) => {
+          const k = smKind(e), col = smCol(t, k), x = x0 + i * cw, lit = Math.max(1, Math.round(S * vSat(k))), rt = vRight(e, k);
+          o += '<g class="hit" data-jump="' + smEsc(e.id) + '"><rect x="' + smF1(x + 5) + '" y="' + top + '" width="' + smF1(cw - 10) + '" height="' + smF1(sh) + '" fill="' + v.bg2 + '" fill-opacity=".55" stroke="' + (e.id === fid ? v.ink : v.line) + '" stroke-width="' + (e.id === fid ? 2.5 : 1) + '"></rect>' +
+            '<circle cx="' + smF1(x + cw / 2) + '" cy="' + (top + 16) + '" r="6" fill="' + (k === 'need' ? v.need : v.line) + '"' + (k === 'need' ? ' class="pulse"' : '') + '></circle>';
+          const mx = x + cw / 2 - 20;
+          for (let s2 = 0; s2 < S; s2++) {
+            const on = s2 < lit, fr = s2 / S, sc = fr < 0.55 ? v.work : fr < 0.8 ? v.wait : v.need;
+            o += '<rect x="' + smF1(mx) + '" y="' + smF1(mt + mh - (s2 + 1) * seg + 1.5) + '" width="20" height="' + smF1(Math.max(2, seg - 3)) + '" fill="' + (on ? sc : v.line) + '" fill-opacity="' + (on ? 0.95 : 0.3) + '"' + (on && s2 === lit - 1 && k !== 'idle' ? ' class="vflick"' : '') + '></rect>';
+          }
+          const fy = mt + mh - mh * vSat(k);
+          o += '<line x1="' + smF1(mx + 34) + '" y1="' + smF1(mt) + '" x2="' + smF1(mx + 34) + '" y2="' + smF1(mt + mh) + '" stroke="' + v.line + '" stroke-width="3"></line>' +
+            '<rect x="' + smF1(mx + 26) + '" y="' + smF1(fy - 7) + '" width="16" height="14" fill="' + v.ink + '"></rect>' +
+            smTxt(x + cw / 2, mt + mh + 32, vShort(e, i), Math.round(Math.min(26, cw * 0.24)), col, t.f.hf, ' text-anchor="middle" font-weight="700"') +
+            vFit(x + cw / 2, mt + mh + 64, vTitle(e), cw - 18, 14, v.ink, t.f.bf, ' text-anchor="middle"') +
+            '<text x="' + smF1(x + cw / 2) + '" y="' + smF1(mt + mh + 90) + '" font-size="12" fill="' + col + '" font-family=\'' + t.f.mf + '\' dominant-baseline="central" text-anchor="middle"' + rt.attr + '>' + smEsc(rt.txt || (k === 'idle' ? 'IDLE' : '')) + '</text></g>';
+        });
+        return o;
+      }
+
+      // ORBIT: the hub is the sun. Chats that need you circle close; working and idle ones drift far out
+      function vOrbit(c) {
+        const { t, v, list, fid, H } = c;
+        const cx = 550, cy = H / 2 + 6, RX = [215, 350, 482], k2 = Math.min(0.5, (H / 2 - 50) / 482), RY = RX.map((r) => r * k2);
+        let o = '<circle cx="' + cx + '" cy="' + smF1(cy) + '" r="260" fill="url(#' + c.P + 'g)"></circle>';
+        RX.forEach((rx, j) => { o += '<ellipse cx="' + cx + '" cy="' + smF1(cy) + '" rx="' + rx + '" ry="' + smF1(RY[j]) + '" fill="none" stroke="' + v.line + '" stroke-dasharray="' + (j === 0 ? '0' : '5 8') + '"></ellipse>'; });
+        o += smTxt(cx + RX[0] + 8, cy, 'NEEDS YOU', 11, v.mute, t.f.mf, ' letter-spacing="2"') + smTxt(cx + RX[1] + 8, cy, 'YOUR TURN', 11, v.mute, t.f.mf, ' letter-spacing="2"') + smTxt(cx + RX[2] - 70, cy - RY[2] - 12, 'WORKING · IDLE', 11, v.mute, t.f.mf, ' letter-spacing="2"');
+        const ring = (k) => Math.min(2, vRing(k)), by = [[], [], []];
+        list.forEach((e, i) => by[ring(smKind(e))].push(i));
+        const pos = {};
+        by.forEach((ids, j) => ids.forEach((i, m) => { const a = ((m / ids.length) * 360 + j * 50 + 205) * Math.PI / 180; pos[i] = [cx + RX[j] * Math.cos(a), cy + RY[j] * Math.sin(a)]; }));
+        list.forEach((e, i) => {
+          const k = smKind(e), col = smCol(t, k), p = pos[i], r = 15 + 17 * vSat(k);
+          o += '<g class="hit" data-jump="' + smEsc(e.id) + '"><circle class="hitbg" cx="' + smF1(p[0]) + '" cy="' + smF1(p[1]) + '" r="' + smF1(r + 14) + '" fill="' + v.ink + '" fill-opacity="0"></circle>' +
+            '<circle cx="' + smF1(p[0]) + '" cy="' + smF1(p[1]) + '" r="' + smF1(r) + '" fill="' + col + '" fill-opacity="' + smF1(0.3 + 0.6 * vSat(k)) + '" stroke="' + (e.id === fid ? v.ink : col) + '" stroke-width="' + (e.id === fid ? 3 : 2) + '"' + (k === 'need' ? ' class="pulse"' : '') + '></circle>' +
+            smTxt(p[0], p[1], vShort(e, i), 15, vSat(k) > 0.8 && t.onSat ? t.onSat : v.ink, t.f.mf, ' text-anchor="middle" font-weight="700"') +
+            vFit(p[0], p[1] + r + 15, vTitle(e), 150, 14, k === 'idle' ? v.mute : v.ink, t.f.bf, ' text-anchor="middle"') + '</g>';
+        });
+        o += '<g transform="translate(' + cx + ',' + smF1(cy) + ') scale(.6)">' + vHub(c) + '</g>';
+        return o;
+      }
+
+      // LANES: four columns, like a pin board. Needs you, your turn, working, idle
+      function vLanes(c) {
+        const { t, v, list, fid, H } = c;
+        let o = vHead(c, 'Lanes', 'every chat in the column it belongs to');
+        const L = [['Needs you', ['need', 'question'], 'need'], ['Your turn', ['wait', 'turn'], 'wait'], ['Working', ['work'], 'work'], ['Idle', ['idle'], 'idle']];
+        const cw = (1100 - 40 - 3 * 16) / 4, top = 92;
+        const groups = L.map((l) => list.map((e, i) => ({ e, i, k: smKind(e) })).filter((x) => l[1].includes(x.k)));
+        const most = Math.max(1, ...groups.map((g) => g.length)), ch = Math.max(44, Math.min(96, (H - top - 56) / most - 10));
+        L.forEach((l, j) => {
+          const x = 20 + j * (cw + 16), col = v[l[2]], g = groups[j];
+          o += smTxt(x, top + 10, l[0].toUpperCase(), 17, v.ink, t.f.hf, ' font-weight="700" letter-spacing="1.5"') +
+            smTxt(x + cw, top + 10, String(g.length), 17, col, t.f.mf, ' text-anchor="end" font-weight="700"') +
+            '<rect x="' + smF1(x) + '" y="' + (top + 26) + '" width="' + smF1(cw) + '" height="3" fill="' + col + '"></rect>';
+          g.forEach((it, m) => {
+            const y = top + 40 + m * (ch + 10), rt = vRight(it.e, it.k);
+            o += '<g class="hit" data-jump="' + smEsc(it.e.id) + '"><rect x="' + smF1(x) + '" y="' + smF1(y) + '" width="' + smF1(cw) + '" height="' + smF1(ch) + '" fill="' + v.bg2 + '" fill-opacity=".7" stroke="' + (it.e.id === fid ? v.ink : v.line) + '" stroke-width="' + (it.e.id === fid ? 2.5 : 1) + '"></rect>' +
+              '<rect x="' + smF1(x) + '" y="' + smF1(y) + '" width="6" height="' + smF1(ch) + '" fill="' + col + '"' + (it.k === 'need' ? ' class="pulse"' : '') + '></rect>' +
+              vFit(x + 18, y + (ch >= 64 ? ch * 0.36 : ch / 2), vName(it.e, it.i), cw - 30 - (ch >= 64 ? 0 : 70), 17, v.ink, t.f.bf, ' font-weight="600"') +
+              (ch >= 64 ? '<text x="' + smF1(x + 18) + '" y="' + smF1(y + ch * 0.72) + '" font-size="14" fill="' + col + '" font-family=\'' + t.f.mf + '\' dominant-baseline="central"' + rt.attr + '>' + smEsc(rt.txt || smStatus(it.e, it.k)) + '</text>' :
+                '<text x="' + smF1(x + cw - 10) + '" y="' + smF1(y + ch / 2) + '" font-size="13" fill="' + col + '" font-family=\'' + t.f.mf + '\' dominant-baseline="central" text-anchor="end"' + rt.attr + '>' + smEsc(rt.txt) + '</text>') + '</g>';
+          });
+        });
+        return o;
+      }
+
+      // TIMELINE: how long each chat has sat where it is, over the last twenty minutes, now at the right
+      function vTimeline(c) {
+        const { t, v, P, list, fid, H } = c, n = list.length;
+        let o = vHead(c, 'Timeline', 'how long each chat has waited, the last twenty minutes');
+        if (!n) return o + vEmpty(c, H / 2);
+        const top = 96, X0 = 330, X1 = 1066, span = 1200000, k1 = (X1 - X0) / span, rh = Math.min(64, (H - top - 20) / n), now = Date.now();
+        [20, 15, 10, 5, 0].forEach((m) => {
+          const x = X1 - m * 60000 * k1;
+          o += '<line x1="' + smF1(x) + '" y1="' + top + '" x2="' + smF1(x) + '" y2="' + smF1(top + rh * n) + '" stroke="' + v.line + '" stroke-dasharray="' + (m ? '3 6' : '0') + '"></line>' +
+            smTxt(x, top - 10, m ? m + 'M' : 'NOW', 12, m ? v.mute : v.ink, t.f.mf, ' text-anchor="middle" letter-spacing="1.5"');
+        });
+        list.forEach((e, i) => {
+          const k = smKind(e), col = smCol(t, k), y = top + i * rh, rt = vRight(e, k), bh = rh * 0.42, by = y + (rh - bh) / 2;
+          o += '<g class="hit" data-jump="' + smEsc(e.id) + '">' + vHitBg(10, y + 1, 1080, rh - 2, v) + (e.id === fid ? vFloor(10, y + 1, 1080, rh - 2, v) : '') +
+            vFit(24, y + rh / 2, vName(e, i).toUpperCase(), 210, Math.round(Math.min(17, rh * 0.3)), k === 'idle' ? v.mute : v.ink, t.f.rf || t.f.mf, ' font-weight="700"') +
+            '<text x="' + (X0 - 14) + '" y="' + smF1(y + rh / 2) + '" font-size="14" fill="' + col + '" font-family=\'' + t.f.mf + '\' dominant-baseline="central" text-anchor="end"' + rt.attr + '>' + smEsc(rt.txt) + '</text>';
+          if (vSide(e)) o += '<path d="M' + smF1(X1) + ',' + smF1(by) + ' l' + smF1(bh / 2) + ',' + smF1(bh / 2) + ' l' + smF1(-bh / 2) + ',' + smF1(bh / 2) + ' l' + smF1(-bh / 2) + ',' + smF1(-bh / 2) + ' Z" fill="' + col + '"></path>';
+          else {
+            const since = e.since || now, w = Math.max(6, Math.min(now - since, span) * k1);
+            const fill = k === 'work' ? 'url(#' + P + 'work)' : k === 'idle' ? v.line : col;
+            o += '<rect x="' + smF1(X1 - w) + '" y="' + smF1(by) + '" width="' + smF1(w) + '" height="' + smF1(bh) + '" fill="' + fill + '"' + (k === 'need' ? ' class="pulse"' : '') +
+              ' data-tl="' + since + '" data-x1="' + X1 + '" data-k="' + k1 + '"></rect>';
+          }
+          o += '</g>';
+        });
+        return o;
+      }
+
+      // DEPARTURES: a split flap board, most urgent first. The rows flip when the board changes
+      function vBoard(c) {
+        const { t, v, list, fid, H } = c;
+        let o = vHead(c, 'Departures', 'most urgent first · the board flips when something changes');
+        if (!list.length) return o + vEmpty(c, H / 2);
+        const order = list.map((e, i) => ({ e, i, k: smKind(e) })).sort((a, b) => smRank(a.e, a.k) - smRank(b.e, b.k) || (b.k === 'work') - (a.k === 'work') || (a.e.since || 0) - (b.e.since || 0));
+        const top = 104, rh = Math.min(58, (H - top - 16) / order.length), cols = [[30, 'NO.'], [118, 'CHAT'], [690, 'STATUS'], [1066, 'WAITING']];
+        cols.forEach(([x, l], j) => { o += smTxt(x, top - 14, l, 13, v.mute, t.f.mf, (j === 3 ? ' text-anchor="end"' : '') + ' letter-spacing="2"'); });
+        const tile = t.lite ? v.bg2 : 'rgba(0,0,0,.32)';
+        order.forEach((it, m) => {
+          const e = it.e, k = it.k, col = smCol(t, k), y = top + m * rh, rt = vRight(e, k), cy = y + (rh - 6) / 2;
+          o += '<g class="hit" data-jump="' + smEsc(e.id) + '"><rect x="18" y="' + smF1(y) + '" width="1062" height="' + smF1(rh - 6) + '" fill="' + tile + '" stroke="' + (e.id === fid ? v.ink : v.line) + '" stroke-width="' + (e.id === fid ? 2.5 : 1) + '"></rect>' +
+            '<line x1="18" y1="' + smF1(cy) + '" x2="1080" y2="' + smF1(cy) + '" stroke="' + v.bg + '" stroke-width="1.5" stroke-opacity=".7"></line>' +
+            '<g class="vflap" style="animation-delay:' + (m * 70) + 'ms">' + smTxt(30, cy, vShort(e, it.i), Math.round(Math.min(24, rh * 0.42)), v.ink, t.f.hf, ' font-weight="700"') +
+            vFit(118, cy, vTitle(e).toUpperCase(), 550, Math.round(Math.min(21, rh * 0.38)), v.ink, t.f.mf, ' font-weight="700" letter-spacing="1"') +
+            vFit(690, cy, smStatus(e, k).toUpperCase(), 250, Math.round(Math.min(17, rh * 0.32)), col, t.f.mf, ' font-weight="700" letter-spacing="1"') +
+            '<text x="1066" y="' + smF1(cy) + '" font-size="' + Math.round(Math.min(19, rh * 0.34)) + '" fill="' + col + '" font-family=\'' + t.f.mf + '\' dominant-baseline="central" text-anchor="end"' + rt.attr + '>' + smEsc(rt.txt) + '</text></g></g>';
+        });
+        return o;
+      }
+
+      // HONEYCOMB: the hub in the middle cell, chats spiralling out around it
+      function vHive(c) {
+        const { t, v, list, fid, H } = c, n = list.length;
+        let K = 1; while (1 + 3 * K * (K + 1) < n + 1) K++;
+        const r = Math.min(112, (1100 - 60) / (Math.sqrt(3) * (2 * K + 1)), (H - 30) / (3 * K + 2)), cx = 550, cy = H / 2;
+        const hex = (x, y, rr) => 'M' + [0, 1, 2, 3, 4, 5].map((j) => { const a = (60 * j - 30) * Math.PI / 180; return smF1(x + rr * Math.cos(a)) + ',' + smF1(y + rr * Math.sin(a)); }).join(' L') + ' Z';
+        const DIR = [[1, 0], [1, -1], [0, -1], [-1, 0], [-1, 1], [0, 1]], cells = [];
+        for (let k = 1; k <= K && cells.length < n; k++) {
+          let q = DIR[4][0] * k, s = DIR[4][1] * k;
+          for (let d = 0; d < 6; d++) for (let st = 0; st < k; st++) { cells.push([q, s]); q += DIR[d][0]; s += DIR[d][1]; }
+        }
+        let o = '<circle cx="' + cx + '" cy="' + smF1(cy) + '" r="' + smF1(r * 3.2) + '" fill="url(#' + c.P + 'g)"></circle>' +
+          '<path d="' + hex(cx, cy, r - 3) + '" fill="' + v.bg2 + '" stroke="' + v.line + '" stroke-width="2"></path><g transform="translate(' + cx + ',' + smF1(cy) + ') scale(' + smF1(r * 0.62 / 74) + ')">' + vHub(c) + '</g>';
+        list.forEach((e, i) => {
+          const [q, s] = cells[i], x = cx + r * Math.sqrt(3) * (q + s / 2), y = cy + r * 1.5 * s, k = smKind(e), col = smCol(t, k), rt = vRight(e, k);
+          o += '<g class="hit" data-jump="' + smEsc(e.id) + '"><path d="' + hex(x, y, r - 3) + '" fill="' + col + '" fill-opacity="' + vFillOp(k) + '" stroke="' + (e.id === fid ? v.ink : col) + '" stroke-width="' + (e.id === fid ? 3.5 : 2) + '"' + (k === 'need' ? ' class="pulse"' : '') + '></path>' +
+            smTxt(x, y - r * 0.34, vShort(e, i), Math.round(r * 0.3), v.ink, t.f.hf, ' text-anchor="middle" font-weight="700"') +
+            vFit(x, y + r * 0.04, vTitle(e), r * 1.42, Math.round(Math.max(11, r * 0.15)), v.ink, t.f.bf, ' text-anchor="middle"') +
+            '<text x="' + smF1(x) + '" y="' + smF1(y + r * 0.36) + '" font-size="' + Math.round(Math.max(10, r * 0.12)) + '" fill="' + col + '" font-family=\'' + t.f.mf + '\' dominant-baseline="central" text-anchor="middle"' + rt.attr + '>' + smEsc(rt.txt || smStatus(e, k)) + '</text></g>';
+        });
+        return o;
+      }
+
+      // TREEMAP: each chat gets ground in proportion to how much it needs you
+      function vSquarify(items, x, y, w, h) {
+        const out = [], total = items.reduce((s, a) => s + a.v, 0) || 1, sc = w * h / total;
+        let rest = items.map((a) => Object.assign({}, a, { a: a.v * sc })), row = [];
+        const worst = (rw, side) => { const s = rw.reduce((tt, a) => tt + a.a, 0), mx = Math.max(...rw.map((a) => a.a)), mn = Math.min(...rw.map((a) => a.a)); return Math.max(side * side * mx / (s * s), s * s / (side * side * mn)); };
+        const lay = (rw) => {
+          const s = rw.reduce((tt, a) => tt + a.a, 0);
+          if (w >= h) { const cw = s / h; let yy = y; rw.forEach((a) => { out.push(Object.assign(a, { x, y: yy, w: cw, h: a.a / cw })); yy += a.a / cw; }); x += cw; w -= cw; }
+          else { const chh = s / w; let xx = x; rw.forEach((a) => { out.push(Object.assign(a, { x: xx, y, w: a.a / chh, h: chh })); xx += a.a / chh; }); y += chh; h -= chh; }
+        };
+        while (rest.length) {
+          const side = Math.min(w, h), cnd = rest[0];
+          if (!row.length || worst(row.concat([cnd]), side) <= worst(row, side)) { row.push(cnd); rest = rest.slice(1); } else { lay(row); row = []; }
+        }
+        if (row.length) lay(row);
+        return out;
+      }
+      function vTreemap(c) {
+        const { t, v, list, fid, H } = c;
+        let o = vHead(c, 'Treemap', 'more ground, more it needs you');
+        if (!list.length) return o + vEmpty(c, H / 2);
+        const items = list.map((e, i) => ({ e, i, k: smKind(e), v: SM_WT[smKind(e)] || 1 })).sort((a, b) => b.v - a.v);
+        vSquarify(items, 20, 88, 1060, H - 104).forEach((it) => {
+          const e = it.e, k = it.k, col = smCol(t, k), rt = vRight(e, k), big = it.w > 150 && it.h > 90;
+          o += '<g class="hit" data-jump="' + smEsc(e.id) + '"><rect x="' + smF1(it.x + 3) + '" y="' + smF1(it.y + 3) + '" width="' + smF1(Math.max(1, it.w - 6)) + '" height="' + smF1(Math.max(1, it.h - 6)) + '" fill="' + col + '" fill-opacity="' + vFillOp(k) + '" stroke="' + (e.id === fid ? v.ink : col) + '" stroke-width="' + (e.id === fid ? 3 : 1.5) + '"' + (k === 'need' ? ' class="pulse"' : '') + '></rect>' +
+            smTxt(it.x + 16, it.y + 26, vShort(e, it.i), Math.round(Math.min(30, Math.max(14, it.h * 0.2))), v.ink, t.f.hf, ' font-weight="700"') +
+            (it.h > 60 ? vFit(it.x + 16, it.y + Math.min(it.h - 22, 26 + Math.min(34, it.h * 0.28)), vTitle(e), it.w - 32, Math.round(Math.min(19, Math.max(12, it.w * 0.07))), v.ink, t.f.bf, ' font-weight="600"') : '') +
+            (big ? '<text x="' + smF1(it.x + 16) + '" y="' + smF1(it.y + it.h - 20) + '" font-size="14" fill="' + col + '" font-family=\'' + t.f.mf + '\' dominant-baseline="central"' + rt.attr + '>' + smEsc(rt.txt || smStatus(e, k)) + '</text>' : '') + '</g>';
+        });
+        return o;
+      }
+      const SM_VIEW_FN = { radar: vRadar, puzzle: vPuzzle, seismo: vSeismo, mixer: vMixer, orbit: vOrbit, lanes: vLanes, timeline: vTimeline, board: vBoard, hive: vHive, treemap: vTreemap };
+      function setView(id) {
+        if (!SM_VIEWS.some((x) => x[0] === id) || id === viewId) return;
+        viewId = id; stageSig = '';
+        if (model) paint(model);
+      }
+
       // ---------- the stage: pie wedges, load rails, leader lines ----------
       function stage(tabs, floorId, ex) {
         ex = ex || {};
         const t = theme, v = t.v, P = 'sm' + t.id;
-        const vbH = Math.max(600, H - 348);   // 8.0: the control panel takes the bottom 230
+        const vbH = Math.max(600, H - 400);   // 8.0: the control panel takes the bottom 230 (9.1: and the pill rail 52 up top)
         const cx = 430, cy = Math.round(vbH / 2), R = 275;
         const list = tabs.slice(0, 12);
         let o = '<svg viewBox="0 0 1100 ' + vbH + '" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><defs>' +
@@ -1643,7 +2101,12 @@
           o += '<pattern id="' + P + k + '" width="13" height="16" patternUnits="userSpaceOnUse"><rect width="10" height="16" fill="' + v[k] + '"></rect>' +
             (k === 'work' ? '<animateTransform attributeName="patternTransform" type="translate" from="0 0" to="13 0" dur=".9s" repeatCount="indefinite"></animateTransform>' : '') + '</pattern>';
         }
-        o += '</defs><circle cx="' + cx + '" cy="' + cy + '" r="' + Math.round(R * 1.5) + '" fill="url(#' + P + 'g)"></circle>';
+        o += '</defs>';
+        if (viewId !== 'pie' && SM_VIEW_FN[viewId]) {   // 9.1: another view draws the same list
+          const waiting0 = list.filter((e) => !vSide(e) && e.id !== floorId && smWaits(smKind(e))).length;
+          return o + SM_VIEW_FN[viewId]({ t, v, P, list, fid: floorId, ex, H: vbH, waiting: waiting0 }) + '</svg>';
+        }
+        o += '<circle cx="' + cx + '" cy="' + cy + '" r="' + Math.round(R * 1.5) + '" fill="url(#' + P + 'g)"></circle>';
 
         // leader lines and rails
         const n = list.length, x0 = 790, W = 300;
@@ -1770,12 +2233,14 @@
         }
         // the stage, redrawn only when something on it changed so the animations keep running
         const ex = { held: !!(ct && ct.held), meeting: !!(ct && ct.held && ct.meeting) };
-        const sig = t.id + H + '|' + fid + '|' + ex.held + ex.meeting + '|' + tabs.map((e) => [e.id, e.title, e.state, e.seen, e.ask, e.on, e.reqKey, e.folder, e.since, e.deckN, e.nVisual, e.chiefN, e.nRun, e.closed, e.oxN, e.nHold].join('~')).join('|');
+        const sig = t.id + H + '|' + fid + '|' + ex.held + ex.meeting + '|' + tabs.map((e) => [e.id, e.title, e.state, e.seen, e.ask, e.on, e.reqKey, e.folder, e.since, e.deckN, e.nVisual, e.chiefN, e.nRun, e.closed, e.oxN, e.nHold].join('~')).join('|') + '|' + viewId;   // 9.2: the view too
         if (sig !== stageSig) { stageSig = sig; q('.stage').innerHTML = stage(tabs, fid, ex); fitNames(); }
         renderAsks(m);   // 8.1
         renderDeck(m);   // 8.1
         renderCos(m);    // 9.0
         renderOx(m);     // 9.1
+        renderRail(m);   // 9.1
+        renderPick(m);
         renderLinks(m);  // 8.2
       }
 
@@ -1930,6 +2395,7 @@
       }
 
       // ---------- 9.0: Chief of Staff over the pie, in the board's own night drive look ----------
+      const CHAT_RE = /^https:\/\/claude\.ai\/chat\/[0-9a-f-]{36}/;   // 9.1: a thread whose link is a chat opens that chat
       const CHIEF_BIZ = { 'CHxTLD': ['CHxTLD', 'chx'], 'ANDRE MANDEL': ['ANDRÉ MANDEL', 'am'], 'PERSONAL': ['PERSONAL', 'per'] };
       const cosDate = (d) => (d.getMonth() + 1) + '/' + d.getDate() + '/' + String(d.getFullYear()).slice(2);
       function cosDue(t) {
@@ -1965,31 +2431,78 @@
           ov.innerHTML = h; ov.hidden = false; return;
         }
         const b = st.brief, k = st.counts || {};
-        const items = b && Array.isArray(b.items) ? b.items.slice(0, 4) : [];
+        const items = b && Array.isArray(b.items) ? b.items.slice(0, 6) : [];
         let when = '';
         try { if (b && b.written_at) { const w = new Date(b.written_at); if (!isNaN(w)) when = 'Briefed ' + cosDate(w) + ' at ' + w.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }); } } catch (e) {}
-        h += '<div class="cbr">' + scene + '<div class="ce">Morning brief</div>' +
+        h += '<div class="cbody"><div class="cbr">' + scene + '<div class="ce">Morning brief</div>' +
           '<div class="chd">' + smEsc(b && b.headline ? b.headline : 'No brief yet today. The Chief writes one every morning.') + '</div>' +
           (items.length ? '<ul>' + items.map((x) => '<li><span>' + smEsc(x) + '</span></li>').join('') + '</ul>' : '') +
           '<div class="cct"><span class="n"><b>' + (k.needs || 0) + '</b>need you</span><span class="s"><b>' + (k.blocked || 0) + '</b>blocked</span><span class="r"><b>' + (k.running || 0) + '</b>running</span><span><b>' + (k.open || 0) + '</b>open</span></div>' +
-          (when ? '<div class="cwn">' + smEsc(when) + '</div>' : '') + '</div>';
-        const rows = (st.start || []).slice(0, 5);
+          (when ? '<div class="cwn">' + smEsc(when) + '</div>' : '') + '</div><div class="ccol">';
+        const rows = (st.start || []).slice(0, 8);
         h += '<div class="csh">Start here <small>' + (rows.length ? 'say done and the number to close one' : 'nothing is waiting on you') + '</small></div><div class="crs">';
         rows.forEach((t, i) => {
           const bz = CHIEF_BIZ[t.business] || ['', 'per'], due = cosDue(t), needs = t.status === 'needs';
           h += '<div class="cr' + (needs ? ' hot' : '') + '"><span class="ci">' + (i + 1) + '</span><div class="cbd"><div class="ctp">' +
             '<span class="cst ' + (needs ? 'needs' : 'blocked') + '">' + (needs ? 'Needs you' : 'Blocked') + '</span>' +
             (bz[0] ? '<span class="cbz ' + bz[1] + '">' + smEsc(bz[0]) + '</span>' : '') + (t.project ? '<span class="cpj">' + smEsc(t.project) + '</span>' : '') +
-            '<span class="cg"></span>' + (due ? '<span class="cdu">' + smEsc(due) + '</span>' : '') + (t.stale ? '<span class="csl">Stale</span>' : '') +
-            '<button type="button" class="cbn sm" data-cos="done" data-id="' + smEsc(t.id) + '" data-n="' + (i + 1) + '"' + (st.canWrite ? '' : ' disabled title="Read only here"') + '>Mark done</button></div>' +
-            '<div class="ctt">' + smEsc(t.title || 'Untitled thread') + '</div>' + (t.next ? '<div class="cnx">' + smEsc(t.next) + '</div>' : '') + '</div></div>';
+            '<span class="cg"></span>' + (due ? '<span class="cdu">' + smEsc(due) + '</span>' : '') + (t.stale ? '<span class="csl">Stale</span>' : '') + '</div>' +
+            '<div class="ctt">' + smEsc(t.title || 'Untitled thread') + '</div>' + (t.next ? '<div class="cnx">' + smEsc(t.next) + '</div>' : '') + '</div>' +
+            '<div class="cac"><button type="button" class="cbn sm hi" data-cos="chat" data-id="' + smEsc(t.id) + '" title="' + (CHAT_RE.test(t.link || '') ? 'Go to the chat working this thread' : 'Start a chat with this thread typed in, not sent') + '">' + (CHAT_RE.test(t.link || '') ? 'Open chat' : 'New chat') + '</button>' +
+            (t.link && !CHAT_RE.test(t.link) ? '<button type="button" class="cbn sm" data-cos="link" data-id="' + smEsc(t.id) + '" title="' + smEsc(t.link) + '">Open link</button>' : '') +
+            '<button type="button" class="cbn sm" data-cos="done" data-id="' + smEsc(t.id) + '" data-n="' + (i + 1) + '"' + (st.canWrite ? '' : ' disabled title="Read only here"') + '>Mark done</button></div></div>';
         });
         if (!rows.length) h += '<div class="cem">Nothing is waiting on you. Agents add threads here when they need a call from you.</div>';
         const more = (k.needs || 0) + (k.blocked || 0) - rows.length;
-        h += '</div><div class="chn">' + (more > 0 ? '+' + more + ' more on the board · ' : '') + 'say chief · what needs me · done two · undo</div>';
+        h += '</div><div class="chn">' + (more > 0 ? '+' + more + ' more on the board · ' : '') + 'say chief · what needs me · done two · undo</div></div></div>';
         ov.innerHTML = h; ov.hidden = false;
       }
 
+      // ---------- 9.1: the pill rail and the pickers ----------
+      function renderRail(m) {
+        const vw = SM_VIEWS.find((x) => x[0] === viewId) || SM_VIEWS[0];
+        q('.vwp .pn b').textContent = vw[1];
+        q('.lkp .pn b').textContent = smPad(SM_LOOKS.indexOf(theme.id) + 1) + ' ' + (theme.look || theme.name || theme.id);
+        const ce = ((m && m.tabs) || []).find((e) => e.chief), n = ce && !ce.closed ? ce.chiefN || 0 : 0;
+        const cp = q('.prl .chp');
+        cp.querySelector('span').textContent = 'Chief' + (n ? ' · ' + n : '');
+        cp.classList.toggle('hot', n > 0); cp.classList.toggle('on', cosOpen);
+        q('.vwp .pn').classList.toggle('on', pickOpen === 'view'); q('.lkp .pn').classList.toggle('on', pickOpen === 'look');
+      }
+      function togglePick(w) { pickOpen = pickOpen === w ? '' : w; pickSig = ''; if (model) { renderPick(model); renderRail(model); } }
+      function renderPick(m) {
+        const box = q('.pik');
+        if (!pickOpen) { if (!box.hidden) { box.hidden = true; box.replaceChildren(); } pickSig = ''; return; }
+        const L = (m && m.looks) || {}, favs = (L.favs || []).filter((id) => SM_THEMES[id]), step = L.step === 'fav' && favs.length ? 'fav' : 'all';
+        const sig = JSON.stringify([pickOpen, viewId, theme.id, favs, step]);
+        if (sig === pickSig) return;
+        pickSig = sig;
+        let h = '';
+        if (pickOpen === 'view') {
+          h = '<div class="pkh"><span class="pkt">Views</span><span class="pks">How HQ draws your chats</span><span class="cg"></span><button type="button" class="pkb x" data-pik="close" title="Close">×</button></div><div class="pkl"><div class="vg">' +
+            SM_VIEWS.map((x, i) => '<button type="button" class="vt' + (x[0] === viewId ? ' on' : '') + '" data-pv="' + x[0] + '"><svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true">' + SM_VIEW_ICON[x[0]] + '</svg>' +
+              '<span><b>' + smPad(i + 1) + ' ' + smEsc(x[1]) + '</b><small>' + smEsc(x[2]) + '</small></span></button>').join('') + '</div></div>';
+        } else {
+          const tile = (id) => {
+            const th = SM_THEMES[id], v = th.v, n = SM_LOOKS.indexOf(id) + 1;
+            return '<div class="lt' + (id === theme.id ? ' on' : '') + '" style="background:' + v.bg + ';color:' + v.ink + ';border-color:' + v.line + '">' +
+              '<button type="button" class="lta" data-pl="' + id + '" title="' + smEsc(th.look || th.name) + '"><span class="lsw2">' + [v.accent, v.need, v.wait, v.work].map((c2) => '<i style="background:' + c2 + '"></i>').join('') + '</span>' +
+              '<span class="ltn">' + smPad(n) + '</span><span class="ltl" style="font-family:' + smEsc(th.f.hf) + '">' + smEsc(th.look || th.name || id) + '</span></button>' +
+              '<button type="button" class="ltf' + (favs.includes(id) ? ' on' : '') + '" data-fav="' + id + '" title="' + (favs.includes(id) ? 'Take out of favorites' : 'Add to favorites') + '">★</button></div>';
+          };
+          h = '<div class="pkh"><span class="pkt">Looks</span><span class="pks">Arrows step through</span>' +
+            '<button type="button" class="pkb' + (step === 'all' ? ' on' : '') + '" data-step="all">All ' + SM_LOOKS.length + '</button>' +
+            '<button type="button" class="pkb' + (step === 'fav' ? ' on' : '') + '" data-step="fav"' + (favs.length ? '' : ' disabled') + '>Favorites ' + favs.length + '</button>' +
+            '<span class="cg"></span><button type="button" class="pkb x" data-pik="close" title="Close">×</button></div><div class="pkl">' +
+            (favs.length ? '<div class="pkc">Favorites</div><div class="pkg">' + favs.map(tile).join('') + '</div>' : '') +
+            '<div class="pkc">All looks · tap the star to keep one in favorites</div><div class="pkg">' + SM_LOOKS.map(tile).join('') + '</div></div>';
+          SM_LOOKS.forEach((id) => smFontsFor(SM_THEMES[id]));   // each tile in its own type, fetched once
+        }
+        const sc = box.querySelector('.pkl'), keep = sc ? sc.scrollTop : 0;
+        box.innerHTML = h; box.hidden = false;
+        const sc2 = box.querySelector('.pkl'); if (sc2 && keep) sc2.scrollTop = keep;
+      }
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && pickOpen) togglePick(''); }, true);
       // ---------- 9.1: the CHxTLD Outbox over the pie, in the Outbox's own white mail look ----------
       // A list of drafts; a click opens one to edit. Edits save back to the Outbox tab a moment after you stop
       // typing, or on Save or Cmd S. A newer version saved elsewhere never lands on top of your typing: a bar
@@ -2355,6 +2868,14 @@
 
       // names on the rails stop short of the timer, measured in whatever font actually loaded
       function fitNames() {
+        fx.querySelectorAll('.stage text.fit').forEach((el) => {   // 9.1: the views' labels
+          const full = el.getAttribute('data-full') || '', max = +el.getAttribute('data-w') || 200;
+          el.textContent = full;
+          let len = 0;
+          try { len = el.getComputedTextLength(); } catch (e) { return; }
+          let n = full.length;
+          while (len > max && n > 2) { n--; el.textContent = full.slice(0, n).trim() + '…'; len = el.getComputedTextLength(); }
+        });
         fx.querySelectorAll('.stage text.rn').forEach((el) => {
           const full = el.getAttribute('data-full') || '';
           const rr = fx.querySelector('.stage text.rr[data-i="' + el.getAttribute('data-i') + '"]');
@@ -2373,6 +2894,10 @@
       function tick() {
         const now = Date.now();
         fx.querySelectorAll('.stage [data-since]').forEach((el) => { el.textContent = smClock(now - (+el.getAttribute('data-since') || now)); });
+        fx.querySelectorAll('.stage [data-tl]').forEach((el) => {   // 9.1: timeline bars
+          const w = Math.max(6, Math.min(now - (+el.getAttribute('data-tl') || now), 1200000) * (+el.getAttribute('data-k') || 0));
+          el.setAttribute('width', w.toFixed(1)); el.setAttribute('x', ((+el.getAttribute('data-x1') || 0) - w).toFixed(1));
+        });
         fx.querySelectorAll('.stage [data-grow]').forEach((el) => { el.setAttribute('width', Math.round(300 * Math.min(1, Math.max(0.06, (now - (+el.getAttribute('data-grow') || now)) / 600000)))); });
       }
 
@@ -2429,7 +2954,7 @@
       }
 
       setTheme(theme);
-      return { el: fx, fit, setTheme, setZoom, paint, tick, setHtml, clearHtml, flash, setReading, follow, showPage, oxAck, scale: () => (fx.getBoundingClientRect().width / 1920) || 1 };
+      return { el: fx, fit, setTheme, setZoom, paint, tick, setHtml, clearHtml, flash, setReading, follow, showPage, oxAck, setView, scale: () => (fx.getBoundingClientRect().width / 1920) || 1 };
     }
 
     // Rajdhani, Barlow and Share Tech Mono for the dark look. Claude's page blocks outside font
@@ -2487,6 +3012,40 @@
     root.id = 'chf-mirror';
     const scr = smMake(root, act);
     scr.setZoom(zoom);
+    // 9.1: the view (how the chats are drawn), favorite looks, and whether the arrows step all looks or just favorites
+    let viewIdHQ = 'pie';
+    try { const sv = localStorage.getItem('chf_mirror_view'); if (SM_VIEWS.some((x) => x[0] === sv)) viewIdHQ = sv; } catch (e) {}
+    scr.setView(viewIdHQ);
+    let favs = ['retro', 'vapor', 'blueprint', 'sonar', 'deepspace', 'cyberpunk', 'artdeco', 'midcentury', 'tahoe'];   // André's picks, 10/6/26
+    try { const f = JSON.parse(localStorage.getItem('chf_look_favs')); if (Array.isArray(f)) favs = f; else localStorage.setItem('chf_look_favs', JSON.stringify(favs)); } catch (e) {}
+    let lkStep = 'all';
+    try { lkStep = localStorage.getItem('chf_look_step') === 'fav' ? 'fav' : 'all'; } catch (e) {}
+    function setViewHQ(id, quiet) {
+      if (!SM_VIEWS.some((x) => x[0] === id)) return;
+      viewIdHQ = id;
+      try { localStorage.setItem('chf_mirror_view', id); } catch (x) {}
+      scr.setView(id);
+      scr.paint(model());
+      if (!quiet) { const i = SM_VIEWS.findIndex((x) => x[0] === id); scr.flash(SM_VIEWS[i][1] + ' view · ' + (i + 1) + ' of ' + SM_VIEWS.length); }
+    }
+    function stepView(d) {
+      const n = SM_VIEWS.length, i = SM_VIEWS.findIndex((x) => x[0] === viewIdHQ);
+      setViewHQ(SM_VIEWS[((i < 0 ? 0 : i) + (d === -1 ? -1 : 1) + n) % n][0]);
+    }
+    function toggleFav(id) {
+      if (!SM_THEMES[id]) return;
+      favs = favs.includes(id) ? favs.filter((x) => x !== id) : favs.concat([id]);
+      try { localStorage.setItem('chf_look_favs', JSON.stringify(favs)); } catch (x) {}
+      if (!favs.length && lkStep === 'fav') lkStep = 'all';
+      scr.paint(model());
+      scr.flash((favs.includes(id) ? 'Favorite: ' : 'Out of favorites: ') + (SM_THEMES[id].look || id));
+    }
+    function setLkStep(mode) {
+      lkStep = mode === 'fav' && favs.some((id) => SM_THEMES[id]) ? 'fav' : 'all';
+      try { localStorage.setItem('chf_look_step', lkStep); } catch (x) {}
+      scr.paint(model());
+      scr.flash(lkStep === 'fav' ? 'Arrows step through your favorites' : 'Arrows step through all ' + SM_LOOKS.length + ' looks');
+    }
 
     // the board, as every Claude tab reports it
     const reg = new Map();
@@ -2570,7 +3129,7 @@
       if (de) list.push(de);
       list.push(chiefEntry());   // 9.0
       list.push(outboxEntry());  // 9.1
-      return { tabs: list, floorId: floorId || (f && f.id) || '', floor: floorP, quiet: lsGet('chf_sb_quiet', {}), ctl: ctlModel(), deck: deckModel(), cos: chiefModel(), ox: outboxModel(), links: linkList() };
+      return { tabs: list, floorId: floorId || (f && f.id) || '', floor: floorP, quiet: lsGet('chf_sb_quiet', {}), ctl: ctlModel(), deck: deckModel(), cos: chiefModel(), ox: outboxModel(), links: linkList(), looks: { favs, step: lkStep, view: viewIdHQ } };
     }
     // 8.2: a page opens on the right of HQ when the site allows it; otherwise in a window docked there
     let page = null, pageWin = null, pageGen = 0;
@@ -2687,6 +3246,9 @@
       else if (m.t === 'deck-act' && m.cmd) { dkLast = { cmd: m.cmd, at: Date.now() }; }
       else if (m.t === 'chief' && m.st) { ch = { from: m.from, st: m.st, at: Date.now() }; scr.paint(model()); }   // 9.0
       else if (m.t === 'chief-ack' && m.to === 'mirror') chiefAckHQ(m);
+      else if (m.t === 'chief-launch' && m.th) { send({ t: 'chief-launch-ack', to: m.from, token: m.token }); chiefLaunch(m.th); }   // 9.1: Open chat on the board
+      else if (m.t === 'view') { if (m.id) setViewHQ(m.id); else if (m.step) stepView(m.step); }   // 9.1: "radar view"
+      else if (m.t === 'look-step' && m.dir) flipTheme(m.dir);
       else if (m.t === 'outbox' && m.st) { ox = { from: m.from, st: m.st, at: Date.now() }; scr.paint(model()); }   // 9.1
       else if (m.t === 'outbox-ack' && m.to === 'mirror') outboxAckHQ(m);
       else if (m.t === 'ox-show') outboxOpenHQ();
@@ -2698,6 +3260,7 @@
     // another tab changed a setting, the hold, or quiet mode
     window.addEventListener('storage', (e) => { if (/^chf_(config_v1|hold|sb_quiet)$/.test(e.key || '')) scr.paint(model()); });
     window.addEventListener('storage', (e) => { if (e.key === 'chf_mirror_theme' && SM_THEMES[e.newValue] && e.newValue !== themeId) setLook(e.newValue); });   // 8.9.3
+    window.addEventListener('storage', (e) => { if (e.key === 'chf_mirror_view' && e.newValue !== viewIdHQ) setViewHQ(e.newValue, true); });   // 9.1
 
     // 7.8: the mirror's buttons send the same signals as your voice commands
     function jump(id) {
@@ -2824,6 +3387,13 @@
         try { GM_openInTab(CHIEF_URL, { active: true, insert: true }); } catch (e) { window.open(CHIEF_URL, '_blank'); }
         return;
       }
+      if (cmd === 'chat' || cmd === 'link') {   // 9.1
+        const t = chAlive() && ((ch.st && ch.st.start) || []).find((x) => x.id === id);
+        if (!t) { scr.flash('That thread changed. Look again'); return; }
+        if (cmd === 'link') { if (t.link) openPage(t.link, t.title || 'Link', 0, 'mirror'); return; }
+        chiefLaunch(t);
+        return;
+      }
       if (cmd === 'read' || cmd === 'needs') {
         const f = floorId && reg.get(floorId);
         if (!f || !f.armed) { scr.flash('Click once in a chat so it can read the brief'); return; }
@@ -2842,6 +3412,48 @@
         scr.flash(cmd === 'done' ? 'Closing ' + (n ? 'number ' + n : 'it') : 'Reopening');
         setTimeout(() => { if (chPend.delete(token)) scr.flash("Chief didn't answer. Check the board"); }, 9000);
       }
+    }
+    // 9.1: a thread's chat. Already open: it takes the floor. A chat link: it opens behind HQ and takes the floor.
+    // No chat yet: a new chat opens with the thread typed in, not sent, so you can add to it or send it as is
+    const CHAT_LINK = /^https:\/\/claude\.ai\/chat\/([0-9a-f-]{36})/;
+    const chiefSeed = (t) => {
+      const lane = { 'CHxTLD': 'CHxTLD', 'ANDRE MANDEL': 'ANDRÉ MANDEL', 'PERSONAL': 'Personal' }[t.business] || '';
+      return 'Chief of Staff thread' + (lane ? ', ' + lane : '') + (t.project ? ', ' + t.project : '') + ': ' + (t.title || 'Untitled') + '.' +
+        (t.next ? ' Next: ' + t.next : '') + (t.link ? ' Link: ' + t.link : '');
+    };
+    function floorTo(e, why) {
+      try { localStorage.setItem('chf_sb_floor', JSON.stringify({ id: e.id, ts: Date.now() })); } catch (x) {}
+      send({ t: 'floor', to: e.id, from: 'mirror', why: why || 'switch', front: true, token: Math.random().toString(36).slice(2) });
+      floorId = e.id;
+      scr.paint(model());
+    }
+    let launching = false;
+    async function chiefLaunch(t) {
+      if (launching) { scr.flash('Still opening the last one'); return; }
+      launching = true;
+      try {
+        const name = smTrunc(t.title || 'that thread', 40), m = CHAT_LINK.exec(String(t.link || ''));
+        if (m) {
+          const path = '/chat/' + m[1];
+          let e = tabs().find((x) => x.path === path);
+          if (e) { floorTo(e); scr.flash((e.name || name) + ' has the floor'); return; }
+          try { GM_openInTab(t.link, { active: false, insert: true, setParent: true }); } catch (x) { window.open(t.link, '_blank', 'noopener'); }
+          scr.flash('Opening the chat for ' + name);
+          for (let i = 0; i < 100 && !(e = tabs().find((x) => x.path === path)); i++) await hqSleep(300);
+          if (e) { floorTo(e); scr.flash((e.name || name) + ' has the floor'); } else scr.flash('The chat opened in a tab behind HQ');
+          return;
+        }
+        const at = Date.now();
+        try { GM_openInTab('https://claude.ai/new', { active: false, insert: true, setParent: true }); } catch (x) { window.open('https://claude.ai/new', '_blank', 'noopener'); }
+        scr.flash('Starting a chat for ' + name);
+        let e = null;
+        for (let i = 0; i < 100 && !(e = tabs().find((x) => x.path === '/new' && (x.born || 0) >= at - 1500)); i++) await hqSleep(300);
+        if (!e) { scr.flash('The new chat opened in a tab behind HQ'); return; }
+        await hqSleep(600);
+        deliver(e.id, [], chiefSeed(t), false);
+        floorTo(e, 'chief');
+        scr.flash('New chat for ' + name + '. The thread is typed in, not sent');
+      } finally { launching = false; }
     }
     // 9.1: the Outbox over the pie. Save goes to the Outbox's tab, which writes the draft; Open outbox brings that tab forward
     function outboxOpenHQ() {
@@ -2910,6 +3522,10 @@
       else if (a.t === 'pick') pickFrom(a.key, a.n);
       else if (a.t === 'deck') deckCmd(a.cmd, a.deck);
       else if (a.t === 'cos') chiefAct(a.cmd, a.id, a.n);   // 9.0
+      else if (a.t === 'view') { if (a.id) setViewHQ(a.id); else stepView(a.step); }   // 9.1
+      else if (a.t === 'lookset') setLook(a.id);
+      else if (a.t === 'fav') toggleFav(a.id);
+      else if (a.t === 'lkstep') setLkStep(a.mode);
       else if (a.t === 'ox') outboxAct(a);                  // 9.1
       else if (a.t === 'page') openPage(a.url, a.label, a.n, 'mirror');   // 8.2
       else if (a.t === 'pageAct') { if (a.k === 'close') closePage(); else if (a.k === 'window' && page) { page.mode = dockWindow(page.url) ? 'window' : 'blocked'; scr.showPage(page); } }
@@ -3082,9 +3698,10 @@
       applyTheme();
       scr.flash(SM_THEMES[id].look + ' · ' + (SM_LOOKS.indexOf(id) + 1) + ' of ' + SM_LOOKS.length);
     }
-    function flipTheme(dir) {   // 9.0.1: forward, or back one on a right click
-      const d = dir === -1 ? -1 : 1, n = SM_LOOKS.length;
-      setLook(SM_LOOKS[(SM_LOOKS.indexOf(themeId) + d + n) % n]);
+    function flipTheme(dir) {   // 9.0.1: forward, or back one on a right click (9.1: just your favorites, when that's how the arrows step)
+      const d = dir === -1 ? -1 : 1, fv = favs.filter((id) => SM_THEMES[id]);
+      const ring = lkStep === 'fav' && fv.length ? fv : SM_LOOKS, n = ring.length, i = ring.indexOf(themeId);
+      setLook(i < 0 ? ring[d === 1 ? 0 : n - 1] : ring[(i + d + n) % n]);
     }
     document.addEventListener('keydown', (e) => {
       if (!e.altKey || !e.shiftKey) return;
@@ -3095,6 +3712,12 @@
       } else if (e.code === 'KeyN') {
         e.preventDefault(); e.stopPropagation();
         goNext();
+      } else if (e.code === 'KeyV') {   // 9.1: next view
+        e.preventDefault(); e.stopPropagation();
+        stepView(1);
+      } else if (e.code === 'KeyC') {   // 9.1: Chief of Staff, open or closed
+        e.preventDefault(); e.stopPropagation();
+        if (chManual) chiefAct('close'); else chiefOpenHQ();
       } else if (e.code === 'KeyD') {
         e.preventDefault(); e.stopPropagation();
         flipTheme();
@@ -3115,6 +3738,7 @@
         });
         GM_registerMenuCommand('Screen mode: next look', () => flipTheme(1));   // 8.9.3, 9.0.1
         GM_registerMenuCommand('Screen mode: previous look', () => flipTheme(-1));
+        GM_registerMenuCommand('Screen mode: next view', () => stepView(1));   // 9.1
         GM_registerMenuCommand('Boot: open my 10 most recent chats', () => bootRun('menu'));   // 8.9
       }
     } catch (e) {}
@@ -4856,7 +5480,7 @@
   // counts and Start Here. That tab passes it to every tab, so HQ draws the COS wedge and the chat
   // you're talking to can read the brief aloud. Mark done goes back the same way, and undo reopens.
   const CHIEF_URL = 'https://claude.ai/artifact/JJjN3PuusV1pH3UF9D6ndX';
-  const CH = { present: false, src: null, st: null, asked: new Map() };   // this tab holds the board
+  const CH = { present: false, src: null, st: null, asked: new Map(), launched: new Set() };   // this tab holds the board
   const CHF = { st: null, from: '', at: 0, list: [], readAt: 0, closed: null, want: '', wantAt: 0, openAt: 0, toks: new Map() };   // the board as this tab hears it
   function chiefSend(cmd, extra) {
     if (!CH.src) return false;
@@ -4880,6 +5504,7 @@
     CH.src = e.source;
     if (!CH.present) { CH.present = true; dlog('chief', 'found'); }
     if (d.type === 'chief:hello') { chiefSend('hello'); return; }
+    if (d.type === 'chief:launch' && d.th) { chiefLaunchFromBoard(d.th); return; }   // 9.1
     if (d.type === 'chief:state') { CH.st = d; chiefRelay(); return; }
     if (d.type === 'chief:ack') {
       const to = CH.asked.get(d.token); CH.asked.delete(d.token);
@@ -4907,6 +5532,30 @@
     if (m.cmd !== 'done' && m.cmd !== 'undo') return;
     CH.asked.set(m.token, m.from);
     chiefSend(m.cmd, { id: m.id, status: m.status || '', token: m.token });
+  }
+  // 9.1: Open chat on a board card. HQ takes it when it's open; otherwise this tab opens the chat, or a new one
+  // with the thread typed in and not sent
+  const chiefSeedText = (t) => {
+    const lane = { 'CHxTLD': 'CHxTLD', 'ANDRE MANDEL': 'ANDRÉ MANDEL', 'PERSONAL': 'Personal' }[t.business] || '';
+    return 'Chief of Staff thread' + (lane ? ', ' + lane : '') + (t.project ? ', ' + t.project : '') + ': ' + (t.title || 'Untitled') + '.' +
+      (t.next ? ' Next: ' + t.next : '') + (t.link ? ' Link: ' + t.link : '');
+  };
+  function chiefLaunchFromBoard(th) {
+    const token = Math.random().toString(36).slice(2, 10);
+    post({ t: 'chief-launch', from: ME, th, token });
+    setTimeout(() => {
+      if (CH.launched.delete(token)) return;
+      const link = String(th.link || '');
+      if (/^https:\/\/claude\.ai\/chat\/[0-9a-f-]{36}/.test(link)) { try { GM_openInTab(link, { active: true, insert: true }); } catch (e) { window.open(link, '_blank'); } return; }
+      const at = Date.now();
+      try { GM_openInTab('https://claude.ai/new', { active: true, insert: true }); } catch (e) { window.open('https://claude.ai/new', '_blank'); }
+      let tries = 0;
+      const iv = setInterval(() => {
+        const e = listTabs().find((x) => x.path === '/new' && (x.born || 0) >= at - 1500);
+        if (e) { clearInterval(iv); setTimeout(() => post({ t: 'deliver', to: e.id, from: ME, token: Math.random().toString(36).slice(2), files: [], text: chiefSeedText(th), send: false }), 600); }
+        else if (++tries > 60) clearInterval(iv);
+      }, 500);
+    }, 1500);
   }
   function chiefAsk(cmd, t) {
     const token = Math.random().toString(36).slice(2, 10);
@@ -4952,8 +5601,8 @@
     if (!chiefAlive()) return chiefOpen('needs');
     const s = CHF.st;
     if (!s.loaded) { CHF.want = 'needs'; CHF.wantAt = Date.now(); return say('Chief is still loading. One moment.'); }
-    const list = (s.start || []).slice(0, 5);
-    CHF.list = list.map((t) => Object.assign({}, t, { gone: false })); CHF.readAt = Date.now();
+    const all8 = (s.start || []).slice(0, 8), list = all8.slice(0, 5);   // 9.1: HQ shows eight, so done six works too
+    CHF.list = all8.map((t) => Object.assign({}, t, { gone: false })); CHF.readAt = Date.now();
     if (!list.length) return say('Nothing needs you on the Chief board.');
     const total = (s.counts.needs || 0) + (s.counts.blocked || 0);
     const bits = ['Start here.', total === 1 ? 'One thread.' : total + ' threads' + (total > list.length ? ', here are the first ' + list.length + '.' : '.')];
@@ -5002,8 +5651,8 @@
     return say('Reopened. ' + chiefEnd(title));
   }
   // "done", "done two", "two is done", "mark three done", "close number one", only right after Start Here was read
-  const CHIEF_N = { one: 1, won: 1, first: 1, '1': 1, two: 2, to: 2, too: 2, second: 2, '2': 2, three: 3, third: 3, '3': 3, four: 4, for: 4, fourth: 4, '4': 4, five: 5, fifth: 5, '5': 5 };
-  const CHIEF_NW = '(one|won|first|1|two|to|too|second|2|three|third|3|four|for|fourth|4|five|fifth|5)';
+  const CHIEF_N = { one: 1, won: 1, first: 1, '1': 1, two: 2, to: 2, too: 2, second: 2, '2': 2, three: 3, third: 3, '3': 3, four: 4, for: 4, fourth: 4, '4': 4, five: 5, fifth: 5, '5': 5, six: 6, sixth: 6, '6': 6, seven: 7, seventh: 7, '7': 7, eight: 8, eighth: 8, ate: 8, '8': 8 };
+  const CHIEF_NW = '(one|won|first|1|two|to|too|second|2|three|third|3|four|for|fourth|4|five|fifth|5|six|sixth|6|seven|seventh|7|eight|eighth|ate|8)';
   const CHIEF_DONE_RES = [
     new RegExp('^(?:mark |close |finish )?(?:number |thread |item )?' + CHIEF_NW + '(?: is| as)? (?:done|closed|finished|complete|completed)$'),
     new RegExp('^(?:done|close|closed|mark done|mark|finished|complete|done with)(?: number| thread| item)? ' + CHIEF_NW + '(?: done| as done)?$')
@@ -5236,6 +5885,7 @@
       case 'chief-cmd': if (m.to === ME) chiefFromTab(m); break;
       case 'chief-ack': if (m.to === ME) chiefAcked(m); break;
       case 'chief-say': if (m.to === ME) chiefSay(m.what); break;
+      case 'chief-launch-ack': if (m.to === ME) CH.launched.add(m.token); break;   // 9.1
       case 'outbox': if (m.st && m.from !== ME) oxHeard(m); break;                                     // 9.1
       case 'outbox-cmd': if (m.to === ME) oxFromTab(m); break;
       case 'follow': break;
@@ -6339,6 +6989,8 @@
     // 8.8: one model for every open chat
     const mdm = flat.match(/^(?:please )?(?:(?:set|switch|change|put|move|make|use)\s+)?(?:all|every|each)(?: of)?(?: my| the)?(?: open)?\s*(?:chats?|tabs?|conversations?|models?)(?: models?)?\s+(?:to|over to|onto|on|use|using|be)\s+(?:the\s+)?(?:model\s+)?(sonnets?|sonet|opus|haiku|hiku|hi coup|hike you|fable|mythos)\b(?:\s+(\d(?:\.\d)?))?(?: please)?$/);
     if (mdm) return { kind: 'allModels', name: mdm[1] };
+    const vwc = viewParse(flat);   // 9.1: HQ's view
+    if (vwc) return vwc;
     const lkc = lookParse(flat);   // 8.9.3, 9.0.1: HQ's look
     if (lkc) return lkc;
     if (/^(go quiet|quiet|be quiet|quiet mode|hush|shh+)$/.test(flat)) return { kind: 'quiet' };
@@ -6445,7 +7097,38 @@
     const hit = lookList().find((x) => lookNorm(x[1]) === w || x[0] === w.replace(/ /g, ''));
     return hit ? hit[0] : null;
   }
+  // 9.1: "radar view", "show me the puzzle view", "next view", "previous view", "random view"
+  const VIEW_ALIAS = { pie: 'pie', 'pie chart': 'pie', radar: 'radar', sonar: 'radar', puzzle: 'puzzle', jigsaw: 'puzzle', 'puzzle piece': 'puzzle', 'puzzle pieces': 'puzzle',
+    seismograph: 'seismo', seismo: 'seismo', earthquake: 'seismo', mixer: 'mixer', 'mixing board': 'mixer', meters: 'mixer', meter: 'mixer', equalizer: 'mixer', orbit: 'orbit',
+    orbits: 'orbit', planets: 'orbit', 'solar system': 'orbit', lanes: 'lanes', lane: 'lanes', kanban: 'lanes', columns: 'lanes', timeline: 'timeline', gantt: 'timeline',
+    departures: 'board', 'departure board': 'board', 'departures board': 'board', 'split flap': 'board', honeycomb: 'hive', hive: 'hive', hexagons: 'hive', hex: 'hive',
+    treemap: 'treemap', 'tree map': 'treemap', blocks: 'treemap' };
+  const VIEW_NAMES = { pie: 'Pie', radar: 'Radar', puzzle: 'Puzzle', seismo: 'Seismograph', mixer: 'Mixer', orbit: 'Orbit', lanes: 'Lanes', timeline: 'Timeline', board: 'Departures', hive: 'Honeycomb', treemap: 'Treemap' };
+  const VIEW_STEP = /^(?:please )?(?:(?:show me |give me |try |go to |switch to )?(?:the |a )?(next|another|different|new|previous|prior|last|random) view|(?:change|switch|cycle) (?:the )?views?)(?: please)?$/;
+  const VIEW_NAMED = /^(?:please )?(?:(?:show me|switch to|go to|change to|try|give me|use|show|open)\s+)?(?:the |a )?(.{3,24}?) view(?: please)?$/;
+  function viewParse(flat) {
+    const st = flat.match(VIEW_STEP);
+    if (st) return { kind: 'view', step: /previous|prior|last/.test(st[1] || '') ? -1 : st[1] === 'random' ? 'rand' : 1 };
+    const m = flat.match(VIEW_NAMED), id = m && VIEW_ALIAS[m[1].replace(/^the /, '')];
+    return id ? { kind: 'view', id } : null;
+  }
+  function setHqView(c) {   // HQ picks it up from the message, or from storage when it next opens
+    const ids = Object.keys(VIEW_NAMES);
+    let cur = 'pie';
+    try { cur = localStorage.getItem('chf_mirror_view') || 'pie'; } catch (e) {}
+    let id = c.id;
+    if (!id) {
+      const i = Math.max(0, ids.indexOf(cur)), n = ids.length;
+      id = c.step === 'rand' ? ids[(i + 1 + Math.floor(Math.random() * (n - 1))) % n] : ids[(i + c.step + n) % n];
+    }
+    try { localStorage.setItem('chf_mirror_view', id); } catch (e) {}
+    post({ t: 'view', id });
+    return say(VIEW_NAMES[id] + ' view.');
+  }
+  const LOOK_NUM = /^(?:please )?(?:(?:go to|switch to|show me|try|jump to|set|use|give me) )?(?:the )?look (?:number )?([a-z]+(?: [a-z]+)?|\d{1,2})(?: please)?$/;
   function lookParse(flat) {
+    const ln = flat.match(LOOK_NUM);   // 9.1: "look eight", "go to look number twenty"
+    if (ln) { const n = toNum(ln[1]), l = lookList(); if (isFinite(n) && n >= 1 && n <= l.length) return { kind: 'look', id: l[n - 1][0] }; }
     if (LOOK_NEXT.test(flat)) return { kind: 'look', step: 1 };
     if (LOOK_BACK.test(flat)) return { kind: 'look', step: -1 };
     if (LOOK_RAND.test(flat)) return { kind: 'look', step: 'rand' };
@@ -6455,7 +7138,14 @@
     return id ? { kind: 'look', id } : null;
   }
   function setHqLook(c) {   // HQ picks it up from the message, or from storage when it next opens
-    const l = lookList(), ids = l.map((x) => x[0]);
+    const l = lookList();
+    let ids = l.map((x) => x[0]);
+    if (!c.id && c.step !== 'rand') {   // 9.1: next and previous keep to favorites when that's how HQ's arrows step
+      try {
+        const fv = JSON.parse(localStorage.getItem('chf_look_favs') || '[]').filter((id) => ids.includes(id));
+        if (localStorage.getItem('chf_look_step') === 'fav' && fv.length) ids = fv;
+      } catch (e) {}
+    }
     let cur = 'dark';
     try { cur = localStorage.getItem('chf_mirror_theme') || 'dark'; } catch (e) {}
     let id = c.id;
@@ -6571,7 +7261,8 @@
     if (c.kind === 'newChat') return newChat(c.project, false);
     if (c.kind === 'quieter') return stepRead(-1, true);
     if (c.kind === 'duckMode') return setDuckMode(c.m, true);   // 8.3
-    if (c.kind === 'look') return setHqLook(c);                 // 8.9.3, 9.0.1
+    if (c.kind === 'look') return setHqLook(c);
+    if (c.kind === 'view') return setHqView(c);                 // 9.1                 // 8.9.3, 9.0.1
     if (c.kind === 'deck') {   // 7.9 (8.1: a deck already open in another tab is used, not opened twice)
       if (DK.present) return deckStart('voice');
       const other = [...deckTabs].filter(([id, at]) => Date.now() - at < 15000).sort((a, b) => b[1] - a[1])[0];
