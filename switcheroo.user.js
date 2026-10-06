@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Claude Hands Free Text Mode
 // @namespace    andre.mandel
-// @version      9.0
-// @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land. 8.8: one model for every open chat, by voice ("all chats to Sonnet") or from the HQ model pills. 8.9: Boot. The Switcheroo Chrome launcher opens HQ with your 10 most recent chats behind it and the mic ready, no clicks; or say "boot up". 8.9.1: "stop, new chat in Alder" works: a lead in no longer hides a command, and new chat finds every project, not just the sidebar. 8.9.2: the mic bell is now the Long bell, struck three times so the AirPods can't clip it. 8.9.3: Retro, a third HQ look: sunset sky, a neon floor rolling toward you, chrome type. Click Look on the control panel, or say "retro look". 9.0: Chief of Staff joins HQ as the COS wedge and panel, and a fourth look, night drive, from the board. Say chief for the brief, what needs me for Start Here, done two to close a thread, undo to reopen it.
+// @version      9.0.1
+// @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land. 8.8: one model for every open chat, by voice ("all chats to Sonnet") or from the HQ model pills. 8.9: Boot. The Switcheroo Chrome launcher opens HQ with your 10 most recent chats behind it and the mic ready, no clicks; or say "boot up". 8.9.1: "stop, new chat in Alder" works: a lead in no longer hides a command, and new chat finds every project, not just the sidebar. 8.9.2: the mic bell is now the Long bell, struck three times so the AirPods can't clip it. 8.9.3: Retro, a third HQ look: sunset sky, a neon floor rolling toward you, chrome type. Click Look on the control panel, or say "retro look". 9.0: Chief of Staff joins HQ as the COS wedge and panel, and a fourth look, night drive, from the board. Say chief for the brief, what needs me for Start Here, done two to close a thread, undo to reopen it. 9.0.1: fifty looks. Each push of Look steps to the next one (right click goes back); say "next look", "previous look", "random look" or a look by name. And "next, over" heard as "next server" still jumps.
 // @match        https://claude.ai/*
 // @match        *://*/*
 // @grant        GM_xmlhttpRequest
@@ -318,6 +318,13 @@
     "wait" still pause so you can pick it back up. Away from a reading, "shut up" is still Hold.
     Spacebar alone now does what Option Space does (talk, again to send), whenever you're not typing
     in a text box. Option Space still works.
+  9.0.1: FIFTY LOOKS. The Look tile on the control panel now steps through 50 looks: CHxTLD, Tron, Retro
+    and Night drive first, then synthwave floors, green and amber terminals, blueprint, sonar, deep space, Bauhaus,
+    Swiss, brutalist, art deco, mid century, Tahoe, Sierra granite, redwood, fog city and more. Each one
+    has its own colors, fonts, background and panel shape. The tile shows its number and name; a click
+    goes forward, a right click goes back. By voice: "next look", "previous look", "random look", or
+    a name, like "blueprint look" or "change the look to aurora". A look's fonts load the first time
+    you land on it. Also: "next, over" heard as "next server" now jumps instead of landing as text.
   9.0: CHIEF OF STAFF. The Chief of Staff board joins HQ: a COS wedge and rail on the pie, sized by how many
     threads need you, and a click opens the brief and Start Here over the pie in the board's own look, each thread
     numbered with Mark done. If the board isn't open, the click opens it in a tab behind HQ. By voice in any chat:
@@ -702,7 +709,168 @@
       // sun is waiting on you, cyan is working; the word being read glows like the setting sun.
       night: { id: 'night', label: 'NIGHT DRIVE', look: 'Night drive', tag: 'NIGHT', brand: 'NIGHT DRIVE', f: SM_NIGHT, v: { bg: '#0a0912', bg2: '#19143a', panel: 'rgba(16,14,28,.94)', line: '#2a2647', ink: '#ece8f6', mute: '#8f8aad', accent: '#52d9ff', need: '#ff4f9e', wait: '#ff9447', work: '#52d9ff', idle: '#3a3560', glow: 'rgba(143,116,255,.24)', grid: 'rgba(82,217,255,.05)', glowc: 'rgba(255,148,71,.9)', glowc2: 'rgba(255,79,158,.45)', glowbg: 'rgba(255,148,71,.16)', glowink: '#fff3e6' } }
     };
-    const SM_LOOKS = ['light', 'dark', 'retro', 'night'];   // 8.9.3: the order Look steps through (9.0: and night drive)
+    // ---------- 9.0.1: FIFTY LOOKS ----------
+    // A look is a palette, a font kit, a background and a panel shape. CHxTLD and Tron are drawn by hand
+    // above; everything else comes from smLook, which works the glows, panels and gradients out of ten colors:
+    // ground, second ground, lines, ink, muted ink, accent, needs you, your turn, working, idle.
+    const SM_FONT_SPEC = {   // Google Fonts, asked for one family at a time the first time a look needs it
+      'Michroma': 'Michroma', 'Oswald': 'Oswald:wght@400;600;700', 'Bebas Neue': 'Bebas+Neue', 'Inter': 'Inter:wght@400;500;600;700',
+      'Space Grotesk': 'Space+Grotesk:wght@400;500;600;700', 'Space Mono': 'Space+Mono:wght@400;700', 'Syne': 'Syne:wght@400;600;700;800',
+      'DM Sans': 'DM+Sans:wght@400;500;600;700', 'DM Mono': 'DM+Mono:wght@400;500', 'Playfair Display': 'Playfair+Display:wght@400;600;700',
+      'Lora': 'Lora:wght@400;500;600;700', 'IBM Plex Mono': 'IBM+Plex+Mono:wght@400;500;600;700', 'IBM Plex Sans': 'IBM+Plex+Sans:wght@400;500;600;700',
+      'Cinzel': 'Cinzel:wght@400;600;700', 'Poiret One': 'Poiret+One', 'Josefin Sans': 'Josefin+Sans:wght@400;600;700', 'VT323': 'VT323',
+      'Silkscreen': 'Silkscreen:wght@400;700', 'Major Mono Display': 'Major+Mono+Display', 'Unbounded': 'Unbounded:wght@400;600;700',
+      'Manrope': 'Manrope:wght@400;500;600;700', 'Bungee': 'Bungee', 'Work Sans': 'Work+Sans:wght@400;500;600;700',
+      'Chakra Petch': 'Chakra+Petch:wght@400;500;600;700', 'Archivo Black': 'Archivo+Black', 'Big Shoulders Display': 'Big+Shoulders+Display:wght@500;700;800'
+    };
+    const SM_KITS = {   // headings, body, numbers
+      grid: ['Orbitron', 'Exo 2', 'Share Tech Mono'], arcade: ['Audiowide', 'Exo 2', 'Share Tech Mono'], wide: ['Michroma', 'Barlow', 'Share Tech Mono'],
+      draft: ['Michroma', 'IBM Plex Sans', 'IBM Plex Mono'], cond: ['Oswald', 'Barlow', 'JetBrains Mono'], poster: ['Bebas Neue', 'Inter', 'JetBrains Mono'],
+      grotesk: ['Space Grotesk', 'Space Grotesk', 'Space Mono'], gallery: ['Syne', 'DM Sans', 'DM Mono'], calm: ['DM Sans', 'DM Sans', 'DM Mono'],
+      swiss: ['Inter', 'Inter', 'JetBrains Mono'], serif: ['Playfair Display', 'Lora', 'IBM Plex Mono'], classic: ['Cinzel', 'EB Garamond', 'IBM Plex Mono'],
+      deco: ['Poiret One', 'Josefin Sans', 'DM Mono'], midcen: ['Josefin Sans', 'Josefin Sans', 'DM Mono'], crt: ['VT323', 'IBM Plex Mono', 'IBM Plex Mono'],
+      pixel: ['Silkscreen', 'Space Mono', 'Space Mono'], round: ['Unbounded', 'Manrope', 'JetBrains Mono'], sign: ['Bungee', 'Work Sans', 'Space Mono'],
+      mil: ['Chakra Petch', 'Chakra Petch', 'Share Tech Mono'], brut: ['Archivo Black', 'Inter', 'JetBrains Mono'],
+      shoulders: ['Big Shoulders Display', 'Barlow', 'JetBrains Mono'], zen: ['Shippori Mincho', 'Shippori Mincho', 'DM Mono']
+    };
+    const SM_WIDE = /^(arcade|wide|draft|round|sign|pixel|brut)$/;   // wide faces: the big HOLD word steps down a size
+    const smStack = (n, kind) => '"' + n + '",' + (kind === 'm' ? '"SF Mono",Menlo,ui-monospace,monospace' : /Playfair|Lora|Cinzel|Garamond|Mincho/.test(n) ? 'Georgia,serif' : 'Arial,sans-serif');
+    function smKit(k, wf) {
+      const a = SM_KITS[k] || SM_KITS.grid;
+      return { hf: smStack(a[0]), bf: smStack(a[1]), mf: smStack(a[2], 'm'), wf: wf ? smStack(wf) : '', fams: a.concat(wf ? [wf] : []) };
+    }
+    const smRgb = (h) => { h = String(h).replace('#', ''); if (h.length === 3) h = h.split('').map((c) => c + c).join(''); const n = parseInt(h, 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; };
+    const smA = (h, a) => 'rgba(' + smRgb(h).join(',') + ',' + a + ')';
+    const smMix = (h1, h2, k) => { const a = smRgb(h1), b = smRgb(h2); return '#' + a.map((x, i) => Math.round(x + (b[i] - x) * k).toString(16).padStart(2, '0')).join(''); };
+    const smLum = (h) => { const c = smRgb(h).map((x) => { x /= 255; return x <= 0.03928 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4); }); return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]; };
+    const smCon = (a, b) => { const x = smLum(a), y = smLum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); };
+    function smLook(id, name, kit, cls, c, x) {
+      x = x || {};
+      const [bg, bg2, line, ink, mute, accent, need, wait, work, idle] = c;
+      const lite = /\blite\b/.test(cls), floor = /\bfx-floor\b/.test(cls);
+      const v = { bg, bg2, panel: lite ? smMix(bg, '#ffffff', 0.55) : smA(bg2, 0.9), line, ink, mute, accent, need, wait, work, idle,
+        glow: smA(accent, lite ? 0 : 0.22), grid: lite ? smA(ink, 0.05) : smA(accent, 0.06),
+        glowc: smA(accent, lite ? 0.5 : 0.9), glowc2: smA(accent, lite ? 0.22 : 0.45), glowbg: smA(accent, lite ? 0.12 : 0.15),
+        glowink: lite ? smMix(accent, '#000000', 0.35) : smMix(ink, '#ffffff', 0.5),
+        dot: lite ? smA(ink, 0.13) : smA(accent, 0.2), txbg: lite ? smMix(bg, '#ffffff', 0.55) : smA(bg, 0.95), tgbg: lite ? bg2 : smA(bg2, 0.85),
+        knob: smCon('#ffffff', accent) >= smCon(bg, accent) ? '#ffffff' : bg,
+        fl: smA(work, 0.55), flfade: 'linear-gradient(180deg,' + bg + ' 0%,' + smA(bg, 0.55) + ' 9%,' + smA(bg, 0) + ' 30%)',
+        hz: 'linear-gradient(90deg,' + smA(accent, 0) + ',' + need + ' 34%,' + accent + ' 68%,' + smA(accent, 0) + ')', hzg: smA(accent, 0.4),
+        sky: floor ?
+          'radial-gradient(ellipse 30% 22% at 68% 56%,' + smA(need, 0.32) + ',' + smA(accent, 0.15) + ' 48%,transparent 74%),linear-gradient(180deg,' +
+            smMix(bg, '#000000', 0.5) + ' 0%,' + smMix(bg2, accent, 0.12) + ' 34%,' + smMix(bg2, accent, 0.3) + ' 56%,' + bg + ' 56%,' + bg + ' 100%)' :
+          'radial-gradient(ellipse 70% 55% at 68% 100%,' + smA(accent, 0.2) + ',transparent 70%),linear-gradient(180deg,' + smMix(bg, '#000000', 0.45) + ',' + bg + ' 70%)',
+        au1: smA(accent, 0.3), au2: smA(work, 0.26),
+        chrome: 'linear-gradient(180deg,#ffffff 0%,' + smMix(ink, '#ffffff', 0.3) + ' 40%,' + smMix(accent, '#ffffff', 0.35) + ' 52%,' + accent + ' 66%,' + smMix(accent, work, 0.6) + ' 100%)',
+        chrome2: 'linear-gradient(180deg,' + smMix(wait, '#ffffff', 0.7) + ' 0%,' + wait + ' 42%,' + need + ' 60%,' + accent + ' 100%)',
+        stripe: 'linear-gradient(90deg,' + wait + ',' + need + ' 30%,' + accent + ' 62%,' + work + ')', brc: ink, brg: smA(accent, 0.4) };
+      Object.assign(v, x.v || {});
+      const onSat = smCon(ink, need) >= 3 ? ink : smCon('#ffffff', need) >= smCon('#0a0a0a', need) ? '#ffffff' : '#0a0a0a';
+      const fx = /\bfx-(floor|sky|stars|aurora)\b/.test(cls);
+      return { id, name, look: name, tag: x.tag || name.toUpperCase(), label: 'ANDRÉ MANDEL', brand: 'ANDRÉ MANDEL', lite, onSat, f: smKit(kit, x.wf),
+        cls: ('gen nb ' + cls + (x.wf ? ' wm' : '') + (fx ? ' fx' : '') + (SM_WIDE.test(kit) ? ' wide' : '') + (kit === 'deco' ? ' thin' : '')).replace(/\s+/g, ' ').trim(), v };
+    }
+    // the first four keep their places: CHxTLD, Tron, Retro (rebuilt from smLook with its 8.9.3 colors), Night drive
+    SM_THEMES.light.name = 'CHxTLD'; SM_THEMES.light.onSat = '#ffffff';
+    SM_THEMES.dark.name = 'Tron'; SM_THEMES.night.name = 'Night drive';
+    SM_THEMES.retro = smLook('retro', 'Retro', 'arcade', 'fx-floor fx-stars fx-scan sh-neon sh-grad sh-stripe sh-chrome',
+      ['#0b0616', '#170d29', '#3d2a63', '#fbefff', '#ab98cf', '#ff3e9a', '#ff6a3d', '#ffc35a', '#35d3ff', '#3e3060'], { wf: 'Monoton', v: {
+        panel: 'rgba(16,9,31,.9)', glow: 'rgba(255,62,154,.24)', grid: 'rgba(53,211,255,.06)', glowbg: 'rgba(255,62,154,.16)', glowink: '#fff2fb',
+        txbg: 'rgba(12,7,24,.95)', tgbg: 'rgba(23,13,41,.85)', fl: 'rgba(53,211,255,.55)', brc: '#ffc35a', brg: 'rgba(255,195,90,.4)',
+        hz: 'linear-gradient(90deg,rgba(255,62,154,0),#ff6a3d 34%,#ff3e9a 68%,rgba(255,62,154,0))', hzg: 'rgba(255,62,154,.4)',
+        flfade: 'linear-gradient(180deg,#0a0515 0%,rgba(10,5,21,.55) 9%,rgba(10,5,21,0) 30%)',
+        sky: 'radial-gradient(ellipse 30% 22% at 68% 56%,rgba(255,106,61,.34),rgba(255,62,154,.16) 48%,transparent 74%),linear-gradient(180deg,#05030b 0%,#0d0620 30%,#1f0936 48%,#3a0c44 56%,#0a0515 56%,#0a0515 100%)',
+        chrome: 'linear-gradient(180deg,#ffffff 0%,#ffe6f6 40%,#ff86c0 52%,#ff3e9a 66%,#9b4dff 100%)',
+        chrome2: 'linear-gradient(180deg,#fff3d6 0%,#ffc35a 42%,#ff6a3d 60%,#ff3e9a 100%)' } });
+    [
+      // synthwave, screens and space
+      smLook('vapor', 'Vapor', 'arcade', 'fx-floor fx-stars sh-neon sh-grad sh-stripe', ['#1a0b2e', '#25103f', '#4e2c7a', '#fdf3ff', '#bda6dd', '#ff71ce', '#ff5e7e', '#fffb96', '#01cdfe', '#3d2a5e']),
+      smLook('terminal', 'Terminal', 'crt', 'fx-scan fx-crt', ['#020a04', '#05140a', '#114022', '#7dff9a', '#3e9c58', '#39ff6a', '#ffb000', '#d6ff5c', '#39ff6a', '#14482a']),
+      smLook('amber', 'Amber CRT', 'crt', 'fx-scan fx-crt', ['#0b0600', '#170d00', '#4a2c00', '#ffb000', '#a87400', '#ffb000', '#ff5a1f', '#ffd27a', '#ffcf66', '#4a3000']),
+      smLook('blueprint', 'Blueprint', 'draft', 'fx-blue sh-thick', ['#0b3a7e', '#0f4590', '#5585c8', '#f2f7ff', '#b3cbec', '#ffffff', '#ffd23f', '#9fe7ff', '#ffffff', '#3c6aa8'], { v: {
+        grid: 'rgba(255,255,255,.08)', dot: 'rgba(255,255,255,.18)', panel: 'rgba(11,58,126,.88)' } }),
+      smLook('sonar', 'Sonar', 'mil', 'fx-radar fx-dots sh-neon sh-cut', ['#00110d', '#011d16', '#0d4a39', '#c8fff0', '#62b8a0', '#2bffb8', '#ff4d4d', '#ffd166', '#2bffb8', '#0f4a3a']),
+      smLook('deepspace', 'Deep Space', 'wide', 'fx-sky fx-stars', ['#03040b', '#0a0d1d', '#232a4d', '#e8ecff', '#8b93c2', '#9db2ff', '#ff7a59', '#ffd479', '#7ec8ff', '#2a3156']),
+      smLook('missionred', 'Mission Red', 'poster', 'fx-scan sh-under', ['#070707', '#121212', '#2e2e2e', '#f4f4f4', '#9a9a9a', '#e10600', '#e10600', '#ffcc00', '#e8e8e8', '#333333']),
+      smLook('tuxedo', 'Tuxedo', 'classic', 'sh-deco', ['#0c0b09', '#17150f', '#3a3326', '#f5efe1', '#a89f88', '#c9a24a', '#d4553a', '#e8c776', '#c9a24a', '#3a3326']),
+      smLook('aurora', 'Aurora', 'grotesk', 'fx-aurora fx-stars sh-round', ['#050b1a', '#0b1630', '#213a66', '#eaf6ff', '#8fb0d6', '#5cf2b6', '#ff7b9c', '#ffd479', '#6ad7ff', '#23365c']),
+      smLook('cyberpunk', 'Cyberpunk', 'mil', 'fx-scan sh-neon sh-cut', ['#0a0a12', '#13131f', '#2e2e4a', '#f0f0ff', '#8a8ab0', '#fcee0a', '#ff2a6d', '#fcee0a', '#05d9e8', '#2b2b45']),
+      smLook('marsbase', 'Mars Base', 'round', 'fx-sky sh-round', ['#1a0d08', '#271410', '#5a2f20', '#ffe9dc', '#c49a85', '#ff7a3c', '#ff4f2e', '#ffc06b', '#8fd3ff', '#4a2a1e']),
+      smLook('noir', 'Noir', 'poster', 'fx-scan', ['#0e0e10', '#18181b', '#303036', '#e9e9ea', '#8e8e94', '#f2c94c', '#e04e39', '#f2c94c', '#9fb4c7', '#2c2c31']),
+      // design movements
+      smLook('bauhaus', 'Bauhaus', 'grotesk', 'lite sh-thick sh-block', ['#f2ece0', '#e8e0d0', '#1a1a1a', '#111111', '#555048', '#d42a20', '#d42a20', '#f2b705', '#1d4e9e', '#c9bfae']),
+      smLook('swiss', 'Swiss', 'swiss', 'lite sh-under', ['#ffffff', '#f3f3f3', '#e0e0e0', '#000000', '#666666', '#ff2a1a', '#ff2a1a', '#ff9f1a', '#000000', '#cfcfcf']),
+      smLook('brutalist', 'Brutalist', 'brut', 'lite fx-dots sh-thick sh-block', ['#b8b6b0', '#c9c7c1', '#3d3c39', '#121212', '#3d3c39', '#121212', '#ff3b00', '#c78a00', '#1b4f8a', '#8f8d88']),
+      smLook('artdeco', 'Art Deco', 'deco', 'sh-deco', ['#0f1a17', '#15241f', '#3c5a4c', '#f3ead3', '#b4a989', '#d4af63', '#e0674a', '#e8cf8e', '#7fc4a8', '#2c4239']),
+      smLook('midcentury', 'Mid Century', 'midcen', 'lite sh-round', ['#f4ead5', '#ebdfc4', '#c9b48c', '#2b2118', '#6e5c45', '#e06c2b', '#c8432b', '#e9a93b', '#2e7d74', '#cdbb97']),
+      smLook('desert', 'Desert Modern', 'gallery', 'lite sh-round', ['#f7e4d4', '#f2d6c1', '#dbb497', '#3a2418', '#8a6551', '#e2725b', '#c94c3a', '#e9a24f', '#3d8f8a', '#e0c0a8']),
+      smLook('nordic', 'Nordic', 'calm', 'lite sh-round', ['#f5f4f0', '#ecebe6', '#d6d3ca', '#23262b', '#6b7078', '#4a6c8c', '#c0573e', '#d9a441', '#4a6c8c', '#cfccc2']),
+      // places
+      smLook('tahoe', 'Tahoe', 'grotesk', 'fx-sky sh-round', ['#0b1e2b', '#102a3b', '#24506b', '#eaf4fa', '#8fb2c7', '#3fb7d9', '#ff8a4c', '#ffd27a', '#7fe0c4', '#23445a']),
+      smLook('granite', 'Sierra Granite', 'cond', 'fx-dots sh-thick', ['#2a2b2d', '#333538', '#55585e', '#f1efe9', '#a8a59c', '#c7b9a0', '#e0703f', '#e6c16c', '#8fb8c9', '#46484c']),
+      smLook('redwood', 'Redwood', 'serif', 'sh-round', ['#1b0f0c', '#271612', '#4d2c22', '#f6e8de', '#b9917d', '#c4553a', '#e0563a', '#e8b46a', '#8bbf7a', '#3d241c']),
+      smLook('fogcity', 'Fog City', 'swiss', 'lite sh-under', ['#e9ecef', '#dfe3e7', '#c3c9cf', '#1f2a33', '#5f6b75', '#c0362c', '#c0362c', '#d99a2b', '#2c6e91', '#bfc6cc']),
+      // paper and print
+      smLook('paper', 'Paper', 'serif', 'lite', ['#faf7f0', '#f2eee3', '#ddd6c4', '#1b1a17', '#6b6658', '#b0302a', '#b0302a', '#c98a1b', '#1f4f7a', '#d8d1bf']),
+      smLook('kraft', 'Kraft', 'shoulders', 'lite sh-thick sh-block', ['#c9a77c', '#d4b48b', '#8b6b43', '#2a1b0c', '#5a4126', '#2a1b0c', '#9e2b1d', '#7a5410', '#1e3d59', '#a78a62']),
+      smLook('sepia', 'Sepia', 'classic', 'fx-scan sh-round', ['#2b2218', '#362a1e', '#5c4a35', '#f2e3c8', '#b9a27f', '#d9a35b', '#e07a4f', '#e8c67d', '#9fc2a5', '#4f3f2c']),
+      smLook('inkwash', 'Ink Wash', 'zen', 'lite', ['#f4f1ea', '#ebe6dc', '#cfc8b8', '#1a1a1a', '#6d675c', '#b33a2c', '#b33a2c', '#b7892b', '#2f4f4f', '#d3ccbd']),
+      // soft color
+      smLook('sakura', 'Sakura', 'midcen', 'lite sh-round', ['#fff4f6', '#ffe8ee', '#f3c6d3', '#3b1f2b', '#8a5d6e', '#d94f7f', '#d6455c', '#e7a23f', '#4f86b8', '#efd0da']),
+      smLook('jade', 'Jade', 'calm', 'sh-round', ['#062019', '#0b2c23', '#1d5544', '#e6fff6', '#86bfab', '#3ddc97', '#ff7a6b', '#f6d36b', '#6fd0ff', '#1b4a3c']),
+      smLook('lavender', 'Lavender Dusk', 'round', 'fx-sky sh-round', ['#1d1730', '#271f3e', '#463b6b', '#f2edff', '#a99fcf', '#b69cff', '#ff8fa3', '#ffd38a', '#8fd1ff', '#3c3460']),
+      smLook('mint', 'Mint', 'calm', 'lite sh-round', ['#effaf5', '#e2f5ec', '#bfe5d3', '#13342a', '#4d7a6b', '#0f9a72', '#e0574b', '#d99a25', '#2a7fd4', '#c9e9da']),
+      smLook('reef', 'Coral Reef', 'sign', 'fx-sky fx-stars sh-round', ['#062a33', '#0a3741', '#1d6170', '#e8fbff', '#8cc3cf', '#ff7f6a', '#ff5e5b', '#ffd166', '#2fe3d0', '#1d4c57']),
+      smLook('espresso', 'Espresso', 'grotesk', 'sh-round', ['#1c140f', '#271c16', '#4a372b', '#f3e7dc', '#b29a86', '#d29b62', '#e56b4e', '#e9c27d', '#9fc6b0', '#3e2f26']),
+      smLook('bordeaux', 'Bordeaux', 'serif', 'sh-deco', ['#1f0a10', '#2c1018', '#561e2e', '#fbe9ee', '#c693a2', '#e05a7a', '#ff6b5b', '#f2c46d', '#9ad0c4', '#4a1a28']),
+      // metals and night
+      smLook('midnight', 'Midnight', 'wide', 'fx-stars', ['#0b1020', '#131b34', '#2a375f', '#eef2ff', '#96a3c9', '#c7d2f0', '#ff7a7a', '#ffd27a', '#7cc4ff', '#26304f']),
+      smLook('graphite', 'Graphite', 'swiss', '', ['#141414', '#1d1d1d', '#333333', '#f2f2f2', '#8c8c8c', '#ffffff', '#ff5c39', '#ffc94d', '#bdbdbd', '#3a3a3a']),
+      smLook('titanium', 'Titanium', 'cond', 'sh-thick sh-cut', ['#1d2126', '#262b31', '#424a54', '#eef2f5', '#9aa5b1', '#7fd1e8', '#ff8655', '#f0cc6a', '#7fd1e8', '#39414a']),
+      smLook('copper', 'Copper', 'shoulders', 'sh-thick', ['#1a1210', '#251a16', '#4d3127', '#fbeee6', '#c19c8a', '#d9825b', '#ff5f45', '#f0b86e', '#6ec7c0', '#43302a']),
+      smLook('brass', 'Brass', 'classic', 'sh-deco fx-dots', ['#18140c', '#231d12', '#4c3d22', '#f3e6c4', '#b19e72', '#c9a14a', '#c8553a', '#e3c069', '#7fb3a0', '#3c321e']),
+      smLook('solar', 'Solar Flare', 'round', 'fx-sky sh-neon sh-grad sh-chrome', ['#120900', '#1e1003', '#4d2a06', '#fff4e0', '#c9a172', '#ffb627', '#ff4e1a', '#ffd166', '#6fd3ff', '#3f2509']),
+      // water and woods
+      smLook('arctic', 'Arctic', 'grotesk', 'lite sh-round', ['#eef6fb', '#e1eff7', '#c3dbea', '#0f2a3d', '#4f7189', '#1a86c9', '#e2553f', '#d99a22', '#1a86c9', '#cbe0ec']),
+      smLook('ocean', 'Ocean Deep', 'grotesk', 'fx-sky fx-stars sh-round', ['#021526', '#042137', '#0d3d5e', '#e3f4ff', '#7fa9c6', '#2ec4ff', '#ff8c42', '#ffd166', '#3df2c8', '#0f3653']),
+      smLook('forest', 'Forest', 'calm', 'sh-round fx-dots', ['#0d1a12', '#14261a', '#2b4a34', '#eaf5ec', '#9dbca4', '#8fd16a', '#ff8a5b', '#f2d06b', '#6fc3d9', '#26412e']),
+      // loud
+      smLook('tokyo', 'Neon Tokyo', 'sign', 'fx-sky fx-scan sh-neon sh-grad', ['#0b0714', '#150d24', '#3a2456', '#fdf0ff', '#b39ad1', '#ff2fd6', '#ff3860', '#ffe14d', '#22e4ff', '#35244e']),
+      smLook('pixel', 'Pixel Arcade', 'pixel', 'fx-scan fx-dots sh-thick', ['#101018', '#191927', '#33334d', '#f5f5ff', '#9a9ac2', '#7cff4f', '#ff4f6d', '#ffd84f', '#4fc3ff', '#2e2e45']),
+      smLook('whiteroom', 'White Room', 'wide', 'lite', ['#f7f7f5', '#ededea', '#d6d6d2', '#111111', '#6a6a66', '#e2231a', '#e2231a', '#e0961a', '#2a5d9c', '#cfcfca'])
+    ].forEach((t) => { SM_THEMES[t.id] = t; });
+    const SM_LOOKS = Object.keys(SM_THEMES);   // 9.0.1: the order Look steps through, CHxTLD, Tron, Retro, Night drive first
+    // fonts a look needs, fetched the first time you land on it; the startup set is already in hand
+    const smFontAsked = new Set(['Orbitron', 'Exo 2', 'Rajdhani', 'Barlow', 'Share Tech Mono', 'Shippori Mincho', 'EB Garamond', 'JetBrains Mono', 'Audiowide', 'Monoton', 'Syncopate', 'Barlow Condensed']);
+    const smFontBuf = new Map();
+    function smFontsFor(t, onload) {
+      if (typeof GM_xmlhttpRequest !== 'function' || typeof FontFace !== 'function' || !t || !t.f || !t.f.fams) return;
+      t.f.fams.forEach((fam) => {
+        const spec = SM_FONT_SPEC[fam];
+        if (!spec || smFontAsked.has(fam)) return;
+        smFontAsked.add(fam);
+        try {
+          GM_xmlhttpRequest({
+            method: 'GET', url: 'https://fonts.googleapis.com/css2?family=' + spec + '&display=swap', headers: { 'User-Agent': navigator.userAgent },
+            onload(r) {
+              const css = (r && r.responseText) || '', re = /\/\*\s*latin\s*\*\/\s*@font-face\s*\{([^}]*)\}/g;
+              let m;
+              while ((m = re.exec(css))) {
+                const b = m[1], wt = (/font-weight:\s*(\d+)/.exec(b) || [])[1] || '400', u = (/url\((https:[^)]+)\)/.exec(b) || [])[1];
+                if (!u) continue;
+                if (!smFontBuf.has(u)) smFontBuf.set(u, new Promise((res) => {   // one download per file, however many weights share it
+                  try { GM_xmlhttpRequest({ method: 'GET', url: u, responseType: 'arraybuffer', onload: (x) => res(x.response), onerror: () => res(null) }); } catch (e) { res(null); }
+                }));
+                smFontBuf.get(u).then((buf) => {
+                  if (!buf) return;
+                  try { new FontFace(fam, buf, { weight: wt }).load().then((f) => { document.fonts.add(f); if (onload) onload(); }).catch(() => {}); } catch (e) {}
+                });
+              }
+            }
+          });
+        } catch (e) {}
+      });
+    }
     // 8.9.3: the floor grid's rays, from the vanishing point on the horizon out past both edges
     const SM_RAYS = (() => { let o = ''; for (let k = -26; k <= 26; k++) o += '<line x1="1306" y1="0" x2="' + (1306 + k * 165) + '" y2="100"></line>'; return o; })();
     const SM_SAT = { need: 1, question: 0.86, wait: 0.7, turn: 0.55, work: 0.45, idle: 0.16 };
@@ -1075,59 +1243,91 @@
         '.smx .pgv iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#ffffff}',
         '.smx .pgv .pw{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:var(--bg2);font:600 22px var(--bf);color:var(--mute);text-align:center;padding:40px}',
         '.smx .pgv .pw b{font:700 30px var(--hf);letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}',
-        // 8.9.3: the Look tile, a swatch per look with the one in use lit
-        '.smx .tg.lk3 .lsw{display:flex;align-items:center;gap:9px;height:26px}',
-        '.smx .tg.lk3 .lsw i{display:block;width:17px;height:17px;border-radius:50%;border:2px solid var(--mute);opacity:.75}',
-        '.smx .tg.lk3 .lsw i.on{opacity:1;border-color:transparent}',
-        '.smx .tg.lk3 .lsw i[data-l=light].on{background:#de6a2d}',
-        '.smx .tg.lk3 .lsw i[data-l=dark].on{background:#5ad1ff;box-shadow:0 0 10px rgba(90,209,255,.8)}',
-        '.smx .tg.lk3 .lsw i[data-l=retro].on{background:linear-gradient(135deg,#ffc35a,#ff6a3d 45%,#ff3e9a);box-shadow:0 0 12px rgba(255,62,154,.85)}',
-        '.smx .tg.lk3 .tv{color:var(--accent)}',
-        // 8.9.3: RETRO. A sunset sky with a few stars, a horizon line, and a floor grid that rolls toward you.
-        // The rays are drawn once; each floor line is its own layer sliding down on the graphics chip.
-        '.smx .rtsky{display:none}',
-        '.smx.retro .gridbg{display:none}',
-        '.smx.retro{font-synthesis:none}',
-        '.smx.retro .rtsky{display:block;position:absolute;inset:0;overflow:hidden;pointer-events:none;background:' +
-          'radial-gradient(1.6px 1.6px at 6% 9%,rgba(255,255,255,.8),transparent),radial-gradient(1.2px 1.2px at 19% 27%,rgba(255,255,255,.55),transparent),' +
-          'radial-gradient(1.4px 1.4px at 33% 6%,rgba(255,255,255,.7),transparent),radial-gradient(1px 1px at 47% 19%,rgba(255,255,255,.5),transparent),' +
-          'radial-gradient(1.6px 1.6px at 58% 4%,rgba(255,255,255,.75),transparent),radial-gradient(1.2px 1.2px at 71% 14%,rgba(255,255,255,.55),transparent),' +
-          'radial-gradient(1.5px 1.5px at 84% 8%,rgba(255,255,255,.7),transparent),radial-gradient(1px 1px at 93% 23%,rgba(255,255,255,.5),transparent),' +
-          'radial-gradient(1.2px 1.2px at 77% 33%,rgba(255,255,255,.45),transparent),radial-gradient(1px 1px at 52% 38%,rgba(255,255,255,.4),transparent),' +
-          'radial-gradient(ellipse 30% 22% at 68% 56%,rgba(255,106,61,.34),rgba(255,62,154,.16) 48%,transparent 74%),' +
-          'linear-gradient(180deg,#05030b 0%,#0d0620 30%,#1f0936 48%,#3a0c44 56%,#0a0515 56%,#0a0515 100%)}',
-        '.smx.retro .rtsky::after{content:"";position:absolute;left:0;right:0;top:56%;height:2px;margin-top:-1px;background:linear-gradient(90deg,rgba(255,62,154,0),#ff6a3d 34%,#ff3e9a 68%,rgba(255,62,154,0));box-shadow:0 0 26px 5px rgba(255,62,154,.4)}',
-        '.smx.retro .rtfl{position:absolute;left:0;right:0;top:56%;bottom:0;overflow:hidden}',
-        '.smx.retro .rtfl::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#0a0515 0%,rgba(10,5,21,.55) 9%,rgba(10,5,21,0) 30%)}',
-        '.smx.retro .rtry{position:absolute;inset:0;width:100%;height:100%}',
-        '.smx.retro .rtry line{stroke:rgba(53,211,255,.4);stroke-width:1.5;vector-effect:non-scaling-stroke}',
-        '.smx.retro .rtfl i{position:absolute;left:0;top:0;width:100%;height:100%;border-top:2px solid rgba(53,211,255,.55);opacity:0;will-change:transform;animation:smfloor 16s linear infinite}',
-        Array.from({ length: 14 }, (_, k) => '.smx.retro .rtfl i:nth-of-type(' + (k + 1) + '){animation-delay:-' + (k * 16 / 14).toFixed(3) + 's}').join(''),
+        // 9.0.1: the Look tile: four of the look's colors on top, its number and name under them
+        '.smx .tg.lk3{grid-template-columns:1fr auto;padding:9px 12px}',
+        '.smx .tg.lk3 .tl{grid-column:1;grid-row:1}',
+        '.smx .tg.lk3 .lsw{grid-column:2;grid-row:1;display:flex;gap:4px}',
+        '.smx .tg.lk3 .lsw i{display:block;width:13px;height:13px;border-radius:3px;box-shadow:inset 0 0 0 1px rgba(127,127,127,.35)}',
+        '.smx .tg.lk3 .tv{grid-column:1/-1;grid-row:2;color:var(--accent);font-size:15px;letter-spacing:.03em;overflow:hidden;text-overflow:ellipsis}',
+        // 9.0.1: LOOKS. The background layers. Each look turns on the ones it uses, colored from its own palette.
+        '.smx .rtsky,.smx .rtsky>*,.smx .rdr{display:none}',
+        '.smx.fx .rtsky{display:block;position:absolute;inset:0;overflow:hidden;pointer-events:none}',
+        '.smx:is(.fx-sky,.fx-floor) .rtsky{background:var(--sky)}',
+        '.smx:is(.fx-sky,.fx-floor) .gridbg{display:none}',
+        '.smx.fx-stars .rtst{display:block;position:absolute;left:0;right:0;top:0;height:60%;background:' +
+          'radial-gradient(1.6px 1.6px at 6% 15%,rgba(255,255,255,.8),transparent),radial-gradient(1.2px 1.2px at 19% 45%,rgba(255,255,255,.55),transparent),' +
+          'radial-gradient(1.4px 1.4px at 33% 10%,rgba(255,255,255,.7),transparent),radial-gradient(1px 1px at 47% 32%,rgba(255,255,255,.5),transparent),' +
+          'radial-gradient(1.6px 1.6px at 58% 7%,rgba(255,255,255,.75),transparent),radial-gradient(1.2px 1.2px at 71% 23%,rgba(255,255,255,.55),transparent),' +
+          'radial-gradient(1.5px 1.5px at 84% 13%,rgba(255,255,255,.7),transparent),radial-gradient(1px 1px at 93% 38%,rgba(255,255,255,.5),transparent),' +
+          'radial-gradient(1.2px 1.2px at 77% 55%,rgba(255,255,255,.45),transparent),radial-gradient(1px 1px at 52% 63%,rgba(255,255,255,.4),transparent),' +
+          'radial-gradient(1.3px 1.3px at 12% 70%,rgba(255,255,255,.45),transparent),radial-gradient(1px 1px at 27% 82%,rgba(255,255,255,.35),transparent)}',
+        // the floor: a horizon line, rays drawn once, and lines that each slide down on the graphics chip
+        '.smx.fx-floor .rthz{display:block;position:absolute;left:0;right:0;top:56%;height:2px;margin-top:-1px;background:var(--hz);box-shadow:0 0 26px 5px var(--hzg)}',
+        '.smx.fx-floor .rtfl{display:block;position:absolute;left:0;right:0;top:56%;bottom:0;overflow:hidden}',
+        '.smx.fx-floor .rtfl::after{content:"";position:absolute;inset:0;background:var(--flfade)}',
+        '.smx.fx-floor .rtry{position:absolute;inset:0;width:100%;height:100%}',
+        '.smx.fx-floor .rtry line{stroke:var(--fl);stroke-opacity:.72;stroke-width:1.5;vector-effect:non-scaling-stroke}',
+        '.smx.fx-floor .rtfl i{position:absolute;left:0;top:0;width:100%;height:100%;border-top:2px solid var(--fl);opacity:0;will-change:transform;animation:smfloor 16s linear infinite}',
+        Array.from({ length: 14 }, (_, k) => '.smx.fx-floor .rtfl i:nth-of-type(' + (k + 1) + '){animation-delay:-' + (k * 16 / 14).toFixed(3) + 's}').join(''),
         '@keyframes smfloor{0%{transform:translateY(7.7%);opacity:0}10%{transform:translateY(8.5%)}20%{transform:translateY(9.4%);opacity:.35}30%{transform:translateY(10.6%)}40%{transform:translateY(12.2%)}' +
           '50%{transform:translateY(14.3%)}60%{transform:translateY(17.2%);opacity:.8}70%{transform:translateY(21.7%)}75%{transform:translateY(25%)}80%{transform:translateY(29.4%)}' +
           '85%{transform:translateY(35.7%);opacity:1}90%{transform:translateY(45.5%)}95%{transform:translateY(62.5%)}100%{transform:translateY(100%);opacity:1}}',
-        // faint scan lines over everything, never in the way of a click
-        '.smx.retro::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:40;background:repeating-linear-gradient(180deg,rgba(0,0,0,.16) 0 1px,rgba(0,0,0,0) 1px 4px)}',
-        // panels: a little more solid where you read, a neon edge, a sunset stripe on top
-        '.smx.retro .tx{background:rgba(12,7,24,.95)}',
-        '.smx.retro :is(.tx,.bar,.ctl){box-shadow:0 0 0 1px rgba(255,62,154,.16),0 0 30px -8px rgba(255,62,154,.45)}',
-        '.smx.retro .asks{box-shadow:inset 4px 0 0 var(--need),0 0 30px -8px rgba(255,106,61,.45)}',
-        '.smx.retro :is(.tx,.ctl)::before{content:"";position:absolute;left:-1px;right:-1px;top:-1px;height:3px;z-index:1;background:linear-gradient(90deg,var(--wait),var(--need) 30%,var(--accent) 62%,var(--work))}',
-        // chrome headlines, a neon wordmark
-        '.smx.retro .ttl{background:linear-gradient(180deg,#ffffff 0%,#ffe6f6 40%,#ff86c0 52%,#ff3e9a 66%,#9b4dff 100%) 0 0/100% 1.04em repeat-y;-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 16px rgba(255,62,154,.35))}',
-        '.smx.retro .hold:not(.on) .hv{background:linear-gradient(180deg,#fff3d6 0%,#ffc35a 42%,#ff6a3d 60%,#ff3e9a 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 14px rgba(255,106,61,.4))}',
-        '.smx.retro .hold .hv{font-size:46px;letter-spacing:0}',
-        '.smx.retro .bar .sb{font-family:"Monoton",var(--hf);font-weight:400;font-size:26px;letter-spacing:.14em;color:var(--accent);text-shadow:0 0 6px rgba(255,62,154,.9),0 0 22px rgba(255,62,154,.55)}',
-        '.smx.retro .bar .br{letter-spacing:.12em;color:var(--wait);text-shadow:0 0 12px rgba(255,195,90,.4)}',
-        '.smx.retro .msg.c .who,.smx.retro .kick{text-shadow:0 0 10px currentColor}',
-        '.smx.retro .hint{color:var(--accent);opacity:.85}',
-        // switches and buttons light up in the sunset colors
-        '.smx.retro .tg.on .sw{background:linear-gradient(90deg,var(--need),var(--accent));box-shadow:0 0 12px rgba(255,62,154,.55)}',
-        '.smx.retro .tg{background:rgba(23,13,41,.85)}',
-        '.smx.retro .tg:hover{border-color:var(--accent)}',
-        '.smx.retro .csend{background:linear-gradient(90deg,var(--need),var(--accent));border-color:transparent;box-shadow:0 0 18px -2px rgba(255,62,154,.6)}',
-        '.smx.retro .mdr .md:hover{border-color:var(--accent);color:var(--accent)}',
-        '.smx.retro .stage text{font-weight:400}',
+        // aurora: two soft lights drifting slowly
+        '.smx.fx-aurora .rtau{display:block;position:absolute;inset:-20%;background:radial-gradient(ellipse 40% 26% at 30% 30%,var(--au1),transparent 70%),radial-gradient(ellipse 36% 24% at 70% 22%,var(--au2),transparent 70%);will-change:transform;animation:smau 40s ease-in-out infinite alternate}',
+        '@keyframes smau{0%{transform:translate(0,0) rotate(0deg)}50%{transform:translate(4%,3%) rotate(4deg)}100%{transform:translate(-3%,5%) rotate(-3deg)}}',
+        // sonar: rings and a sweep turning behind the pie
+        '.smx.fx-radar .rdr{display:block;position:absolute;left:39.09%;top:50%;width:780px;height:780px;margin:-390px 0 0 -390px;border-radius:50%;pointer-events:none;' +
+          'background:repeating-radial-gradient(circle,transparent 0 77px,var(--dot) 78px 79px),conic-gradient(from 0deg,transparent 0 70%,var(--glowbg) 92%,var(--glowc2) 99.6%,transparent 100%);will-change:transform;animation:smsweep 6s linear infinite}',
+        '@keyframes smsweep{to{transform:rotate(1turn)}}',
+        // flat grounds: dots, blueprint grid
+        '.smx.fx-dots .gridbg{background-image:radial-gradient(var(--dot) 1.4px,transparent 1.7px);background-size:28px 28px}',
+        '.smx.fx-blue .gridbg{background-image:linear-gradient(var(--dot) 1px,transparent 1px),linear-gradient(90deg,var(--dot) 1px,transparent 1px),linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:192px 192px,192px 192px,24px 24px,24px 24px}',
+        // screens: scan lines, and a glowing, vignetted tube
+        '.smx.fx-scan::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:40;background:repeating-linear-gradient(180deg,rgba(0,0,0,.16) 0 1px,rgba(0,0,0,0) 1px 4px)}',
+        '.smx.fx-crt{text-shadow:0 0 7px var(--glowc2)}',
+        '.smx.fx-crt::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:39;background:radial-gradient(ellipse at 50% 50%,transparent 58%,rgba(0,0,0,.55) 100%)}',
+        // type: no faked bold, the wordmark face, wide faces step down
+        '.smx.nb{font-synthesis:none}',
+        '.smx.wide .bar .br{font-size:17px;letter-spacing:.06em}',
+        '.smx.wide .bar .sb{font-size:19px;letter-spacing:.14em}',
+        '.smx.wm .bar .sb{font-family:var(--wf);font-weight:400;font-size:26px;letter-spacing:.14em}',
+        '.smx.thin :is(.ab,.csend,.cdst,.hold .hv,.dkb button){font-family:var(--bf);font-weight:700}',
+        '.smx.wide .hold .hv{font-size:46px;letter-spacing:0}',
+        '.smx.wide .ttl{font-size:40px}',
+        '.smx.fx .tx{background:var(--txbg)}',
+        '.smx.gen .tg{background:var(--tgbg)}',
+        '.smx.gen .tg.on .sw i{background:var(--knob)}',
+        '.smx.lite .tg .sw i{box-shadow:0 1px 2px rgba(0,0,0,.25)}',
+        // panel shapes
+        '.smx.sh-neon :is(.tx,.bar,.ctl){box-shadow:0 0 0 1px var(--glowbg),0 0 30px -8px var(--glowc2)}',
+        '.smx.sh-neon .asks{box-shadow:inset 4px 0 0 var(--need),0 0 30px -8px var(--glowc2)}',
+        '.smx.sh-neon .bar .sb{color:var(--accent);text-shadow:0 0 6px var(--glowc),0 0 22px var(--glowc2)}',
+        '.smx.sh-neon .bar .br{letter-spacing:.12em;color:var(--brc);text-shadow:0 0 12px var(--brg)}',
+        '.smx.sh-neon :is(.msg.c .who,.kick){text-shadow:0 0 10px currentColor}',
+        '.smx.sh-neon .hint{color:var(--accent);opacity:.85}',
+        '.smx.sh-neon :is(.tg:hover,.mdr .md:hover){border-color:var(--accent)}',
+        '.smx.sh-neon .mdr .md:hover{color:var(--accent)}',
+        '.smx.sh-stripe :is(.tx,.ctl)::before{content:"";position:absolute;left:-1px;right:-1px;top:-1px;height:3px;z-index:1;background:var(--stripe)}',
+        '.smx.sh-chrome .ttl{background:var(--chrome) 0 0/100% 1.04em repeat-y;-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 16px var(--glowc2))}',
+        '.smx.sh-chrome .hold:not(.on) .hv{background:var(--chrome2);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 14px var(--glowc2))}',
+        '.smx.sh-grad .tg.on .sw{background:linear-gradient(90deg,var(--need),var(--accent));box-shadow:0 0 12px var(--glowc2)}',
+        '.smx.sh-grad .csend{background:linear-gradient(90deg,var(--need),var(--accent));border-color:transparent;box-shadow:0 0 18px -2px var(--glowc2)}',
+        '.smx.sh-round :is(.tx,.bar,.ctl,.asks,.lnk,.dkov,.pgv){border-radius:18px}',
+        '.smx.sh-round :is(.tx,.bar,.ctl){overflow:hidden}',
+        '.smx.sh-round :is(.tg,.cin,.cdst,.dock,.chip,.ab){border-radius:12px}',
+        '.smx.sh-round :is(.cclip,.csend,.bar .pz,.bar .bt,.bar .lk){border-radius:999px}',
+        '.smx.sh-thick :is(.tx,.bar,.ctl,.asks,.tg,.cin,.cdst,.cclip,.csend){border-width:2px}',
+        '.smx.sh-block :is(.tx,.bar,.ctl){box-shadow:8px 8px 0 var(--line)}',
+        '.smx.sh-block :is(.tg,.csend,.cdst){box-shadow:4px 4px 0 var(--line)}',
+        '.smx.sh-under .tx{border-top:4px solid var(--accent)}',
+        '.smx.sh-under .bar{border-bottom:2px solid var(--accent)}',
+        '.smx.sh-under .ctl{border-top:2px solid var(--accent)}',
+        '.smx.sh-under .hint{color:var(--accent)}',
+        '.smx.sh-cut :is(.tx,.bar,.ctl,.asks){clip-path:polygon(0 0,calc(100% - 26px) 0,100% 26px,100% 100%,26px 100%,0 calc(100% - 26px))}',
+        '.smx.sh-cut :is(.tg,.csend,.cdst){clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px))}',
+        '.smx.sh-deco :is(.tx,.ctl){outline:1px solid var(--accent);outline-offset:-8px}',
+        '.smx.sh-deco .bar{border-color:var(--accent)}',
+        '.smx.sh-deco :is(.ttl,.bar .sb){letter-spacing:.12em}',
         // 9.0: Chief of Staff over the pie. It always wears the board's night drive look, whatever the HQ look
         '.smx.cosing .stage{opacity:.14;filter:blur(2px)}',
         '.smx.cosing .asks,.smx.cosing .dkov{display:none}',
@@ -1205,8 +1405,7 @@
         '.smx.night .csend{background:linear-gradient(90deg,#ff9447,#ff4f9e);border-color:transparent;color:#0a0912}',
         '.smx.night .lnk .lt{font-size:20px;letter-spacing:.16em}',
         '.smx.night .pgv .pl{font-size:18px}',
-        '.smx .tg.lk3 .lsw i[data-l=night].on{background:linear-gradient(135deg,#52d9ff,#8f74ff 40%,#ff4f9e 70%,#ff9447);box-shadow:0 0 12px rgba(143,116,255,.8)}',
-        '@media (prefers-reduced-motion:reduce){.smx *{animation:none!important;transition:none!important}.smx.retro .rtfl i{opacity:.5}}'
+        '@media (prefers-reduced-motion:reduce){.smx *{animation:none!important;transition:none!important}.smx.fx-floor .rtfl i{opacity:.5}}'
       ].join('\n');
     }
 
@@ -1217,7 +1416,7 @@
       fx.className = 'smx';
       fx.innerHTML =
         '<div class="gridbg"></div>' +
-        '<div class="rtsky" aria-hidden="true"><div class="rtfl"><svg class="rtry" viewBox="0 0 1920 100" preserveAspectRatio="none">' + SM_RAYS + '</svg>' + '<i></i>'.repeat(14) + '</div></div>' +   // 8.9.3
+        '<div class="rtsky" aria-hidden="true"><div class="rtst"></div><div class="rtau"></div><div class="rthz"></div><div class="rtfl"><svg class="rtry" viewBox="0 0 1920 100" preserveAspectRatio="none">' + SM_RAYS + '</svg>' + '<i></i>'.repeat(14) + '</div></div>' +   // 8.9.3, 9.0.1
         '<div class="tx"><div class="hd"><div class="kick">' + SM_HP + '<span class="fl">Screen mode</span></div><div class="ttl">Screen mode</div><div class="sts">Waiting for the chat you&#39;re talking to</div></div>' +
         '<div class="msgs"><div class="mz"><div class="mw">Waiting for the chat you&#39;re talking to</div></div></div>' +
         '<div class="dock" hidden><span class="cn a"></span><span class="cn b"></span><span class="cn c"></span><span class="cn d"></span><div class="il">Image · from this reply</div><div class="im"></div></div>' +
@@ -1226,14 +1425,14 @@
         '<div class="crow"><button type="button" class="cclip" title="Attach files">+</button><textarea class="cin" rows="1" placeholder="Type, paste or drop files" spellcheck="true"></textarea><button type="button" class="csend">SEND</button></div>' +
         '<input type="file" class="cfile" multiple hidden></div>' +
         '<div class="hint">say next · take me to · chief · allow · resume</div><button type="button" class="flw" hidden title="Follow the voice again">FOLLOW</button></div>' +
-        '<div class="bar"><span class="br" title="Change the look: CHxTLD, Tron, Retro or Night drive (Option Shift D)"></span><span class="sb">Switche<b>roo</b></span><span class="dots"></span><span class="grow"></span><span class="nx" title="Go to the next chat (Option Shift N)"></span><span class="bt" title="Boot: open your 10 most recent chats behind HQ">BOOT</span><span class="lk zero" title="Links from your chats. Say open, or open two">LINKS</span><span class="pz" title="Pause the Switchboard for two turns, or resume it">LIVE</span></div>' +
+        '<div class="bar"><span class="br" title="Next look (Option Shift D)"></span><span class="sb">Switche<b>roo</b></span><span class="dots"></span><span class="grow"></span><span class="nx" title="Go to the next chat (Option Shift N)"></span><span class="bt" title="Boot: open your 10 most recent chats behind HQ">BOOT</span><span class="lk zero" title="Links from your chats. Say open, or open two">LINKS</span><span class="pz" title="Pause the Switchboard for two turns, or resume it">LIVE</span></div>' +
         '<div class="stage"></div>' +
         '<div class="asks" hidden></div><div class="dkov" hidden></div><div class="cos" hidden></div><div class="lnk" hidden></div><div class="pgv" hidden></div>' +
         '<div class="ctl" hidden><button type="button" class="hold" data-ctl="hold"><span class="hk">Responses · live</span><span class="hv">Hold</span><span class="hs">Stops every tab until you resume</span></button>' +
         '<div class="tgw"><div class="ck">Controls · every tab follows</div><div class="tgs">' +
         SM_CTL.map((c) => '<button type="button" class="tg" data-ctl="' + c[0] + '" title="' + smEsc(c[2]) + '" aria-pressed="false"><span class="tl">' + smEsc(c[1]) + '</span><span class="sw"><i></i></span><span class="tv">OFF</span></button>').join('') +
-        '<button type="button" class="tg lk3" data-look title="Click to step through the looks: CHxTLD, Tron, Retro and Night drive. Or say night drive look"><span class="tl">Look</span><span class="lsw">' +   // 8.9.3
-        SM_LOOKS.map((id) => '<i data-l="' + id + '"></i>').join('') + '</span><span class="tv"></span></button>' +
+        '<button type="button" class="tg lk3" data-look title="Click for the next look, right click to go back. Or say next look, or a look by name"><span class="tl">Look</span><span class="lsw">' +   // 8.9.3, 9.0.1
+        '<i></i>'.repeat(4) + '</span><span class="tv"></span></button>' +
         '</div><div class="mdr"><span class="ck">Model · every chat</span>' +
         ['Sonnet', 'Opus', 'Haiku', 'Fable'].map((n) => '<button type="button" class="md" data-model="' + n.toLowerCase() + '" title="Set every open chat to ' + n + '">' + n + '</button>').join('') +
         '</div></div></div>' +
@@ -1241,7 +1440,7 @@
         '<div class="toast" role="status"></div>';
       host.appendChild(fx);
       const q = (s) => fx.querySelector(s);
-      let theme = SM_THEMES.dark, stageSig = '', lastHtml = null, lastPath = '', model = null, H = 1080;
+      let theme = SM_THEMES.dark, stageSig = '', lastHtml = null, lastPath = '', model = null, H = 1080, fontT = null;
       // 8.1: approvals and question cards, the deck overlay, the reading glow
       let askSig = '', armAlways = '', armT = null, multiSel = new Set(), multiKey = '';
       let dkSig = '', dkOpen = false, lpT = null, lpFired = false;
@@ -1261,16 +1460,19 @@
       function setTheme(t) {
         theme = t;
         const v = t.v;
-        const vars = Object.keys(v).map((k) => '--' + k + ':' + v[k]).join(';') + ';--hf:' + t.f.hf + ';--bf:' + t.f.bf + ';--mf:' + t.f.mf;
+        const vars = Object.keys(v).map((k) => '--' + k + ':' + v[k]).join(';') + ';--hf:' + t.f.hf + ';--bf:' + t.f.bf + ';--mf:' + t.f.mf + (t.f.wf ? ';--wf:' + t.f.wf : '');
         const fs = fx.style.getPropertyValue('--fs');
         fx.setAttribute('style', vars + (fs ? ';--fs:' + fs : ''));
-        fx.className = 'smx ' + t.id + (askSig ? ' asking' : '') + (dkOpen ? ' decking' : '') + (cosOpen ? ' cosing' : '');
+        fx.className = 'smx ' + t.id + (t.cls ? ' ' + t.cls : '') + (askSig ? ' asking' : '') + (dkOpen ? ' decking' : '') + (cosOpen ? ' cosing' : '');
         cosSig = '';
-        const lk = q('.tg.lk3');   // 8.9.3
+        const lk = q('.tg.lk3');   // 9.0.1: four of the look's colors, its number and name
         if (lk) {
-          lk.querySelector('.tv').textContent = t.tag || t.id;
-          lk.querySelectorAll('.lsw i').forEach((i) => i.classList.toggle('on', i.getAttribute('data-l') === t.id));
+          lk.querySelector('.tl').textContent = 'Look';
+          lk.querySelector('.tv').textContent = smPad(SM_LOOKS.indexOf(t.id) + 1) + ' ' + (t.tag || t.id);
+          const c4 = [v.accent, v.need, v.wait, v.work];
+          lk.querySelectorAll('.lsw i').forEach((i, k) => { i.style.background = c4[k]; });
         }
+        smFontsFor(t, () => { clearTimeout(fontT); fontT = setTimeout(() => { if (theme === t) fit(); }, 150); });
         const br = q('.br');
         br.textContent = t.brand;
         if (t.logo) {
@@ -1344,6 +1546,10 @@
         if (pc) { onAction({ t: 'pageAct', k: pc.getAttribute('data-pg') }); return; }
         if (ev.target.closest('.br')) onAction({ t: 'theme' });
       });
+      fx.addEventListener('contextmenu', (ev) => {   // 9.0.1
+        if (!ev.target.closest('[data-look]') || !onAction) return;
+        ev.preventDefault(); onAction({ t: 'theme', dir: -1 });
+      });
       fx.addEventListener('pointerdown', (ev) => {
         if (!ev.target.closest('[data-center]') || !onAction) return;
         lpFired = false; clearTimeout(lpT);
@@ -1410,7 +1616,7 @@
           const gap = list.length > 1 ? 1.2 : 0;
           pie += '<path class="hit" data-jump="' + smEsc(e.id) + '" d="' + smSector(Math.round(R * 0.3), Math.round(r), a + gap, a + span - gap) + '" fill="' + col + '" fill-opacity="' + smF1(0.18 + 0.72 * SM_SAT[k]) + '" stroke="' + col + '" stroke-width="2"' + (k === 'need' ? ' class="pulse"' : '') + '></path>';
           const lp = smPol(R * 0.3 + (r - R * 0.3) * 0.55, a + span / 2);
-          if (span > 9) pie += smTxt(lp[0], lp[1], e.deck ? 'SD' : e.chief ? 'COS' : smPad(i + 1), e.chief ? 22 : 26, SM_SAT[k] > 0.8 && t.id === 'light' ? '#ffffff' : v.ink, t.f.mf, ' text-anchor="middle" pointer-events="none"');
+          if (span > 9) pie += smTxt(lp[0], lp[1], e.deck ? 'SD' : e.chief ? 'COS' : smPad(i + 1), e.chief ? 22 : 26, SM_SAT[k] > 0.8 && t.onSat ? t.onSat : v.ink, t.f.mf, ' text-anchor="middle" pointer-events="none"');
           a += span;
         }
         const waiting = list.filter((e) => !e.deck && !e.chief && e.id !== floorId && smWaits(smKind(e))).length;
@@ -1428,7 +1634,7 @@
         }
         pie += '</g>';
         o += lines + '<g transform="translate(' + cx + ',' + cy + ')">' + pie + '</g>' + rails + '</svg>';
-        return o;
+        return (/\bfx-radar\b/.test(t.cls || '') ? '<div class="rdr"></div>' : '') + o;   // 9.0.1: the sonar sweep sits behind the pie
       }
 
       function paint(m) {
@@ -1975,6 +2181,7 @@
       }
     } catch (e) {}
 
+    try { localStorage.setItem('chf_looks', JSON.stringify(SM_LOOKS.map((id) => [id, SM_THEMES[id].look]))); } catch (e) {}   // 9.0.1: voice finds looks by name
     const css = document.createElement('style');
     css.textContent = '#chf-mirror{position:fixed;inset:0;z-index:2147483000;overflow:hidden}\n' + smCss();
     const root = document.createElement('div');
@@ -2366,7 +2573,7 @@
       else if (a.t === 'jump') jump(a.id);
       else if (a.t === 'next') goNext();
       else if (a.t === 'pause') togglePause();
-      else if (a.t === 'theme') flipTheme();
+      else if (a.t === 'theme') flipTheme(a.dir);
       else if (a.t === 'ctl') toggleCtl(a.k);   // 8.0
       else if (a.t === 'boot') bootRun('pill');  // 8.9
     }
@@ -2521,9 +2728,12 @@
       themeId = id;
       try { localStorage.setItem('chf_mirror_theme', themeId); } catch (x) {}
       applyTheme();
-      scr.flash(SM_THEMES[id].look + ' look');
+      scr.flash(SM_THEMES[id].look + ' · ' + (SM_LOOKS.indexOf(id) + 1) + ' of ' + SM_LOOKS.length);
     }
-    function flipTheme() { setLook(SM_LOOKS[(SM_LOOKS.indexOf(themeId) + 1) % SM_LOOKS.length]); }
+    function flipTheme(dir) {   // 9.0.1: forward, or back one on a right click
+      const d = dir === -1 ? -1 : 1, n = SM_LOOKS.length;
+      setLook(SM_LOOKS[(SM_LOOKS.indexOf(themeId) + d + n) % n]);
+    }
     document.addEventListener('keydown', (e) => {
       if (!e.altKey || !e.shiftKey) return;
       if (e.code === 'KeyM') {
@@ -2551,7 +2761,8 @@
           try { sessionStorage.removeItem(MIRROR_KEY); } catch (x) {}
           location.reload();
         });
-        GM_registerMenuCommand('Screen mode look: CHxTLD, Tron, Retro or Night drive', flipTheme);   // 8.9.3 (9.0: night drive)
+        GM_registerMenuCommand('Screen mode: next look', () => flipTheme(1));   // 8.9.3, 9.0.1
+        GM_registerMenuCommand('Screen mode: previous look', () => flipTheme(-1));
         GM_registerMenuCommand('Boot: open my 10 most recent chats', () => bootRun('menu'));   // 8.9
       }
     } catch (e) {}
@@ -5636,7 +5847,7 @@
     if (CHIEF_NEEDS.test(flat)) return { kind: 'chiefNeeds' };
     { const cd = chiefDoneSaid(flat); if (cd) return cd; }
     if (CHF.closed && Date.now() - CHF.closed.at < 180000 && /^(?:undo|undo that|undo it|reopen|reopen it|reopen that|put it back|not done|that's not done|thats not done)(?: please)?$/.test(flat)) return { kind: 'chiefUndo' };
-    if (/^(next|next chat|next one|next please)$/.test(flat)) return { kind: 'next' };
+    if (/^(next|next chat|next one|next please)(?: (?:over|server|rover|over and out))?$/.test(flat)) return { kind: 'next' };   // 9.0.1: "next, over" heard as "next server"
     if (/^(?:(?:run (?:a )?|do (?:a )?)?(?:video|videos|youtube|media|tv|sports) check|check (?:the |my )?(?:videos?|youtube|media|tv|sports)|is youtube (?:connected|working|on)|(?:are|is) (?:the |my )?videos? (?:connected|working))(?: please)?$/.test(flat)) return { kind: 'videoCheck' };   // 8.4
     // 8.2: links. "open", "open two", "open link three", "open the second link", "close page"
     {
@@ -5661,8 +5872,8 @@
     // 8.8: one model for every open chat
     const mdm = flat.match(/^(?:please )?(?:(?:set|switch|change|put|move|make|use)\s+)?(?:all|every|each)(?: of)?(?: my| the)?(?: open)?\s*(?:chats?|tabs?|conversations?|models?)(?: models?)?\s+(?:to|over to|onto|on|use|using|be)\s+(?:the\s+)?(?:model\s+)?(sonnets?|sonet|opus|haiku|hiku|hi coup|hike you|fable|mythos)\b(?:\s+(\d(?:\.\d)?))?(?: please)?$/);
     if (mdm) return { kind: 'allModels', name: mdm[1] };
-    const lkm = flat.match(LOOK_SAID);   // 8.9.3: HQ's look
-    if (lkm) return { kind: 'look', id: lookId(lkm[1] || lkm[2]) };
+    const lkc = lookParse(flat);   // 8.9.3, 9.0.1: HQ's look
+    if (lkc) return lkc;
     if (/^(go quiet|quiet|be quiet|quiet mode|hush|shh+)$/.test(flat)) return { kind: 'quiet' };
     // 7.2: hold the board for a few of your messages
     const BOARD = '(?:the )?(?:switchboard|switch board|switch boards|switchboards|switcheroo|switch a roo|switch roo|board|alerts?|notifications?|chimes?)';
@@ -5743,16 +5954,52 @@
     return null;
   }
   // 8.0: the words for HOLD and for ending it
-  // 8.9.3: HQ's look by voice. A look's name with a verb in front ("switch to retro") or look, theme,
-  // mode or style after it ("Tron mode"). A bare "retro" or "light" still goes to Claude.
-  const LOOK_NAMES = '(retro(?: futuris[mt]| futurist(?:ic)?| wave)?|synth ?wave|outrun|tron|dark|light|ch ?x ?tld|c h x t l d|clever homes?|andr[eé] mandel|night ?drive|night)';   // 9.0: night drive
-  const LOOK_SAID = new RegExp('^(?:please )?(?:(?:switch|change|set|turn|put|make)(?: (?:hq|the hq|switcheroo|screen mode|the screen|the look|my look|the theme|the style|it))?(?: to| into| over to)? (?:the )?' +
-    LOOK_NAMES + '(?: (?:look|theme|mode|style|skin))?|(?:the )?' + LOOK_NAMES + ' (?:look|theme|mode|style|skin))(?: please)?$');
-  const lookId = (w) => /night|chief/.test(w) ? 'night' : /retro|synth|outrun/.test(w) ? 'retro' : /tron|dark|mandel/.test(w) ? 'dark' : 'light';
-  function setHqLook(id) {   // HQ picks it up from the message, or from storage when it next opens
+  // 8.9.3, 9.0.1: HQ's look by voice. "next look", "previous look", "random look", or a look by name:
+  // "blueprint look", "aurora theme", "change the look to tahoe", "switch to retro". A name has to be one
+  // of HQ's looks (HQ saves the list), so "take a look" or "switch to <a chat>" still do what they did.
+  const LOOK_ALIAS = { dark: 'dark', tron: 'dark', 'andre mandel': 'dark', light: 'light', chxtld: 'light', 'ch x tld': 'light', 'c h x t l d': 'light',
+    'clever homes': 'light', 'clever home': 'light', synthwave: 'retro', 'synth wave': 'retro', outrun: 'retro', 'retro futurism': 'retro',
+    'retro futurist': 'retro', 'retro futuristic': 'retro', 'retro wave': 'retro', night: 'night', 'night drive': 'night', nightdrive: 'night' };
+  const LOOK_NEXT = /^(?:please )?(?:(?:show me |give me |try |go to |switch to )?(?:the |a )?(?:next|another|different|new) (?:look|theme|style|skin)|(?:change|switch|cycle|flip) (?:the )?(?:looks?|themes?|styles?|skins?))(?: please)?$/;
+  const LOOK_BACK = /^(?:please )?(?:(?:go )?back (?:a |one )?(?:look|theme|style)|(?:the )?(?:previous|prior|last) (?:look|theme|style|skin)|(?:go )?back to the (?:last|previous) (?:look|theme|style))(?: please)?$/;
+  const LOOK_RAND = /^(?:please )?(?:(?:a |pick a |give me a )?random (?:look|theme|style|skin)|surprise me with a (?:look|theme))(?: please)?$/;
+  const LOOK_SUFFIX = /^(?:please )?(?:(?:switch|change|set|turn|put|make|go)(?: (?:hq|the hq|switcheroo|screen mode|the screen|it))?(?: to| into| over to)? )?(?:the )?(.{2,32}?) (?:look|theme|mode|style|skin)(?: please)?$/;
+  const LOOK_PREFIX = /^(?:please )?(?:switch|change|set|turn|put|make) (?:the |my |hq's |the hq )?(?:look|theme|style|skin)(?: to| into)? (?:the )?(.{2,32}?)(?: please)?$/;
+  const LOOK_VERB = /^(?:please )?(?:switch|change|set|turn|put|make)(?: (?:hq|the hq|switcheroo|screen mode|the screen|it))?(?: to| into| over to)? (?:the )?(.{2,32}?)(?: please)?$/;
+  const lookNorm = (x) => String(x || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
+  function lookList() {
+    try { const l = JSON.parse(localStorage.getItem('chf_looks')); if (Array.isArray(l) && l.length) return l; } catch (e) {}
+    return [['light', 'CHxTLD'], ['dark', 'Tron'], ['retro', 'Retro'], ['night', 'Night drive']];
+  }
+  function lookFind(w, coreOnly) {
+    w = lookNorm(w).replace(/^the /, '');
+    if (LOOK_ALIAS[w]) return LOOK_ALIAS[w];
+    if (coreOnly) return w === 'retro' ? 'retro' : null;   // a bare "switch to X" only for the first three
+    const hit = lookList().find((x) => lookNorm(x[1]) === w || x[0] === w.replace(/ /g, ''));
+    return hit ? hit[0] : null;
+  }
+  function lookParse(flat) {
+    if (LOOK_NEXT.test(flat)) return { kind: 'look', step: 1 };
+    if (LOOK_BACK.test(flat)) return { kind: 'look', step: -1 };
+    if (LOOK_RAND.test(flat)) return { kind: 'look', step: 'rand' };
+    let m = flat.match(LOOK_SUFFIX), id = m && lookFind(m[1]);
+    if (!id) { m = flat.match(LOOK_PREFIX); id = m && lookFind(m[1]); }
+    if (!id) { m = flat.match(LOOK_VERB); id = m && lookFind(m[1], true); }
+    return id ? { kind: 'look', id } : null;
+  }
+  function setHqLook(c) {   // HQ picks it up from the message, or from storage when it next opens
+    const l = lookList(), ids = l.map((x) => x[0]);
+    let cur = 'dark';
+    try { cur = localStorage.getItem('chf_mirror_theme') || 'dark'; } catch (e) {}
+    let id = c.id;
+    if (!id) {
+      const i = Math.max(0, ids.indexOf(cur)), n = ids.length;
+      id = c.step === 'rand' ? ids[(i + 1 + Math.floor(Math.random() * (n - 1))) % n] : ids[(i + c.step + n) % n];
+    }
     try { localStorage.setItem('chf_mirror_theme', id); } catch (e) {}
     post({ t: 'look', id });
-    return say({ light: 'Light look.', dark: 'Tron look.', retro: 'Retro look.', night: 'Night drive look.' }[id] || 'Done.');
+    const nm = id === 'light' ? 'Light' : ((l.find((x) => x[0] === id) || [id, id])[1]);
+    return say(nm + ' look.');
   }
   const HOLD_SAID = /^(?:please )?(?:silence|silent|silence (?:everything|all|it|claude|responses|switchboard)|hold (?:everything|all|it all|all of it|responses|the responses|all responses)|hold responses|responses off|response off|turn (?:off )?(?:the |all )?responses(?: off)?|turn (?:the )?responses off|pause (?:all |the )?responses|pause everything|pause all|stop (?:all |the )?responses|stop everything|stop all|stop all processes|stop all of it|stop talking|no more responses|meeting mode|meeting|in a meeting|i'm in a meeting|im in a meeting|shut up|shut it|quiet everything|everything off|all off)(?: please| now| for now)?$/;
   const UNHOLD_SAID = /^(?:please )?(?:resume|resume everything|resume all|resume responses|responses on|response on|turn (?:on )?(?:the )?responses(?: back)? on|turn responses back on|turn on responses|back on|unhold|un hold|end hold|end the hold|release|release hold|meeting over|meeting's over|meetings over|meeting is over|out of the meeting|i'm out of the meeting|end meeting mode|go live|everything on|all on)(?: please| now)?$/;
@@ -5857,7 +6104,7 @@
     if (c.kind === 'newChat') return newChat(c.project, false);
     if (c.kind === 'quieter') return stepRead(-1, true);
     if (c.kind === 'duckMode') return setDuckMode(c.m, true);   // 8.3
-    if (c.kind === 'look') return setHqLook(c.id);              // 8.9.3
+    if (c.kind === 'look') return setHqLook(c);                 // 8.9.3, 9.0.1
     if (c.kind === 'deck') {   // 7.9 (8.1: a deck already open in another tab is used, not opened twice)
       if (DK.present) return deckStart('voice');
       const other = [...deckTabs].filter(([id, at]) => Date.now() - at < 15000).sort((a, b) => b[1] - a[1])[0];

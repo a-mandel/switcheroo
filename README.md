@@ -17,9 +17,9 @@ By voice, in any chat:
 
 HQ also gets a fourth look, Night drive, from the board, and takes it once on update unless Retro is already your pick.
 
-## Looks (8.9.3, 9.0)
+## Looks (9.0.1)
 
-HQ comes in four looks: CHxTLD (light), Tron, Retro (a sunset sky over a rolling neon floor) and Night drive (the Chief of Staff board's look). Click the Look tile on the control panel to step through them, click the brand, press Option Shift D, or say "retro look", "Tron mode", "night drive look" or "light mode".
+HQ has 50 looks: CHxTLD, Tron, Retro and Night drive first, then synthwave floors, green and amber terminals, blueprint, sonar, deep space, design movements, places, paper, metals and more. Click the Look tile on the control panel for the next one, right click to go back, click the brand, or press Option Shift D. By voice: "next look", "previous look", "random look", or a name like "blueprint look" or "night drive look".
 
 ## Boot (8.9)
 
