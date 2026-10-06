@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Claude Hands Free Text Mode
 // @namespace    andre.mandel
-// @version      8.9.3
-// @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land. 8.8: one model for every open chat, by voice ("all chats to Sonnet") or from the HQ model pills. 8.9: Boot. The Switcheroo Chrome launcher opens HQ with your 10 most recent chats behind it and the mic ready, no clicks; or say "boot up". 8.9.1: "stop, new chat in Alder" works: a lead in no longer hides a command, and new chat finds every project, not just the sidebar. 8.9.2: the mic bell is now the Long bell, struck three times so the AirPods can't clip it. 8.9.3: Retro, a third HQ look: sunset sky, a neon floor rolling toward you, chrome type. Click Look on the control panel, or say "retro look".
+// @version      9.0
+// @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land. 8.8: one model for every open chat, by voice ("all chats to Sonnet") or from the HQ model pills. 8.9: Boot. The Switcheroo Chrome launcher opens HQ with your 10 most recent chats behind it and the mic ready, no clicks; or say "boot up". 8.9.1: "stop, new chat in Alder" works: a lead in no longer hides a command, and new chat finds every project, not just the sidebar. 8.9.2: the mic bell is now the Long bell, struck three times so the AirPods can't clip it. 8.9.3: Retro, a third HQ look: sunset sky, a neon floor rolling toward you, chrome type. Click Look on the control panel, or say "retro look". 9.0: Chief of Staff joins HQ as the COS wedge and panel, and a fourth look, night drive, from the board. Say chief for the brief, what needs me for Start Here, done two to close a thread, undo to reopen it.
 // @match        https://claude.ai/*
 // @match        *://*/*
 // @grant        GM_xmlhttpRequest
@@ -318,6 +318,11 @@
     "wait" still pause so you can pick it back up. Away from a reading, "shut up" is still Hold.
     Spacebar alone now does what Option Space does (talk, again to send), whenever you're not typing
     in a text box. Option Space still works.
+  9.0: CHIEF OF STAFF. The Chief of Staff board joins HQ: a COS wedge and rail on the pie, sized by how many
+    threads need you, and a click opens the brief and Start Here over the pie in the board's own look, each thread
+    numbered with Mark done. If the board isn't open, the click opens it in a tab behind HQ. By voice in any chat:
+    "chief" reads the brief, "what needs me" reads Start Here, "done two" closes number two, "undo" reopens it.
+    A fourth look, Night drive, comes from the board; HQ takes it once on update unless Retro is your pick.
   8.9.3: RETRO LOOK. HQ has a third look next to CHxTLD and Tron: a sunset sky over a neon floor grid
     that keeps rolling toward you, chrome headlines, a neon wordmark and faint scan lines. Pick it with
     the new Look tile on the control panel (it steps CHxTLD, Tron, Retro), a click on the brand, Option
@@ -671,13 +676,17 @@
     } catch (e) {}
     // @@SCREEN-START
     // 7.8: screen mode redrawn flat, from Switchboard Styles 25. Transcript docked on the left,
-    // a pie of every chat in the middle, load rails on the right. Two looks, same layout:
-    // light is the CHxTLD letterhead look, dark is the ANDRÉ MANDEL radar look. Option Shift D flips them.
+    // a pie of every chat in the middle, load rails on the right. Four looks, same layout:
+    // light is the CHxTLD letterhead look, dark is the ANDRÉ MANDEL radar look (Tron), retro (8.9.3) is the
+    // sunset over a rolling floor, and night (9.0) is the Chief of Staff night drive look. Option Shift D steps through them.
     // Colors and type live in SM_THEMES, so graphic standards can be swapped in one place.
     const SM_HUD = { hf: '"Orbitron","Rajdhani",Arial,sans-serif', bf: '"Exo 2","Barlow",Arial,sans-serif',   // 8.1.3: Grid Runner, André's pick from Switcheroo Fonts
       mf: '"Share Tech Mono","SF Mono",Menlo,ui-monospace,monospace' };
     const SM_ARIAL = { hf: '"Orbitron","Rajdhani",Arial,sans-serif', bf: '"Exo 2","Barlow",Arial,sans-serif',   // 8.1.3: Grid Runner in light HQ too. Was Arial (letterhead)
       mf: '"Share Tech Mono","SF Mono",Menlo,ui-monospace,monospace' };
+    const SM_NIGHT = { hf: '"Syncopate","Orbitron",Arial,sans-serif', bf: '"Barlow","Exo 2",Arial,sans-serif',   // 9.0: Chief of Staff faces
+      mf: '"Barlow Condensed","Share Tech Mono","Arial Narrow",sans-serif',
+      rf: '"Barlow Condensed","Rajdhani","Arial Narrow",sans-serif', rs: 24, rl: 1.6 };   // rail names in the condensed face, so they read in full
     // 8.9.3: Retro, wide arcade headlines over the same body and number faces
     const SM_RETRO = { hf: '"Audiowide","Orbitron",Arial,sans-serif', bf: '"Exo 2","Barlow",Arial,sans-serif',
       mf: '"Share Tech Mono","SF Mono",Menlo,ui-monospace,monospace' };
@@ -688,9 +697,12 @@
       dark: { id: 'dark', label: 'ANDRÉ MANDEL', look: 'Tron', tag: 'TRON', brand: 'ANDRÉ MANDEL', f: SM_HUD, v: { bg: '#0a1520', bg2: '#112436', panel: 'rgba(13,29,45,.92)', line: '#2b4b68', ink: '#eaf3fb', mute: '#a2bccf', accent: '#5ad1ff', need: '#ffae36', wait: '#ffd98a', work: '#5ad1ff', idle: '#37536d', glow: 'rgba(90,209,255,.22)', grid: 'rgba(90,209,255,.06)', glowc: 'rgba(90,209,255,.9)', glowc2: 'rgba(90,209,255,.45)', glowbg: 'rgba(90,209,255,.15)', glowink: '#f2fdff' } },
       // 8.9.3: Retro futurism. Night sky going violet at the horizon, sunset coral for what needs you,
       // gold for your turn, electric blue for working, hot magenta for the accent
-      retro: { id: 'retro', label: 'ANDRÉ MANDEL', look: 'Retro', tag: 'RETRO', brand: 'ANDRÉ MANDEL', f: SM_RETRO, v: { bg: '#0b0616', bg2: '#170d29', panel: 'rgba(16,9,31,.9)', line: '#3d2a63', ink: '#fbefff', mute: '#ab98cf', accent: '#ff3e9a', need: '#ff6a3d', wait: '#ffc35a', work: '#35d3ff', idle: '#3e3060', glow: 'rgba(255,62,154,.24)', grid: 'rgba(53,211,255,.06)', glowc: 'rgba(255,62,154,.9)', glowc2: 'rgba(255,62,154,.45)', glowbg: 'rgba(255,62,154,.16)', glowink: '#fff2fb' } }
+      retro: { id: 'retro', label: 'ANDRÉ MANDEL', look: 'Retro', tag: 'RETRO', brand: 'ANDRÉ MANDEL', f: SM_RETRO, v: { bg: '#0b0616', bg2: '#170d29', panel: 'rgba(16,9,31,.9)', line: '#3d2a63', ink: '#fbefff', mute: '#ab98cf', accent: '#ff3e9a', need: '#ff6a3d', wait: '#ffc35a', work: '#35d3ff', idle: '#3e3060', glow: 'rgba(255,62,154,.24)', grid: 'rgba(53,211,255,.06)', glowc: 'rgba(255,62,154,.9)', glowc2: 'rgba(255,62,154,.45)', glowbg: 'rgba(255,62,154,.16)', glowink: '#fff2fb' } },
+      // 9.0: night drive, from the Chief of Staff board: ink sky, sunset rule, cyan grid. Magenta is urgent,
+      // sun is waiting on you, cyan is working; the word being read glows like the setting sun.
+      night: { id: 'night', label: 'NIGHT DRIVE', look: 'Night drive', tag: 'NIGHT', brand: 'NIGHT DRIVE', f: SM_NIGHT, v: { bg: '#0a0912', bg2: '#19143a', panel: 'rgba(16,14,28,.94)', line: '#2a2647', ink: '#ece8f6', mute: '#8f8aad', accent: '#52d9ff', need: '#ff4f9e', wait: '#ff9447', work: '#52d9ff', idle: '#3a3560', glow: 'rgba(143,116,255,.24)', grid: 'rgba(82,217,255,.05)', glowc: 'rgba(255,148,71,.9)', glowc2: 'rgba(255,79,158,.45)', glowbg: 'rgba(255,148,71,.16)', glowink: '#fff3e6' } }
     };
-    const SM_LOOKS = ['light', 'dark', 'retro'];   // 8.9.3: the order Look steps through
+    const SM_LOOKS = ['light', 'dark', 'retro', 'night'];   // 8.9.3: the order Look steps through (9.0: and night drive)
     // 8.9.3: the floor grid's rays, from the vanishing point on the horizon out past both edges
     const SM_RAYS = (() => { let o = ''; for (let k = -26; k <= 26; k++) o += '<line x1="1306" y1="0" x2="' + (1306 + k * 165) + '" y2="100"></line>'; return o; })();
     const SM_SAT = { need: 1, question: 0.86, wait: 0.7, turn: 0.55, work: 0.45, idle: 0.16 };
@@ -698,6 +710,7 @@
     const SM_COLKEY = { need: 'need', question: 'need', wait: 'wait', turn: 'wait', work: 'work', idle: 'idle' };
     const smKind = (e) => {
       if (e && e.deck) return e.deckN > 0 ? 'question' : 'idle';   // 8.1: the Swipe Deck rides along as a wedge
+      if (e && e.chief) return !e.closed && e.chiefN > 0 ? 'question' : 'idle';   // 9.0: and Chief of Staff
       if (!e || e.on === false) return 'idle';
       if (e.state === 'red') return 'need';
       if (e.state === 'yellow') return e.ask ? 'question' : e.seen ? 'turn' : 'wait';
@@ -732,6 +745,7 @@
     }
     function smStatus(e, k) {
       if (e && e.deck) return e.deckN ? (e.nVisual || 0) + ' visual · ' + (e.nAudio || 0) + ' audio' : 'Clear';
+      if (e && e.chief) return e.closed ? 'Not open · click to open' : (e.nNeeds || 0) + ' need you' + (e.nBlocked ? ' · ' + e.nBlocked + ' blocked' : '') + ' · ' + (e.nRun || 0) + ' running';
       if (k === 'need') return e.folder ? 'Needs a folder' : e.reqKey ? 'Needs approval' : 'Urgent';
       if (k === 'question') return 'Question';
       if (k === 'wait') return 'Waiting';
@@ -748,7 +762,7 @@
     const smWaits = (k) => k === 'need' || k === 'question' || k === 'wait';
     // the chat a click on NEXT (or saying next) lands on: requests first, then the longest wait
     function smNext(tabs, fid) {
-      return tabs.map((e, i) => ({ e, i, k: smKind(e) })).filter((x) => !x.e.deck && x.e.id !== fid && (smWaits(x.k) || x.k === 'turn'))
+      return tabs.map((e, i) => ({ e, i, k: smKind(e) })).filter((x) => !x.e.deck && !x.e.chief && x.e.id !== fid && (smWaits(x.k) || x.k === 'turn'))
         .sort((x, y) => smRank(x.e, x.k) - smRank(y.e, y.k) || (x.e.since || 0) - (y.e.since || 0))[0] || null;
     }
     // 8.0: the switches in the control panel: key, label, what it does
@@ -1061,7 +1075,7 @@
         '.smx .pgv iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#ffffff}',
         '.smx .pgv .pw{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:var(--bg2);font:600 22px var(--bf);color:var(--mute);text-align:center;padding:40px}',
         '.smx .pgv .pw b{font:700 30px var(--hf);letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}',
-        // 8.9.3: the Look tile, three swatches with the one in use lit
+        // 8.9.3: the Look tile, a swatch per look with the one in use lit
         '.smx .tg.lk3 .lsw{display:flex;align-items:center;gap:9px;height:26px}',
         '.smx .tg.lk3 .lsw i{display:block;width:17px;height:17px;border-radius:50%;border:2px solid var(--mute);opacity:.75}',
         '.smx .tg.lk3 .lsw i.on{opacity:1;border-color:transparent}',
@@ -1114,6 +1128,84 @@
         '.smx.retro .csend{background:linear-gradient(90deg,var(--need),var(--accent));border-color:transparent;box-shadow:0 0 18px -2px rgba(255,62,154,.6)}',
         '.smx.retro .mdr .md:hover{border-color:var(--accent);color:var(--accent)}',
         '.smx.retro .stage text{font-weight:400}',
+        // 9.0: Chief of Staff over the pie. It always wears the board's night drive look, whatever the HQ look
+        '.smx.cosing .stage{opacity:.14;filter:blur(2px)}',
+        '.smx.cosing .asks,.smx.cosing .dkov{display:none}',
+        '.smx .cos{--k-bg:#0a0912;--k-panel:#100e1c;--k-panel2:#19143a;--k-line:#2a2647;--k-fg:#ece8f6;--k-dim:#8f8aad;--k-cyan:#52d9ff;--k-violet:#8f74ff;--k-mag:#ff4f9e;--k-sun:#ff9447;--k-gold:#ffd36e;--k-chx:#ffcf6a;--k-per:#b49bff;--k-d:"Syncopate","Orbitron",Arial,sans-serif;--k-b:"Barlow","Exo 2",Arial,sans-serif;--k-l:"Barlow Condensed","Rajdhani","Arial Narrow",sans-serif;position:absolute;left:800px;top:100px;width:1100px;bottom:248px;z-index:3;display:flex;flex-direction:column;gap:14px;padding:20px 24px 14px;background:radial-gradient(900px 380px at 50% -14%,rgba(143,116,255,.22),transparent 70%),var(--k-bg);border:1px solid var(--k-line);color:var(--k-fg);font-family:var(--k-b);box-shadow:0 18px 40px rgba(0,0,0,.35);overflow:hidden}',
+        '.smx .cos::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,var(--k-cyan),var(--k-violet) 35%,var(--k-mag) 68%,var(--k-sun))}',
+        '.smx :where(.cos button){all:unset;box-sizing:border-box;cursor:pointer}',
+        '.smx .cos button:focus-visible{outline:2px solid var(--k-cyan);outline-offset:2px}',
+        '.smx .cos .chh{display:flex;align-items:center;gap:14px;flex:none;padding-bottom:12px;border-bottom:1px solid var(--k-line)}',
+        '.smx .cos .cmk{font:700 30px/1 var(--k-d);letter-spacing:.1em;text-transform:uppercase;color:transparent;-webkit-text-stroke:1.2px var(--k-fg);white-space:nowrap}',
+        '.smx .cos .cmk span{background:linear-gradient(180deg,var(--k-gold),var(--k-sun) 45%,var(--k-mag));-webkit-background-clip:text;background-clip:text;-webkit-text-stroke:0;color:transparent}',
+        '.smx .cos .cdt{font:600 16px var(--k-l);letter-spacing:.3em;color:var(--k-cyan);white-space:nowrap}',
+        '.smx .cos .cg{flex:1}',
+        '.smx .cos .cbn{height:40px;padding:0 16px;display:flex;align-items:center;justify-content:center;font:600 16px var(--k-l);letter-spacing:.18em;text-transform:uppercase;border:1px solid var(--k-line);color:var(--k-fg);white-space:nowrap;transition:border-color .2s,color .2s,box-shadow .2s}',
+        '.smx .cos .cbn:hover{border-color:var(--k-cyan);color:var(--k-cyan);box-shadow:0 0 14px -5px var(--k-cyan)}',
+        '.smx .cos .cbn[disabled]{opacity:.4;cursor:default;box-shadow:none;border-color:var(--k-line);color:var(--k-fg)}',
+        '.smx .cos .cbn.cx{width:40px;padding:0;font-size:22px;letter-spacing:0}',
+        '.smx .cos .cbn.wt{border-color:var(--k-mag);color:var(--k-bg);background:var(--k-mag)}',
+        '.smx .cos .cbn.sm{height:32px;padding:0 12px;font-size:14px}',
+        '.smx .cos .cbr{position:relative;isolation:isolate;overflow:hidden;flex:none;display:flex;flex-direction:column;gap:10px;padding:20px 24px 18px;border:1px solid var(--k-line);background:var(--k-panel);min-height:210px}',
+        '.smx .cos .cbr.wait{flex:1;justify-content:center}',
+        '.smx .cos .sc{position:absolute;top:0;right:0;bottom:0;width:460px;z-index:-1;pointer-events:none;-webkit-mask:linear-gradient(90deg,transparent,#000 38%);mask:linear-gradient(90deg,transparent,#000 38%);background:radial-gradient(1px 1px at 14% 20%,#ffffffa8,transparent),radial-gradient(1.5px 1.5px at 62% 18%,#ffffffa8,transparent),radial-gradient(1px 1px at 84% 10%,#ffffffa8,transparent),radial-gradient(1px 1px at 40% 34%,#ffffffa8,transparent),radial-gradient(1px 1px at 92% 36%,#ffffffa8,transparent),linear-gradient(180deg,var(--k-panel) 0%,var(--k-panel2) 60%)}',
+        '.smx .cos .gl{position:absolute;left:56%;bottom:40%;width:170px;height:170px;transform:translate(-50%,34%);filter:drop-shadow(0 0 24px rgba(255,79,158,.55))}',
+        '.smx .cos .sun{width:100%;height:100%;border-radius:50%;background:linear-gradient(180deg,var(--k-gold) 0%,var(--k-sun) 42%,var(--k-mag) 100%);-webkit-mask:linear-gradient(180deg,#000 50%,transparent 50% 54%,#000 54% 62%,transparent 62% 67%,#000 67% 74%,transparent 74% 80%,#000 80%);mask:linear-gradient(180deg,#000 50%,transparent 50% 54%,#000 54% 62%,transparent 62% 67%,#000 67% 74%,transparent 74% 80%,#000 80%)}',
+        '.smx .cos .fl{position:absolute;left:0;right:0;bottom:0;height:40%;overflow:hidden;perspective:170px;perspective-origin:50% 0;background:linear-gradient(180deg,rgba(255,79,158,.2),var(--k-panel) 75%);border-top:1px solid var(--k-mag);box-shadow:0 -6px 22px -6px rgba(255,79,158,.6)}',
+        '.smx .cos .fl::before{content:"";position:absolute;left:-100%;right:-100%;top:0;height:300%;transform-origin:50% 0;transform:rotateX(70deg);background-image:linear-gradient(var(--k-cyan) 1.5px,transparent 1.5px),linear-gradient(90deg,var(--k-cyan) 1.5px,transparent 1.5px);background-size:32px 32px;opacity:.85;-webkit-mask:linear-gradient(180deg,transparent,#000 22%);mask:linear-gradient(180deg,transparent,#000 22%);animation:smdrive 2.6s linear infinite}',
+        '@keyframes smdrive{to{background-position:0 32px,0 0}}',
+        '.smx .cos .ce{font:600 15px var(--k-l);letter-spacing:.32em;text-transform:uppercase;color:var(--k-cyan)}',
+        '.smx .cos .chd{font:600 28px/1.25 var(--k-b);max-width:30ch;text-wrap:balance;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}',
+        '.smx .cos ul{margin:0;padding-left:22px;display:grid;gap:3px;max-width:56ch;font:19px/1.35 var(--k-b)}',
+        '.smx .cos li span{display:block;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}',
+        '.smx .cos li::marker{color:var(--k-mag)}',
+        '.smx .cos .cct{display:flex;align-items:baseline;gap:8px 26px;font:600 15px var(--k-l);letter-spacing:.16em;text-transform:uppercase;color:var(--k-dim);padding-top:2px}',
+        '.smx .cos .cct b{font:700 26px/1 var(--k-d);margin-right:9px;letter-spacing:0;color:var(--k-fg);font-variant-numeric:tabular-nums}',
+        '.smx .cos .cct .n b{color:var(--k-sun)}.smx .cos .cct .s b{color:var(--k-mag)}.smx .cos .cct .r b{color:var(--k-cyan)}',
+        '.smx .cos .cwn{font:500 14px var(--k-l);letter-spacing:.16em;text-transform:uppercase;color:var(--k-dim)}',
+        '.smx .cos .csh{flex:none;font:700 14px var(--k-d);letter-spacing:.2em;text-transform:uppercase;display:flex;gap:14px;align-items:baseline}',
+        '.smx .cos .csh small{font:500 15px var(--k-l);letter-spacing:.14em;color:var(--k-dim)}',
+        '.smx .cos .crs{flex:1;min-height:0;overflow:auto;display:flex;flex-direction:column;gap:10px;scrollbar-width:thin;scrollbar-color:var(--k-line) transparent}',
+        '.smx .cos .cr{flex:none;display:grid;grid-template-columns:40px 1fr;column-gap:12px;align-items:start;padding:12px 16px;border:1px solid var(--k-line);background:var(--k-panel)}',
+        '.smx .cos .cr.hot{border-color:rgba(255,148,71,.5);box-shadow:0 0 28px -14px var(--k-mag)}',
+        '.smx .cos .ci{font:700 26px/1.2 var(--k-d);color:var(--k-sun);text-align:center}',
+        '.smx .cos .cbd{min-width:0;display:flex;flex-direction:column;gap:4px}',
+        '.smx .cos .ctp{display:flex;align-items:center;gap:6px 12px;min-width:0}',
+        '.smx .cos .cst{font:600 14px/1 var(--k-l);letter-spacing:.16em;text-transform:uppercase;padding:5px 9px 4px;border:1px solid;white-space:nowrap}',
+        '.smx .cos .cst.needs{color:var(--k-bg);background:linear-gradient(90deg,var(--k-sun),var(--k-mag));border-color:transparent}',
+        '.smx .cos .cst.blocked{color:var(--k-mag);border-color:rgba(255,79,158,.55);background:rgba(255,79,158,.1)}',
+        '.smx .cos .cbz{font:600 15px var(--k-l);letter-spacing:.14em;white-space:nowrap}',
+        '.smx .cos .cbz.chx{color:var(--k-chx)}.smx .cos .cbz.am{color:var(--k-fg)}.smx .cos .cbz.per{color:var(--k-per)}',
+        '.smx .cos .cpj{font:500 16px var(--k-l);letter-spacing:.08em;color:var(--k-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}',
+        '.smx .cos .cdu{font:500 16px var(--k-b);color:var(--k-sun);white-space:nowrap}',
+        '.smx .cos .csl{font:600 13px var(--k-l);letter-spacing:.18em;text-transform:uppercase;color:var(--k-mag)}',
+        '.smx .cos .ctt{font:600 22px/1.25 var(--k-b);overflow:hidden;white-space:nowrap;text-overflow:ellipsis}',
+        '.smx .cos .cnx{font:18px/1.3 var(--k-b);color:var(--k-dim);overflow:hidden;white-space:nowrap;text-overflow:ellipsis}',
+        '.smx .cos .cem{padding:16px 18px;border:1px dashed var(--k-line);color:var(--k-dim);font:19px var(--k-b)}',
+        '.smx .cos .chn{flex:none;text-align:center;font:500 15px var(--k-l);letter-spacing:.3em;text-transform:lowercase;color:var(--k-dim)}',
+        // 9.0: the night drive look for all of HQ: sunset rules over the panels, the outlined wordmark, Chief's faces
+        '.smx.night .gridbg{background:radial-gradient(1400px 600px at 50% -12%,rgba(143,116,255,.2),transparent 70%),linear-gradient(var(--grid) 1px,transparent 1px) 0 0/48px 48px,linear-gradient(90deg,var(--grid) 1px,transparent 1px) 0 0/48px 48px}',
+        '.smx.night :is(.tx,.bar,.ctl)::before{content:"";position:absolute;left:-1px;right:-1px;top:-1px;height:3px;background:linear-gradient(90deg,#52d9ff,#8f74ff 35%,#ff4f9e 68%,#ff9447);pointer-events:none}',
+        '.smx .bar .sb b{font-weight:inherit}',
+        '.smx.night .bar .sb{font-size:19px;letter-spacing:.14em;color:transparent;-webkit-text-stroke:1.1px var(--ink)}',
+        '.smx.night .bar .sb b{background:linear-gradient(180deg,#ffd36e,#ff9447 45%,#ff4f9e);-webkit-background-clip:text;background-clip:text;-webkit-text-stroke:0;color:transparent}',
+        '.smx.night .bar .br{font:600 16px var(--mf);letter-spacing:.3em;color:var(--accent)}',
+        '.smx.night .ttl{font-size:34px;line-height:1.16;letter-spacing:.06em}',
+        '.smx.night :is(.kick,.msg .who,.dock .il,.tgw .ck,.hold .hk,.ck2){font-weight:600;letter-spacing:.24em}',
+        '.smx.night .hint{letter-spacing:.3em;color:var(--mute)}',
+        '.smx.night .msg .body :is(h1,h2,h3,h4,h5,h6){font-family:var(--bf)!important;font-weight:600!important;text-transform:none;letter-spacing:0}',
+        '.smx.night .msg .body li::marker{color:#ff4f9e!important}',
+        '.smx.night .hold{box-shadow:inset 0 0 0 2px var(--need)}',
+        '.smx.night .hold .hv{font-size:38px;letter-spacing:.06em}',
+        '.smx.night .tg .tl{font-weight:500}',
+        '.smx.night .tg.on .sw{background:linear-gradient(90deg,#52d9ff,#8f74ff)}',
+        '.smx.night :is(.ab,.dkb button){font-size:18px;letter-spacing:.08em}',
+        '.smx.night .dkh .dt{font-size:20px;letter-spacing:.16em}',
+        '.smx.night :is(.cdst,.cclip,.csend){font-size:15px}',
+        '.smx.night .csend{background:linear-gradient(90deg,#ff9447,#ff4f9e);border-color:transparent;color:#0a0912}',
+        '.smx.night .lnk .lt{font-size:20px;letter-spacing:.16em}',
+        '.smx.night .pgv .pl{font-size:18px}',
+        '.smx .tg.lk3 .lsw i[data-l=night].on{background:linear-gradient(135deg,#52d9ff,#8f74ff 40%,#ff4f9e 70%,#ff9447);box-shadow:0 0 12px rgba(143,116,255,.8)}',
         '@media (prefers-reduced-motion:reduce){.smx *{animation:none!important;transition:none!important}.smx.retro .rtfl i{opacity:.5}}'
       ].join('\n');
     }
@@ -1133,14 +1225,14 @@
         '<div class="cmp"><div class="cto"><span class="ck2">To</span><button type="button" class="cdst" title="Follows the chat you are talking to">FLOOR</button><span class="cfl"></span></div>' +
         '<div class="crow"><button type="button" class="cclip" title="Attach files">+</button><textarea class="cin" rows="1" placeholder="Type, paste or drop files" spellcheck="true"></textarea><button type="button" class="csend">SEND</button></div>' +
         '<input type="file" class="cfile" multiple hidden></div>' +
-        '<div class="hint">say next · take me to · allow · silence · resume</div><button type="button" class="flw" hidden title="Follow the voice again">FOLLOW</button></div>' +
-        '<div class="bar"><span class="br" title="Change the look: CHxTLD, Tron or Retro (Option Shift D)"></span><span class="sb">Switcheroo</span><span class="dots"></span><span class="grow"></span><span class="nx" title="Go to the next chat (Option Shift N)"></span><span class="bt" title="Boot: open your 10 most recent chats behind HQ">BOOT</span><span class="lk zero" title="Links from your chats. Say open, or open two">LINKS</span><span class="pz" title="Pause the Switchboard for two turns, or resume it">LIVE</span></div>' +
+        '<div class="hint">say next · take me to · chief · allow · resume</div><button type="button" class="flw" hidden title="Follow the voice again">FOLLOW</button></div>' +
+        '<div class="bar"><span class="br" title="Change the look: CHxTLD, Tron, Retro or Night drive (Option Shift D)"></span><span class="sb">Switche<b>roo</b></span><span class="dots"></span><span class="grow"></span><span class="nx" title="Go to the next chat (Option Shift N)"></span><span class="bt" title="Boot: open your 10 most recent chats behind HQ">BOOT</span><span class="lk zero" title="Links from your chats. Say open, or open two">LINKS</span><span class="pz" title="Pause the Switchboard for two turns, or resume it">LIVE</span></div>' +
         '<div class="stage"></div>' +
-        '<div class="asks" hidden></div><div class="dkov" hidden></div><div class="lnk" hidden></div><div class="pgv" hidden></div>' +
+        '<div class="asks" hidden></div><div class="dkov" hidden></div><div class="cos" hidden></div><div class="lnk" hidden></div><div class="pgv" hidden></div>' +
         '<div class="ctl" hidden><button type="button" class="hold" data-ctl="hold"><span class="hk">Responses · live</span><span class="hv">Hold</span><span class="hs">Stops every tab until you resume</span></button>' +
         '<div class="tgw"><div class="ck">Controls · every tab follows</div><div class="tgs">' +
         SM_CTL.map((c) => '<button type="button" class="tg" data-ctl="' + c[0] + '" title="' + smEsc(c[2]) + '" aria-pressed="false"><span class="tl">' + smEsc(c[1]) + '</span><span class="sw"><i></i></span><span class="tv">OFF</span></button>').join('') +
-        '<button type="button" class="tg lk3" data-look title="Click to step through the looks: CHxTLD, Tron and Retro. Or say retro look"><span class="tl">Look</span><span class="lsw">' +   // 8.9.3
+        '<button type="button" class="tg lk3" data-look title="Click to step through the looks: CHxTLD, Tron, Retro and Night drive. Or say night drive look"><span class="tl">Look</span><span class="lsw">' +   // 8.9.3
         SM_LOOKS.map((id) => '<i data-l="' + id + '"></i>').join('') + '</span><span class="tv"></span></button>' +
         '</div><div class="mdr"><span class="ck">Model · every chat</span>' +
         ['Sonnet', 'Opus', 'Haiku', 'Fable'].map((n) => '<button type="button" class="md" data-model="' + n.toLowerCase() + '" title="Set every open chat to ' + n + '">' + n + '</button>').join('') +
@@ -1153,6 +1245,7 @@
       // 8.1: approvals and question cards, the deck overlay, the reading glow
       let askSig = '', armAlways = '', armT = null, multiSel = new Set(), multiKey = '';
       let dkSig = '', dkOpen = false, lpT = null, lpFired = false;
+      let cosSig = '', cosOpen = false;   // 9.0
       let lnkOpen = false, lnkSig = '', lnkBiz = '';   // 8.2
       let msgScrollAt = 0, lastTextSig = '';
 
@@ -1171,7 +1264,8 @@
         const vars = Object.keys(v).map((k) => '--' + k + ':' + v[k]).join(';') + ';--hf:' + t.f.hf + ';--bf:' + t.f.bf + ';--mf:' + t.f.mf;
         const fs = fx.style.getPropertyValue('--fs');
         fx.setAttribute('style', vars + (fs ? ';--fs:' + fs : ''));
-        fx.className = 'smx ' + t.id + (askSig ? ' asking' : '') + (dkOpen ? ' decking' : '');
+        fx.className = 'smx ' + t.id + (askSig ? ' asking' : '') + (dkOpen ? ' decking' : '') + (cosOpen ? ' cosing' : '');
+        cosSig = '';
         const lk = q('.tg.lk3');   // 8.9.3
         if (lk) {
           lk.querySelector('.tv').textContent = t.tag || t.id;
@@ -1221,6 +1315,8 @@
           onAction({ t: 'pick', key: ask.key, n });
           return;
         }
+        const cc = ev.target.closest('[data-cos]');   // 9.0
+        if (cc) { if (!cc.disabled) onAction({ t: 'cos', cmd: cc.getAttribute('data-cos'), id: cc.getAttribute('data-id') || '', n: +cc.getAttribute('data-n') || 0 }); return; }
         const dc = ev.target.closest('[data-dk]');
         if (dc) { if (!dc.disabled) onAction({ t: 'deck', cmd: dc.getAttribute('data-dk'), deck: dc.getAttribute('data-deck') || '' }); return; }
         const md = ev.target.closest('[data-model]');
@@ -1289,17 +1385,17 @@
           const dx = el - cx, dy = ay - cy, d = Math.hypot(dx, dy) || 1, ex = cx + dx / d * (R + 22), ey = cy + dy / d * (R + 22);
           lines += '<polyline points="' + x0 + ',' + smF1(ay) + ' ' + el + ',' + smF1(ay) + ' ' + smF1(ex) + ',' + smF1(ey) + '" fill="none" stroke="' + (hot ? col : v.line) + '" stroke-width="' + (hot ? 2.5 : 1.5) + '" stroke-opacity="' + (hot ? 0.9 : 0.8) + '"></polyline>' +
             '<circle cx="' + smF1(ex) + '" cy="' + smF1(ey) + '" r="5" fill="' + col + '"></circle>';
-          const name = e.deck ? 'SD SWIPE DECK' : smPad(i + 1) + ' ' + smTrunc(e.title || e.name || 'Claude', 40);
+          const name = e.deck ? 'SD SWIPE DECK' : e.chief ? 'COS CHIEF OF STAFF' : smPad(i + 1) + ' ' + smTrunc(e.title || e.name || 'Claude', 40);
           const barY = ay - 8, fill = k === 'work' ? 'url(#' + P + 'work)' : k === 'idle' ? 'none' : 'url(#' + P + (SM_COLKEY[k]) + ')';
-          const w0 = e.deck ? Math.round(W * Math.min(1, (e.deckN || 0) / 12)) : k === 'need' ? W : k === 'work' ? W : k === 'idle' ? 0 : Math.round(W * Math.min(1, Math.max(0.06, (Date.now() - (e.since || Date.now())) / 600000)));
+          const w0 = e.deck ? Math.round(W * Math.min(1, (e.deckN || 0) / 12)) : e.chief ? Math.round(W * Math.min(1, (e.chiefN || 0) / 8)) : k === 'need' ? W : k === 'work' ? W : k === 'idle' ? 0 : Math.round(W * Math.min(1, Math.max(0.06, (Date.now() - (e.since || Date.now())) / 600000)));
           rails += '<g class="hit" data-jump="' + smEsc(e.id) + '"><rect class="hitbg" x="' + (x0 - 12) + '" y="' + smF1(y - 10) + '" width="' + (W + 24) + '" height="' + smF1(hb + 20) + '" fill="' + v.ink + '" fill-opacity="0"></rect>';
           if (e.id === floorId) rails += '<rect x="' + (x0 - 12) + '" y="' + smF1(y - 10) + '" width="' + (W + 24) + '" height="' + smF1(hb + 20) + '" fill="none" stroke="' + v.ink + '" stroke-width="2"></rect>';
-          rails += '<text class="rn" data-i="' + i + '" data-full="' + smEsc(name.toUpperCase()) + '" x="' + x0 + '" y="' + smF1(barY - 18) + '" font-size="21" font-weight="700" fill="' + (k === 'idle' ? v.mute : v.ink) + '" font-family=\'' + t.f.hf + '\' dominant-baseline="central" letter-spacing=".4">' + smEsc(name.toUpperCase()) + '</text>';
-          const timed = !e.deck && (smWaits(k) || k === 'turn');
-          const right = e.deck ? (e.deckN || 0) + ' OPEN' : timed ? smClock(Date.now() - (e.since || Date.now())) : k === 'work' ? 'LIVE' : '';
+          rails += '<text class="rn" data-i="' + i + '" data-full="' + smEsc(name.toUpperCase()) + '" x="' + x0 + '" y="' + smF1(barY - 18) + '" font-size="' + (t.f.rs || 21) + '" font-weight="' + (t.f.rf ? 600 : 700) + '" fill="' + (k === 'idle' ? v.mute : v.ink) + '" font-family=\'' + (t.f.rf || t.f.hf) + '\' dominant-baseline="central" letter-spacing="' + (t.f.rl || 0.4) + '">' + smEsc(name.toUpperCase()) + '</text>';
+          const timed = !e.deck && !e.chief && (smWaits(k) || k === 'turn');
+          const right = e.deck ? (e.deckN || 0) + ' OPEN' : e.chief ? (e.closed ? 'OPEN IT' : e.chiefN ? e.chiefN + ' NEED YOU' : 'CLEAR') : timed ? smClock(Date.now() - (e.since || Date.now())) : k === 'work' ? 'LIVE' : '';
           rails += '<text class="rr" data-i="' + i + '" x="' + (x0 + W) + '" y="' + smF1(barY - 18) + '" font-size="18" fill="' + col + '" font-family=\'' + t.f.mf + '\' dominant-baseline="central" text-anchor="end"' + (timed ? ' data-since="' + (e.since || 0) + '"' : '') + '>' + right + '</text>';
           rails += '<rect x="' + x0 + '" y="' + smF1(barY) + '" width="' + W + '" height="16" fill="' + v.line + '"></rect>';
-          if (w0) rails += '<rect x="' + x0 + '" y="' + smF1(barY) + '" width="' + w0 + '" height="16" fill="' + fill + '"' + (k === 'need' ? ' class="pulse"' : '') + (!e.deck && (k === 'question' || k === 'wait' || k === 'turn') ? ' data-grow="' + (e.since || 0) + '"' : '') + '></rect>';
+          if (w0) rails += '<rect x="' + x0 + '" y="' + smF1(barY) + '" width="' + w0 + '" height="16" fill="' + fill + '"' + (k === 'need' ? ' class="pulse"' : '') + (!e.deck && !e.chief && (k === 'question' || k === 'wait' || k === 'turn') ? ' data-grow="' + (e.since || 0) + '"' : '') + '></rect>';
           if (hb >= 84) rails += smTxt(x0, barY + 40, smStatus(e, k) + (e.id === floorId ? ' · floor' : ''), 18, col, t.f.mf, '');
           rails += '</g>';
         });
@@ -1314,10 +1410,10 @@
           const gap = list.length > 1 ? 1.2 : 0;
           pie += '<path class="hit" data-jump="' + smEsc(e.id) + '" d="' + smSector(Math.round(R * 0.3), Math.round(r), a + gap, a + span - gap) + '" fill="' + col + '" fill-opacity="' + smF1(0.18 + 0.72 * SM_SAT[k]) + '" stroke="' + col + '" stroke-width="2"' + (k === 'need' ? ' class="pulse"' : '') + '></path>';
           const lp = smPol(R * 0.3 + (r - R * 0.3) * 0.55, a + span / 2);
-          if (span > 9) pie += smTxt(lp[0], lp[1], e.deck ? 'SD' : smPad(i + 1), 26, SM_SAT[k] > 0.8 && t.id === 'light' ? '#ffffff' : v.ink, t.f.mf, ' text-anchor="middle" pointer-events="none"');
+          if (span > 9) pie += smTxt(lp[0], lp[1], e.deck ? 'SD' : e.chief ? 'COS' : smPad(i + 1), e.chief ? 22 : 26, SM_SAT[k] > 0.8 && t.id === 'light' ? '#ffffff' : v.ink, t.f.mf, ' text-anchor="middle" pointer-events="none"');
           a += span;
         }
-        const waiting = list.filter((e) => !e.deck && e.id !== floorId && smWaits(smKind(e))).length;
+        const waiting = list.filter((e) => !e.deck && !e.chief && e.id !== floorId && smWaits(smKind(e))).length;
         // 8.1: the center is a button. Click to pause everything (or play again), hold it down for meeting mode
         const rc = R * 0.27;
         pie += '<g class="hit ctr" data-center="1"><title>' + (ex.held ? 'Play: everything comes back' : 'Pause everything. Hold down for meeting mode') + '</title>' +
@@ -1403,10 +1499,11 @@
         }
         // the stage, redrawn only when something on it changed so the animations keep running
         const ex = { held: !!(ct && ct.held), meeting: !!(ct && ct.held && ct.meeting) };
-        const sig = t.id + H + '|' + fid + '|' + ex.held + ex.meeting + '|' + tabs.map((e) => [e.id, e.title, e.state, e.seen, e.ask, e.on, e.reqKey, e.folder, e.since, e.deckN, e.nVisual].join('~')).join('|');
+        const sig = t.id + H + '|' + fid + '|' + ex.held + ex.meeting + '|' + tabs.map((e) => [e.id, e.title, e.state, e.seen, e.ask, e.on, e.reqKey, e.folder, e.since, e.deckN, e.nVisual, e.chiefN, e.nRun, e.closed].join('~')).join('|');
         if (sig !== stageSig) { stageSig = sig; q('.stage').innerHTML = stage(tabs, fid, ex); fitNames(); }
         renderAsks(m);   // 8.1
         renderDeck(m);   // 8.1
+        renderCos(m);    // 9.0
         renderLinks(m);  // 8.2
       }
 
@@ -1461,7 +1558,7 @@
       // ---------- 8.1: approvals and question cards, answered with a click ----------
       function renderAsks(m) {
         if (!m) return;
-        const box = q('.asks'), tabs = (m.tabs || []).filter((e) => !e.deck);
+        const box = q('.asks'), tabs = (m.tabs || []).filter((e) => !e.deck && !e.chief);
         const reqs = tabs.map((e, i) => ({ e, i })).filter((x) => x.e.on !== false && x.e.state === 'red' && (x.e.reqKey || x.e.folder))
           .sort((a, b) => (b.e.id === m.floorId) - (a.e.id === m.floorId) || (a.e.since || 0) - (b.e.since || 0));
         const ask = !reqs.length && m.floor && m.floor.ask && m.floor.ask.opts && m.floor.ask.opts.length ? m.floor.ask : null;
@@ -1518,7 +1615,7 @@
         if (open !== dkOpen) { dkOpen = open; fx.classList.toggle('decking', open); }
         if (!open) { if (!ov.hidden) { ov.hidden = true; ov.replaceChildren(); dkSig = ''; } return; }
         const st = d.st || {}, c = st.card || null;
-        const waitReq = (m.tabs || []).filter((e) => !e.deck && e.on !== false && e.state === 'red' && (e.reqKey || e.folder)).length;
+        const waitReq = (m.tabs || []).filter((e) => !e.deck && !e.chief && e.on !== false && e.state === 'red' && (e.reqKey || e.folder)).length;
         const sig = JSON.stringify([st.deck, st.remaining, st.nAudio, st.nVisual, st.canBack, d.on, d.alive, c && c.id, st.loaded, waitReq]);
         if (sig === dkSig) return;
         dkSig = sig;
@@ -1558,6 +1655,67 @@
           e.textContent = !d.alive ? 'Opening Swipe Deck' : !st.loaded ? 'Loading cards' : (vis ? 'Visual' : 'Audio') + ' deck clear';
           stack.appendChild(e);
         }
+      }
+
+      // ---------- 9.0: Chief of Staff over the pie, in the board's own night drive look ----------
+      const CHIEF_BIZ = { 'CHxTLD': ['CHxTLD', 'chx'], 'ANDRE MANDEL': ['ANDRÉ MANDEL', 'am'], 'PERSONAL': ['PERSONAL', 'per'] };
+      const cosDate = (d) => (d.getMonth() + 1) + '/' + d.getDate() + '/' + String(d.getFullYear()).slice(2);
+      function cosDue(t) {
+        if (!t.due) return '';
+        const d = new Date(t.due + 'T12:00:00'), t0 = new Date();
+        if (isNaN(d)) return '';
+        t0.setHours(12, 0, 0, 0);
+        const days = Math.round((d - t0) / 864e5);   // calendar days, so today reads today all day
+        return 'Due ' + cosDate(d) + ', ' + (days < 0 ? 'overdue' : days === 0 ? 'today' : days + 'd');
+      }
+      function renderCos(m) {
+        const c = m && m.cos, ov = q('.cos');
+        const open = !!(c && c.open);
+        if (open !== cosOpen) { cosOpen = open; fx.classList.toggle('cosing', open); }
+        if (!open) { if (!ov.hidden) { ov.hidden = true; ov.replaceChildren(); cosSig = ''; } return; }
+        const st = c.alive ? c.st : null;
+        const waitReq = (m.tabs || []).filter((e) => !e.deck && !e.chief && e.on !== false && e.state === 'red' && (e.reqKey || e.folder)).length;
+        const now = new Date();
+        const sig = JSON.stringify([st, c.alive, c.opening, waitReq, cosDate(now)]);
+        if (sig === cosSig) return;
+        cosSig = sig;
+        const day = now.toLocaleDateString([], { weekday: 'long' }).toUpperCase() + '  ' + cosDate(now);
+        const scene = '<div class="sc" aria-hidden="true"><div class="gl"><div class="sun"></div></div><div class="fl"></div></div>';
+        let h = '<div class="chh"><div class="cmk">Chief <span>of</span> Staff</div><div class="cdt">' + smEsc(day) + '</div><span class="cg"></span>' +
+          (waitReq ? '<button type="button" class="cbn wt" data-cos="close" title="Close Chief to answer it">' + waitReq + (waitReq === 1 ? ' approval waits' : ' approvals wait') + '</button>' : '') +
+          '<button type="button" class="cbn" data-cos="read" title="The chat you are talking to reads the brief aloud"' + (st ? '' : ' disabled') + '>Read it</button>' +
+          '<button type="button" class="cbn" data-cos="board" title="Bring the Chief of Staff tab forward">Open board</button>' +
+          '<button type="button" class="cbn cx" data-cos="close" title="Close">×</button></div>';
+        if (!st || !st.loaded) {
+          h += '<div class="cbr wait">' + scene + '<div class="ce">Chief of Staff</div><div class="chd">' +
+            (c.opening ? 'Opening the board in a tab behind this one.' : st ? 'Loading the board.' : 'The board isn\'t open.') + '</div>' +
+            '<div class="cwn">' + (c.opening || st ? 'It lands here in a few seconds.' : 'Click Open board, or say chief.') + '</div></div>';
+          ov.innerHTML = h; ov.hidden = false; return;
+        }
+        const b = st.brief, k = st.counts || {};
+        const items = b && Array.isArray(b.items) ? b.items.slice(0, 4) : [];
+        let when = '';
+        try { if (b && b.written_at) { const w = new Date(b.written_at); if (!isNaN(w)) when = 'Briefed ' + cosDate(w) + ' at ' + w.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }); } } catch (e) {}
+        h += '<div class="cbr">' + scene + '<div class="ce">Morning brief</div>' +
+          '<div class="chd">' + smEsc(b && b.headline ? b.headline : 'No brief yet today. The Chief writes one every morning.') + '</div>' +
+          (items.length ? '<ul>' + items.map((x) => '<li><span>' + smEsc(x) + '</span></li>').join('') + '</ul>' : '') +
+          '<div class="cct"><span class="n"><b>' + (k.needs || 0) + '</b>need you</span><span class="s"><b>' + (k.blocked || 0) + '</b>blocked</span><span class="r"><b>' + (k.running || 0) + '</b>running</span><span><b>' + (k.open || 0) + '</b>open</span></div>' +
+          (when ? '<div class="cwn">' + smEsc(when) + '</div>' : '') + '</div>';
+        const rows = (st.start || []).slice(0, 5);
+        h += '<div class="csh">Start here <small>' + (rows.length ? 'say done and the number to close one' : 'nothing is waiting on you') + '</small></div><div class="crs">';
+        rows.forEach((t, i) => {
+          const bz = CHIEF_BIZ[t.business] || ['', 'per'], due = cosDue(t), needs = t.status === 'needs';
+          h += '<div class="cr' + (needs ? ' hot' : '') + '"><span class="ci">' + (i + 1) + '</span><div class="cbd"><div class="ctp">' +
+            '<span class="cst ' + (needs ? 'needs' : 'blocked') + '">' + (needs ? 'Needs you' : 'Blocked') + '</span>' +
+            (bz[0] ? '<span class="cbz ' + bz[1] + '">' + smEsc(bz[0]) + '</span>' : '') + (t.project ? '<span class="cpj">' + smEsc(t.project) + '</span>' : '') +
+            '<span class="cg"></span>' + (due ? '<span class="cdu">' + smEsc(due) + '</span>' : '') + (t.stale ? '<span class="csl">Stale</span>' : '') +
+            '<button type="button" class="cbn sm" data-cos="done" data-id="' + smEsc(t.id) + '" data-n="' + (i + 1) + '"' + (st.canWrite ? '' : ' disabled title="Read only here"') + '>Mark done</button></div>' +
+            '<div class="ctt">' + smEsc(t.title || 'Untitled thread') + '</div>' + (t.next ? '<div class="cnx">' + smEsc(t.next) + '</div>' : '') + '</div></div>';
+        });
+        if (!rows.length) h += '<div class="cem">Nothing is waiting on you. Agents add threads here when they need a call from you.</div>';
+        const more = (k.needs || 0) + (k.blocked || 0) - rows.length;
+        h += '</div><div class="chn">' + (more > 0 ? '+' + more + ' more on the board · ' : '') + 'say chief · what needs me · done two · undo</div>';
+        ov.innerHTML = h; ov.hidden = false;
       }
 
       // ---------- 8.1: the transcript follows the voice, word by word ----------
@@ -1774,7 +1932,7 @@
     // the Mac's DIN Alternate and Avenir Next stand in.
     function smFonts(onload) {
       if (typeof GM_xmlhttpRequest !== 'function' || typeof FontFace !== 'function') return;
-      const url = 'https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800&family=Exo+2:wght@400;500;600;700&family=Rajdhani:wght@500;600;700&family=Barlow:wght@400;500;600&family=Share+Tech+Mono&family=Audiowide&family=Monoton&family=Shippori+Mincho:wght@500;600;700&family=EB+Garamond:wght@400;500&family=JetBrains+Mono:wght@400;700&display=swap';   // 8.1: plus the living set faces for ANDRÉ MANDEL cards
+      const url = 'https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800&family=Exo+2:wght@400;500;600;700&family=Rajdhani:wght@500;600;700&family=Barlow:wght@400;500;600&family=Share+Tech+Mono&family=Audiowide&family=Monoton&family=Shippori+Mincho:wght@500;600;700&family=EB+Garamond:wght@400;500&family=JetBrains+Mono:wght@400;700&family=Syncopate:wght@700&family=Barlow+Condensed:wght@500;600;700&display=swap';   // 8.1: plus the living set faces for ANDRÉ MANDEL cards (9.0: and Chief of Staff's)
       try {
         GM_xmlhttpRequest({
           method: 'GET', url, headers: { 'User-Agent': navigator.userAgent },
@@ -1808,7 +1966,14 @@
     let zoom = 1;
     try { zoom = +localStorage.getItem('chf_mirror_zoom2') || 1; } catch (e) {}
     let themeId = 'dark';
-    try { const sv = localStorage.getItem('chf_mirror_theme'); themeId = SM_THEMES[sv] ? sv : 'dark'; } catch (e) {}   // 8.9.3: retro too
+    try {
+      const sv = localStorage.getItem('chf_mirror_theme');
+      themeId = SM_THEMES[sv] ? sv : 'dark';   // 8.9.3: retro too
+      if (!localStorage.getItem('chf_mirror_night9')) {   // 9.0: HQ takes the Chief of Staff look once, unless Retro is already your pick
+        localStorage.setItem('chf_mirror_night9', '1');
+        if (themeId !== 'retro') { themeId = 'night'; localStorage.setItem('chf_mirror_theme', 'night'); }
+      }
+    } catch (e) {}
 
     const css = document.createElement('style');
     css.textContent = '#chf-mirror{position:fixed;inset:0;z-index:2147483000;overflow:hidden}\n' + smCss();
@@ -1855,6 +2020,22 @@
       const st = dk.st, n = (st.nAudio || 0) + (st.nVisual || 0);
       return { id: '__deck', deck: true, title: 'Swipe Deck', name: 'Swipe Deck', deckN: n, nAudio: st.nAudio || 0, nVisual: st.nVisual || 0, on: true, born: 0 };
     }
+    // 9.0: Chief of Staff, as the tab holding the board reports it. The COS wedge is always on the pie;
+    // when the board isn't open anywhere, a click opens it in a tab behind HQ.
+    const CHIEF_URL = 'https://claude.ai/artifact/JJjN3PuusV1pH3UF9D6ndX';
+    let ch = null, chManual = false, chOpening = 0;
+    const chAlive = () => !!ch && Date.now() - ch.at < 20000;
+    function chiefModel() {
+      if (!chManual) return null;
+      const alive = chAlive();
+      return { open: true, alive, st: alive ? ch.st : null, opening: !alive && Date.now() - chOpening < 30000 };
+    }
+    function chiefEntry() {
+      const base = { id: '__chief', chief: true, title: 'Chief of Staff', name: 'Chief of Staff', on: true, born: 0 };
+      if (!chAlive() || !ch.st || !ch.st.loaded) return Object.assign(base, { closed: true, chiefN: 0 });
+      const c = ch.st.counts || {};
+      return Object.assign(base, { closed: false, chiefN: (c.needs || 0) + (c.blocked || 0), nNeeds: c.needs || 0, nBlocked: c.blocked || 0, nRun: c.running || 0 });
+    }
     // 8.2: links every chat reported, by tab
     const linkReg = new Map();
     function linkList() {
@@ -1865,7 +2046,8 @@
     function model() {
       const f = lsGet('chf_sb_floor', null), list = tabs(), de = deckEntry();
       if (de) list.push(de);
-      return { tabs: list, floorId: floorId || (f && f.id) || '', floor: floorP, quiet: lsGet('chf_sb_quiet', {}), ctl: ctlModel(), deck: deckModel(), links: linkList() };
+      list.push(chiefEntry());   // 9.0
+      return { tabs: list, floorId: floorId || (f && f.id) || '', floor: floorP, quiet: lsGet('chf_sb_quiet', {}), ctl: ctlModel(), deck: deckModel(), cos: chiefModel(), links: linkList() };
     }
     // 8.2: a page opens on the right of HQ when the site allows it; otherwise in a window docked there
     let page = null, pageWin = null, pageGen = 0;
@@ -1980,6 +2162,8 @@
         scr.paint(model());
       }
       else if (m.t === 'deck-act' && m.cmd) { dkLast = { cmd: m.cmd, at: Date.now() }; }
+      else if (m.t === 'chief' && m.st) { ch = { from: m.from, st: m.st, at: Date.now() }; scr.paint(model()); }   // 9.0
+      else if (m.t === 'chief-ack' && m.to === 'mirror') chiefAckHQ(m);
       else if (m.t === 'delivered' && m.to === 'mirror') gotDelivered(m);   // 8.7
       else if (m.t === 'boot' && m.from) { send({ t: 'boot-ack', to: m.from }); bootRun('voice'); }   // 8.9: "boot up" in a chat
       else if (m.t === 'hq-boot' && m.id && m.id !== HQ_ID) stepAside();                              // 8.9: a boot HQ replaces this one
@@ -1992,6 +2176,7 @@
     // 7.8: the mirror's buttons send the same signals as your voice commands
     function jump(id) {
       if (id === '__deck') { deckOpen(); return; }   // 8.1
+      if (id === '__chief') { chiefOpenHQ(); return; }   // 9.0
       const e = reg.get(id);
       if (!e) return;
       if (id === floorId) { scr.flash('Already here'); return; }
@@ -2072,7 +2257,7 @@
     }
     // 8.1: the deck. Buttons answer the card on screen; Voice starts or stops the read aloud review
     function deckOpen() {
-      dkManual = true;
+      dkManual = true; chManual = false;   // 9.0: one panel over the pie at a time
       if (!dkAlive()) {
         if (Date.now() - dkOpening > 15000) {
           dkOpening = Date.now();
@@ -2093,6 +2278,51 @@
       if ((cmd === 'yes' || cmd === 'no' || cmd === 'tbd') && !c) return;
       dkLast = { cmd, at: Date.now() };
       send({ t: 'deck-cmd', to: dk.from, cmd, id: c ? c.id : '', deck });
+    }
+    // 9.0: Chief of Staff over the pie. Mark done goes to the board's tab; Read it hands the brief to the chat you're talking to
+    function chiefOpenHQ() {
+      chManual = true; dkManual = false;
+      if (!chAlive() && Date.now() - chOpening > 15000) {
+        chOpening = Date.now();
+        try { GM_openInTab(CHIEF_URL, { active: false, insert: true }); } catch (e) { window.open(CHIEF_URL, '_blank'); }
+        scr.flash('Opening Chief of Staff in a tab behind this one');
+      }
+      scr.paint(model());
+    }
+    const chPend = new Map();   // token -> what HQ asked for
+    function chiefAct(cmd, id, n) {
+      if (cmd === 'close') { chManual = false; scr.paint(model()); return; }
+      if (cmd === 'board') {
+        if (chAlive()) { send({ t: 'front', to: ch.from }); scr.flash('Chief of Staff is in its own tab'); return; }
+        try { GM_openInTab(CHIEF_URL, { active: true, insert: true }); } catch (e) { window.open(CHIEF_URL, '_blank'); }
+        return;
+      }
+      if (cmd === 'read' || cmd === 'needs') {
+        const f = floorId && reg.get(floorId);
+        if (!f || !f.armed) { scr.flash('Click once in a chat so it can read the brief'); return; }
+        send({ t: 'chief-say', to: floorId, what: cmd === 'needs' ? 'needs' : 'brief' });
+        scr.flash((f.name || f.title || 'Your chat') + ' is reading the brief');
+        return;
+      }
+      if (cmd === 'done' || cmd === 'undo') {
+        if (!chAlive()) { scr.flash("Chief of Staff isn't open"); return; }
+        const t = ((ch.st && ch.st.start) || []).find((x) => x.id === id) || (cmd === 'undo' && chPend.get('undo:' + id)) || null;
+        if (!t) { scr.flash('That thread changed. Look again'); return; }
+        const token = Math.random().toString(36).slice(2, 10);
+        chPend.set(token, { cmd, t, n });
+        if (cmd === 'done') chPend.set('undo:' + id, t);
+        send({ t: 'chief-cmd', to: ch.from, from: 'mirror', cmd, id, status: t.status || '', token });
+        scr.flash(cmd === 'done' ? 'Closing ' + (n ? 'number ' + n : 'it') : 'Reopening');
+        setTimeout(() => { if (chPend.delete(token)) scr.flash("Chief didn't answer. Check the board"); }, 9000);
+      }
+    }
+    function chiefAckHQ(m) {
+      const p = chPend.get(m.token);
+      if (!p) return;
+      chPend.delete(m.token);
+      const nm = smTrunc(m.title || p.t.title || 'that thread', 44);
+      if (m.ok) scr.flash(p.cmd === 'done' ? 'Closed: ' + nm : 'Reopened: ' + nm);
+      else scr.flash(m.why === 'readonly' ? 'Chief is read only in that tab' : m.why === 'gone' ? 'That thread is gone from the board' : "Couldn't change it. Try the board");
     }
     // 8.1: the pie's center. A click pauses or plays everything; a long press is meeting mode
     function setHoldFrom(on, meeting) {
@@ -2122,6 +2352,7 @@
       else if (a.t === 'appr') approveFrom(a.k, a.id);
       else if (a.t === 'pick') pickFrom(a.key, a.n);
       else if (a.t === 'deck') deckCmd(a.cmd, a.deck);
+      else if (a.t === 'cos') chiefAct(a.cmd, a.id, a.n);   // 9.0
       else if (a.t === 'page') openPage(a.url, a.label, a.n, 'mirror');   // 8.2
       else if (a.t === 'pageAct') { if (a.k === 'close') closePage(); else if (a.k === 'window' && page) { page.mode = dockWindow(page.url) ? 'window' : 'blocked'; scr.showPage(page); } }
       else if (a.t === 'biz') {   // 8.2: this chat belongs to that practice, remembered in this browser
@@ -2175,6 +2406,7 @@
     function deliver(id, files, text, doSend) {
       if (!id) { scr.flash('No chat to send to yet. Click into a chat once'); return ''; }
       if (id === '__deck') { scr.flash('Swipe Deck does not take files'); return ''; }
+      if (id === '__chief') { scr.flash('Chief of Staff does not take files'); return ''; }   // 9.0
       if (!reg.has(id)) { scr.flash('That chat closed. Pick another'); return ''; }
       const token = Math.random().toString(36).slice(2);
       const list = [...(files || [])];
@@ -2263,7 +2495,7 @@
         const el = id ? e.target.closest('[data-jump]') : null;
         if (el !== dHot) { if (dHot) dHot.classList.remove('dhot'); dHot = el; if (el) el.classList.add('dhot'); }
         const to = id || cTarget();
-        cx.ovt.textContent = id === '__deck' ? 'Swipe Deck does not take files' : to ? 'Drop to send to ' + cName(to) : 'Drop on a chat';
+        cx.ovt.textContent = id === '__deck' ? 'Swipe Deck does not take files' : id === '__chief' ? 'Chief of Staff does not take files' : to ? 'Drop to send to ' + cName(to) : 'Drop on a chat';
         cx.ov.hidden = false; cx.fx.classList.add('dragging');
         clearTimeout(dOffT); dOffT = setTimeout(dragEnd, 400);
       };
@@ -2276,7 +2508,7 @@
         dragEnd();
         const fs = [...(e.dataTransfer.files || [])];
         if (!fs.length) return;
-        if (id && id !== '__deck') cTo = id === floorId ? '' : id;
+        if (id && id !== '__deck' && id !== '__chief') cTo = id === floorId ? '' : id;
         deliver(id || cTarget(), fs, '', false);
       }, true);
       setInterval(paintCmp, 1000);
@@ -2319,7 +2551,7 @@
           try { sessionStorage.removeItem(MIRROR_KEY); } catch (x) {}
           location.reload();
         });
-        GM_registerMenuCommand('Screen mode look: CHxTLD, Tron or Retro', flipTheme);   // 8.9.3
+        GM_registerMenuCommand('Screen mode look: CHxTLD, Tron, Retro or Night drive', flipTheme);   // 8.9.3 (9.0: night drive)
         GM_registerMenuCommand('Boot: open my 10 most recent chats', () => bootRun('menu'));   // 8.9
       }
     } catch (e) {}
@@ -4056,6 +4288,172 @@
     deckReadNow('');
   }
 
+  // ---------- 9.0: Chief of Staff ----------
+  // The Chief of Staff board tells the claude.ai tab around it what's on it: the morning brief, the
+  // counts and Start Here. That tab passes it to every tab, so HQ draws the COS wedge and the chat
+  // you're talking to can read the brief aloud. Mark done goes back the same way, and undo reopens.
+  const CHIEF_URL = 'https://claude.ai/artifact/JJjN3PuusV1pH3UF9D6ndX';
+  const CH = { present: false, src: null, st: null, asked: new Map() };   // this tab holds the board
+  const CHF = { st: null, from: '', at: 0, list: [], readAt: 0, closed: null, want: '', wantAt: 0, openAt: 0, toks: new Map() };   // the board as this tab hears it
+  function chiefSend(cmd, extra) {
+    if (!CH.src) return false;
+    try { CH.src.postMessage(Object.assign({ type: 'chief:cmd', v: 1, cmd }, extra || {}), '*'); return true; } catch (e) { return false; }
+  }
+  // the board may load before this page listens, so say hello into its frames for a while
+  function chiefPing(w, depth) {
+    if (depth > 4) return;
+    let n = 0; try { n = w.length; } catch (e) { return; }
+    for (let i = 0; i < n; i++) {
+      try { w[i].postMessage({ type: 'chief:cmd', v: 1, cmd: 'hello' }, '*'); chiefPing(w[i], depth + 1); } catch (e) {}
+    }
+  }
+  if (/\/artifact\//.test(location.pathname)) {
+    let cps = 0;
+    const cpT = setInterval(() => { if (CH.present || ++cps > 45) { clearInterval(cpT); return; } chiefPing(window, 0); }, 2000);
+  }
+  window.addEventListener('message', (e) => {
+    const d = e.data;
+    if (!d || typeof d !== 'object' || typeof d.type !== 'string' || d.type.indexOf('chief:') !== 0 || e.source === window) return;
+    CH.src = e.source;
+    if (!CH.present) { CH.present = true; dlog('chief', 'found'); }
+    if (d.type === 'chief:hello') { chiefSend('hello'); return; }
+    if (d.type === 'chief:state') { CH.st = d; chiefRelay(); return; }
+    if (d.type === 'chief:ack') {
+      const to = CH.asked.get(d.token); CH.asked.delete(d.token);
+      const m = { t: 'chief-ack', to: to || '', token: d.token, cmd: d.cmd, id: d.id, ok: !!d.ok, why: d.why || '', title: d.title || '' };
+      if (to === ME) chiefAcked(m); else if (to) post(m);
+    }
+  });
+  function chiefRelay() {
+    if (!CH.present || !CH.st) return;
+    const s = CH.st;
+    const st = { loaded: !!s.loaded, canWrite: !!s.canWrite, brief: s.brief || null, counts: s.counts || {},
+      start: Array.isArray(s.start) ? s.start.slice(0, 8) : [], note: String(s.note || '') };
+    post({ t: 'chief', from: ME, st });
+    chiefHeard({ from: ME, st });   // a channel never hears itself
+  }
+  setInterval(() => { if (CH.present) chiefRelay(); }, 5000);
+  const chiefAlive = () => !!CHF.st && Date.now() - CHF.at < 20000;
+  function chiefHeard(m) {
+    CHF.st = m.st; CHF.from = m.from; CHF.at = Date.now();
+    if (CHF.want && m.st.loaded && Date.now() - CHF.wantAt < 45000) { const w = CHF.want; CHF.want = ''; chiefSay(w); }
+  }
+  // a command from HQ or another tab, for the board this tab holds
+  function chiefFromTab(m) {
+    if (!CH.present) { if (m.from) post({ t: 'chief-ack', to: m.from, token: m.token, cmd: m.cmd, id: m.id, ok: false, why: 'closed' }); return; }
+    if (m.cmd !== 'done' && m.cmd !== 'undo') return;
+    CH.asked.set(m.token, m.from);
+    chiefSend(m.cmd, { id: m.id, status: m.status || '', token: m.token });
+  }
+  function chiefAsk(cmd, t) {
+    const token = Math.random().toString(36).slice(2, 10);
+    CHF.toks.set(token, { cmd, t });
+    const m = { t: 'chief-cmd', to: CHF.from, from: ME, cmd, id: t.id, status: t.status || '', token };
+    if (CHF.from === ME) chiefFromTab(m); else post(m);
+    setTimeout(() => { if (CHF.toks.delete(token)) say("Chief didn't answer. Check the board."); }, 9000);
+  }
+  // spoken lines
+  const chiefBizWord = (b) => b === 'CHxTLD' ? 'Clever Homes' : b === 'ANDRE MANDEL' ? 'André Mandel' : b === 'PERSONAL' ? 'personal' : '';
+  const chiefEnd = (x) => { x = String(x || '').trim(); return !x ? '' : /[.!?]$/.test(x) ? x : x + '.'; };
+  function chiefDueWords(t) {
+    if (!t.due) return '';
+    const d = new Date(t.due + 'T12:00:00'), t0 = new Date();
+    if (isNaN(d)) return '';
+    t0.setHours(12, 0, 0, 0);
+    const days = Math.round((d - t0) / 864e5);
+    return days < 0 ? 'Overdue.' : days === 0 ? 'Due today.' : days === 1 ? 'Due tomorrow.' : 'Due in ' + days + ' days.';
+  }
+  function chiefOpen(want) {
+    CHF.want = want; CHF.wantAt = Date.now();
+    if (Date.now() - CHF.openAt < 20000) return say('Chief of Staff is opening. One moment.');
+    CHF.openAt = Date.now();
+    try { GM_openInTab(CHIEF_URL, { active: false, insert: true }); } catch (e) { window.open(CHIEF_URL, '_blank'); }
+    return say('Opening Chief of Staff. One moment.');
+  }
+  function chiefSay(what) { return what === 'needs' ? chiefNeeds() : chiefBrief(); }
+  function chiefBrief() {
+    if (!chiefAlive()) return chiefOpen('brief');
+    const s = CHF.st;
+    if (!s.loaded) { CHF.want = 'brief'; CHF.wantAt = Date.now(); return say('Chief is still loading. One moment.'); }
+    const b = s.brief, c = s.counts || {};
+    const bits = ['Chief of Staff.'];
+    if (b && b.headline) bits.push(chiefEnd(b.headline));
+    else bits.push('No brief yet today.');
+    if (b && Array.isArray(b.items)) b.items.slice(0, 6).forEach((x) => bits.push(chiefEnd(x)));
+    const nn = (c.needs || 0) + (c.blocked || 0);
+    bits.push(nn ? (c.needs || 0) + ' need you' + (c.blocked ? ', ' + c.blocked + ' blocked' : '') + ', ' + (c.running || 0) + ' running.' : 'Nothing needs you. ' + (c.running || 0) + ' running.');
+    if (nn) bits.push('Say what needs me to hear them.');
+    return say(bits.join(' '));
+  }
+  function chiefNeeds() {
+    if (!chiefAlive()) return chiefOpen('needs');
+    const s = CHF.st;
+    if (!s.loaded) { CHF.want = 'needs'; CHF.wantAt = Date.now(); return say('Chief is still loading. One moment.'); }
+    const list = (s.start || []).slice(0, 5);
+    CHF.list = list.map((t) => Object.assign({}, t, { gone: false })); CHF.readAt = Date.now();
+    if (!list.length) return say('Nothing needs you on the Chief board.');
+    const total = (s.counts.needs || 0) + (s.counts.blocked || 0);
+    const bits = ['Start here.', total === 1 ? 'One thread.' : total + ' threads' + (total > list.length ? ', here are the first ' + list.length + '.' : '.')];
+    list.forEach((t, i) => {
+      bits.push('Number ' + (i + 1) + '.');
+      const where = [t.project, chiefBizWord(t.business)].filter(Boolean).join(', ');
+      if (t.status === 'blocked') bits.push('Blocked.');
+      if (where) bits.push(chiefEnd(where));
+      bits.push(chiefEnd(t.title || 'Untitled thread'));
+      if (t.next) bits.push(chiefEnd(t.next));
+      const due = chiefDueWords(t); if (due) bits.push(due);
+    });
+    bits.push(list.length === 1 ? 'Say done to close it.' : 'Say done and the number to close one.');
+    return say(bits.join(' '));
+  }
+  function chiefDone(n) {
+    if (!CHF.list.length || Date.now() - CHF.readAt > 10 * 60000) return say('Say what needs me first, then done and the number.');
+    if (!n) { if (CHF.list.length === 1) n = 1; else return say('Which one? Say done and the number, 1 to ' + CHF.list.length + '.'); }
+    const t = CHF.list[n - 1];
+    if (!t) return say('There is no number ' + n + '. I read ' + CHF.list.length + '.');
+    if (t.gone) return say('Number ' + n + ' is already closed.');
+    if (!chiefAlive()) return say("Chief of Staff isn't open, so I can't close it. Say chief to open it.");
+    if (!CHF.st.canWrite) return say("Chief is read only in that tab, so I can't close it.");
+    t.n = n;
+    chiefAsk('done', t);
+  }
+  function chiefUndo() {
+    const c = CHF.closed;
+    if (!c || Date.now() - c.at > 3 * 60000) return say('Nothing to undo.');
+    if (!chiefAlive()) return say("Chief of Staff isn't open, so I can't reopen it.");
+    chiefAsk('undo', c.t);
+  }
+  function chiefAcked(m) {
+    const p = CHF.toks.get(m.token);
+    if (!p) return;
+    CHF.toks.delete(m.token);
+    const title = String(m.title || p.t.title || 'that thread');
+    if (p.cmd === 'done') {
+      if (!m.ok) return say(m.why === 'gone' ? 'That thread is already gone from the board.' : m.why === 'readonly' ? "Chief is read only in that tab, so I couldn't close it." : m.why === 'closed' ? "Chief of Staff closed, so I couldn't close it." : "I couldn't close it. Try Mark done on the board.");
+      p.t.gone = true;
+      CHF.closed = { t: p.t, at: Date.now() };
+      return say('Closed number ' + (p.t.n || '') + '. ' + chiefEnd(title) + ' Say undo to reopen it.');
+    }
+    if (!m.ok) return say("I couldn't reopen it. It's under Closed on the board.");
+    p.t.gone = false; CHF.closed = null;
+    return say('Reopened. ' + chiefEnd(title));
+  }
+  // "done", "done two", "two is done", "mark three done", "close number one", only right after Start Here was read
+  const CHIEF_N = { one: 1, won: 1, first: 1, '1': 1, two: 2, to: 2, too: 2, second: 2, '2': 2, three: 3, third: 3, '3': 3, four: 4, for: 4, fourth: 4, '4': 4, five: 5, fifth: 5, '5': 5 };
+  const CHIEF_NW = '(one|won|first|1|two|to|too|second|2|three|third|3|four|for|fourth|4|five|fifth|5)';
+  const CHIEF_DONE_RES = [
+    new RegExp('^(?:mark |close |finish )?(?:number |thread |item )?' + CHIEF_NW + '(?: is| as)? (?:done|closed|finished|complete|completed)$'),
+    new RegExp('^(?:done|close|closed|mark done|mark|finished|complete|done with)(?: number| thread| item)? ' + CHIEF_NW + '(?: done| as done)?$')
+  ];
+  function chiefDoneSaid(flat) {
+    if (!CHF.list.length || Date.now() - CHF.readAt > 10 * 60000) return null;
+    for (const re of CHIEF_DONE_RES) { const m = flat.match(re); if (m) return { kind: 'chiefDone', n: CHIEF_N[m[1]] || 0 }; }
+    if (/^(?:done|that's done|thats done|it's done|its done|that one's done|that one is done|mark done|mark it done|mark that done|mark it as done|mark that as done|mark that one done)$/.test(flat)) return { kind: 'chiefDone', n: 0 };
+    return null;
+  }
+  const CHIEF_SAID = /^(?:(?:open|read|run|play|give me|start|pull up|bring up|show me|read me|let's hear|lets hear|what's|whats|what is|what does|check)\s+)?(?:the\s+|my\s+)?(?:chief|chief of staff|chiefs|chief's|chief of staff's)(?:\s+(?:brief|briefing|update|report|board|status|say|says))?(?:\s+(?:please|now))*$|^(?:(?:read|play|give me|what's|whats|what is)\s+)?(?:the\s+|my\s+|today's\s+|todays\s+)?(?:morning |daily )?(?:brief|briefing)(?:\s+(?:please|now))*$/;
+  const CHIEF_NEEDS = /^(?:(?:what|whats|what's|what is)\s+(?:needs|need|is waiting on|waiting on|waits on|is waiting for|waiting for|needs a call from)\s+me(?:\s+(?:today|now|first))?|what needs me|what's on my plate|whats on my plate|start here|read start here|(?:chief|chief of staff)(?:'s)? start here)(?:\s+please)?$/;
+
   function computeLocal() {
     if (location.pathname !== sb.path) { sb.path = location.pathname; restoreChat(); initReady(); }
     const prev = sb.state;
@@ -4142,7 +4540,7 @@
   if (bc) bc.onmessage = (ev) => onMsg(ev.data || {});
   function onMsg(m) {
     switch (m.t) {
-      case 'hello': publish(true); deckRelay(); linksPush(true); break;
+      case 'hello': publish(true); deckRelay(); chiefRelay(); linksPush(true); break;
       case 'mirror-hello': mirrorPush(true); linksPush(true); break;
       case 'page-opened': if (m.to === ME && pageAsk) { const pa = pageAsk; pageAsk = null; say('Opening ' + pa.x.label + '.'); } break;   // 8.2: HQ has it
       case 'biz': if (m.path === location.pathname) linksPush(true); break;
@@ -4160,6 +4558,10 @@
       case 'deck-start': if (m.to === ME) { if (DK.present) deckStart('screen'); } break;          // 8.1
       case 'deck-cmd': if (m.to === ME) deckFromScreen(m); break;                                    // 8.1
       case 'deck-here': if (m.id !== ME) deckTabs.set(m.id, Date.now()); break;                       // 8.1
+      case 'chief': if (m.st && m.from !== ME) chiefHeard(m); break;                                   // 9.0
+      case 'chief-cmd': if (m.to === ME) chiefFromTab(m); break;
+      case 'chief-ack': if (m.to === ME) chiefAcked(m); break;
+      case 'chief-say': if (m.to === ME) chiefSay(m.what); break;
       case 'follow': break;
       case 'approved':
         if (m.to === ME && pendingApprove) { const pa = pendingApprove; pendingApprove = null; say(m.ok ? (pa.comp ? 'Allowed ' + appList(pa.comp) + ' for this session.' : 'Allowed.') : 'That request changed, so I left it alone.'); }
@@ -5229,6 +5631,11 @@
     }
     // 7.9: Swipe Deck hands free
     if (/^(?:(?:open|start|review|run|do|go to|take me to|bring up|pull up|let's do|lets do|let's review)\s+)?(?:the\s+|my\s+)?(?:swipe ?decks?|swipe ?deck review|deck review|review (?:the |my )?deck)(?:\s+(?:hands free|please|now))*$/.test(flat)) return { kind: 'deck' };
+    // 9.0: Chief of Staff. "chief" reads the brief, "what needs me" reads Start Here, "done two" closes one
+    if (CHIEF_SAID.test(flat)) return { kind: 'chief' };
+    if (CHIEF_NEEDS.test(flat)) return { kind: 'chiefNeeds' };
+    { const cd = chiefDoneSaid(flat); if (cd) return cd; }
+    if (CHF.closed && Date.now() - CHF.closed.at < 180000 && /^(?:undo|undo that|undo it|reopen|reopen it|reopen that|put it back|not done|that's not done|thats not done)(?: please)?$/.test(flat)) return { kind: 'chiefUndo' };
     if (/^(next|next chat|next one|next please)$/.test(flat)) return { kind: 'next' };
     if (/^(?:(?:run (?:a )?|do (?:a )?)?(?:video|videos|youtube|media|tv|sports) check|check (?:the |my )?(?:videos?|youtube|media|tv|sports)|is youtube (?:connected|working|on)|(?:are|is) (?:the |my )?videos? (?:connected|working))(?: please)?$/.test(flat)) return { kind: 'videoCheck' };   // 8.4
     // 8.2: links. "open", "open two", "open link three", "open the second link", "close page"
@@ -5338,14 +5745,14 @@
   // 8.0: the words for HOLD and for ending it
   // 8.9.3: HQ's look by voice. A look's name with a verb in front ("switch to retro") or look, theme,
   // mode or style after it ("Tron mode"). A bare "retro" or "light" still goes to Claude.
-  const LOOK_NAMES = '(retro(?: futuris[mt]| futurist(?:ic)?| wave)?|synth ?wave|outrun|tron|dark|light|ch ?x ?tld|c h x t l d|clever homes?|andr[eé] mandel)';
+  const LOOK_NAMES = '(retro(?: futuris[mt]| futurist(?:ic)?| wave)?|synth ?wave|outrun|tron|dark|light|ch ?x ?tld|c h x t l d|clever homes?|andr[eé] mandel|night ?drive|night)';   // 9.0: night drive
   const LOOK_SAID = new RegExp('^(?:please )?(?:(?:switch|change|set|turn|put|make)(?: (?:hq|the hq|switcheroo|screen mode|the screen|the look|my look|the theme|the style|it))?(?: to| into| over to)? (?:the )?' +
     LOOK_NAMES + '(?: (?:look|theme|mode|style|skin))?|(?:the )?' + LOOK_NAMES + ' (?:look|theme|mode|style|skin))(?: please)?$');
-  const lookId = (w) => /retro|synth|outrun/.test(w) ? 'retro' : /tron|dark|mandel/.test(w) ? 'dark' : 'light';
+  const lookId = (w) => /night|chief/.test(w) ? 'night' : /retro|synth|outrun/.test(w) ? 'retro' : /tron|dark|mandel/.test(w) ? 'dark' : 'light';
   function setHqLook(id) {   // HQ picks it up from the message, or from storage when it next opens
     try { localStorage.setItem('chf_mirror_theme', id); } catch (e) {}
     post({ t: 'look', id });
-    return say({ light: 'Light look.', dark: 'Tron look.', retro: 'Retro look.' }[id] || 'Done.');
+    return say({ light: 'Light look.', dark: 'Tron look.', retro: 'Retro look.', night: 'Night drive look.' }[id] || 'Done.');
   }
   const HOLD_SAID = /^(?:please )?(?:silence|silent|silence (?:everything|all|it|claude|responses|switchboard)|hold (?:everything|all|it all|all of it|responses|the responses|all responses)|hold responses|responses off|response off|turn (?:off )?(?:the |all )?responses(?: off)?|turn (?:the )?responses off|pause (?:all |the )?responses|pause everything|pause all|stop (?:all |the )?responses|stop everything|stop all|stop all processes|stop all of it|stop talking|no more responses|meeting mode|meeting|in a meeting|i'm in a meeting|im in a meeting|shut up|shut it|quiet everything|everything off|all off)(?: please| now| for now)?$/;
   const UNHOLD_SAID = /^(?:please )?(?:resume|resume everything|resume all|resume responses|responses on|response on|turn (?:on )?(?:the )?responses(?: back)? on|turn responses back on|turn on responses|back on|unhold|un hold|end hold|end the hold|release|release hold|meeting over|meeting's over|meetings over|meeting is over|out of the meeting|i'm out of the meeting|end meeting mode|go live|everything on|all on)(?: please| now)?$/;
@@ -5457,6 +5864,10 @@
       if (other) { post({ t: 'deck-start', to: other[0] }); return say('Swipe Deck.'); }
       return openDeck();
     }
+    if (c.kind === 'chief') return chiefBrief();          // 9.0
+    if (c.kind === 'chiefNeeds') return chiefNeeds();
+    if (c.kind === 'chiefDone') return chiefDone(c.n);
+    if (c.kind === 'chiefUndo') return chiefUndo();
     if (c.kind === 'update') return checkUpdate(true);   // 8.1.1
     if (c.kind === 'boot') return bootFromChat();         // 8.9
     if (c.kind === 'videoCheck') return videoCheck();   // 8.4
