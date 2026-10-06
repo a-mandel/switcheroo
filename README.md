@@ -4,6 +4,10 @@ Hands free Claude in Chrome: dictation, read aloud, a switchboard for every Clau
 
 Install or update: open [switcheroo.user.js](https://raw.githubusercontent.com/a-mandel/switcheroo/main/switcheroo.user.js) with Tampermonkey installed. Tampermonkey keeps it current from this repo on its own. Say "update Switcheroo" to check right away.
 
+## Fits the screen (9.4.3)
+
+The model pills (Sonnet, Opus, Haiku, Fable) now sit in the control panel's header, beside Controls, so they no longer fall off the bottom of HQ. A window too short for HQ scales it down to fit instead of cutting off the bottom.
+
 ## Two outboxes, ten looks (9.4)
 
 The **ANDRÉ MANDEL Outbox** is a second outbox for private practice mail, beside the CHxTLD one. It has its own page, its own AMO wedge on the pie, and opens over the pie on its own letterhead. Each outbox keeps its own lane: every relay, save and answer names which one it belongs to, so a draft never crosses over. **CHxTLD** and **Mandel** pills sit beside Chief on the rail with their ready counts, and the panels open under the rail so you can hop between them. Say "mandel outbox" or "practice outbox" for the ANDRÉ MANDEL drafts; "outbox" is still CHxTLD. Nothing sends from either.

@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Claude Hands Free Text Mode
 // @namespace    andre.mandel
-// @version      9.4.2
-// @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land. 8.8: one model for every open chat, by voice ("all chats to Sonnet") or from the HQ model pills. 8.9: Boot. The Switcheroo Chrome launcher opens HQ with your 10 most recent chats behind it and the mic ready, no clicks; or say "boot up". 8.9.1: "stop, new chat in Alder" works: a lead in no longer hides a command, and new chat finds every project, not just the sidebar. 8.9.2: the mic bell is now the Long bell, struck three times so the AirPods can't clip it. 8.9.3: Retro, a third HQ look: sunset sky, a neon floor rolling toward you, chrome type. Click Look on the control panel, or say "retro look". 9.0: Chief of Staff joins HQ as the COS wedge and panel, and a fourth look, night drive, from the board. Say chief for the brief, what needs me for Start Here, done two to close a thread, undo to reopen it. 9.0.1: fifty looks. Each push of Look steps to the next one (right click goes back); say "next look", "previous look", "random look" or a look by name. And "next, over" heard as "next server" still jumps. 9.1: the CHxTLD Outbox joins HQ as the OUT wedge, and a click opens your drafts over the pie to read and edit; edits save back to the Outbox. Say "outbox" to hear them, "read draft two" to hear one. Nothing sends from HQ. 9.2: a View pill with eleven ways to draw your chats, a Look pill with a picker and favorites, two hand sketched looks, and Chief of Staff one tap away with Open chat on every Start Here card. 9.3: looks run dark to light, so stepping never jumps from black to white, and a change fades instead of cutting. Retro Sky, a retro futurist look whose sky follows the time of day. Follow the clock picks from your favorites by daylight; say "follow the clock". 9.4: a second Outbox, ANDRÉ MANDEL, on its own letterhead beside the CHxTLD one, both one tap away on the pill rail ("mandel outbox"); and ten new looks: Trace, Marker, Charcoal, Chalkboard, Funnies, Space Opera, Overdrive, Dime Novel, Desert Neon, Bunker. 9.4.1: Chief of Staff wears HQ's look; Night drive keeps the board's own.
+// @version      9.4.3
+// @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land. 8.8: one model for every open chat, by voice ("all chats to Sonnet") or from the HQ model pills. 8.9: Boot. The Switcheroo Chrome launcher opens HQ with your 10 most recent chats behind it and the mic ready, no clicks; or say "boot up". 8.9.1: "stop, new chat in Alder" works: a lead in no longer hides a command, and new chat finds every project, not just the sidebar. 8.9.2: the mic bell is now the Long bell, struck three times so the AirPods can't clip it. 8.9.3: Retro, a third HQ look: sunset sky, a neon floor rolling toward you, chrome type. Click Look on the control panel, or say "retro look". 9.0: Chief of Staff joins HQ as the COS wedge and panel, and a fourth look, night drive, from the board. Say chief for the brief, what needs me for Start Here, done two to close a thread, undo to reopen it. 9.0.1: fifty looks. Each push of Look steps to the next one (right click goes back); say "next look", "previous look", "random look" or a look by name. And "next, over" heard as "next server" still jumps. 9.1: the CHxTLD Outbox joins HQ as the OUT wedge, and a click opens your drafts over the pie to read and edit; edits save back to the Outbox. Say "outbox" to hear them, "read draft two" to hear one. Nothing sends from HQ. 9.2: a View pill with eleven ways to draw your chats, a Look pill with a picker and favorites, two hand sketched looks, and Chief of Staff one tap away with Open chat on every Start Here card. 9.3: looks run dark to light, so stepping never jumps from black to white, and a change fades instead of cutting. Retro Sky, a retro futurist look whose sky follows the time of day. Follow the clock picks from your favorites by daylight; say "follow the clock". 9.4: a second Outbox, ANDRÉ MANDEL, on its own letterhead beside the CHxTLD one, both one tap away on the pill rail ("mandel outbox"); and ten new looks: Trace, Marker, Charcoal, Chalkboard, Funnies, Space Opera, Overdrive, Dime Novel, Desert Neon, Bunker. 9.4.1: Chief of Staff wears HQ's look; Night drive keeps the board's own. 9.4.3: the model pills sit in the control panel's header, so nothing falls off the bottom of HQ, and a short window scales HQ down instead of cutting it off.
 // @match        https://claude.ai/*
 // @match        *://*/*
 // @grant        GM_xmlhttpRequest
@@ -344,6 +344,9 @@
     violet night, rosy dawn, a pale peach morning, a bright blue noon, golden hour, then the sunset at dusk. Follow
     the clock (in the Look picker, or say "follow the clock") picks from your favorites by daylight, darkest at night,
     brightest at noon; picking a look yourself turns it off. Look numbers changed; favorites keep.
+  9.4.3: FITS THE SCREEN. The model pills (Sonnet, Opus, Haiku, Fable) move up into the control panel's header,
+    beside Controls, so they no longer hang off the bottom of HQ. A window too short for the frame now scales
+    HQ down to fit, centered, instead of cropping the bottom.
   9.4.2: "Next, over" heard as "next, or" now jumps too, instead of landing in the chat as text.
   9.4.1: CHIEF WEARS THE LOOK. The Chief of Staff panel on HQ now takes HQ's look: Blueprint gives a
     blueprint Chief, grid and all; Desert Modern, Brutalist or Charcoal give a light Chief in those colors and
@@ -1218,14 +1221,17 @@
         '.smx .hold.on{background:var(--need);color:var(--bg);box-shadow:none}',
         '.smx .hold.on .hk,.smx .hold.on .hs{color:var(--bg)}',
         '.smx .hold.on:hover{filter:brightness(1.08)}',
-        '.smx .tgw{display:flex;flex-direction:column;gap:10px;padding:14px 18px;min-width:0}',
+        '.smx .tgw{display:flex;flex-direction:column;gap:8px;padding:10px 18px;min-width:0}',
+        '.smx .tgh{display:flex;align-items:center;justify-content:space-between;gap:16px;height:30px;min-width:0}',   // 9.4.3: the model pills ride the header, so nothing falls off the bottom
+        '.smx .tgh>.ck{flex:1 1 auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}',
         '.smx .tgw .ck{font:600 15px var(--mf);letter-spacing:.24em;text-transform:uppercase;color:var(--mute)}',
-        '.smx .tgs{display:grid;grid-template-columns:repeat(4,1fr);gap:10px 14px}',
-        '.smx .mdr{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;margin-top:6px}',
-        '.smx .mdr .md{padding:8px 18px;border:1.5px solid var(--mute);border-radius:999px;font:600 15px var(--mf);letter-spacing:.14em;text-transform:uppercase;color:var(--ink)}',
+        '.smx .tgs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px 14px}',
+        '.smx .mdr{display:flex;flex:none;flex-wrap:nowrap;align-items:center;gap:6px}',
+        '.smx .mdr .mk{margin-right:6px}',
+        '.smx .mdr .md{padding:4px 12px;border:1.5px solid var(--mute);border-radius:999px;font:600 13px/1.2 var(--mf);letter-spacing:.1em;text-transform:uppercase;color:var(--ink)}',
         '.smx .mdr .md:hover{border-color:var(--ink)}',
         '.smx .ctl.held .mdr{opacity:.45}',
-        '.smx .tg{display:grid;grid-template-columns:auto 1fr;align-items:center;column-gap:12px;row-gap:8px;height:74px;padding:9px 16px;border:1px solid var(--line);background:var(--bg2);min-width:0}',
+        '.smx .tg{display:grid;grid-template-columns:auto 1fr;align-items:center;column-gap:12px;row-gap:8px;height:70px;padding:7px 16px;border:1px solid var(--line);background:var(--bg2);min-width:0}',
         '.smx .tg:hover{border-color:var(--ink)}',
         '.smx .tg .tl{grid-column:1/-1;min-width:0;font:600 19px/1.1 var(--bf);color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}',
         '.smx .tg .sw{position:relative;width:50px;height:26px;border-radius:13px;background:var(--line);transition:background .15s}',
@@ -1379,7 +1385,7 @@
         '.smx .pgv .pw{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:var(--bg2);font:600 22px var(--bf);color:var(--mute);text-align:center;padding:40px}',
         '.smx .pgv .pw b{font:700 30px var(--hf);letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}',
         // 9.0.1: the Look tile: four of the look's colors on top, its number and name under them
-        '.smx .tg.lk3{grid-template-columns:1fr auto;padding:9px 12px}',
+        '.smx .tg.lk3{grid-template-columns:1fr auto;padding:7px 12px}',
         '.smx .tg.lk3 .tl{grid-column:1;grid-row:1}',
         '.smx .tg.lk3 .lsw{grid-column:2;grid-row:1;display:flex;gap:4px}',
         '.smx .tg.lk3 .lsw i{display:block;width:13px;height:13px;border-radius:3px;box-shadow:inset 0 0 0 1px rgba(127,127,127,.35)}',
@@ -1774,12 +1780,12 @@
         '<div class="stage"></div>' +
         '<div class="asks" hidden></div><div class="dkov" hidden></div><div class="cos" hidden></div><div class="oxp" hidden></div><div class="pik" hidden></div><div class="lnk" hidden></div><div class="pgv" hidden></div>' +
         '<div class="ctl" hidden><button type="button" class="hold" data-ctl="hold"><span class="hk">Responses · live</span><span class="hv">Hold</span><span class="hs">Stops every tab until you resume</span></button>' +
-        '<div class="tgw"><div class="ck">Controls · every tab follows</div><div class="tgs">' +
+        '<div class="tgw"><div class="tgh"><div class="ck">Controls · every tab</div><div class="mdr"><span class="ck mk">Model</span>' +
+        ['Sonnet', 'Opus', 'Haiku', 'Fable'].map((n) => '<button type="button" class="md" data-model="' + n.toLowerCase() + '" title="Set every open chat to ' + n + '">' + n + '</button>').join('') +
+        '</div></div><div class="tgs">' +
         SM_CTL.map((c) => '<button type="button" class="tg" data-ctl="' + c[0] + '" title="' + smEsc(c[2]) + '" aria-pressed="false"><span class="tl">' + smEsc(c[1]) + '</span><span class="sw"><i></i></span><span class="tv">OFF</span></button>').join('') +
         '<button type="button" class="tg lk3" data-look title="Click for the next look, right click to go back. Or say next look, or a look by name"><span class="tl">Look</span><span class="lsw">' +   // 8.9.3, 9.0.1
         '<i></i>'.repeat(4) + '</span><span class="tv"></span></button>' +
-        '</div><div class="mdr"><span class="ck">Model · every chat</span>' +
-        ['Sonnet', 'Opus', 'Haiku', 'Fable'].map((n) => '<button type="button" class="md" data-model="' + n.toLowerCase() + '" title="Set every open chat to ' + n + '">' + n + '</button>').join('') +
         '</div></div></div>' +
         '<div class="dropov" hidden><div class="dpt">Drop on a chat</div><div class="dps">The center, or anywhere else, goes to the chat you are talking to</div></div>' +
         '<div class="toast" role="status"></div>';
@@ -1797,9 +1803,10 @@
 
       function fit() {
         const w = host.clientWidth || window.innerWidth || 1920, h = host.clientHeight || window.innerHeight || 1080;
-        const s = w / 1920;
+        const s = Math.min(w / 1920, h / 760);   // 9.4.3: a short window scales the frame down rather than cropping its bottom
         H = Math.max(760, Math.round(h / s));
         fx.style.height = H + 'px';
+        fx.style.left = Math.max(0, Math.round((w - 1920 * s) / 2)) + 'px';
         fx.style.transform = 'scale(' + s + ')';
         if (model) { stageSig = ''; paint(model); }
         fitNames();
@@ -2395,7 +2402,7 @@
           q('.hold .hk').textContent = ct.held ? 'Responses · on hold' : 'Responses · live';
           q('.hold .hv').textContent = ct.held ? 'Resume' : 'Hold';
           q('.hold .hs').textContent = ct.held ? 'Click, or say resume' : 'Stops every tab until you resume';
-          q('.tgw .ck').textContent = ct.held ? 'On hold · these come back when you resume' : 'Controls · every tab follows';
+          q('.tgw .ck').textContent = ct.held ? 'On hold till you resume' : 'Controls · every tab';
           fx.querySelectorAll('.tg[data-ctl]').forEach((b) => {   // 8.9.3: not the Look tile
             const k2 = b.getAttribute('data-ctl');
             const on = k2 === 'others' ? ct.others !== 'off' : !!ct[k2];
@@ -3369,8 +3376,8 @@
     }
     function dockWindow(url) {
       try { if (pageWin && !pageWin.closed) pageWin.close(); } catch (e) {}
-      const s = scr.scale(), left = Math.round(window.screenX + 800 * s), top = Math.round(window.screenY);
-      const width = Math.max(480, Math.round(window.outerWidth - 800 * s)), height = Math.max(400, Math.round(window.outerHeight));
+      const s = scr.scale(), x0 = scr.el.getBoundingClientRect().left || 0, left = Math.round(window.screenX + x0 + 800 * s), top = Math.round(window.screenY);
+      const width = Math.max(480, Math.round(window.outerWidth - x0 - 800 * s)), height = Math.max(400, Math.round(window.outerHeight));
       let w = null;
       try { w = window.open(url, 'switcheroo-page', 'popup=yes,left=' + left + ',top=' + top + ',width=' + width + ',height=' + height); } catch (e) {}
       if (w) { pageWin = w; try { w.moveTo(left, top); w.resizeTo(width, height); } catch (e) {} }
