@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Claude Hands Free Text Mode
 // @namespace    andre.mandel
-// @version      9.4.3
+// @version      9.4.4
 // @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land. 8.8: one model for every open chat, by voice ("all chats to Sonnet") or from the HQ model pills. 8.9: Boot. The Switcheroo Chrome launcher opens HQ with your 10 most recent chats behind it and the mic ready, no clicks; or say "boot up". 8.9.1: "stop, new chat in Alder" works: a lead in no longer hides a command, and new chat finds every project, not just the sidebar. 8.9.2: the mic bell is now the Long bell, struck three times so the AirPods can't clip it. 8.9.3: Retro, a third HQ look: sunset sky, a neon floor rolling toward you, chrome type. Click Look on the control panel, or say "retro look". 9.0: Chief of Staff joins HQ as the COS wedge and panel, and a fourth look, night drive, from the board. Say chief for the brief, what needs me for Start Here, done two to close a thread, undo to reopen it. 9.0.1: fifty looks. Each push of Look steps to the next one (right click goes back); say "next look", "previous look", "random look" or a look by name. And "next, over" heard as "next server" still jumps. 9.1: the CHxTLD Outbox joins HQ as the OUT wedge, and a click opens your drafts over the pie to read and edit; edits save back to the Outbox. Say "outbox" to hear them, "read draft two" to hear one. Nothing sends from HQ. 9.2: a View pill with eleven ways to draw your chats, a Look pill with a picker and favorites, two hand sketched looks, and Chief of Staff one tap away with Open chat on every Start Here card. 9.3: looks run dark to light, so stepping never jumps from black to white, and a change fades instead of cutting. Retro Sky, a retro futurist look whose sky follows the time of day. Follow the clock picks from your favorites by daylight; say "follow the clock". 9.4: a second Outbox, ANDRÉ MANDEL, on its own letterhead beside the CHxTLD one, both one tap away on the pill rail ("mandel outbox"); and ten new looks: Trace, Marker, Charcoal, Chalkboard, Funnies, Space Opera, Overdrive, Dime Novel, Desert Neon, Bunker. 9.4.1: Chief of Staff wears HQ's look; Night drive keeps the board's own. 9.4.3: the model pills sit in the control panel's header, so nothing falls off the bottom of HQ, and a short window scales HQ down instead of cutting it off.
 // @match        https://claude.ai/*
 // @match        *://*/*
@@ -316,6 +316,8 @@
     "stop", "abort", "shut up", "skip it", "cancel", "enough" or "never mind". That reading is dropped for
     good; it won't pick back up. Say anything else and it's a note, as before. "Pause", "hold on" and
     "wait" still pause so you can pick it back up. Away from a reading, "shut up" is still Hold.
+    9.4.4: you no longer have to squeeze first. While a reading plays, those words drop it whenever the
+    mic is open, whether you opened it or your turn mode did.
     Spacebar alone now does what Option Space does (talk, again to send), whenever you're not typing
     in a text box. Option Space still works.
   9.1: OUTBOX. The CHxTLD Outbox joins HQ, the way Chief of Staff did: an OUT wedge and rail on the pie, lit
@@ -344,6 +346,12 @@
     violet night, rosy dawn, a pale peach morning, a bright blue noon, golden hour, then the sunset at dusk. Follow
     the clock (in the Look picker, or say "follow the clock") picks from your favorites by daylight, darkest at night,
     brightest at noon; picking a look yourself turns it off. Look numbers changed; favorites keep.
+  9.4.4: STOP MEANS STOP AGAIN. "Stop", "abort" or "shut up" drops the reading that's playing again,
+    however the mic came to be open. The abort only ever ran on the one path where a squeeze had paused
+    the reading first; once read along and HQ's own voice started reading while the mic was already
+    open, the same words fell through to the chat as text, or set Hold, and the reading played on.
+    Now a reading in the air outranks everything: those words drop it, and nothing is sent. Away from
+    a reading "shut up" is still Hold. Repeats and fillers count too ("no, stop", "shut up, shut up").
   9.4.3: FITS THE SCREEN. The model pills (Sonnet, Opus, Haiku, Fable) move up into the control panel's header,
     beside Controls, so they no longer hang off the bottom of HQ. A window too short for the frame now scales
     HQ down to fit, centered, instead of cropping the bottom.
@@ -7251,6 +7259,9 @@
     // 8.3: videos pause while we talk, or turn down instead
     if (/^(?:(?:please )?pause (?:the |my )?(?:videos?|youtube|music)(?: (?:mode|instead|when (?:we|i) talk|while (?:we|i) talk))?|(?:videos?|youtube) (?:pause|pauses|pause mode|pause instead)|pause mode)(?: please)?$/.test(flat)) return { kind: 'duckMode', m: 'pause' };
     if (/^(?:(?:please )?(?:turn|lower|duck) (?:the |my )?(?:videos?|youtube|music) down(?: instead)?|(?:lower|duck) (?:the |my )?(?:videos?|youtube|music)(?: instead)?|(?:videos?|youtube) (?:down|lower|duck)(?: instead)?|(?:don't|dont|do not) pause (?:the )?(?:videos?|youtube|music))(?: please)?$/.test(flat)) return { kind: 'duckMode', m: 'lower' };
+    // 9.4.4: a reading is playing: these words drop that reading, wherever the mic happened to be
+    // open. Checked before Hold on purpose: away from a reading, "shut up" is still Hold (8.0).
+    if (ABORT_SAID.test(flat) && readingAloud()) return { kind: 'abort' };
     // 8.0: HOLD everything, and resume
     if (HOLD_SAID.test(flat)) return { kind: 'hold', meeting: /meeting/.test(flat) };
     if (UNHOLD_SAID.test(flat) || (held && /^(wake up|wake|i'm back|im back|resume switchboard|switchboard back on|switchboard on|resume switcheroo|switcheroo back on|switcheroo on)$/.test(flat))) return { kind: 'unhold' };
@@ -7504,6 +7515,7 @@
 
   async function runCommand(c) {
     dlog('command', c.kind + (c.name ? ' ' + c.name : ''));
+    if (c.kind === 'abort') return abortReading('said it');   // 9.4.4
     if ((c.kind === 'allow' || c.kind === 'deny' || c.kind === 'allowApp' || c.kind === 'needApp') && c.here && !voiceApproval()) {
       approval = { id: ME, key: sb.reqKey || '', folder: sb.folder || '', comp: sb.comp || null, name: shortName(chatTitle()), until: 0, voiceUntil: Date.now() + 5000 };
     }
@@ -8193,6 +8205,11 @@
     return false;
   }
 
+  // 9.4.4: a reading is in the air: Switcheroo's own voice (playing or paused), Claude's read aloud,
+  // or one a squeeze left paused. While one is, "stop" / "shut up" drops it instead of becoming text.
+  const readingAloud = () => !!fb || buttons('pause').length > 0 || buttons('resume').length > 0 ||
+    (!!pausedEl && pausedEl.isConnected);
+
   // 8.5: drop the reading that a squeeze just paused, for good: nothing resumes it
   function abortReading(why) {
     dlog('reading aborted', why || '');
@@ -8255,10 +8272,14 @@
       // 7.5: what you just said, apart from earlier notes. "pause" holds everything; a command runs
       const before = boxBefore.trim(), now = composerText().trim();
       const said = now.startsWith(before) ? now.slice(before.length).trim() : '';
-      const saidFlat = said ? said.toLowerCase().replace(/[.!?,;:]+/g, ' ').replace(/\s+/g, ' ').trim() : '';
-      if (saidFlat && ABORT_SAID.test(saidFlat)) {   // 8.5: drop this reading, keep earlier notes
+      const flatten = (x) => String(x || '').toLowerCase().replace(/[.!?,;:]+/g, ' ').replace(/\s+/g, ' ').trim();
+      const saidFlat = flatten(said);
+      // 9.4.4: dictation sometimes rewrites the whole box, so the diff comes back empty. Then the last
+      // line counts, so "stop" still drops the reading instead of sitting there as a note.
+      const abortFlat = saidFlat || flatten((now.split('\n').pop() || '').trim());
+      if (abortFlat && ABORT_SAID.test(abortFlat)) {   // 8.5: drop this reading, keep earlier notes
         await trimTail(boxBefore);
-        abortReading('said ' + saidFlat);
+        abortReading('said ' + abortFlat);
         return;
       }
       if (said && HOLD_SAID.test(said.toLowerCase().replace(/[.!?,;:]+/g, ' ').replace(/\s+/g, ' ').trim())) {   // 8.0
@@ -8297,7 +8318,9 @@
   // 7.6: next, take me to and new chat send your notes first, then go; everything else keeps them in the box
   const LEAVES = ['next', 'switch', 'newChat'];
   // 8.5: said right after a squeeze that paused a reading: drop that reading for good
-  const ABORT_SAID = /^(?:uh |um |okay |ok |no |nah )?(?:abort|abort it|abort that|abort reading|stop|stop it|stop that|stop reading|stop talking|stop please|please stop|shut up|shut it|shut it down|cancel|cancel it|cancel that|skip|skip it|skip that|skip this|enough|that's enough|thats enough|okay enough|never mind|nevermind|forget it|kill it|drop it|be quiet|quiet|irrelevant|not relevant|no longer relevant)(?: please| now| thanks| thank you)?$/;
+  // 9.4.4: more than one filler in front, the words said twice, and a "claude" on the end all count
+  const ABORT_CORE = "abort|abort it|abort that|abort reading|stop|stop it|stop that|stop reading|stop talking|stop please|please stop|shut up|shut it|shut it down|cancel|cancel it|cancel that|skip|skip it|skip that|skip this|enough|that's enough|thats enough|okay enough|never mind|nevermind|forget it|kill it|drop it|be quiet|quiet|irrelevant|not relevant|no longer relevant";
+  const ABORT_SAID = new RegExp("^(?:(?:uh+|um+|uhm|okay|ok|no|nah|hey|claude|please)\\s+)*(?:" + ABORT_CORE + ")(?:[,\\s]+(?:" + ABORT_CORE + "))*(?:\\s+(?:please|now|thanks|thank you|claude))?$");
   const NOTE_PAUSE = /^(?:uh |um |okay |ok )?(?:pause|pause it|pause that|pause everything|pause all|pause all of it|pause please|pause for now|hold|hold on|hold it|hold everything|stop|stop everything|stop please|wait|wait please|paws|pose|pas|pods|pots|cause|pauls)[\s.,!?]*$/;
   // a dictated message is either a switchboard command or a message (maybe ending in "next")
   const isTail = (c) => !!c && (c.kind === 'sendNext' || c.kind === 'sendNew' || c.kind === 'sendGo');
