@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Claude Hands Free Text Mode
 // @namespace    andre.mandel
-// @version      9.4.1
+// @version      9.4.2
 // @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land. 8.8: one model for every open chat, by voice ("all chats to Sonnet") or from the HQ model pills. 8.9: Boot. The Switcheroo Chrome launcher opens HQ with your 10 most recent chats behind it and the mic ready, no clicks; or say "boot up". 8.9.1: "stop, new chat in Alder" works: a lead in no longer hides a command, and new chat finds every project, not just the sidebar. 8.9.2: the mic bell is now the Long bell, struck three times so the AirPods can't clip it. 8.9.3: Retro, a third HQ look: sunset sky, a neon floor rolling toward you, chrome type. Click Look on the control panel, or say "retro look". 9.0: Chief of Staff joins HQ as the COS wedge and panel, and a fourth look, night drive, from the board. Say chief for the brief, what needs me for Start Here, done two to close a thread, undo to reopen it. 9.0.1: fifty looks. Each push of Look steps to the next one (right click goes back); say "next look", "previous look", "random look" or a look by name. And "next, over" heard as "next server" still jumps. 9.1: the CHxTLD Outbox joins HQ as the OUT wedge, and a click opens your drafts over the pie to read and edit; edits save back to the Outbox. Say "outbox" to hear them, "read draft two" to hear one. Nothing sends from HQ. 9.2: a View pill with eleven ways to draw your chats, a Look pill with a picker and favorites, two hand sketched looks, and Chief of Staff one tap away with Open chat on every Start Here card. 9.3: looks run dark to light, so stepping never jumps from black to white, and a change fades instead of cutting. Retro Sky, a retro futurist look whose sky follows the time of day. Follow the clock picks from your favorites by daylight; say "follow the clock". 9.4: a second Outbox, ANDRÉ MANDEL, on its own letterhead beside the CHxTLD one, both one tap away on the pill rail ("mandel outbox"); and ten new looks: Trace, Marker, Charcoal, Chalkboard, Funnies, Space Opera, Overdrive, Dime Novel, Desert Neon, Bunker. 9.4.1: Chief of Staff wears HQ's look; Night drive keeps the board's own.
 // @match        https://claude.ai/*
 // @match        *://*/*
@@ -344,6 +344,7 @@
     violet night, rosy dawn, a pale peach morning, a bright blue noon, golden hour, then the sunset at dusk. Follow
     the clock (in the Look picker, or say "follow the clock") picks from your favorites by daylight, darkest at night,
     brightest at noon; picking a look yourself turns it off. Look numbers changed; favorites keep.
+  9.4.2: "Next, over" heard as "next, or" now jumps too, instead of landing in the chat as text.
   9.4.1: CHIEF WEARS THE LOOK. The Chief of Staff panel on HQ now takes HQ's look: Blueprint gives a
     blueprint Chief, grid and all; Desert Modern, Brutalist or Charcoal give a light Chief in those colors and
     faces; rounded, thick, blocky, cut and art deco panels carry over, and the sketch looks draw it dashed.
@@ -7224,7 +7225,7 @@
     if (CHIEF_NEEDS.test(flat)) return { kind: 'chiefNeeds' };
     { const cd = chiefDoneSaid(flat); if (cd) return cd; }
     if (CHF.closed && Date.now() - CHF.closed.at < 180000 && /^(?:undo|undo that|undo it|reopen|reopen it|reopen that|put it back|not done|that's not done|thats not done)(?: please)?$/.test(flat)) return { kind: 'chiefUndo' };
-    if (/^(next|next chat|next one|next please)(?: (?:over|server|rover|over and out))?$/.test(flat)) return { kind: 'next' };   // 9.0.1: "next, over" heard as "next server"
+    if (/^(next|next chat|next one|next please)(?: (?:over|server|rover|or|ore|oh|over and out))?$/.test(flat)) return { kind: 'next' };   // 9.0.1: "next, over" heard as "next server" (9.4.2: or "next, or")
     if (/^(?:(?:run (?:a )?|do (?:a )?)?(?:video|videos|youtube|media|tv|sports) check|check (?:the |my )?(?:videos?|youtube|media|tv|sports)|is youtube (?:connected|working|on)|(?:are|is) (?:the |my )?videos? (?:connected|working))(?: please)?$/.test(flat)) return { kind: 'videoCheck' };   // 8.4
     // 8.2: links. "open", "open two", "open link three", "open the second link", "close page"
     {
