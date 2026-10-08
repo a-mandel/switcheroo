@@ -4,6 +4,10 @@ Hands free Claude in Chrome: dictation, read aloud, a switchboard for every Clau
 
 Install or update: open [switcheroo.user.js](https://raw.githubusercontent.com/a-mandel/switcheroo/main/switcheroo.user.js) with Tampermonkey installed. Tampermonkey keeps it current from this repo on its own. Say "update Switcheroo" to check right away.
 
+## Cleaner HQ (9.5.1)
+
+Chief of Staff, CHxTLD and Mandel are pills at the top left only, not cards in the views. HQ opens any of the three that isn't open, behind it, a few seconds after it loads. A reply you already heard isn't read again when another tab or a jump lands on it; say "read it" to hear it again. Outbox drafts: sent ones leave the stack, the chat you're on comes first, then the newest edit.
+
 ## One screen for the chats (9.5)
 
 HQ now holds the AirPods press. Minimize or bury the window with your chats and the press still lands: HQ hears it and hands it to the chat that has the floor. When Claude starts reading, HQ takes the press straight back. HQ needs one click after it opens; until then, or when HQ is closed, the chat holds the press the old way.

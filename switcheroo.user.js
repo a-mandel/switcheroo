@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Claude Hands Free Text Mode
 // @namespace    andre.mandel
-// @version      9.5
+// @version      9.5.1
 // @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land. 8.8: one model for every open chat, by voice ("all chats to Sonnet") or from the HQ model pills. 8.9: Boot. The Switcheroo Chrome launcher opens HQ with your 10 most recent chats behind it and the mic ready, no clicks; or say "boot up". 8.9.1: "stop, new chat in Alder" works: a lead in no longer hides a command, and new chat finds every project, not just the sidebar. 8.9.2: the mic bell is now the Long bell, struck three times so the AirPods can't clip it. 8.9.3: Retro, a third HQ look: sunset sky, a neon floor rolling toward you, chrome type. Click Look on the control panel, or say "retro look". 9.0: Chief of Staff joins HQ as the COS wedge and panel, and a fourth look, night drive, from the board. Say chief for the brief, what needs me for Start Here, done two to close a thread, undo to reopen it. 9.0.1: fifty looks. Each push of Look steps to the next one (right click goes back); say "next look", "previous look", "random look" or a look by name. And "next, over" heard as "next server" still jumps. 9.1: the CHxTLD Outbox joins HQ as the OUT wedge, and a click opens your drafts over the pie to read and edit; edits save back to the Outbox. Say "outbox" to hear them, "read draft two" to hear one. Nothing sends from HQ. 9.2: a View pill with eleven ways to draw your chats, a Look pill with a picker and favorites, two hand sketched looks, and Chief of Staff one tap away with Open chat on every Start Here card. 9.3: looks run dark to light, so stepping never jumps from black to white, and a change fades instead of cutting. Retro Sky, a retro futurist look whose sky follows the time of day. Follow the clock picks from your favorites by daylight; say "follow the clock". 9.4: a second Outbox, ANDRÉ MANDEL, on its own letterhead beside the CHxTLD one, both one tap away on the pill rail ("mandel outbox"); and ten new looks: Trace, Marker, Charcoal, Chalkboard, Funnies, Space Opera, Overdrive, Dime Novel, Desert Neon, Bunker. 9.4.1: Chief of Staff wears HQ's look; Night drive keeps the board's own. 9.4.3: the model pills sit in the control panel's header, so nothing falls off the bottom of HQ, and a short window scales HQ down instead of cutting it off. 9.5: HQ holds the AirPods press, so the chats window can be minimized.
 // @match        https://claude.ai/*
 // @match        *://*/*
@@ -346,6 +346,11 @@
     violet night, rosy dawn, a pale peach morning, a bright blue noon, golden hour, then the sunset at dusk. Follow
     the clock (in the Look picker, or say "follow the clock") picks from your favorites by daylight, darkest at night,
     brightest at noon; picking a look yourself turns it off. Look numbers changed; favorites keep.
+  9.5.1: CLEANER HQ. Chief of Staff and both Outboxes are pills only, no longer cards in the views. HQ opens any of
+    the three that hasn't reported in, behind it, a few seconds after it loads, so Mandel is there to tap like the
+    others. No more double readbacks: a reply heard in one tab isn't started over in another, or when you land back
+    on that chat; say "read it" to hear it again. Outbox drafts on HQ and by voice: sent ones leave, the chat you're
+    on comes first, then the newest edit.
   9.5: ONE SCREEN FOR THE CHATS IS ENOUGH. HQ now holds the AirPods press. It plays the silent loop, counts the
     taps itself and hands each press to the chat that has the floor, so the chat window can be minimized or
     buried and the press still works. The chats keep awake on an inaudible hum that never takes the press.
@@ -2670,12 +2675,12 @@
         const lb = q('.lkp .pn b');
         lb.textContent = smPad(SM_LOOKS.indexOf(theme.id) + 1) + ' ' + (theme.look || theme.name || theme.id);
         if (m && m.looks && m.looks.clock) { const ck = document.createElement('span'); ck.className = 'ck'; ck.textContent = 'CLOCK'; lb.appendChild(ck); }   // 9.3
-        const ce = ((m && m.tabs) || []).find((e) => e.chief), n = ce && !ce.closed ? ce.chiefN || 0 : 0;
+        const ce = ((m && m.apps) || []).find((e) => e.chief), n = ce && !ce.closed ? ce.chiefN || 0 : 0;
         const cp = q('.prl .chp');
         cp.querySelector('span').textContent = 'Chief' + (n ? ' · ' + n : '');
         cp.classList.toggle('hot', n > 0); cp.classList.toggle('on', cosOpen);
         q('.prl').querySelectorAll('[data-oxq]').forEach((b) => {   // 9.4
-          const l = b.getAttribute('data-oxq'), oe = ((m && m.tabs) || []).find((e) => e.outbox && (e.lane || 'ch') === l), k = oe && !oe.closed ? oe.oxN || 0 : 0;
+          const l = b.getAttribute('data-oxq'), oe = ((m && m.apps) || []).find((e) => e.outbox && (e.lane || 'ch') === l), k = oe && !oe.closed ? oe.oxN || 0 : 0;
           b.querySelector('span').textContent = (l === 'am' ? 'Mandel' : 'CHxTLD') + (k ? ' · ' + k : '');
           b.classList.toggle('hot', k > 0); b.classList.toggle('on', oxOpen && oxLaneP === l);
         });
@@ -2732,7 +2737,9 @@
       const oxWho = (s) => String(s || '').split(',').map((x) => { x = x.trim(); const mm = x.match(/^"?([^"<]+?)"?\s*</); return mm ? mm[1].trim() : x; }).filter(Boolean).join(', ');
       const oxSame = (a, b) => !!a && !!b && a.subject === b.subject && a.body === b.body;
       const oxChip = (d, long) => d.status === 'sent' ? 'Sent ' + oxPT(d.sent_at) : d.status === 'hold' ? 'On hold' : long ? 'Ready, waiting on authorize send' : 'Ready';
-      const oxOrder = (ds) => { ds = ds || []; return ds.filter((d) => d.status !== 'sent').concat(ds.filter((d) => d.status === 'sent')); };
+      // 9.5.1: sent drafts leave the stack. The chat you're on comes first, then the newest edit
+      const oxOrder = (ds, path) => (ds || []).filter((d) => d.status !== 'sent')
+        .sort((a, b) => ((path && b.chat === path) - (path && a.chat === path)) || String(b.updated_at || '').localeCompare(String(a.updated_at || '')));
       const oxCounts = (st) => { const k = (st && st.counts) || {}; return st && st.loaded ? (k.ready || 0) + ' ready · ' + (k.hold || 0) + ' on hold' + (k.sent ? ' · ' + k.sent + ' sent' : '') : ''; };
       const oxHead = () => '<div class="oxh">' + (oxLaneP === 'am' ? '<div class="oxbr"><span class="aml">' + SM_AM_LOGO + '</span>André Mandel<small>Outbox</small></div>' : '<div class="oxbr">ch <span>x</span> tld<small>Outbox</small></div>') + '<div class="oxct"></div><span class="g"></span><span class="oxwt"></span>' +
         '<button type="button" class="oxbn" data-ox="tab" title="Bring the Outbox tab forward">Open outbox</button><button type="button" class="oxbn cx" data-ox="close" title="Close">×</button></div>';
@@ -2930,7 +2937,7 @@
           ov.hidden = false;
           return;
         }
-        const ds = oxOrder(st.drafts);
+        const ds = oxOrder(st.drafts, m.floor && m.floor.path);
         const sig = JSON.stringify([oxLaneP, ds.map((d) => [d.id, d.subject, String(d.body || '').slice(0, 300), d.to, d.cc, d.status, d.updated_at, d.sent_at])]);
         if (sig !== oxSig || ov.hidden) {
           oxSig = sig;
@@ -3405,11 +3412,22 @@
     function model() {
       const f = lsGet('chf_sb_floor', null), list = tabs(), de = deckEntry();
       if (de) list.push(de);
-      list.push(chiefEntry());   // 9.0
-      list.push(outboxEntry('ch'));  // 9.1
-      list.push(outboxEntry('am'));  // 9.4
-      return { tabs: list, floorId: floorId || (f && f.id) || '', floor: floorP, quiet: lsGet('chf_sb_quiet', {}), ctl: ctlModel(), deck: deckModel(), cos: chiefModel(), ox: outboxModel(), links: linkList(), looks: { favs, step: lkStep, view: viewIdHQ, clock: lookClock } };
+      // 9.5.1: Chief and both Outboxes live on the pill rail only, not as cards in the views
+      const apps = [chiefEntry(), outboxEntry('ch'), outboxEntry('am')];
+      return { tabs: list, apps, floorId: floorId || (f && f.id) || '', floor: floorP, quiet: lsGet('chf_sb_quiet', {}), ctl: ctlModel(), deck: deckModel(), cos: chiefModel(), ox: outboxModel(), links: linkList(), looks: { favs, step: lkStep, view: viewIdHQ, clock: lookClock } };
     }
+    // 9.5.1: the three pills only work when their pages are open somewhere. HQ opens any that haven't
+    // reported in, once, behind it, a few seconds after it loads, so Chief, CHxTLD and Mandel are ready to tap.
+    setTimeout(() => {
+      const want = [];
+      if (!chAlive()) want.push(['chief', CHIEF_URL]);
+      for (const l of ['ch', 'am']) if (!oxAlive(l)) want.push([l, OUTBOX_URLS[l]]);
+      want.forEach(([k, url], i) => setTimeout(() => {
+        if (k === 'chief' ? chAlive() : oxAlive(k)) return;
+        if (k === 'chief') chOpening = Date.now(); else oxOpening[k] = Date.now();
+        try { GM_openInTab(url, { active: false, insert: true }); } catch (e) {}
+      }, i * 1500));
+    }, 9000);
     // 8.2: a page opens on the right of HQ when the site allows it; otherwise in a window docked there
     let page = null, pageWin = null, pageGen = 0;
     function headersSayNoFrame(url) {
@@ -6031,7 +6049,7 @@
     const drafts = (Array.isArray(s.drafts) ? s.drafts : []).slice(0, 24).map((d) => ({
       id: oxStr(d.id, 120), subject: oxStr(d.subject, 400), body: oxStr(d.body, 40000), to: oxStr(d.to, 600), cc: oxStr(d.cc, 600), thread: oxStr(d.thread, 300),
       status: d.status === 'sent' ? 'sent' : d.status === 'hold' ? 'hold' : 'ready', order: +d.order || 99,
-      updated_at: oxStr(d.updated_at, 40), edited_by: oxStr(d.edited_by, 120), sent_at: oxStr(d.sent_at, 40) }));
+      updated_at: oxStr(d.updated_at, 40), edited_by: oxStr(d.edited_by, 120), sent_at: oxStr(d.sent_at, 40), chat: oxStr(d.chat, 200) }));
     const st = { loaded: !!s.loaded, canWrite: !!s.canWrite, drafts, counts: { ready: +c.ready || 0, hold: +c.hold || 0, sent: +c.sent || 0, total: +c.total || drafts.length },
       sigHtml: oxStr(s.sigHtml, 12000), sigText: oxStr(s.sigText, 2000), note: oxStr(s.note, 300) };
     post({ t: 'outbox', lane, from: ME, st });
@@ -6054,7 +6072,8 @@
   }
   // spoken lines
   const oxWhoSaid = (s) => String(s || '').split(',').map((x) => { x = x.trim(); const mm = x.match(/^"?([^"<]+?)"?\s*</); return mm ? mm[1].trim() : x.replace(/@.*$/, ''); }).filter(Boolean).join(' and ');
-  const oxOpenDrafts = (lane) => (OXFL[lane].st.drafts || []).filter((d) => d.status !== 'sent');
+  const oxOpenDrafts = (lane) => (OXFL[lane].st.drafts || []).filter((d) => d.status !== 'sent')
+    .sort((a, b) => ((b.chat === location.pathname) - (a.chat === location.pathname)) || String(b.updated_at || '').localeCompare(String(a.updated_at || '')));   // 9.5.1
   function oxOpen(lane, want, n) {
     const F = OXFL[lane], nm = OX_SPOKEN[lane];
     F.want = want; F.wantN = n || 0; F.wantAt = Date.now();
@@ -6530,6 +6549,8 @@
     for (let i = 0; i < 25 && !replies().length; i++) await sleep(200);   // the chat is still drawing
     if (!replies().length || isWorking() || buttons('stop').length) return false;
     if (readAsk()) return false;   // a question card waiting here is read instead, by yourTurn
+    { const all = replies(), lastM = all[all.length - 1];   // 9.5.1: already heard, here or in another tab: don't start it over
+      if (lastM && heardRead(headOf(lastM))) { dlog('arrival, last reply already heard, not read again', why || ''); return false; } }
     dlog('read on arrival', why || '');
     readLatest(true);
     return true;
@@ -8580,14 +8601,25 @@
   const readEls = new WeakSet();   // 5.6: each reply is auto read once, by element
   const readHeads = [];            // 5.7: ...and by what it says, in case Claude swaps the element
   const headOf = (m) => { try { return replyParts(m, 100000, 100000).join(' ').replace(/\s+/g, ' ').trim().slice(0, 160); } catch (e) { return ''; } };
-  const heardBefore = (h) => !!h && readHeads.includes(h);
-  const markHeard = (h) => { if (!h || readHeads.includes(h)) return; readHeads.push(h); if (readHeads.length > 40) readHeads.shift(); };
+  // 9.5.1: heard is shared by every tab for half an hour, so a reply one tab read isn't read again by another,
+  // or by this one when you land back on it (that was the double readback)
+  const K_HEARD = 'chf_heard_v1', HEARD_MS = 30 * 60000;
+  const heardShared = () => { const a = lsJson(K_HEARD, []); return Array.isArray(a) ? a.filter((x) => x && Date.now() - (x.t || 0) < HEARD_MS) : []; };
+  const heardBefore = (h) => !!h && (readHeads.includes(h) || heardShared().some((x) => x.h === h));
+  const heardRead = (h) => !!h && heardShared().some((x) => x.h === h);   // read aloud somewhere, not just on screen at load
+  const markHeard = (h, localOnly) => {   // localOnly: seen here, not read aloud, so other tabs may still read it
+    if (!h) return;
+    if (!readHeads.includes(h)) { readHeads.push(h); if (readHeads.length > 40) readHeads.shift(); }
+    if (localOnly) return;
+    const a = heardShared().filter((x) => x.h !== h); a.push({ h, t: Date.now() });
+    lsPut(K_HEARD, a.slice(-60));
+  };
   const claudeIsReading = () => buttons('pause').length > 0 || buttons('resume').length > 0;
   const markAll = () => {
     const b = last(buttons('speak')); lastKey = b ? replyKey(b) : '';
     dlog('page (re)loaded, current reply marked as heard');
     const lm = last([...document.querySelectorAll('[data-testid="assistant-message"]')]);
-    if (lm) { readEls.add(lm); markHeard(headOf(lm)); }   // 5.6: the reply already on screen is never auto read
+    if (lm) { readEls.add(lm); markHeard(headOf(lm), true); }   // 5.6: the reply already on screen is never auto read
     // a take already on screen at load is remembered, not loaded
     const msgs = document.querySelectorAll('[data-testid="assistant-message"]');
     const m = msgs[msgs.length - 1];
@@ -8648,11 +8680,12 @@
       readEls.add(msg);
       const head = headOf(msg);
       if (heardBefore(head)) { dlog('reply already heard, skip', head.slice(0, 50)); return; }             // 5.7: same words in a fresh element
-      markHeard(head);
+      markHeard(head, true);   // 9.5.1: shared only once it's actually read, below
       if (held) { dlog('new reply, on hold, not read', head.slice(0, 50)); return; }   // 8.0
       if (!ownsFloor()) dlog('new reply, not the floor, chime only', head.slice(0, 50));
       if (ownsFloor()) {                           // other tabs chime on the switchboard instead
         dlog('auto read', (msg.innerText || '').trim().slice(18, 70));
+        markHeard(head);   // 9.5.1: now every tab knows it was read
         if (elReady()) { if (!(fb && fb.ra)) fbStop(); readReply(msg, 'el', false, true); }   // 5.1: ElevenLabs reads it (8.7: after read along)
         else if (!claudeIsReading()) { dlog('ElevenLabs not ready, Claude read aloud'); fbStop(); speak.click(); watchPlayback(speak); }   // 5.6: never toggle
         else dlog('Claude already reading, skip');
