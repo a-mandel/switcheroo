@@ -4,9 +4,13 @@ Hands free Claude in Chrome: dictation, read aloud, a switchboard for every Clau
 
 Install or update: open [switcheroo.user.js](https://raw.githubusercontent.com/a-mandel/switcheroo/main/switcheroo.user.js) with Tampermonkey installed. Tampermonkey keeps it current from this repo on its own. Say "update Switcheroo" to check right away.
 
+## Natural voices (9.7.1)
+
+Replies use ElevenLabs' natural model, not the fast one, and reading speed is back to normal. HQ's own lines keep the voice you had before, Annika (ElevenLabs: HQ lines voice by ID to change it).
+
 ## A voice per project (9.7)
 
-Replies read in the voice of their chat's project: Mississippi is Nikola, Walsh is Hank Harvey, Haynes is Jamieson, Kelly is Samantha Easton. HQ's own lines and any chat outside those projects read in the Chief's voice, Eleanor. Change them from the Tampermonkey menu: ElevenLabs: project voices, and ElevenLabs: Chief voice by ID. A voice that isn't in your voices falls back to the Chief.
+Replies read in the voice of their chat's project: Mississippi is Nikola, Walsh is Hank Harvey, Haynes is Jamieson, Kelly is Samantha Easton. Any chat outside those projects reads in Eleanor. Change them from the Tampermonkey menu: ElevenLabs: project voices, and ElevenLabs: Chief voice by ID. A voice that isn't in your voices falls back to the Chief.
 
 ## Earbud gestures (9.6)
 
