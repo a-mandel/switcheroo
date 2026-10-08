@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Claude Hands Free Text Mode
 // @namespace    andre.mandel
-// @version      9.7.1
-// @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land. 8.8: one model for every open chat, by voice ("all chats to Sonnet") or from the HQ model pills. 8.9: Boot. The Switcheroo Chrome launcher opens HQ with your 10 most recent chats behind it and the mic ready, no clicks; or say "boot up". 8.9.1: "stop, new chat in Alder" works: a lead in no longer hides a command, and new chat finds every project, not just the sidebar. 8.9.2: the mic bell is now the Long bell, struck three times so the AirPods can't clip it. 8.9.3: Retro, a third HQ look: sunset sky, a neon floor rolling toward you, chrome type. Click Look on the control panel, or say "retro look". 9.0: Chief of Staff joins HQ as the COS wedge and panel, and a fourth look, night drive, from the board. Say chief for the brief, what needs me for Start Here, done two to close a thread, undo to reopen it. 9.0.1: fifty looks. Each push of Look steps to the next one (right click goes back); say "next look", "previous look", "random look" or a look by name. And "next, over" heard as "next server" still jumps. 9.1: the CHxTLD Outbox joins HQ as the OUT wedge, and a click opens your drafts over the pie to read and edit; edits save back to the Outbox. Say "outbox" to hear them, "read draft two" to hear one. Nothing sends from HQ. 9.2: a View pill with eleven ways to draw your chats, a Look pill with a picker and favorites, two hand sketched looks, and Chief of Staff one tap away with Open chat on every Start Here card. 9.3: looks run dark to light, so stepping never jumps from black to white, and a change fades instead of cutting. Retro Sky, a retro futurist look whose sky follows the time of day. Follow the clock picks from your favorites by daylight; say "follow the clock". 9.4: a second Outbox, ANDRÉ MANDEL, on its own letterhead beside the CHxTLD one, both one tap away on the pill rail ("mandel outbox"); and ten new looks: Trace, Marker, Charcoal, Chalkboard, Funnies, Space Opera, Overdrive, Dime Novel, Desert Neon, Bunker. 9.4.1: Chief of Staff wears HQ's look; Night drive keeps the board's own. 9.4.3: the model pills sit in the control panel's header, so nothing falls off the bottom of HQ, and a short window scales HQ down instead of cutting it off. 9.5: HQ holds the AirPods press, so the chats window can be minimized. 9.6: double press is a new chat in this project, triple press is the next chat waiting. 9.7: a voice per project: Mississippi Nikola, Walsh Hank, Haynes Jamieson, Kelly Samantha, and Eleanor for any other chat. 9.7.1: the natural ElevenLabs model, normal speed, and HQ's own lines keep your old voice.
+// @version      9.7.2
+// @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land. 8.8: one model for every open chat, by voice ("all chats to Sonnet") or from the HQ model pills. 8.9: Boot. The Switcheroo Chrome launcher opens HQ with your 10 most recent chats behind it and the mic ready, no clicks; or say "boot up". 8.9.1: "stop, new chat in Alder" works: a lead in no longer hides a command, and new chat finds every project, not just the sidebar. 8.9.2: the mic bell is now the Long bell, struck three times so the AirPods can't clip it. 8.9.3: Retro, a third HQ look: sunset sky, a neon floor rolling toward you, chrome type. Click Look on the control panel, or say "retro look". 9.0: Chief of Staff joins HQ as the COS wedge and panel, and a fourth look, night drive, from the board. Say chief for the brief, what needs me for Start Here, done two to close a thread, undo to reopen it. 9.0.1: fifty looks. Each push of Look steps to the next one (right click goes back); say "next look", "previous look", "random look" or a look by name. And "next, over" heard as "next server" still jumps. 9.1: the CHxTLD Outbox joins HQ as the OUT wedge, and a click opens your drafts over the pie to read and edit; edits save back to the Outbox. Say "outbox" to hear them, "read draft two" to hear one. Nothing sends from HQ. 9.2: a View pill with eleven ways to draw your chats, a Look pill with a picker and favorites, two hand sketched looks, and Chief of Staff one tap away with Open chat on every Start Here card. 9.3: looks run dark to light, so stepping never jumps from black to white, and a change fades instead of cutting. Retro Sky, a retro futurist look whose sky follows the time of day. Follow the clock picks from your favorites by daylight; say "follow the clock". 9.4: a second Outbox, ANDRÉ MANDEL, on its own letterhead beside the CHxTLD one, both one tap away on the pill rail ("mandel outbox"); and ten new looks: Trace, Marker, Charcoal, Chalkboard, Funnies, Space Opera, Overdrive, Dime Novel, Desert Neon, Bunker. 9.4.1: Chief of Staff wears HQ's look; Night drive keeps the board's own. 9.4.3: the model pills sit in the control panel's header, so nothing falls off the bottom of HQ, and a short window scales HQ down instead of cutting it off. 9.5: HQ holds the AirPods press, so the chats window can be minimized. 9.6: double press is a new chat in this project, triple press is the next chat waiting. 9.7: a voice per project: Mississippi Nikola, Walsh Hank, Haynes Jamieson, Kelly Samantha, and Eleanor for any other chat. 9.7.1: the natural ElevenLabs model, normal speed, and HQ's own lines keep your old voice. 9.7.2: mic sound 22, Voices: a woman's voice says one of 24 short lines when the mic opens, a different one each time.
 // @match        https://claude.ai/*
 // @match        *://*/*
 // @grant        GM_xmlhttpRequest
@@ -348,6 +348,11 @@
     violet night, rosy dawn, a pale peach morning, a bright blue noon, golden hour, then the sunset at dusk. Follow
     the clock (in the Look picker, or say "follow the clock") picks from your favorites by daylight, darkest at night,
     brightest at noon; picking a look yourself turns it off. Look numbers changed; favorites keep.
+  9.7.2: VOICE CUES. Mic sound 22 is a spoken line instead of a bell: "talk to me", "I'm listening", "hey baby" and 21
+    more, Annika and Jessica taking turns, a different line each time and never the same one twice running. Say
+    "mic sound 22" or "mic sound voices". The lines are made once through your ElevenLabs key (a few cents of
+    credit) and kept in this browser, so they play instantly after; Chirp stands in for the first minute while
+    they're made. "Mic sound 21" by voice works again too; numbers over twenty were being dropped.
   9.7.1: NATURAL VOICES. Replies use ElevenLabs' natural model instead of the fast one, and reading speed resets
     to normal (say faster or slower to change it). HQ's own lines keep the voice you had before, Annika.
   9.7: A VOICE PER PROJECT. Replies read in the voice of their chat's project, so you know who's talking:
@@ -4751,12 +4756,95 @@
     }));
   }
   const CUES = chfCues();
+  // 9.7: sound 22, Voices. A woman's voice says one of these when the mic opens, a different line each time.
+  // Each line is made once through your ElevenLabs key, kept in this browser, and plays instantly after that.
+  const VC_LINES = ['Hey baby.', 'Okay.', 'Just a minute.', 'Yes?', 'Say something.', 'Talk to me.', "I'm listening.",
+    'Go ahead.', 'Mm hm?', "What's up?", 'Go for it.', "I'm here.", 'Tell me.', 'Ready.', 'What do you need?', 'Hey you.',
+    'Shoot.', 'Lay it on me.', 'Yeah?', 'Hi there.', "I'm all ears.", "What's on your mind?", 'Hey.', 'Go on.'];
+  const VC = { bufs: {}, last: '', warming: false, db: null };
+  const VC_KEY = (i) => i + '|' + VC_LINES[i];
+  const vcVoice = (i) => (i % 2 ? EL_BUILTIN_VOICE : EL_DEFAULT_VOICE);   // Annika and Jessica take turns, so no one voice owns it
+  CUES.push({ name: 'Voices', note: 'A spoken line, a different one each time the mic opens.', len: 1.3, voices: true, play() {} });
   const CUE_VOLS = [0.5, 0.7, 1, 1.4, 2];
   const cueNum = () => (Number.isInteger(cfg.micSound) && cfg.micSound >= 1 && cfg.micSound <= CUES.length ? cfg.micSound : 2);
   const cueVol = () => (CUE_VOLS.includes(cfg.cueVol) ? cfg.cueVol : 1);
   // 8.9.2: André's mic bell kept getting cut off, so the long bell replaces whatever was picked, once.
   // "Mic sound" still steps through all of them afterwards and the choice sticks.
-  if (!cfg.longBell892) { cfg.longBell892 = true; cfg.micSound = CUES.length; try { save(cfg); } catch (e) {} }
+  if (!cfg.longBell892) { cfg.longBell892 = true; cfg.micSound = 21; try { save(cfg); } catch (e) {} }
+  function vcDb() {
+    if (VC.db) return VC.db;
+    VC.db = new Promise((res, rej) => {
+      try {
+        const r = indexedDB.open('chf_voicecues', 1);
+        r.onupgradeneeded = () => { try { r.result.createObjectStore('clips'); } catch (e) {} };
+        r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
+      } catch (e) { rej(e); }
+    });
+    VC.db.catch(() => { VC.db = null; });
+    return VC.db;
+  }
+  async function vcStore(mode, key, blob) {
+    const db = await vcDb();
+    return new Promise((res) => {
+      try {
+        const tx = db.transaction('clips', mode), st = tx.objectStore('clips');
+        const r = mode === 'readwrite' ? st.put(blob, key) : st.get(key);
+        r.onsuccess = () => res(r.result || null); r.onerror = () => res(null);
+      } catch (e) { res(null); }
+    });
+  }
+  async function vcDecode(key, blob) {
+    try {
+      if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
+      VC.bufs[key] = await actx.decodeAudioData(await blob.arrayBuffer());
+    } catch (e) {}
+  }
+  // load what this browser already has, and make the missing lines, one tab at a time
+  async function vcWarm() {
+    if (VC.warming) return;
+    VC.warming = true;
+    try {
+      const missing = [];
+      for (let i = 0; i < VC_LINES.length; i++) {
+        const k = VC_KEY(i);
+        if (VC.bufs[k]) continue;
+        const b = await vcStore('readonly', k);
+        if (b) await vcDecode(k, b); else missing.push(i);
+      }
+      if (!missing.length || !elKey() || typeof GM_xmlhttpRequest !== 'function') return;
+      let lock = 0;
+      try { lock = +localStorage.getItem('chf_vc_lock') || 0; } catch (e) {}
+      if (Date.now() - lock < 90000) return;   // another tab is making them
+      try { localStorage.setItem('chf_vc_lock', String(Date.now())); } catch (e) {}
+      dlog('making voice cues', missing.length + ' lines');
+      for (const i of missing) {
+        const k = VC_KEY(i);
+        let blob = null;
+        try { blob = await elRequest(VC_LINES[i], vcVoice(i), elKey(), false, 'eleven_multilingual_v2'); }
+        catch (e) {
+          if (vcVoice(i) !== EL_BUILTIN_VOICE) { try { blob = await elRequest(VC_LINES[i], EL_BUILTIN_VOICE, elKey(), false, 'eleven_multilingual_v2'); } catch (x) {} }
+        }
+        if (!blob) continue;
+        await vcStore('readwrite', k, blob);
+        await vcDecode(k, blob);
+        try { localStorage.setItem('chf_vc_lock', String(Date.now())); } catch (e) {}
+      }
+      try { localStorage.removeItem('chf_vc_lock'); } catch (e) {}
+    } catch (e) { dlog('voice cues failed', String((e && e.message) || e)); }
+    finally { VC.warming = false; }
+  }
+  function playVoiceCue(g) {
+    const ready = Object.keys(VC.bufs);
+    if (!ready.length) { vcWarm(); CUES[2].play(actx, g, actx.currentTime + 0.03); return; }   // not made yet: Chirp stands in
+    const pool = ready.length > 1 ? ready.filter((k) => k !== VC.last) : ready;
+    const k = pool[Math.floor(Math.random() * pool.length)];
+    VC.last = k;
+    const src = actx.createBufferSource();
+    src.buffer = VC.bufs[k];
+    src.connect(g);
+    src.start(actx.currentTime + 0.03);
+    if (ready.length < VC_LINES.length) vcWarm();
+  }
   function playCue(n) {
     try {
       if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
@@ -4764,15 +4852,22 @@
       const g = actx.createGain();
       g.gain.value = cueVol();
       g.connect(actx.destination);
-      CUES[(n || cueNum()) - 1].play(actx, g, actx.currentTime + 0.03);
+      const c = CUES[(n || cueNum()) - 1];
+      if (c.voices) playVoiceCue(g); else c.play(actx, g, actx.currentTime + 0.03);
     } catch (e) {}
   }
+  setTimeout(() => { if (CUES[cueNum() - 1].voices) vcWarm(); }, 8000);
   // 2.9: the cue to start talking. 7.0: your pick of twenty
   function blip() { playCue(); }
   function setCue(n) {
     n = ((n - 1 + CUES.length) % CUES.length) + 1;
     cfg.micSound = n; save(cfg);
     playCue(n);
+    if (CUES[n - 1].voices) {   // 9.7: the lines are made the first time; Chirp stands in until they're ready
+      const fresh = !Object.keys(VC.bufs).length;
+      vcWarm();
+      return sleep(1600).then(() => say('Sound ' + n + ', Voices.' + (fresh ? ' Making the lines now, about a minute.' : '')));
+    }
     return sleep(CUES[n - 1].len * 1000 + 350).then(() => say('Sound ' + n + ', ' + CUES[n - 1].name + '.'));
   }
   function stepCueVol(dir) {
@@ -6859,13 +6954,13 @@
     for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i);
     return new Blob([u], { type: 'audio/mpeg' });
   }
-  function elRequest(text, voice, key, stamps) {
+  function elRequest(text, voice, key, stamps, model) {
     return new Promise((resolve, reject) => {
       GM_xmlhttpRequest({
         method: 'POST',
         url: 'https://api.elevenlabs.io/v1/text-to-speech/' + encodeURIComponent(voice) + (stamps ? '/with-timestamps' : '') + '?output_format=mp3_44100_64',
         headers: { 'xi-api-key': key, 'Content-Type': 'application/json', Accept: stamps ? 'application/json' : 'audio/mpeg' },
-        data: JSON.stringify({ text, model_id: 'eleven_multilingual_v2' }),   // 9.7.1: the natural model, not the fast one
+        data: JSON.stringify({ text, model_id: model || 'eleven_multilingual_v2' }),   // 9.7.1: the natural model, not the fast one
         responseType: stamps ? 'json' : 'blob', timeout: 25000,
         onload: (r) => {
           if (!(r.status >= 200 && r.status < 300 && r.response)) return reject({ status: r.status });
@@ -7440,6 +7535,8 @@
     if (/^(?:normal|regular|default|usual) (?:speed|pace)$/.test(flat)) return { kind: 'speedReset' };
     // 7.0: the mic live sound
     // 7.1: "mic sound" in any words
+    // 9.7: "mic sound voices", "voice cues": sound 22
+    if (/^(?:(?:mic|mike|my) )?(?:sound )?(?:voices|voice cues?)$/.test(flat) || /^(?:mic|mike) (?:sound )?voice$/.test(flat)) return { kind: 'cue', n: CUES.length };
     const bag = micSoundBag(flat);
     if (bag) return bag;
     // 7.0.1: dictation hears sound as bound, found, round or sounds
@@ -7449,7 +7546,7 @@
       const n = toNum(m[1]);
       // "round 3" or "found 7" alone could be anything; they count only after mic, try, use and the like
       const loose = !/^(?:try |use |play |pick |set |the |mic |mike |mike's |my |microphone |beep )/.test(flat) && !/^sounds? /.test(flat);
-      if (isFinite(n) && n >= 1 && n <= 20 && !loose) return { kind: 'cue', n };
+      if (isFinite(n) && n >= 1 && n <= CUES.length && !loose) return { kind: 'cue', n };   // 9.7: was 20, so 21 and 22 never took
       if (/^(?:louder|up|a bit louder|a little louder)$/.test(m[1])) return { kind: 'cueVol', dir: 1 };
       if (/^(?:quieter|softer|down|a bit quieter|a little quieter)$/.test(m[1])) return { kind: 'cueVol', dir: -1 };
     }
