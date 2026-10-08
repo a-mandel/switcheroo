@@ -4,6 +4,10 @@ Hands free Claude in Chrome: dictation, read aloud, a switchboard for every Clau
 
 Install or update: open [switcheroo.user.js](https://raw.githubusercontent.com/a-mandel/switcheroo/main/switcheroo.user.js) with Tampermonkey installed. Tampermonkey keeps it current from this repo on its own. Say "update Switcheroo" to check right away.
 
+## Earbud gestures (9.6)
+
+One press opens the mic. Two presses open a new chat in the project of the chat you're in, mic ready. Three presses jump to the next chat waiting, the same as saying "next". Two and three are ignored while the mic is open. Your turn mode is now Option Shift L only.
+
 ## Cleaner HQ (9.5.1)
 
 Chief of Staff, CHxTLD and Mandel are pills at the top left only, not cards in the views. HQ opens any of the three that isn't open, behind it, a few seconds after it loads. A reply you already heard isn't read again when another tab or a jump lands on it; say "read it" to hear it again. Outbox drafts: sent ones leave the stack, the chat you're on comes first, then the newest edit.

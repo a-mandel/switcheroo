@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Claude Hands Free Text Mode
 // @namespace    andre.mandel
-// @version      9.5.1
-// @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land. 8.8: one model for every open chat, by voice ("all chats to Sonnet") or from the HQ model pills. 8.9: Boot. The Switcheroo Chrome launcher opens HQ with your 10 most recent chats behind it and the mic ready, no clicks; or say "boot up". 8.9.1: "stop, new chat in Alder" works: a lead in no longer hides a command, and new chat finds every project, not just the sidebar. 8.9.2: the mic bell is now the Long bell, struck three times so the AirPods can't clip it. 8.9.3: Retro, a third HQ look: sunset sky, a neon floor rolling toward you, chrome type. Click Look on the control panel, or say "retro look". 9.0: Chief of Staff joins HQ as the COS wedge and panel, and a fourth look, night drive, from the board. Say chief for the brief, what needs me for Start Here, done two to close a thread, undo to reopen it. 9.0.1: fifty looks. Each push of Look steps to the next one (right click goes back); say "next look", "previous look", "random look" or a look by name. And "next, over" heard as "next server" still jumps. 9.1: the CHxTLD Outbox joins HQ as the OUT wedge, and a click opens your drafts over the pie to read and edit; edits save back to the Outbox. Say "outbox" to hear them, "read draft two" to hear one. Nothing sends from HQ. 9.2: a View pill with eleven ways to draw your chats, a Look pill with a picker and favorites, two hand sketched looks, and Chief of Staff one tap away with Open chat on every Start Here card. 9.3: looks run dark to light, so stepping never jumps from black to white, and a change fades instead of cutting. Retro Sky, a retro futurist look whose sky follows the time of day. Follow the clock picks from your favorites by daylight; say "follow the clock". 9.4: a second Outbox, ANDRÉ MANDEL, on its own letterhead beside the CHxTLD one, both one tap away on the pill rail ("mandel outbox"); and ten new looks: Trace, Marker, Charcoal, Chalkboard, Funnies, Space Opera, Overdrive, Dime Novel, Desert Neon, Bunker. 9.4.1: Chief of Staff wears HQ's look; Night drive keeps the board's own. 9.4.3: the model pills sit in the control panel's header, so nothing falls off the bottom of HQ, and a short window scales HQ down instead of cutting it off. 9.5: HQ holds the AirPods press, so the chats window can be minimized.
+// @version      9.6
+// @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land. 8.8: one model for every open chat, by voice ("all chats to Sonnet") or from the HQ model pills. 8.9: Boot. The Switcheroo Chrome launcher opens HQ with your 10 most recent chats behind it and the mic ready, no clicks; or say "boot up". 8.9.1: "stop, new chat in Alder" works: a lead in no longer hides a command, and new chat finds every project, not just the sidebar. 8.9.2: the mic bell is now the Long bell, struck three times so the AirPods can't clip it. 8.9.3: Retro, a third HQ look: sunset sky, a neon floor rolling toward you, chrome type. Click Look on the control panel, or say "retro look". 9.0: Chief of Staff joins HQ as the COS wedge and panel, and a fourth look, night drive, from the board. Say chief for the brief, what needs me for Start Here, done two to close a thread, undo to reopen it. 9.0.1: fifty looks. Each push of Look steps to the next one (right click goes back); say "next look", "previous look", "random look" or a look by name. And "next, over" heard as "next server" still jumps. 9.1: the CHxTLD Outbox joins HQ as the OUT wedge, and a click opens your drafts over the pie to read and edit; edits save back to the Outbox. Say "outbox" to hear them, "read draft two" to hear one. Nothing sends from HQ. 9.2: a View pill with eleven ways to draw your chats, a Look pill with a picker and favorites, two hand sketched looks, and Chief of Staff one tap away with Open chat on every Start Here card. 9.3: looks run dark to light, so stepping never jumps from black to white, and a change fades instead of cutting. Retro Sky, a retro futurist look whose sky follows the time of day. Follow the clock picks from your favorites by daylight; say "follow the clock". 9.4: a second Outbox, ANDRÉ MANDEL, on its own letterhead beside the CHxTLD one, both one tap away on the pill rail ("mandel outbox"); and ten new looks: Trace, Marker, Charcoal, Chalkboard, Funnies, Space Opera, Overdrive, Dime Novel, Desert Neon, Bunker. 9.4.1: Chief of Staff wears HQ's look; Night drive keeps the board's own. 9.4.3: the model pills sit in the control panel's header, so nothing falls off the bottom of HQ, and a short window scales HQ down instead of cutting it off. 9.5: HQ holds the AirPods press, so the chats window can be minimized. 9.6: double press is a new chat in this project, triple press is the next chat waiting.
 // @match        https://claude.ai/*
 // @match        *://*/*
 // @grant        GM_xmlhttpRequest
@@ -33,12 +33,14 @@
     Squeeze while Claude reads  pauses the reading, takes a quick note into the
                                 box without sending, then resumes the reading.
                                 The notes wait in the box and go out with your next message.
-    F8 (play/pause key)       same as a squeeze; double tap F8 = your turn mode on or off
-    F9 (next track key)       your turn mode on or off (same signal as a double squeeze)
+    F8 (play/pause key)       same as a squeeze; double tap F8 = new chat in this chat's project (9.6)
+    F9 (next track key)       new chat in this chat's project (same signal as a double squeeze, 9.6)
     Space (8.5) or Option + Space  same thing from the keyboard. Plain Space only when you're not typing in a box.
     Squeeze, F8 or Space, then "stop" / "abort" / "shut up" while Claude reads: drops that reading (8.5)
-    Double or triple squeeze  your turn mode on or off: when Claude finishes reading,
-    (or Option + Shift + L)   the mic opens by itself. Say nothing for 8 seconds and it closes.
+    Double squeeze (9.6)      new chat in the project of the chat you're in (outside a project, a plain new chat)
+    Triple squeeze (9.6)      next chat waiting, same as saying "next"
+    Option + Shift + L        your turn mode on or off: when Claude finishes reading,
+                              the mic opens by itself. Say nothing for 8 seconds and it closes.
                               3.4: the Switchboard says what's waiting first, then the mic opens.
                               A soft tick means the mic is really listening; start talking then.
                               4.0: warm mic is gone. Holding the mic open turned every squeeze
@@ -346,6 +348,10 @@
     violet night, rosy dawn, a pale peach morning, a bright blue noon, golden hour, then the sunset at dusk. Follow
     the clock (in the Look picker, or say "follow the clock") picks from your favorites by daylight, darkest at night,
     brightest at noon; picking a look yourself turns it off. Look numbers changed; favorites keep.
+  9.6: EARBUD GESTURES. Double press opens a new chat in the project of the chat you're in, with the mic
+    ready; outside a project it opens a plain new chat. Triple press jumps to the next chat waiting, red first,
+    the same as saying "next". Both are ignored while the mic is open, so a stray press never leaves mid
+    sentence. Your turn mode moves to Option Shift L only.
   9.5.1: CLEANER HQ. Chief of Staff and both Outboxes are pills only, no longer cards in the views. HQ opens any of
     the three that hasn't reported in, behind it, a few seconds after it loads, so Mandel is there to tap like the
     others. No more double readbacks: a reply heard in one tab isn't started over in another, or when you land back
@@ -3241,8 +3247,10 @@
         hqTap = setTimeout(() => { hqTap = null; hqPress('single'); }, 450);
       };
       ['play', 'pause', 'stop'].forEach((a) => { try { navigator.mediaSession.setActionHandler(a, tap); } catch (e) {} });
-      ['nexttrack', 'previoustrack', 'seekforward', 'seekbackward'].forEach((a) => {
-        try { navigator.mediaSession.setActionHandler(a, () => hqPress('track')); } catch (e) {}
+      // 9.6: AirPods double press arrives as next track, triple as previous track; each gets its own job
+      const trackKind = { nexttrack: 'next', previoustrack: 'prev', seekforward: 'track', seekbackward: 'track' };
+      Object.keys(trackKind).forEach((a) => {
+        try { navigator.mediaSession.setActionHandler(a, () => hqPress(trackKind[a])); } catch (e) {}
       });
       try { navigator.mediaSession.playbackState = 'playing'; } catch (e) {}
     }
@@ -8054,9 +8062,11 @@
       if (!ok) openTurnMic('new chat by voice');
     })();
   } catch (e) {}
-  async function newChat(spoken, sent) {
+  async function newChat(spoken, sent, proj) {
     let target = null, label = 'New chat', url = '/new';
-    if (spoken) {
+    if (proj) {   // 9.6: a double press, already knows the project
+      target = proj.el; label = 'New chat in ' + shortName(proj.name); url = '/project/' + proj.id;
+    } else if (spoken) {
       const p = await findProject(spoken);   // 8.9.1: the sidebar first, then every project you have
       if (!p) { await say("I don't see a project called " + spoken + '.'); return; }
       target = p.el; label = 'New chat in ' + shortName(p.name); url = '/project/' + p.id;
@@ -8990,12 +9000,52 @@
   }
   function humOff() { if (hum) { try { hum.close(); } catch (e) {} hum = null; } }
   // one press, two presses, or a track key: the same thing whether this tab or HQ heard it
+  // 9.6: single opens the mic, double ('double' from two taps, 'next' from the AirPods) starts a new chat in
+  // this chat's project, triple ('prev') jumps to the chat waiting longest. Seek keys still flip your turn mode.
+  let pressBusyAt = 0;
   function pressAct(kind) {
-    if (DK.on || (DK.present && !composer())) {   // 7.9: in a Swipe Deck tab one reads the card, two stop the deck
-      if (kind === 'double') deckStop(false); else if (kind === 'single') deckSqueeze(); else toggleAutoListen();
+    if (DK.on || (DK.present && !composer())) {   // 7.9: in a Swipe Deck tab one reads the card, two or three stop the deck
+      if (kind === 'single') deckSqueeze(); else if (kind === 'track') toggleAutoListen(); else deckStop(false);
       return;
     }
-    if (kind === 'single') toggleDictation(); else toggleAutoListen();
+    if (kind === 'single') { toggleDictation(); return; }
+    if (kind === 'track') { toggleAutoListen(); return; }
+    if (Date.now() - pressBusyAt < 2500) return;   // one gesture at a time; a page change takes a moment
+    if (buttons('stop').length) { toast('Mic is open. Finish first, then press again'); return; }   // never leave mid sentence
+    pressBusyAt = Date.now();
+    if (kind === 'prev') { dlog('triple press: next chat waiting'); jumpNext(true); return; }
+    dlog('double press: new chat in this project');
+    newChatHere();
+  }
+  // 9.6: the project of the chat you're in, by the page address, then Claude's record of the chat, then the header link
+  async function hereProject() {
+    const id = /^\/project\/([0-9a-f-]{36})/i.exec(location.pathname);
+    if (id) return id[1].toLowerCase();
+    const c = /^\/chat\/([0-9a-f-]{36})/i.exec(location.pathname);
+    if (c) {
+      try {
+        const org = await orgId();
+        if (org) {
+          const r = await fetch('/api/organizations/' + org + '/chat_conversations/' + c[1], { credentials: 'include' });
+          if (r.ok) {
+            const j = await r.json();
+            const p = j && (j.project_uuid || (j.project && j.project.uuid));
+            if (p) return String(p).toLowerCase();
+            if (j && 'project_uuid' in j) return null;   // Claude says this chat isn't in a project
+          }
+        }
+      } catch (e) { dlog('chat project lookup failed', String((e && e.message) || e)); }
+    }
+    const a = [...document.querySelectorAll('header a[href^="/project/"], main a[href^="/project/"]')].find((x) => !ours(x));
+    const m = a && /\/project\/([0-9a-f-]{36})/i.exec(a.getAttribute('href') || '');
+    return m ? m[1].toLowerCase() : null;
+  }
+  async function newChatHere() {
+    const pid = await hereProject();
+    if (!pid) { dlog('no project here, plain new chat'); return newChat(null, false); }
+    const hit = (await projectIndex()).find((x) => x.id === pid);
+    const el = [...document.querySelectorAll('a[href*="/project/"]')].find((a) => !ours(a) && (a.getAttribute('href') || '').toLowerCase().includes(pid)) || null;
+    return newChat(null, false, { id: pid, name: (hit && hit.name) || 'this project', el });
   }
   function yieldKeysToHQ() {
     if (silent) { try { silent.pause(); } catch (e) {} silent = null; }
@@ -9036,9 +9086,10 @@
     ['play', 'pause', 'stop'].forEach((a) => {
       try { navigator.mediaSession.setActionHandler(a, squeeze); } catch (e) {}
     });
-    // double squeeze = next track, triple = previous track. Either one flips your turn mode.
-    ['nexttrack', 'previoustrack', 'seekforward', 'seekbackward'].forEach((a) => {
-      try { navigator.mediaSession.setActionHandler(a, () => pressAct('track')); } catch (e) {}
+    // 9.6: double squeeze = next track = new chat in this project; triple = previous track = next chat waiting
+    const trackKind = { nexttrack: 'next', previoustrack: 'prev', seekforward: 'track', seekbackward: 'track' };
+    Object.keys(trackKind).forEach((a) => {
+      try { navigator.mediaSession.setActionHandler(a, () => pressAct(trackKind[a])); } catch (e) {}
     });
     navigator.mediaSession.playbackState = 'playing';
   }
@@ -9143,7 +9194,7 @@
     'Say next, take me to name, status, snooze 10, go quiet, wake up',
     'F8, Space or squeeze while Claude talks: quick note, or say stop to drop the reading',
     'F8 or squeeze while an agenda take plays: note, then it resumes',
-    'Double F8 or double squeeze: your turn mode (Option Shift L)',
+    'Double squeeze: new chat in this project. Triple: next chat waiting. Your turn mode: Option Shift L',
     'Option Shift N: next chat   Option Shift B: board',
     'Option Shift A: auto send   Option Shift R: auto read aloud'
   ].join('\n');
