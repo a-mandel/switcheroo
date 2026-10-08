@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Claude Hands Free Text Mode
 // @namespace    andre.mandel
-// @version      9.7.3
-// @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land. 8.8: one model for every open chat, by voice ("all chats to Sonnet") or from the HQ model pills. 8.9: Boot. The Switcheroo Chrome launcher opens HQ with your 10 most recent chats behind it and the mic ready, no clicks; or say "boot up". 8.9.1: "stop, new chat in Alder" works: a lead in no longer hides a command, and new chat finds every project, not just the sidebar. 8.9.2: the mic bell is now the Long bell, struck three times so the AirPods can't clip it. 8.9.3: Retro, a third HQ look: sunset sky, a neon floor rolling toward you, chrome type. Click Look on the control panel, or say "retro look". 9.0: Chief of Staff joins HQ as the COS wedge and panel, and a fourth look, night drive, from the board. Say chief for the brief, what needs me for Start Here, done two to close a thread, undo to reopen it. 9.0.1: fifty looks. Each push of Look steps to the next one (right click goes back); say "next look", "previous look", "random look" or a look by name. And "next, over" heard as "next server" still jumps. 9.1: the CHxTLD Outbox joins HQ as the OUT wedge, and a click opens your drafts over the pie to read and edit; edits save back to the Outbox. Say "outbox" to hear them, "read draft two" to hear one. Nothing sends from HQ. 9.2: a View pill with eleven ways to draw your chats, a Look pill with a picker and favorites, two hand sketched looks, and Chief of Staff one tap away with Open chat on every Start Here card. 9.3: looks run dark to light, so stepping never jumps from black to white, and a change fades instead of cutting. Retro Sky, a retro futurist look whose sky follows the time of day. Follow the clock picks from your favorites by daylight; say "follow the clock". 9.4: a second Outbox, ANDRÉ MANDEL, on its own letterhead beside the CHxTLD one, both one tap away on the pill rail ("mandel outbox"); and ten new looks: Trace, Marker, Charcoal, Chalkboard, Funnies, Space Opera, Overdrive, Dime Novel, Desert Neon, Bunker. 9.4.1: Chief of Staff wears HQ's look; Night drive keeps the board's own. 9.4.3: the model pills sit in the control panel's header, so nothing falls off the bottom of HQ, and a short window scales HQ down instead of cutting it off. 9.5: HQ holds the AirPods press, so the chats window can be minimized. 9.6: double press is a new chat in this project, triple press is the next chat waiting. 9.7: a voice per project: Mississippi Nikola, Walsh Hank, Haynes Jamieson, Kelly Samantha, and Eleanor for any other chat. 9.7.1: the natural ElevenLabs model, normal speed, and HQ's own lines keep your old voice. 9.7.2: mic sound 22, Voices: a woman's voice says one of 24 short lines when the mic opens, a different one each time. 9.7.3: every chat back to Annika; per project voices are off until you add one.
+// @version      9.7.4
+// @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land. 8.8: one model for every open chat, by voice ("all chats to Sonnet") or from the HQ model pills. 8.9: Boot. The Switcheroo Chrome launcher opens HQ with your 10 most recent chats behind it and the mic ready, no clicks; or say "boot up". 8.9.1: "stop, new chat in Alder" works: a lead in no longer hides a command, and new chat finds every project, not just the sidebar. 8.9.2: the mic bell is now the Long bell, struck three times so the AirPods can't clip it. 8.9.3: Retro, a third HQ look: sunset sky, a neon floor rolling toward you, chrome type. Click Look on the control panel, or say "retro look". 9.0: Chief of Staff joins HQ as the COS wedge and panel, and a fourth look, night drive, from the board. Say chief for the brief, what needs me for Start Here, done two to close a thread, undo to reopen it. 9.0.1: fifty looks. Each push of Look steps to the next one (right click goes back); say "next look", "previous look", "random look" or a look by name. And "next, over" heard as "next server" still jumps. 9.1: the CHxTLD Outbox joins HQ as the OUT wedge, and a click opens your drafts over the pie to read and edit; edits save back to the Outbox. Say "outbox" to hear them, "read draft two" to hear one. Nothing sends from HQ. 9.2: a View pill with eleven ways to draw your chats, a Look pill with a picker and favorites, two hand sketched looks, and Chief of Staff one tap away with Open chat on every Start Here card. 9.3: looks run dark to light, so stepping never jumps from black to white, and a change fades instead of cutting. Retro Sky, a retro futurist look whose sky follows the time of day. Follow the clock picks from your favorites by daylight; say "follow the clock". 9.4: a second Outbox, ANDRÉ MANDEL, on its own letterhead beside the CHxTLD one, both one tap away on the pill rail ("mandel outbox"); and ten new looks: Trace, Marker, Charcoal, Chalkboard, Funnies, Space Opera, Overdrive, Dime Novel, Desert Neon, Bunker. 9.4.1: Chief of Staff wears HQ's look; Night drive keeps the board's own. 9.4.3: the model pills sit in the control panel's header, so nothing falls off the bottom of HQ, and a short window scales HQ down instead of cutting it off. 9.5: HQ holds the AirPods press, so the chats window can be minimized. 9.6: double press is a new chat in this project, triple press is the next chat waiting. 9.7: a voice per project: Mississippi Nikola, Walsh Hank, Haynes Jamieson, Kelly Samantha, and Eleanor for any other chat. 9.7.1: the natural ElevenLabs model, normal speed, and HQ's own lines keep your old voice. 9.7.2: mic sound 22, Voices: a woman's voice says one of 24 short lines when the mic opens, a different one each time. 9.7.3: every chat back to Annika; per project voices are off until you add one. 9.7.4: one voice everywhere, picked from your ElevenLabs library by name.
 // @match        https://claude.ai/*
 // @match        *://*/*
 // @grant        GM_xmlhttpRequest
@@ -348,6 +348,9 @@
     violet night, rosy dawn, a pale peach morning, a bright blue noon, golden hour, then the sunset at dusk. Follow
     the clock (in the Look picker, or say "follow the clock") picks from your favorites by daylight, darkest at night,
     brightest at noon; picking a look yourself turns it off. Look numbers changed; favorites keep.
+  9.7.4: ONE VOICE EVERYWHERE. A menu item (ElevenLabs: one voice everywhere) lists your ElevenLabs voices by
+    name and sets every one of them at once, replies, unmapped chats and HQ's own lines, from a single number.
+    No voice IDs to paste, and no three settings to keep in step.
   9.7.3: EVERY CHAT BACK TO ANNIKA. Per project voices ship off. The machinery and the menu stay, so adding one
     back is a menu away (ElevenLabs: project voices), but nothing routes by project until you do.
   9.7.2: VOICE CUES. Mic sound 22 is a spoken line instead of a bell: "talk to me", "I'm listening", "hey baby" and 21
@@ -6975,6 +6978,55 @@
       });
     });
   }
+  // 9.7.4: your ElevenLabs library, so a voice can be picked by name instead of pasting an ID
+  function elMyVoices(key) {
+    return new Promise((resolve, reject) => {
+      GM_xmlhttpRequest({
+        method: 'GET',
+        url: 'https://api.elevenlabs.io/v1/voices',
+        headers: { 'xi-api-key': key, Accept: 'application/json' },
+        responseType: 'json', timeout: 20000,
+        onload: (r) => {
+          if (!(r.status >= 200 && r.status < 300 && r.response)) return reject({ status: r.status });
+          try {
+            const j = typeof r.response === 'string' ? JSON.parse(r.response) : r.response;
+            const out = (j.voices || []).map((v) => ({ id: v.voice_id, name: String(v.name || v.voice_id) })).filter((v) => v.id);
+            out.length ? resolve(out) : reject({ status: 1 });
+          } catch (e) { reject({ status: 1 }); }
+        },
+        onerror: () => reject({ status: 0 }), ontimeout: () => reject({ status: 0 })
+      });
+    });
+  }
+  // 9.7.4: one voice for everything. Sets the project map to something that matches nothing, plus the two
+  // fallbacks, so replies, unmapped chats and HQ's own lines all land on the same voice.
+  function elSetOneVoice(id) {
+    try { GM_setValue('chf_el_voices', JSON.stringify([['zznone', id]])); } catch (e) {}
+    try { GM_setValue('chf_el_chief', id); } catch (e) {}
+    try { GM_setValue('chf_el_voice', id); } catch (e) {}
+    elWarned = false;
+  }
+  async function elOneVoicePick() {
+    const key = elKey();
+    if (!key) return toast('Set your ElevenLabs API key first, in this same menu.');
+    toast('Fetching your ElevenLabs voices...');
+    let list;
+    try { list = await elMyVoices(key); }
+    catch (e) {
+      const st = (e && e.status) || 0;
+      return toast(st === 401 ? 'ElevenLabs turned down the API key.' : "Couldn't reach your ElevenLabs voices.");
+    }
+    const now = elChiefVoice();
+    const at = list.findIndex((v) => v.id === now);
+    const menu = list.map((v, i) => (i + 1) + '. ' + v.name + (v.id === now ? '   (current)' : '')).join('\n');
+    const pick = window.prompt('One voice for every chat, HQ included. Type a number.\n\n' + menu, String(at >= 0 ? at + 1 : 1));
+    if (pick === null) return;
+    const i = parseInt(String(pick).trim(), 10) - 1;
+    if (!(i >= 0 && i < list.length)) return toast('No voice picked.');
+    elSetOneVoice(list[i].id);
+    toast('Every chat now reads in ' + list[i].name + '. Reload your chat tabs.');
+  }
+
   async function elFetch(text, stamps) {
     const key = elKey(), voice = elVoice(stamps);   // stamps means a reply: it reads in its project's voice
     const go = async (v) => {
@@ -7060,6 +7112,7 @@
       GM_registerMenuCommand('Mic sound: quieter', () => stepCueVol(-1));
       GM_registerMenuCommand('Voice faster', () => stepSpeed(1));
       GM_registerMenuCommand('Voice slower', () => stepSpeed(-1));
+      GM_registerMenuCommand('ElevenLabs: one voice everywhere', () => { elOneVoicePick(); });
       GM_registerMenuCommand('ElevenLabs: HQ lines voice by ID', () => {
         const v = window.prompt('Paste the ElevenLabs voice ID for HQ and Switchboard lines. Leave empty for Annika.', gmGet('chf_el_voice', '') || '');
         if (v === null) return;

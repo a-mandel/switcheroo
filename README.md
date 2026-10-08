@@ -8,9 +8,13 @@ Install or update: open [switcheroo.user.js](https://raw.githubusercontent.com/a
 
 Replies use ElevenLabs' natural model, not the fast one, and reading speed is back to normal. HQ's own lines keep the voice you had before, Annika (ElevenLabs: HQ lines voice by ID to change it).
 
+## One voice everywhere (9.7.4)
+
+Tampermonkey menu, ElevenLabs: one voice everywhere. It lists your ElevenLabs voices by name, you type a number, and every voice Switcheroo uses changes at once: replies, chats outside a mapped project, and HQ's own lines. No voice IDs to paste. Reload your chat tabs after.
+
 ## A voice per project (9.7, off by default since 9.7.3)
 
-Replies can read in a different ElevenLabs voice per project, so you know by ear which agent is talking. It ships off: every chat reads in Annika. To turn it on, Tampermonkey menu, ElevenLabs: project voices, then a list like `kelly = VOICEID; walsh = VOICEID`, matched against the project name or chat title. ElevenLabs: Chief voice by ID sets what unmatched chats use, and ElevenLabs: HQ lines voice by ID sets HQ's own lines.
+Replies can read in a different ElevenLabs voice per project, so you know by ear which agent is talking. It ships off: every chat reads in Annika. To turn it on, Tampermonkey menu, ElevenLabs: project voices, then a list like `kelly = VOICEID; walsh = VOICEID`, matched against the project name or chat title.
 
 ## Earbud gestures (9.6)
 
