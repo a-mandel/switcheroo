@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Claude Hands Free Text Mode
 // @namespace    andre.mandel
-// @version      9.6
-// @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land. 8.8: one model for every open chat, by voice ("all chats to Sonnet") or from the HQ model pills. 8.9: Boot. The Switcheroo Chrome launcher opens HQ with your 10 most recent chats behind it and the mic ready, no clicks; or say "boot up". 8.9.1: "stop, new chat in Alder" works: a lead in no longer hides a command, and new chat finds every project, not just the sidebar. 8.9.2: the mic bell is now the Long bell, struck three times so the AirPods can't clip it. 8.9.3: Retro, a third HQ look: sunset sky, a neon floor rolling toward you, chrome type. Click Look on the control panel, or say "retro look". 9.0: Chief of Staff joins HQ as the COS wedge and panel, and a fourth look, night drive, from the board. Say chief for the brief, what needs me for Start Here, done two to close a thread, undo to reopen it. 9.0.1: fifty looks. Each push of Look steps to the next one (right click goes back); say "next look", "previous look", "random look" or a look by name. And "next, over" heard as "next server" still jumps. 9.1: the CHxTLD Outbox joins HQ as the OUT wedge, and a click opens your drafts over the pie to read and edit; edits save back to the Outbox. Say "outbox" to hear them, "read draft two" to hear one. Nothing sends from HQ. 9.2: a View pill with eleven ways to draw your chats, a Look pill with a picker and favorites, two hand sketched looks, and Chief of Staff one tap away with Open chat on every Start Here card. 9.3: looks run dark to light, so stepping never jumps from black to white, and a change fades instead of cutting. Retro Sky, a retro futurist look whose sky follows the time of day. Follow the clock picks from your favorites by daylight; say "follow the clock". 9.4: a second Outbox, ANDRÉ MANDEL, on its own letterhead beside the CHxTLD one, both one tap away on the pill rail ("mandel outbox"); and ten new looks: Trace, Marker, Charcoal, Chalkboard, Funnies, Space Opera, Overdrive, Dime Novel, Desert Neon, Bunker. 9.4.1: Chief of Staff wears HQ's look; Night drive keeps the board's own. 9.4.3: the model pills sit in the control panel's header, so nothing falls off the bottom of HQ, and a short window scales HQ down instead of cutting it off. 9.5: HQ holds the AirPods press, so the chats window can be minimized. 9.6: double press is a new chat in this project, triple press is the next chat waiting.
+// @version      9.7
+// @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land. 8.8: one model for every open chat, by voice ("all chats to Sonnet") or from the HQ model pills. 8.9: Boot. The Switcheroo Chrome launcher opens HQ with your 10 most recent chats behind it and the mic ready, no clicks; or say "boot up". 8.9.1: "stop, new chat in Alder" works: a lead in no longer hides a command, and new chat finds every project, not just the sidebar. 8.9.2: the mic bell is now the Long bell, struck three times so the AirPods can't clip it. 8.9.3: Retro, a third HQ look: sunset sky, a neon floor rolling toward you, chrome type. Click Look on the control panel, or say "retro look". 9.0: Chief of Staff joins HQ as the COS wedge and panel, and a fourth look, night drive, from the board. Say chief for the brief, what needs me for Start Here, done two to close a thread, undo to reopen it. 9.0.1: fifty looks. Each push of Look steps to the next one (right click goes back); say "next look", "previous look", "random look" or a look by name. And "next, over" heard as "next server" still jumps. 9.1: the CHxTLD Outbox joins HQ as the OUT wedge, and a click opens your drafts over the pie to read and edit; edits save back to the Outbox. Say "outbox" to hear them, "read draft two" to hear one. Nothing sends from HQ. 9.2: a View pill with eleven ways to draw your chats, a Look pill with a picker and favorites, two hand sketched looks, and Chief of Staff one tap away with Open chat on every Start Here card. 9.3: looks run dark to light, so stepping never jumps from black to white, and a change fades instead of cutting. Retro Sky, a retro futurist look whose sky follows the time of day. Follow the clock picks from your favorites by daylight; say "follow the clock". 9.4: a second Outbox, ANDRÉ MANDEL, on its own letterhead beside the CHxTLD one, both one tap away on the pill rail ("mandel outbox"); and ten new looks: Trace, Marker, Charcoal, Chalkboard, Funnies, Space Opera, Overdrive, Dime Novel, Desert Neon, Bunker. 9.4.1: Chief of Staff wears HQ's look; Night drive keeps the board's own. 9.4.3: the model pills sit in the control panel's header, so nothing falls off the bottom of HQ, and a short window scales HQ down instead of cutting it off. 9.5: HQ holds the AirPods press, so the chats window can be minimized. 9.6: double press is a new chat in this project, triple press is the next chat waiting. 9.7: a voice per project: Mississippi Nikola, Walsh Hank, Haynes Jamieson, Kelly Samantha, and the Chief, Eleanor, for HQ and everything else.
 // @match        https://claude.ai/*
 // @match        *://*/*
 // @grant        GM_xmlhttpRequest
@@ -348,6 +348,10 @@
     violet night, rosy dawn, a pale peach morning, a bright blue noon, golden hour, then the sunset at dusk. Follow
     the clock (in the Look picker, or say "follow the clock") picks from your favorites by daylight, darkest at night,
     brightest at noon; picking a look yourself turns it off. Look numbers changed; favorites keep.
+  9.7: A VOICE PER PROJECT. Replies read in the voice of their chat's project, so you know who's talking:
+    Mississippi Nikola, Walsh Hank Harvey, Haynes Jamieson, Kelly Samantha Easton. HQ's own lines and any chat
+    outside those projects read in the Chief's voice, Eleanor. Change them from the Tampermonkey menu
+    (ElevenLabs: project voices, ElevenLabs: Chief voice by ID). A voice not in your voices falls back to the Chief.
   9.6: EARBUD GESTURES. Double press opens a new chat in the project of the chat you're in, with the mic
     ready; outside a project it opens a plain new chat. Triple press jumps to the next chat waiting, red first,
     the same as saying "next". Both are ignored while the mic is open, so a stray press never leaves mid
@@ -6809,7 +6813,25 @@
   const EL_BUILTIN_VOICE = 'cgSgspJ2msm6clMCkdW9';   // Jessica, built into every ElevenLabs account
   const gmGet = (k, d) => { try { return typeof GM_getValue === 'function' ? GM_getValue(k, d) : d; } catch (e) { return d; } };
   const elKey = () => String(gmGet('chf_el_key', '') || '').trim();
-  const elVoice = () => String(gmGet('chf_el_voice', '') || '').trim() || EL_DEFAULT_VOICE;
+  // 9.7: a voice per project, so you know who's talking. Replies read in the voice of their chat's project;
+  // HQ's own lines and anything unmatched read in the Chief's voice. Edit the map from the Tampermonkey menu.
+  const EL_CHIEF_VOICE = 'DcADU5DwsQtYalQf4OwN';     // Eleanor, British
+  const EL_PROJECT_VOICES = [
+    ['mississippi', 'DAGnQ7r9sMtV0Q44g1Mi'],          // Nikola, Serbian
+    ['walsh, lahontan', 'KvaCHcJoMXfOzwtsULOZ'],       // Hank Harvey, mountain American
+    ['haynes, hainds', 'cxKLtnfLBQnBPij2KgMA'],        // Jamieson, smooth American
+    ['kelly', 'Zt0IhrD6tV28fPt2YjyG']                  // Samantha Easton, Southern California
+  ];
+  const elVoiceMap = () => { try { const j = JSON.parse(gmGet('chf_el_voices', '') || 'null'); if (Array.isArray(j)) return j; } catch (e) {} return EL_PROJECT_VOICES; };
+  const elChiefVoice = () => String(gmGet('chf_el_chief', '') || '').trim() || EL_CHIEF_VOICE;
+  function elProjectVoice() {
+    let hay = '';
+    try { hay = (projectName() + ' ' + chatTitle()).toLowerCase(); } catch (e) {}
+    if (!hay.trim()) return '';
+    for (const [words, id] of elVoiceMap()) if (String(words).split(',').map((x) => x.trim().toLowerCase()).filter(Boolean).some((k) => hay.includes(k))) return id;
+    return '';
+  }
+  const elVoice = (reply) => (reply && elProjectVoice()) || elChiefVoice();
   let elDownUntil = 0, elWarned = false;
   // 6.6: reading speed for the ElevenLabs voice, as a playback rate (pitch stays put)
   const SPEEDS = [1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6];
@@ -6855,7 +6877,7 @@
     });
   }
   async function elFetch(text, stamps) {
-    const key = elKey(), voice = elVoice();
+    const key = elKey(), voice = elVoice(stamps);   // stamps means a reply: it reads in its project's voice
     const go = async (v) => {
       if (!stamps || elStampsOff) return elRequest(text, v, key, false);
       try { return await elRequest(text, v, key, true); }
@@ -6870,6 +6892,11 @@
     catch (e) {
       const st = (e && e.status) || 0;
       if (voice !== EL_BUILTIN_VOICE && st >= 400 && st < 500 && ![401, 402, 429].includes(st)) {
+        const chief = elChiefVoice();
+        if (voice !== chief) {   // 9.7: a project voice that won't play hands over to the Chief first
+          if (!elWarned) { elWarned = true; toast("That project's ElevenLabs voice isn't in your voices yet, so the Chief is reading"); }
+          try { return await go(chief); } catch (x) { const s2 = (x && x.status) || 0; if (!(s2 >= 400 && s2 < 500 && ![401, 402, 429].includes(s2))) throw x; }
+        }
         if (!elWarned) { elWarned = true; toast("That ElevenLabs voice isn't in your voices yet, so Jessica is reading"); }
         return go(EL_BUILTIN_VOICE);
       }
@@ -6934,12 +6961,21 @@
       GM_registerMenuCommand('Mic sound: quieter', () => stepCueVol(-1));
       GM_registerMenuCommand('Voice faster', () => stepSpeed(1));
       GM_registerMenuCommand('Voice slower', () => stepSpeed(-1));
-      GM_registerMenuCommand('ElevenLabs: choose voice by ID', () => {
-        const v = window.prompt('Paste an ElevenLabs voice ID. Leave empty for Annika.', gmGet('chf_el_voice', '') || '');
+      GM_registerMenuCommand('ElevenLabs: Chief voice by ID', () => {
+        const v = window.prompt('Paste the ElevenLabs voice ID for the Chief, HQ, and any chat outside a mapped project. Leave empty for Eleanor.', gmGet('chf_el_chief', '') || '');
         if (v === null) return;
-        try { GM_setValue('chf_el_voice', v.trim()); } catch (e) {}
+        try { GM_setValue('chf_el_chief', v.trim()); } catch (e) {}
         elWarned = false;
-        toast(v.trim() ? 'ElevenLabs voice set' : 'ElevenLabs voice back to Annika');
+        toast(v.trim() ? 'Chief voice set' : 'Chief voice back to Eleanor');
+      });
+      GM_registerMenuCommand('ElevenLabs: project voices', () => {
+        const now = elVoiceMap().map(([w, id]) => w + ' = ' + id).join('; ');
+        const v = window.prompt('Project voices: words in the project name or chat title = voice ID, separated by semicolons. Leave empty for the defaults.', now);
+        if (v === null) return;
+        const map = v.split(';').map((x) => x.split('=')).filter((x) => x.length === 2 && x[0].trim() && x[1].trim()).map((x) => [x[0].trim(), x[1].trim()]);
+        try { GM_setValue('chf_el_voices', v.trim() && map.length ? JSON.stringify(map) : ''); } catch (e) {}
+        elWarned = false;
+        toast(v.trim() && map.length ? map.length + ' project voices set' : 'Project voices back to the defaults');
       });
     }
   } catch (e) {}
