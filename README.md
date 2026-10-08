@@ -4,6 +4,10 @@ Hands free Claude in Chrome: dictation, read aloud, a switchboard for every Clau
 
 Install or update: open [switcheroo.user.js](https://raw.githubusercontent.com/a-mandel/switcheroo/main/switcheroo.user.js) with Tampermonkey installed. Tampermonkey keeps it current from this repo on its own. Say "update Switcheroo" to check right away.
 
+## One screen for the chats (9.5)
+
+HQ now holds the AirPods press. Minimize or bury the window with your chats and the press still lands: HQ hears it and hands it to the chat that has the floor. When Claude starts reading, HQ takes the press straight back. HQ needs one click after it opens; until then, or when HQ is closed, the chat holds the press the old way.
+
 ## Fits the screen (9.4.3)
 
 The model pills (Sonnet, Opus, Haiku, Fable) now sit in the control panel's header, beside Controls, so they no longer fall off the bottom of HQ. A window too short for HQ scales it down to fit instead of cutting off the bottom.

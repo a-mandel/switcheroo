@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Claude Hands Free Text Mode
 // @namespace    andre.mandel
-// @version      9.4.4
-// @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land. 8.8: one model for every open chat, by voice ("all chats to Sonnet") or from the HQ model pills. 8.9: Boot. The Switcheroo Chrome launcher opens HQ with your 10 most recent chats behind it and the mic ready, no clicks; or say "boot up". 8.9.1: "stop, new chat in Alder" works: a lead in no longer hides a command, and new chat finds every project, not just the sidebar. 8.9.2: the mic bell is now the Long bell, struck three times so the AirPods can't clip it. 8.9.3: Retro, a third HQ look: sunset sky, a neon floor rolling toward you, chrome type. Click Look on the control panel, or say "retro look". 9.0: Chief of Staff joins HQ as the COS wedge and panel, and a fourth look, night drive, from the board. Say chief for the brief, what needs me for Start Here, done two to close a thread, undo to reopen it. 9.0.1: fifty looks. Each push of Look steps to the next one (right click goes back); say "next look", "previous look", "random look" or a look by name. And "next, over" heard as "next server" still jumps. 9.1: the CHxTLD Outbox joins HQ as the OUT wedge, and a click opens your drafts over the pie to read and edit; edits save back to the Outbox. Say "outbox" to hear them, "read draft two" to hear one. Nothing sends from HQ. 9.2: a View pill with eleven ways to draw your chats, a Look pill with a picker and favorites, two hand sketched looks, and Chief of Staff one tap away with Open chat on every Start Here card. 9.3: looks run dark to light, so stepping never jumps from black to white, and a change fades instead of cutting. Retro Sky, a retro futurist look whose sky follows the time of day. Follow the clock picks from your favorites by daylight; say "follow the clock". 9.4: a second Outbox, ANDRÉ MANDEL, on its own letterhead beside the CHxTLD one, both one tap away on the pill rail ("mandel outbox"); and ten new looks: Trace, Marker, Charcoal, Chalkboard, Funnies, Space Opera, Overdrive, Dime Novel, Desert Neon, Bunker. 9.4.1: Chief of Staff wears HQ's look; Night drive keeps the board's own. 9.4.3: the model pills sit in the control panel's header, so nothing falls off the bottom of HQ, and a short window scales HQ down instead of cutting it off.
+// @version      9.5
+// @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land. 8.8: one model for every open chat, by voice ("all chats to Sonnet") or from the HQ model pills. 8.9: Boot. The Switcheroo Chrome launcher opens HQ with your 10 most recent chats behind it and the mic ready, no clicks; or say "boot up". 8.9.1: "stop, new chat in Alder" works: a lead in no longer hides a command, and new chat finds every project, not just the sidebar. 8.9.2: the mic bell is now the Long bell, struck three times so the AirPods can't clip it. 8.9.3: Retro, a third HQ look: sunset sky, a neon floor rolling toward you, chrome type. Click Look on the control panel, or say "retro look". 9.0: Chief of Staff joins HQ as the COS wedge and panel, and a fourth look, night drive, from the board. Say chief for the brief, what needs me for Start Here, done two to close a thread, undo to reopen it. 9.0.1: fifty looks. Each push of Look steps to the next one (right click goes back); say "next look", "previous look", "random look" or a look by name. And "next, over" heard as "next server" still jumps. 9.1: the CHxTLD Outbox joins HQ as the OUT wedge, and a click opens your drafts over the pie to read and edit; edits save back to the Outbox. Say "outbox" to hear them, "read draft two" to hear one. Nothing sends from HQ. 9.2: a View pill with eleven ways to draw your chats, a Look pill with a picker and favorites, two hand sketched looks, and Chief of Staff one tap away with Open chat on every Start Here card. 9.3: looks run dark to light, so stepping never jumps from black to white, and a change fades instead of cutting. Retro Sky, a retro futurist look whose sky follows the time of day. Follow the clock picks from your favorites by daylight; say "follow the clock". 9.4: a second Outbox, ANDRÉ MANDEL, on its own letterhead beside the CHxTLD one, both one tap away on the pill rail ("mandel outbox"); and ten new looks: Trace, Marker, Charcoal, Chalkboard, Funnies, Space Opera, Overdrive, Dime Novel, Desert Neon, Bunker. 9.4.1: Chief of Staff wears HQ's look; Night drive keeps the board's own. 9.4.3: the model pills sit in the control panel's header, so nothing falls off the bottom of HQ, and a short window scales HQ down instead of cutting it off. 9.5: HQ holds the AirPods press, so the chats window can be minimized.
 // @match        https://claude.ai/*
 // @match        *://*/*
 // @grant        GM_xmlhttpRequest
@@ -346,6 +346,11 @@
     violet night, rosy dawn, a pale peach morning, a bright blue noon, golden hour, then the sunset at dusk. Follow
     the clock (in the Look picker, or say "follow the clock") picks from your favorites by daylight, darkest at night,
     brightest at noon; picking a look yourself turns it off. Look numbers changed; favorites keep.
+  9.5: ONE SCREEN FOR THE CHATS IS ENOUGH. HQ now holds the AirPods press. It plays the silent loop, counts the
+    taps itself and hands each press to the chat that has the floor, so the chat window can be minimized or
+    buried and the press still works. The chats keep awake on an inaudible hum that never takes the press.
+    When a reading starts, HQ takes the press straight back. HQ needs one click after it opens before it can
+    play; until then, and whenever HQ is closed, the floor chat holds the press the old way.
   9.4.4: STOP MEANS STOP AGAIN. "Stop", "abort" or "shut up" drops the reading that's playing again,
     however the mic came to be open. The abort only ever ran on the one path where a squeeze had paused
     the reading first; once read along and HQ's own voice started reading while the mic was already
@@ -3209,6 +3214,54 @@
     try { chan = new BroadcastChannel('chf-switchboard-v25'); } catch (e) {}
     const send = (m) => { try { if (chan) chan.postMessage(m); } catch (e) {} };
     const HQ_ID = Math.random().toString(36).slice(2, 10);   // 8.9: which HQ is which, for boot
+    // 9.5: HQ HOLDS THE AIRPODS. Chrome sends a headphone press to the tab playing media, and a minimized
+    // chat window couldn't keep it. HQ now plays the silent loop and owns the press, counts the taps itself,
+    // and hands the result to whichever chat holds the floor. It says so every few seconds in chf_hq_keys;
+    // while it does, chat tabs leave the press alone. If HQ can't play yet (no click since it opened),
+    // nothing changes: the floor chat keeps the press the old way until HQ gets one click.
+    const HQ_KEYS = 'chf_hq_keys';
+    let hqLoop = null, hqTap = null, hqReadAt = 0, hqReclaimAt = 0;
+    const hqOn = () => !!hqLoop && !hqLoop.paused;
+    const hqBeat = () => { if (!hqOn()) return; try { localStorage.setItem(HQ_KEYS, JSON.stringify({ id: HQ_ID, ts: Date.now() })); } catch (e) {} };
+    function hqPress(kind) {
+      try { hqLoop.play().catch(() => {}); navigator.mediaSession.playbackState = 'playing'; } catch (e) {}
+      send({ t: 'hq-press', kind, ts: Date.now() });
+    }
+    function hqHandlers() {
+      try { navigator.mediaSession.metadata = new MediaMetadata({ title: 'Switcheroo HQ' }); } catch (e) {}
+      const tap = () => {   // one tap, or two within 450 ms, same as the chats counted it
+        if (hqTap) { clearTimeout(hqTap); hqTap = null; hqPress('double'); return; }
+        hqTap = setTimeout(() => { hqTap = null; hqPress('single'); }, 450);
+      };
+      ['play', 'pause', 'stop'].forEach((a) => { try { navigator.mediaSession.setActionHandler(a, tap); } catch (e) {} });
+      ['nexttrack', 'previoustrack', 'seekforward', 'seekbackward'].forEach((a) => {
+        try { navigator.mediaSession.setActionHandler(a, () => hqPress('track')); } catch (e) {}
+      });
+      try { navigator.mediaSession.playbackState = 'playing'; } catch (e) {}
+    }
+    function hqArm() {
+      if (!('mediaSession' in navigator)) return;
+      try {
+        if (!hqLoop) { hqLoop = new Audio(silentWav()); hqLoop.loop = true; hqLoop.volume = 1; }
+        if (hqOn()) return;
+        hqLoop.play().then(() => { hqHandlers(); hqBeat(); }).catch(() => {});
+      } catch (e) {}
+    }
+    // a reading, a video or another tab took the press: take it back (pause and play makes HQ the newest player)
+    function hqReclaim() {
+      if (!hqOn() || Date.now() - hqReclaimAt < 1500) return;
+      hqReclaimAt = Date.now();
+      try { hqLoop.pause(); hqLoop.play().then(hqHandlers).catch(() => {}); } catch (e) {}
+    }
+    try {
+      hqArm();
+      ['pointerdown', 'keydown'].forEach((t) => document.addEventListener(t, (e) => { if (e.isTrusted && !hqOn()) hqArm(); }, true));
+      setInterval(() => { if (hqOn()) hqBeat(); else hqArm(); }, 4000);
+      if (typeof GM_addValueChangeListener === 'function') {
+        GM_addValueChangeListener('chf_media', (n, o, v, remote) => { if (remote) setTimeout(hqReclaim, 400); });
+      }
+      window.addEventListener('pagehide', () => { try { localStorage.removeItem(HQ_KEYS); } catch (e) {} });
+    } catch (e) {}
     const lsGet = (k, d) => { try { return JSON.parse(localStorage.getItem(k)) || d; } catch (e) { return d; } };
     let zoom = 1;
     try { zoom = +localStorage.getItem('chf_mirror_zoom2') || 1; } catch (e) {}
@@ -3455,6 +3508,7 @@
       else if (m.t === 'quiet' || m.t === 'hold' || m.t === 'cfg') scr.paint(model());
       // 8.1: where the voice is, approvals answered, the deck
       else if (m.t === 'reading') { if (!m.from || m.from === floorId) scr.setReading(m.r && floorP && m.r.path === floorP.path ? m.r : null); }
+      else if (m.t === 'hq-reclaim') hqReclaim();   // 9.5: a chat started playing a reading
       else if (m.t === 'follow') scr.follow();
       else if (m.t === 'model-ack' && m.to === 'mirror' && mdq && m.token === mdq.token) mdq.acks.push(m);   // 8.8
       // 8.2: links and pages
@@ -4343,6 +4397,7 @@
     if (!ag.audio) return;
     if (ag.audio.ended) { ag.audio.currentTime = 0; ag.ended = false; }
     ag.audio.play().catch((e) => toast('Play blocked: ' + e.message));
+    hqTakeBack();   // 9.5
     try { navigator.mediaSession.playbackState = 'playing'; } catch (e) {}
   }
   function agPause() { if (ag.audio) ag.audio.pause(); }
@@ -4502,6 +4557,7 @@
       a.onerror = () => finish(false);
       a.onpause = () => { if (!a.ended) finish(false); };
       a.play().catch(() => finish(false));
+      hqTakeBack();   // 9.5
       setTimeout(() => { if (!done) { try { a.pause(); } catch (x) {} finish(false); } }, 45000);
     });
   }
@@ -6140,6 +6196,7 @@
     switch (m.t) {
       case 'hello': publish(true); deckRelay(); chiefRelay(); linksPush(true); break;
       case 'mirror-hello': mirrorPush(true); linksPush(true); break;
+      case 'hq-press': if (isFloor() && !tabOff) { dlog('press from HQ', m.kind); pressAct(m.kind); } break;   // 9.5
       case 'page-opened': if (m.to === ME && pageAsk) { const pa = pageAsk; pageAsk = null; say('Opening ' + pa.x.label + '.'); } break;   // 8.2: HQ has it
       case 'biz': if (m.path === location.pathname) linksPush(true); break;
       case 'state':
@@ -6818,6 +6875,7 @@
         a.onerror = () => done(true);                     // skip a part that won't play
         a.onpause = () => { if (!a.ended) { dlog('reading paused', 'part ' + (i + 1) + ' at ' + a.currentTime.toFixed(1) + 's'); done(false); } };  // paused for a note
         a.play().catch((x) => { dlog('play blocked', (x && (x.name + ' ' + x.message)) || ''); done(false); });
+        hqTakeBack();   // 9.5
       });
     }, (e) => { dlog('ElevenLabs failed', 'status ' + ((e && e.status) || 0)); elFailed(e); return 'fail'; });
   }
@@ -8825,7 +8883,7 @@
   // another tab started playing and may have taken the AirPods squeeze; take it back
   let reclaimedAt = 0;
   function reclaimKeys() {
-    if (!silent || tabOff || !isFloor() || Date.now() - reclaimedAt < 2000) return;
+    if (hqHasKeys() || !silent || tabOff || !isFloor() || Date.now() - reclaimedAt < 2000) return;
     reclaimedAt = Date.now();
     try { silent.pause(); silent.play().catch(() => {}); navigator.mediaSession.playbackState = 'playing'; } catch (e) {}
   }
@@ -8876,8 +8934,58 @@
     for (let i = 0; i < n; i++) v.setInt16(44 + i * 2, Math.round(amp * Math.sin(2 * Math.PI * 30 * i / sr)), true);
     return URL.createObjectURL(new Blob([b], { type: 'audio/wav' }));
   }
+  // 9.5: HQ holds the AirPods when it can. It says so in chf_hq_keys every few seconds and sends each press
+  // here as 'hq-press'. While it does, this tab drops its own loop and handlers (so Chrome can't hand the press
+  // back to a minimized window) and keeps awake on a Web Audio hum instead, which Chrome never routes presses to.
+  const HQ_KEYS = 'chf_hq_keys';
+  const hqHasKeys = () => { const k = lsJson(HQ_KEYS, null); return !!(k && Date.now() - (k.ts || 0) < 12000); };
+  let hqHad = false;
+  const hqTakeBack = () => { if (hqHasKeys()) post({ t: 'hq-reclaim', from: ME }); };
+  let hum = null;
+  function humOn() {
+    try {
+      if (!hum) {
+        const AC = window.AudioContext || window.webkitAudioContext;
+        if (!AC) return;
+        const ctx = new AC(), osc = ctx.createOscillator(), g = ctx.createGain();
+        osc.frequency.value = 30; g.gain.value = 0.0025;   // the 3.8 hum's level, about -52 dB: Chrome counts it as sound
+        osc.connect(g); g.connect(ctx.destination); osc.start();
+        hum = ctx;
+      }
+      if (hum.state !== 'running') hum.resume().catch(() => {});
+    } catch (e) {}
+  }
+  function humOff() { if (hum) { try { hum.close(); } catch (e) {} hum = null; } }
+  // one press, two presses, or a track key: the same thing whether this tab or HQ heard it
+  function pressAct(kind) {
+    if (DK.on || (DK.present && !composer())) {   // 7.9: in a Swipe Deck tab one reads the card, two stop the deck
+      if (kind === 'double') deckStop(false); else if (kind === 'single') deckSqueeze(); else toggleAutoListen();
+      return;
+    }
+    if (kind === 'single') toggleDictation(); else toggleAutoListen();
+  }
+  function yieldKeysToHQ() {
+    if (silent) { try { silent.pause(); } catch (e) {} silent = null; }
+    if ('mediaSession' in navigator) {
+      ['play', 'pause', 'stop', 'nexttrack', 'previoustrack', 'seekforward', 'seekbackward'].forEach((a) => {
+        try { navigator.mediaSession.setActionHandler(a, null); } catch (e) {}
+      });
+      try { navigator.mediaSession.playbackState = 'none'; } catch (e) {}
+    }
+    humOn();
+  }
+  // HQ came or went: whoever holds the floor rearms the right way
+  setInterval(() => {
+    const has = hqHasKeys();
+    if (has === hqHad) { if (has && isFloor()) humOn(); return; }
+    hqHad = has;
+    dlog(has ? 'HQ holds the AirPods' : 'HQ let go of the AirPods, this tab takes them');
+    if (isFloor()) armAirPods();
+  }, 3000);
   function armAirPods() {
     if (tabOff || !isFloor() || !('mediaSession' in navigator)) return;
+    if (hqHasKeys()) { hqHad = true; yieldKeysToHQ(); return; }
+    humOff();
     if (silent) { silent.play().catch(() => {}); return; }
     silent = new Audio(silentWav());
     silent.loop = true;
@@ -8889,27 +8997,22 @@
     const squeeze = () => {
       if (silent) silent.play().catch(() => {});
       navigator.mediaSession.playbackState = 'playing';
-      // 7.9: in a Swipe Deck tab one squeeze reads the card (or starts), two squeezes stop the deck
-      if (DK.on || (DK.present && !composer())) {
-        if (tapTimer) { clearTimeout(tapTimer); tapTimer = null; deckStop(false); return; }
-        tapTimer = setTimeout(() => { tapTimer = null; deckSqueeze(); }, 450);
-        return;
-      }
-      if (tapTimer) { clearTimeout(tapTimer); tapTimer = null; toggleAutoListen(); return; }
-      tapTimer = setTimeout(() => { tapTimer = null; toggleDictation(); }, 450);
+      if (tapTimer) { clearTimeout(tapTimer); tapTimer = null; pressAct('double'); return; }
+      tapTimer = setTimeout(() => { tapTimer = null; pressAct('single'); }, 450);
     };
     ['play', 'pause', 'stop'].forEach((a) => {
       try { navigator.mediaSession.setActionHandler(a, squeeze); } catch (e) {}
     });
     // double squeeze = next track, triple = previous track. Either one flips your turn mode.
     ['nexttrack', 'previoustrack', 'seekforward', 'seekbackward'].forEach((a) => {
-      try { navigator.mediaSession.setActionHandler(a, toggleAutoListen); } catch (e) {}
+      try { navigator.mediaSession.setActionHandler(a, () => pressAct('track')); } catch (e) {}
     });
     navigator.mediaSession.playbackState = 'playing';
   }
   // let go of the AirPods and F8 so the floor tab can have them
   function releaseAirPods() {
     dropMic();
+    humOff();
     if (silent) { try { silent.pause(); } catch (e) {} silent = null; }
     if (!('mediaSession' in navigator)) return;
     ['play', 'pause', 'stop', 'nexttrack', 'previoustrack', 'seekforward', 'seekbackward'].forEach((a) => {
