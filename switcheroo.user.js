@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Switcheroo
 // @namespace    andre.mandel
-// @version      9.9
+// @version      9.9.1
 // @description  Switcheroo: hands free Claude with HQ, the Switchboard, chimes, voice commands and the agenda review player. Every audio switch lives on HQ
 // @match        https://claude.ai/*
 // @match        *://*/*
@@ -347,6 +347,9 @@
     violet night, rosy dawn, a pale peach morning, a bright blue noon, golden hour, then the sunset at dusk. Follow
     the clock (in the Look picker, or say "follow the clock") picks from your favorites by daylight, darkest at night,
     brightest at noon; picking a look yourself turns it off. Look numbers changed; favorites keep.
+  9.9.1: NO ROBOT VOICE. When ElevenLabs can't read (no key, out of credits, resting after an error), replies go
+    back to Claude's own read aloud instead of the Mac voice, and the trouble log says why. Words HQ hears in
+    separate pieces get a space between them.
   9.9: HQ SPEAKS AND LISTENS. Chat tabs make no sound of their own while HQ is up. Every reading and every
     Switcheroo line is handed to HQ, which plays it, so the chat windows can be hidden, minimized or buried.
     The mic moved too: HQ listens and sends your words to the chat with the floor, and Claude's mic button is
@@ -3632,7 +3635,7 @@
         rec.onresult = (e) => {
           if (hqEar !== me) return;
           let fin = '', mid = '';
-          for (let i = 0; i < e.results.length; i++) { const r = e.results[i], t = r[0] ? r[0].transcript : ''; if (r.isFinal) fin += t; else mid += t; }
+          for (let i = 0; i < e.results.length; i++) { const r = e.results[i], t = r[0] ? r[0].transcript : ''; if (r.isFinal) fin += ' ' + t; else mid += ' ' + t; }   // 9.9.1: a space between pieces
           me.text = (me.prev + ' ' + fin + ' ' + mid).replace(/\s+/g, ' ').trim();
           hqEarSend('text', { text: me.text });
         };
@@ -6995,7 +6998,6 @@
       let ok;
       if (me.engine === 'el') {
         ok = await elPart(me);
-        if (ok === 'fail' && hqVoiceOn()) { me.engine = 'mac'; continue; }   // 9.9: HQ reads the rest in the Mac voice
         if (ok === 'fail') {                                   // 5.3: ElevenLabs failed, Claude reads it
           fbStop();
           const sp = last(buttons('speak'));
@@ -7230,6 +7232,7 @@
     const x = String(SPEEDS[j]).replace(/^1$/, '1.0');
     return say((j === i && dir !== 0 ? 'That is as ' + (dir > 0 ? 'fast' : 'slow') + ' as it goes. ' : '') + 'Voice at ' + x + ' speed.');
   }
+  const elWhy = () => cfg.el === false ? 'ElevenLabs switched off' : !elKey() ? 'no API key' : Date.now() <= elDownUntil ? 'resting after an error, ' + Math.ceil((elDownUntil - Date.now()) / 1000) + 's left' : 'ok';   // 9.9.1
   const elReady = () => cfg.el !== false && !!elKey() && Date.now() > elDownUntil && typeof GM_xmlhttpRequest === 'function';
   // 8.1: replies come with a time for every character, so screen mode can light each word as it's said
   let elStampsOff = false;
@@ -7338,6 +7341,7 @@
   }
   function elFailed(e) {
     const st = (e && e.status) || 0;
+    dlog('ElevenLabs error', 'status ' + st);   // 9.9.1
     elDownUntil = Date.now() + (st === 401 || st === 402 || st === 429 ? 10 * 60000 : 60000);
     toast(st === 401 ? 'ElevenLabs turned down the API key. Set it again in the Tampermonkey menu.'
       : st === 402 || st === 429 ? 'ElevenLabs is out of credits or busy. Using another voice for now.'
@@ -7438,7 +7442,6 @@
     try { const m0 = msgOf(speak); if (m0) { readEls.add(m0); markHeard(headOf(m0)); } } catch (e) {}   // 5.7
     if (!(cfg.autoRead || asked) || (held && !asked)) return;   // 8.0: on hold only an asked read plays
     if (elReady()) { readReply(msgOf(speak), 'el', full); return; }   // 5.1: ElevenLabs reads instead
-    if (hqVoiceOn()) { readReply(msgOf(speak), 'mac', full); return; }   // 9.9: HQ, never Claude's button
     speak.click(); watchPlayback(speak);
   }
 
@@ -9178,8 +9181,7 @@
         dlog('auto read', (msg.innerText || '').trim().slice(18, 70));
         markHeard(head);   // 9.5.1: now every tab knows it was read
         if (elReady()) { if (!(fb && fb.ra)) fbStop(); readReply(msg, 'el', false, true); }   // 5.1: ElevenLabs reads it (8.7: after read along)
-        else if (hqVoiceOn()) { dlog('ElevenLabs not ready, HQ Mac voice'); readReply(msg, 'mac', false, true); }   // 9.9
-        else if (!claudeIsReading()) { dlog('ElevenLabs not ready, Claude read aloud'); fbStop(); speak.click(); watchPlayback(speak); }   // 5.6: never toggle
+        else if (!claudeIsReading()) { dlog('ElevenLabs not ready, Claude read aloud', elWhy()); fbStop(); speak.click(); watchPlayback(speak); }   // 5.6: never toggle
         else dlog('Claude already reading, skip');
       }
     }
