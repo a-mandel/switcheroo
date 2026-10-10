@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Switcheroo
 // @namespace    andre.mandel
-// @version      9.8
+// @version      9.9
 // @description  Switcheroo: hands free Claude with HQ, the Switchboard, chimes, voice commands and the agenda review player. Every audio switch lives on HQ
 // @match        https://claude.ai/*
 // @match        *://*/*
@@ -347,6 +347,12 @@
     violet night, rosy dawn, a pale peach morning, a bright blue noon, golden hour, then the sunset at dusk. Follow
     the clock (in the Look picker, or say "follow the clock") picks from your favorites by daylight, darkest at night,
     brightest at noon; picking a look yourself turns it off. Look numbers changed; favorites keep.
+  9.9: HQ SPEAKS AND LISTENS. Chat tabs make no sound of their own while HQ is up. Every reading and every
+    Switcheroo line is handed to HQ, which plays it, so the chat windows can be hidden, minimized or buried.
+    The mic moved too: HQ listens and sends your words to the chat with the floor, and Claude's mic button is
+    never clicked, so its two dots are gone and the Chirp is the one cue. Auto send, over, notes, stop and
+    commands work as before. No ElevenLabs? HQ reads in the Mac voice instead of Claude's read aloud. HQ closed
+    or not yet clicked: each chat speaks and listens for itself, the old way. Menu: HQ voice and mic, on or off.
   9.8: ONE SCRIPT, HQ OWNS AUDIO. The script is named Switcheroo now (it was still called Claude Hands Free
     Text Mode). The old per tab controls are gone: no Option Shift H tab off switch, no Option Shift R, A or L.
     Readback, Mic after and Auto send are switched on HQ only. The HQ Read aloud pill is now Readback, and off
@@ -3255,7 +3261,7 @@
     const HQ_KEYS = 'chf_hq_keys';
     let hqLoop = null, hqTap = null, hqReadAt = 0, hqReclaimAt = 0;
     const hqOn = () => !!hqLoop && !hqLoop.paused;
-    const hqBeat = () => { if (!hqOn()) return; try { localStorage.setItem(HQ_KEYS, JSON.stringify({ id: HQ_ID, ts: Date.now() })); } catch (e) {} };
+    const hqBeat = () => { if (!hqOn()) return; try { localStorage.setItem(HQ_KEYS, JSON.stringify({ id: HQ_ID, ts: Date.now(), v99: 1, ear: !!(window.SpeechRecognition || window.webkitSpeechRecognition) })); } catch (e) {} };   // 9.9: and HQ speaks and listens
     function hqPress(kind) {
       try { hqLoop.play().catch(() => {}); navigator.mediaSession.playbackState = 'playing'; } catch (e) {}
       send({ t: 'hq-press', kind, ts: Date.now() });
@@ -3545,8 +3551,113 @@
       try { document.title = 'Screen mode'; } catch (e) {}
     }
 
+
+    // ---------- 9.9: HQ IS THE ONLY SPEAKER AND THE ONLY LISTENER ----------
+    // Chat tabs hand every reading and line to HQ and HQ plays it; HQ also runs the mic and sends the words to
+    // the chat that asked. Everything here only answers a tab; the tab still decides what's read and when.
+    const hqAudMap = new Map();   // id -> { a, from, url, at }
+    const hqAev = (id, from, ev, a, extra) => send(Object.assign({ t: 'hq-aev', to: from, id, ev, ct: a ? a.currentTime : 0, dur: a ? a.duration : NaN }, extra || {}));
+    function hqAudGc(from) {
+      const mine = [...hqAudMap.entries()].filter(([, x]) => x.from === from).sort((p, q) => p[1].at - q[1].at);
+      while (mine.length > 8) { const [id, x] = mine.shift(); try { x.a.pause(); } catch (e) {} try { URL.revokeObjectURL(x.url); } catch (e) {} hqAudMap.delete(id); }
+    }
+    function hqAudOp(m) {
+      if (!m.id || !m.from) return;
+      if (m.op === 'load') {
+        const url = URL.createObjectURL(new Blob([m.buf], { type: m.type || 'audio/mpeg' }));
+        const a = new Audio(url);
+        try { a.preservesPitch = true; a.playbackRate = m.rate || 1; } catch (e) {}
+        const x = { a, from: m.from, url, at: Date.now(), asked: false };
+        hqAudMap.set(m.id, x);
+        a.addEventListener('loadedmetadata', () => hqAev(m.id, m.from, 'meta', a));
+        a.addEventListener('playing', () => hqAev(m.id, m.from, 'playing', a));
+        a.addEventListener('timeupdate', () => hqAev(m.id, m.from, 'time', a));
+        a.addEventListener('pause', () => { if (!a.ended && !x.asked) hqAev(m.id, m.from, 'pause', a); x.asked = false; });
+        a.addEventListener('ended', () => { hqAev(m.id, m.from, 'ended', a); try { URL.revokeObjectURL(url); } catch (e) {} hqAudMap.delete(m.id); });
+        a.addEventListener('error', () => { hqAev(m.id, m.from, 'error', a, { err: 'HQ could not decode it' }); hqAudMap.delete(m.id); });
+        hqAudGc(m.from);
+        return;
+      }
+      const x = hqAudMap.get(m.id);
+      if (!x) { if (m.op === 'play') send({ t: 'hq-aev', to: m.from, id: m.id, ev: 'error', err: 'HQ lost it' }); return; }
+      const a = x.a;
+      if (m.op === 'play') {
+        try { if (typeof m.rate === 'number') a.playbackRate = m.rate; } catch (e) {}
+        if (typeof m.ct === 'number' && Math.abs(a.currentTime - m.ct) > 0.25) { try { a.currentTime = m.ct; } catch (e) {} }
+        hqArm();
+        a.play().catch((e) => hqAev(m.id, m.from, 'error', a, { err: (e && e.name) || 'blocked' }));
+      } else if (m.op === 'pause') { x.asked = true; try { a.pause(); } catch (e) {} }
+      else if (m.op === 'seek') { try { a.currentTime = m.ct || 0; } catch (e) {} }
+      else if (m.op === 'rate') { try { a.playbackRate = m.rate || 1; } catch (e) {} }
+    }
+    // a line in the Mac voice
+    let hqMacVoice = null;
+    function hqPickVoice() {
+      if (hqMacVoice) return hqMacVoice;
+      const vs = (window.speechSynthesis && speechSynthesis.getVoices()) || [];
+      hqMacVoice = vs.find((v) => v.localService && /^en[-_]US/i.test(v.lang) && /samantha|ava|allison|susan|zoe|evan|nathan/i.test(v.name)) ||
+        vs.find((v) => v.localService && /^en/i.test(v.lang)) || null;
+      return hqMacVoice;
+    }
+    try { speechSynthesis.addEventListener('voiceschanged', () => { hqMacVoice = null; }); } catch (e) {}
+    function hqSay(m) {
+      const ss = window.speechSynthesis;
+      const done = (ok, started) => send({ t: 'hq-said', to: m.from, id: m.id, ok, started });
+      if (!ss || typeof SpeechSynthesisUtterance === 'undefined') return done(false, false);
+      if (!ss.speaking) { try { ss.cancel(); } catch (e) {} }
+      const u = new SpeechSynthesisUtterance(String(m.text || ''));
+      u.rate = Math.min(2, m.rate || 1.05); u.lang = 'en-US';
+      const v = hqPickVoice(); if (v) u.voice = v;
+      let started = false, fin = false;
+      const end = (ok) => { if (fin) return; fin = true; done(ok, started); };
+      u.onstart = () => { started = true; };
+      u.onend = () => end(true);
+      u.onerror = () => end(false);
+      try { ss.speak(u); } catch (e) { end(false); }
+    }
+    function hqHush() { try { speechSynthesis.cancel(); } catch (e) {} }   // the tab pauses its own ElevenLabs line
+    // the ears: one recognizer, for whichever chat opened it
+    const HQ_SRX = window.SpeechRecognition || window.webkitSpeechRecognition;
+    let hqEar = null;   // { rec, id, from, prev, text, done }
+    function hqEarSend(op, extra) { if (hqEar) send(Object.assign({ t: 'hq-ear', op, to: hqEar.from, id: hqEar.id }, extra || {})); }
+    function hqEarOp(m) {
+      if (m.op === 'start') {
+        if (hqEar) { const old = hqEar; hqEar = null; old.done = true; try { old.rec.abort(); } catch (e) {} send({ t: 'hq-ear', op: 'ended', to: old.from, id: old.id }); }
+        if (!HQ_SRX) { send({ t: 'hq-ear', op: 'error', to: m.from, id: m.id, err: 'no-recognizer' }); return; }
+        const rec = new HQ_SRX();
+        rec.lang = 'en-US'; rec.continuous = true; rec.interimResults = true;
+        const me = { rec, id: m.id, from: m.from, prev: '', text: '', done: false };
+        hqEar = me;
+        rec.onaudiostart = () => { if (hqEar === me) { hqEarSend('live'); scr.flash('Listening'); } };
+        rec.onresult = (e) => {
+          if (hqEar !== me) return;
+          let fin = '', mid = '';
+          for (let i = 0; i < e.results.length; i++) { const r = e.results[i], t = r[0] ? r[0].transcript : ''; if (r.isFinal) fin += t; else mid += t; }
+          me.text = (me.prev + ' ' + fin + ' ' + mid).replace(/\s+/g, ' ').trim();
+          hqEarSend('text', { text: me.text });
+        };
+        rec.onerror = (e) => { if (hqEar === me && e.error !== 'no-speech' && e.error !== 'aborted') hqEarSend('error', { err: e.error }); };
+        rec.onend = () => {
+          if (hqEar !== me) return;
+          if (!me.done) { me.prev = me.text; try { rec.start(); return; } catch (e) {} }   // Chrome let go on its own while you're mid turn: listen on
+          hqEarSend('ended', { text: me.text });
+          hqEar = null;
+        };
+        try { rec.start(); } catch (e) { hqEar = null; send({ t: 'hq-ear', op: 'error', to: m.from, id: m.id, err: 'start' }); }
+        return;
+      }
+      if (!hqEar || hqEar.id !== m.id) return;
+      hqEar.done = true;
+      if (m.op === 'stop') { try { hqEar.rec.stop(); } catch (e) {} }
+      else if (m.op === 'cancel') { const me = hqEar; hqEar = null; try { me.rec.abort(); } catch (e) {} }
+    }
+
     if (chan) chan.onmessage = (ev) => {
       const m = ev.data || {};
+      if (m.t === 'hq-aud') { hqAudOp(m); return; }   // 9.9
+      if (m.t === 'hq-say') { hqSay(m); return; }
+      if (m.t === 'hq-hush') { hqHush(); return; }
+      if (m.t === 'hq-ear' && !m.to) { hqEarOp(m); return; }
       if (m.t === 'mirror' && m.p) render(m.p, m.from);
       else if (m.t === 'state' && m.e) { reg.set(m.e.id, Object.assign({}, m.e, { ts: Date.now() })); scr.paint(model()); }
       else if (m.t === 'bye') { reg.delete(m.id); scr.paint(model()); }
@@ -4254,6 +4365,152 @@
     halt:  ['stop response', 'stop generating', 'stop claude']
   };
 
+  // ---------- 9.9: HQ IS THE ONLY SPEAKER AND THE ONLY LISTENER ----------
+  // While HQ is up (it beats chf_hq_keys with v99), a chat tab makes no voice of its own. Every reading and
+  // every Switcheroo line is fetched here as before, then handed to HQ, which plays it and reports back, so
+  // the reading logic here (notes, stop, follow along, read along) runs exactly as it did. Dictation works
+  // the same way: Claude's mic button is never clicked. HQ listens and sends the words here, and they land in
+  // the message box, so auto send, "over", notes and commands all work as before. HQ closed or not yet
+  // clicked: everything falls back to the tab, the old way. Tampermonkey menu: HQ voice and mic, on or off.
+  const hqBeat99 = () => { try { const k = JSON.parse(localStorage.getItem('chf_hq_keys')); return k && k.v99 && Date.now() - (k.ts || 0) < 12000 ? k : null; } catch (e) { return null; } };
+  const hqVoiceOn = () => cfg.hqAudio !== false && !!hqBeat99();
+  const hqEarsOn = () => cfg.hqAudio !== false && !!(hqBeat99() || {}).ear;
+  let hqAudN = 0;
+  const hqAuds = new Map();
+  class HqAudio {
+    constructor(blob) {
+      this.id = 'a' + Date.now().toString(36) + (++hqAudN);
+      this.paused = true; this.ended = false; this.duration = NaN; this.preservesPitch = true;
+      this._ct = 0; this._at = Date.now(); this._rate = 1; this._want = null; this._ls = {};
+      this.onended = this.onerror = this.onpause = this.ontimeupdate = this.onplay = null;
+      hqAuds.set(this.id, this);
+      this._ready = blob.arrayBuffer().then((buf) => { post({ t: 'hq-aud', op: 'load', id: this.id, from: ME, buf, type: blob.type || 'audio/mpeg', rate: this._rate }); });
+      this._ready.catch(() => {});
+    }
+    get currentTime() { return this.paused || this.ended ? this._ct : this._ct + (Date.now() - this._at) / 1000 * this._rate; }
+    set currentTime(v) { this._ct = +v || 0; this._at = Date.now(); this.ended = false; post({ t: 'hq-aud', op: 'seek', id: this.id, from: ME, ct: this._ct }); }
+    get playbackRate() { return this._rate; }
+    set playbackRate(v) { this._ct = this.currentTime; this._at = Date.now(); this._rate = +v || 1; post({ t: 'hq-aud', op: 'rate', id: this.id, from: ME, rate: this._rate }); }
+    play() {
+      this.ended = false;
+      return this._ready.then(() => new Promise((res, rej) => {
+        this._want = { res, rej };
+        post({ t: 'hq-aud', op: 'play', id: this.id, from: ME, rate: this._rate, ct: this._ct });
+        setTimeout(() => { if (this._want && this._want.res === res) { this._want = null; rej(new Error('HQ did not start it')); } }, 8000);
+      }));
+    }
+    pause() {
+      if (this.paused) return;
+      this._ct = this.currentTime; this._at = Date.now(); this.paused = true;
+      post({ t: 'hq-aud', op: 'pause', id: this.id, from: ME });
+      setTimeout(() => this._fire('pause'), 0);
+    }
+    addEventListener(t, fn, o) { (this._ls[t] = this._ls[t] || []).push({ fn, once: !!(o && o.once) }); }
+    removeEventListener(t, fn) { this._ls[t] = (this._ls[t] || []).filter((x) => x.fn !== fn); }
+    _fire(t) {
+      try { if (typeof this['on' + t] === 'function') this['on' + t]({ type: t, target: this }); } catch (e) {}
+      const ls = this._ls[t] || [];
+      this._ls[t] = ls.filter((x) => !x.once);
+      ls.forEach((x) => { try { x.fn({ type: t, target: this }); } catch (e) {} });
+    }
+    _ev(m) {
+      if (typeof m.ct === 'number') { this._ct = m.ct; this._at = Date.now(); }
+      if (typeof m.dur === 'number' && isFinite(m.dur)) this.duration = m.dur;
+      if (m.ev === 'playing') {
+        this.paused = false;
+        if (this._want) { const w = this._want; this._want = null; w.res(); }
+        this._fire('play');
+      } else if (m.ev === 'time') { if (!this.paused) this._fire('timeupdate'); }
+      else if (m.ev === 'pause') { if (!this.paused) { this.paused = true; this._fire('pause'); } }   // HQ let it go, not us
+      else if (m.ev === 'ended') { this.paused = true; this.ended = true; this._fire('timeupdate'); this._fire('ended'); hqAuds.delete(this.id); }
+      else if (m.ev === 'error') {
+        this.paused = true;
+        if (this._want) { const w = this._want; this._want = null; w.rej(new Error(m.err || 'HQ could not play it')); }
+        else this._fire('error');
+        hqAuds.delete(this.id);
+      }
+    }
+  }
+  // a sound to play: HQ plays it while HQ is up, otherwise this tab does
+  const makeAudio = (blob) => (hqVoiceOn() ? new HqAudio(blob) : new Audio(URL.createObjectURL(blob)));
+  const isHqAudio = (a) => !!a && a instanceof HqAudio;
+  // a Switcheroo line in the Mac voice, said by HQ
+  let hqSayN = 0;
+  const hqSays = new Map();
+  function hqSayMac(text, rate) {
+    return new Promise((resolve) => {
+      const id = 's' + Date.now().toString(36) + (++hqSayN);
+      hqSays.set(id, resolve);
+      post({ t: 'hq-say', id, from: ME, text, rate });
+      setTimeout(() => { if (hqSays.has(id)) { hqSays.delete(id); resolve(null); } }, 4000 + String(text).split(/\s+/).length * 600);
+    });
+  }
+  function hqAudMsg(m) {
+    if (m.to !== ME) return;
+    if (m.t === 'hq-aev') { const a = hqAuds.get(m.id); if (a) a._ev(m); }
+    else if (m.t === 'hq-said') { const r = hqSays.get(m.id); if (r) { hqSays.delete(m.id); r(m.ok ? { ok: true, started: !!m.started } : { ok: false, started: !!m.started }); } }
+    else if (m.t === 'hq-ear') vEarMsg(m);
+  }
+
+  // the mic, as HQ hears it. Claude's dictate, finish and cancel buttons stand in as these three,
+  // so everything that opened, watched or closed Claude's dictation works the same with HQ's ears.
+  const vEar = { on: false, id: '', base: '', text: '', live: false, stopping: false, at: 0 };
+  const vBtn = (kind) => ({
+    __hq: kind, disabled: false, isConnected: true, parentElement: null, innerText: '', textContent: '', className: '',
+    click() { vClick(kind); }, getAttribute() { return ''; }, closest() { return null; }, matches() { return false; },
+    getBoundingClientRect() { return { width: 1, height: 1, top: 0, left: 0, right: 1, bottom: 1 }; }
+  });
+  const V_MIC = vBtn('mic'), V_STOP = vBtn('stop'), V_CANCEL = vBtn('cancel');
+  function vClick(kind) {
+    if (kind === 'mic') {
+      if (vEar.on) return;
+      Object.assign(vEar, { on: true, id: 'e' + Date.now().toString(36), base: composerText(), text: '', live: false, stopping: false, at: Date.now() });
+      dlog('HQ mic open');
+      post({ t: 'hq-ear', op: 'start', id: vEar.id, from: ME });
+      const id = vEar.id;
+      setTimeout(() => { if (vEar.on && vEar.id === id && !vEar.live) { dlog('HQ mic never went live'); vEarEnd(true); toast("HQ couldn't open the mic. Click HQ once, then try again"); } }, 5000);
+      setTimeout(() => { try { maybeWatch(); } catch (e) {} }, 50);
+      return;
+    }
+    if (!vEar.on) return;
+    if (kind === 'cancel') {
+      post({ t: 'hq-ear', op: 'cancel', id: vEar.id, from: ME });
+      const base = vEar.base;
+      vEarEnd(false);
+      if (composerText() !== base) { clearComposer(); if (base) insertIntoComposer(base); }
+      return;
+    }
+    if (kind === 'stop' && !vEar.stopping) {
+      vEar.stopping = true;
+      post({ t: 'hq-ear', op: 'stop', id: vEar.id, from: ME });
+      const id = vEar.id;
+      setTimeout(() => { if (vEar.on && vEar.id === id) vEarEnd(false); }, 1500);   // the last words land, then it's closed
+    }
+  }
+  function vEarEnd(dead) {
+    if (dead) post({ t: 'hq-ear', op: 'cancel', id: vEar.id, from: ME });
+    vEar.on = false; vEar.stopping = false; vEar.live = false;
+  }
+  function vEarText(t) {
+    const want = [vEar.base, t].map((x) => String(x || '').trim()).filter(Boolean).join(' ');
+    if (composerText() === want) return;
+    clearComposer();
+    if (want) insertIntoComposer(want);
+  }
+  function vEarMsg(m) {
+    if (!vEar.on || m.id !== vEar.id) return;
+    if (m.op === 'live') { vEar.live = true; dlog('HQ mic live'); }
+    else if (m.op === 'text') { vEar.text = m.text || ''; vEarText(vEar.text); }
+    else if (m.op === 'ended') { if (typeof m.text === 'string' && m.text) vEarText(m.text); vEarEnd(false); }
+    else if (m.op === 'error') { dlog('HQ mic error', m.err || ''); if (m.err === 'not-allowed') toast('HQ needs mic permission. Click the mic in HQ\'s address bar'); vEarEnd(false); }
+  }
+  try {
+    if (typeof GM_registerMenuCommand === 'function') GM_registerMenuCommand('HQ voice and mic, on or off', () => {
+      cfg.hqAudio = cfg.hqAudio === false; save(cfg);
+      toast(cfg.hqAudio === false ? 'This tab speaks and listens for itself' : 'HQ speaks and listens for every chat');
+    });
+  } catch (e) {}
+
   // ---------- helpers ----------
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
   const visible = (el) => { const r = el.getBoundingClientRect(); return r.width > 0 && r.height > 0; };
@@ -4268,7 +4525,15 @@
 
   const OURS = '#chf-pill, #chf-agenda, #chf-board';
   const ours = (el) => !!(el && el.closest && el.closest(OURS));
+  // 9.9: while HQ has the ears, Claude's dictate, finish and cancel buttons are HQ's (Claude's own still win while its dictation runs)
   function buttons(kind) {
+    if (kind === 'mic' || kind === 'stop' || kind === 'cancel') {
+      if (vEar.on) return kind === 'mic' ? [] : [kind === 'stop' ? V_STOP : V_CANCEL];
+      if (hqEarsOn() && !buttonsReal('stop').length) return kind === 'mic' && composer() ? [V_MIC] : [];
+    }
+    return buttonsReal(kind);
+  }
+  function buttonsReal(kind) {
     // Claude's Pause and Resume sit in a hover-only bar, so don't require them to be visible
     const hidden = kind === 'pause' || kind === 'resume';
     const all = [...document.querySelectorAll('button, [role="button"]')]
@@ -4588,7 +4853,7 @@
     }
     if (gen !== hushGen) return false;
     return new Promise((resolve) => {
-      const a = rateOn(new Audio(URL.createObjectURL(blob)));
+      const a = rateOn(makeAudio(blob));   // 9.9: HQ plays it while HQ is up
       lineAudio = a;
       let done = false;
       speaking += 1;
@@ -4604,11 +4869,20 @@
       a.onerror = () => finish(false);
       a.onpause = () => { if (!a.ended) finish(false); };
       a.play().catch(() => finish(false));
-      hqTakeBack();   // 9.5
+      if (!isHqAudio(a)) hqTakeBack();   // 9.5
       setTimeout(() => { if (!done) { try { a.pause(); } catch (x) {} finish(false); } }, 45000);
     });
   }
   function speakMac(text) {
+    if (hqVoiceOn()) {   // 9.9: HQ says it
+      const gen = hushGen;
+      speaking += 1;
+      readHold = Date.now() + 1500; try { syncDuck(); } catch (e) {}
+      return hqSayMac(text, Math.min(2, 1.05 * voiceSpeed())).then((r) => {
+        speaking = Math.max(0, speaking - 1);
+        return !!(r && r.ok && gen === hushGen);
+      });
+    }
     return new Promise((resolve) => {
       const ss = window.speechSynthesis;
       if (!ss || typeof SpeechSynthesisUtterance === 'undefined') return resolve(false);
@@ -4631,6 +4905,7 @@
   function hush() {
     hushGen += 1;
     try { speechSynthesis.cancel(); } catch (e) {}
+    try { if (hqVoiceOn()) post({ t: 'hq-hush', from: ME }); } catch (e) {}   // 9.9
     if (lineAudio) { try { lineAudio.pause(); } catch (e) {} }   // 5.4: an ElevenLabs line too
   }
 
@@ -6334,6 +6609,7 @@
     switch (m.t) {
       case 'hello': publish(true); deckRelay(); chiefRelay(); linksPush(true); break;
       case 'mirror-hello': mirrorPush(true); linksPush(true); break;
+      case 'hq-aev': case 'hq-said': case 'hq-ear': hqAudMsg(m); break;   // 9.9
       case 'hq-press': if (isFloor() && !tabOff) { dlog('press from HQ', m.kind); pressAct(m.kind); } break;   // 9.5
       case 'page-opened': if (m.to === ME && pageAsk) { const pa = pageAsk; pageAsk = null; say('Opening ' + pa.x.label + '.'); } break;   // 8.2: HQ has it
       case 'biz': if (m.path === location.pathname) linksPush(true); break;
@@ -6719,13 +6995,14 @@
       let ok;
       if (me.engine === 'el') {
         ok = await elPart(me);
+        if (ok === 'fail' && hqVoiceOn()) { me.engine = 'mac'; continue; }   // 9.9: HQ reads the rest in the Mac voice
         if (ok === 'fail') {                                   // 5.3: ElevenLabs failed, Claude reads it
           fbStop();
           const sp = last(buttons('speak'));
           if (sp && !claudeIsReading()) sp.click();   // 5.6: never toggle a reading off
           return;
         }
-      } else ok = await say(me.parts[me.i]);
+      } else ok = await speakMac(me.parts[me.i]);   // 9.9: straight to the voice, not a line
       if (fb !== me || me.gen !== gen) return;
       if (!ok) { me.paused = true; return; }   // paused by a squeeze: pick up from this part later
       me.i += 1;
@@ -6836,8 +7113,8 @@
     tick();
   }
   function readReply(m, engine, full, auto) {
-    if (engine !== 'el') return;   // 5.3: no Mac voice for replies
-    const el = true;
+    if (engine !== 'el' && !(engine === 'mac' && hqVoiceOn())) return;   // 5.3: no Mac voice for replies (9.9: unless HQ says it)
+    const el = engine === 'el';
     let all = replyParts(m, 180, 600);
     // 8.7: what read along already said isn't said twice
     if (auto && ra && ra.heard.size) {
@@ -7077,7 +7354,7 @@
         let a = me.audio;
         if (!a || me.audioIdx !== i) {
           if (a) { try { a.pause(); } catch (x) {} }
-          a = new Audio(URL.createObjectURL(blob));
+          a = makeAudio(blob);   // 9.9
           me.audio = a; me.audioIdx = i;
         }
         rateOn(a);
@@ -7087,7 +7364,7 @@
         a.onerror = () => done(true);                     // skip a part that won't play
         a.onpause = () => { if (!a.ended) { dlog('reading paused', 'part ' + (i + 1) + ' at ' + a.currentTime.toFixed(1) + 's'); done(false); } };  // paused for a note
         a.play().catch((x) => { dlog('play blocked', (x && (x.name + ' ' + x.message)) || ''); done(false); });
-        hqTakeBack();   // 9.5
+        if (!isHqAudio(a)) hqTakeBack();   // 9.5
       });
     }, (e) => { dlog('ElevenLabs failed', 'status ' + ((e && e.status) || 0)); elFailed(e); return 'fail'; });
   }
@@ -7161,6 +7438,7 @@
     try { const m0 = msgOf(speak); if (m0) { readEls.add(m0); markHeard(headOf(m0)); } } catch (e) {}   // 5.7
     if (!(cfg.autoRead || asked) || (held && !asked)) return;   // 8.0: on hold only an asked read plays
     if (elReady()) { readReply(msgOf(speak), 'el', full); return; }   // 5.1: ElevenLabs reads instead
+    if (hqVoiceOn()) { readReply(msgOf(speak), 'mac', full); return; }   // 9.9: HQ, never Claude's button
     speak.click(); watchPlayback(speak);
   }
 
@@ -8717,13 +8995,15 @@
     let stream, ctx;
     let finishAfter = false;   // 4.7: let go of the mic first, then send or save
     try {
-      stream = await navigator.mediaDevices.getUserMedia({ audio: { noiseSuppression: false, autoGainControl: false } });
-      ctx = new AudioContext();
+      const viaHq = vEar.on;   // 9.9: HQ has the mic; go by the words landing, and never open one here
+      stream = viaHq ? null : await navigator.mediaDevices.getUserMedia({ audio: { noiseSuppression: false, autoGainControl: false } });
+      ctx = viaHq ? { state: 'deaf', resume: () => Promise.resolve(), createMediaStreamSource: () => ({ connect() {} }), createAnalyser: () => ({ fftSize: 1024, getFloatTimeDomainData(b) { b.fill(0); } }), close() {} } : new AudioContext();
       // 6.4: a tab nobody has clicked gets a sleeping audio context, so it can't hear levels.
       // Then it goes by the words landing in the box instead.
       if (ctx.state !== 'running') { try { await Promise.race([ctx.resume(), sleep(300)]); } catch (e) {} }
       const deaf = ctx.state !== 'running';
       if (deaf) dlog('going by words, no mic level yet');
+      if (viaHq) for (let i = 0; i < 50 && vEar.on && !vEar.live; i++) await sleep(100);   // 9.9: until HQ's mic is live
       const text0 = composerText();
       const src = ctx.createMediaStreamSource(stream);
       const an = ctx.createAnalyser();
@@ -8898,6 +9178,7 @@
         dlog('auto read', (msg.innerText || '').trim().slice(18, 70));
         markHeard(head);   // 9.5.1: now every tab knows it was read
         if (elReady()) { if (!(fb && fb.ra)) fbStop(); readReply(msg, 'el', false, true); }   // 5.1: ElevenLabs reads it (8.7: after read along)
+        else if (hqVoiceOn()) { dlog('ElevenLabs not ready, HQ Mac voice'); readReply(msg, 'mac', false, true); }   // 9.9
         else if (!claudeIsReading()) { dlog('ElevenLabs not ready, Claude read aloud'); fbStop(); speak.click(); watchPlayback(speak); }   // 5.6: never toggle
         else dlog('Claude already reading, skip');
       }
