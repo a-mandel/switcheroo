@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         Switcheroo
+// @name         Claude Hands Free Text Mode
 // @namespace    andre.mandel
-// @version      9.9.2
-// @description  Switcheroo: hands free Claude with HQ, the Switchboard, chimes, voice commands and the agenda review player. Every audio switch lives on HQ
+// @version      9.9.3
+// @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land. 8.8: one model for every open chat, by voice ("all chats to Sonnet") or from the HQ model pills. 8.9: Boot. The Switcheroo Chrome launcher opens HQ with your 10 most recent chats behind it and the mic ready, no clicks; or say "boot up". 8.9.1: "stop, new chat in Alder" works: a lead in no longer hides a command, and new chat finds every project, not just the sidebar. 8.9.2: the mic bell is now the Long bell, struck three times so the AirPods can't clip it. 8.9.3: Retro, a third HQ look: sunset sky, a neon floor rolling toward you, chrome type. Click Look on the control panel, or say "retro look". 9.0: Chief of Staff joins HQ as the COS wedge and panel, and a fourth look, night drive, from the board. Say chief for the brief, what needs me for Start Here, done two to close a thread, undo to reopen it. 9.0.1: fifty looks. Each push of Look steps to the next one (right click goes back); say "next look", "previous look", "random look" or a look by name. And "next, over" heard as "next server" still jumps. 9.1: the CHxTLD Outbox joins HQ as the OUT wedge, and a click opens your drafts over the pie to read and edit; edits save back to the Outbox. Say "outbox" to hear them, "read draft two" to hear one. Nothing sends from HQ. 9.2: a View pill with eleven ways to draw your chats, a Look pill with a picker and favorites, two hand sketched looks, and Chief of Staff one tap away with Open chat on every Start Here card. 9.3: looks run dark to light, so stepping never jumps from black to white, and a change fades instead of cutting. Retro Sky, a retro futurist look whose sky follows the time of day. Follow the clock picks from your favorites by daylight; say "follow the clock". 9.4: a second Outbox, ANDRÉ MANDEL, on its own letterhead beside the CHxTLD one, both one tap away on the pill rail ("mandel outbox"); and ten new looks: Trace, Marker, Charcoal, Chalkboard, Funnies, Space Opera, Overdrive, Dime Novel, Desert Neon, Bunker. 9.4.1: Chief of Staff wears HQ's look; Night drive keeps the board's own. 9.4.3: the model pills sit in the control panel's header, so nothing falls off the bottom of HQ, and a short window scales HQ down instead of cutting it off. 9.5: HQ holds the AirPods press, so the chats window can be minimized. 9.6: double press is a new chat in this project, triple press is the next chat waiting. 9.7: a voice per project: Mississippi Nikola, Walsh Hank, Haynes Jamieson, Kelly Samantha, and Eleanor for any other chat. 9.7.1: the natural ElevenLabs model, normal speed, and HQ's own lines keep your old voice. 9.7.2: mic sound 22, Voices: a woman's voice says one of 24 short lines when the mic opens, a different one each time. 9.7.3: every chat back to Annika; per project voices are off until you add one. 9.7.4: one voice everywhere, picked from your ElevenLabs library by name.
 // @match        https://claude.ai/*
 // @match        *://*/*
 // @grant        GM_xmlhttpRequest
@@ -46,6 +46,7 @@
                               4.0: warm mic is gone. Holding the mic open turned every squeeze
                               into a Mac mute button. The script now opens the mic only while
                               you're talking.
+    Option + Shift + H        hands free off or on in THIS TAB ONLY
                               or click the pill above the message box
     Option + Shift + A        auto send on pause, on or off (default on)
     Option + Shift + R        auto read aloud, on or off (default on)
@@ -347,13 +348,8 @@
     violet night, rosy dawn, a pale peach morning, a bright blue noon, golden hour, then the sunset at dusk. Follow
     the clock (in the Look picker, or say "follow the clock") picks from your favorites by daylight, darkest at night,
     brightest at noon; picking a look yourself turns it off. Look numbers changed; favorites keep.
-  9.9.2: BACK TO 9.8. HQ speaking and listening (9.9 and 9.9.1) is rolled back. Chats speak and listen for
-    themselves again, exactly as in 9.8. Numbered up so Tampermonkey takes it.
-  9.8: ONE SCRIPT, HQ OWNS AUDIO. The script is named Switcheroo now (it was still called Claude Hands Free
-    Text Mode). The old per tab controls are gone: no Option Shift H tab off switch, no Option Shift R, A or L.
-    Readback, Mic after and Auto send are switched on HQ only. The HQ Read aloud pill is now Readback, and off
-    means nothing is spoken: replies and Switcheroo lines show on screen with a soft chime, and the mic still
-    opens for your turn. Earbuds, chimes, kill words and videos work as usual. Say read it to hear one anyway.
+  9.9.3: BACK TO 9.7.4. Everything from tonight (9.8 through 9.9.2) is rolled back. This is 9.7.4 exactly,
+    numbered up so Tampermonkey takes it.
   9.7.4: ONE VOICE EVERYWHERE. A menu item (ElevenLabs: one voice everywhere) lists your ElevenLabs voices by
     name and sets every one of them at once, replies, unmapped chats and HQ's own lines, from a single number.
     No voice IDs to paste, and no three settings to keep in step.
@@ -1119,7 +1115,7 @@
       treemap: '<rect x="5" y="6" width="34" height="32"/><path d="M24 6 v32 M5 24 h19 M24 17 h15 M32 17 v21"/>'
     };
     const SM_CTL = [
-      ['read', 'Readback', 'On: replies and Switcheroo lines are spoken. Off: nothing is spoken, words show on screen with a soft chime; mic, earbuds, chimes and videos work as usual. Say read it to hear one anyway'],
+      ['read', 'Read aloud', 'New replies are read to you as they finish'],
       ['mic', 'Mic after', 'Your mic opens by itself when a reading or a Switcheroo line ends'],
       ['send', 'Auto send', 'Dictation sends itself after a pause'],
       ['chimes', 'Chimes', 'Switcheroo chimes and tells you who needs you'],
@@ -3611,7 +3607,7 @@
       jump(n.e.id);
     }
     // 8.0: the control panel. Hold goes to every tab; the switches write the shared settings
-    const CTL_NAMES = { read: 'Readback', mic: 'Mic after reading', send: 'Auto send', chimes: 'Chimes and alerts', others: 'Other tabs', voice: 'ElevenLabs voice', along: 'Read while working' };
+    const CTL_NAMES = { read: 'Read aloud', mic: 'Mic after reading', send: 'Auto send', chimes: 'Chimes and alerts', others: 'Other tabs', voice: 'ElevenLabs voice', along: 'Read while working' };
     function toggleCtl(k) {
       const cur = ctlModel();
       if (k === 'hold') {
@@ -4243,7 +4239,7 @@
   // per tab master switch, kept in sessionStorage so it survives a reload of this tab only
   const TAB_KEY = 'chf_tab_off';
   let tabOff = false;
-  try { sessionStorage.removeItem(TAB_KEY); } catch (e) {}   // 9.8: no per tab off switch any more; HQ owns every audio switch
+  try { tabOff = sessionStorage.getItem(TAB_KEY) === '1'; } catch (e) {}
 
   const GUESSES = {
     mic:   ['dictate'],                 // 'Microphone' and 'Use voice mode' are voice mode, never click them
@@ -4571,7 +4567,6 @@
     toast(text);
     if (held) { dlog('line held', text); return false; }   // 8.0: on hold, lines show but aren't spoken
     if (!ownsFloor()) { dlog('line skipped, not the floor', text); return false; }   // 6.0
-    if (!cfg.autoRead) { dlog('line shown, Readback off', text); await chime(); return true; }   // 9.8: Readback off, a soft chime and the words on screen, then the mic as usual
     if (elReady()) {                      // 5.4: the Switchboard talks in the ElevenLabs voice
       const r = await speakEl(text);
       if (r !== null) return r;           // null means ElevenLabs couldn't make it
@@ -5749,7 +5744,7 @@
   }
   function deckStart(why) {
     if (held) { toast('On hold. Say resume, or click RESUME, first'); return; }   // 8.0
-    if (tabOff) { toast('Switcheroo is off in this tab'); return; }
+    if (tabOff) { toast('Hands free is off in this tab. Option Shift H turns it on'); return; }
     if (!DK.present) { openDeck(); return; }
     dlog('deck on', why || '');
     takeFloor('deck');
@@ -8881,6 +8876,7 @@
     const speak = last(buttons('speak'));
     const isTake = lastKey !== null && checkForTake();
     if (isTake) { if (speak) lastKey = replyKey(speak); return; } // never read a take message aloud
+    if (!cfg.autoRead) return;
     if (!speak || lastKey === null) return;
     if (isWorking()) return;                     // 5.6: wait until Claude has fully finished
     const key = replyKey(speak);
@@ -8895,7 +8891,6 @@
       markHeard(head, true);   // 9.5.1: shared only once it's actually read, below
       if (held) { dlog('new reply, on hold, not read', head.slice(0, 50)); return; }   // 8.0
       if (!ownsFloor()) dlog('new reply, not the floor, chime only', head.slice(0, 50));
-      if (ownsFloor() && !cfg.autoRead) { dlog('new reply, Readback off, your turn', head.slice(0, 50)); markHeard(head); if (cfg.autoListen) yourTurn(); return; }   // 9.8
       if (ownsFloor()) {                           // other tabs chime on the switchboard instead
         dlog('auto read', (msg.innerText || '').trim().slice(18, 70));
         markHeard(head);   // 9.5.1: now every tab knows it was read
@@ -8910,7 +8905,7 @@
   // Claude has stopped, and the newest reply has held still for over a second.
   let beatKey = null, beatSince = 0;
   setInterval(() => {
-    if (tabOff || lastKey === null) return;   // 9.8: runs with Readback off too, so your turn still comes
+    if (tabOff || lastKey === null || !cfg.autoRead) return;
     if (isWorking() || buttons('stop').length) { beatSince = 0; return; }
     const speak = last(buttons('speak'));
     const key = speak ? replyKey(speak) : '';
@@ -9372,18 +9367,34 @@
     else if (b && e.isTrusted && buttons('mic').includes(b)) { armListener(); dlog('mic clicked by you'); }
   }, true);
 
+  function toggleTab() {
+    tabOff = !tabOff;
+    try { sessionStorage.setItem(TAB_KEY, tabOff ? '1' : '0'); } catch (e) {}
+    if (tabOff) {
+      releaseAirPods();
+      if (ag.audio) agPause();
+      toast('Hands free off in this tab');
+    } else {
+      if (!cfg.autoListen) { cfg.autoListen = true; save(cfg); syncWarm(); }   // 7.8: your turn mode comes on with it
+      takeFloor('touch');
+      toast('Hands free on in this tab, your turn mode on');
+    }
+    publish(true);
+  }
+
   // ---------- on/off pill above the message box ----------
   const pill = document.createElement('button');
   pill.id = 'chf-pill';
   pill.type = 'button';
   pill.title = [
-    'Click: take the floor here. Every audio switch lives on HQ',
+    'Click: take the floor here, or hands free off and on (Option Shift H)',
     'F8, Space or squeeze: talk. Again, or pause, to send',
     'Say next, take me to name, status, snooze 10, go quiet, wake up',
     'F8, Space or squeeze while Claude talks: quick note, or say stop to drop the reading',
     'F8 or squeeze while an agenda take plays: note, then it resumes',
-    'Double squeeze: new chat in this project. Triple: next chat waiting',
-    'Option Shift N: next chat   Option Shift B: board'
+    'Double squeeze: new chat in this project. Triple: next chat waiting. Your turn mode: Option Shift L',
+    'Option Shift N: next chat   Option Shift B: board',
+    'Option Shift A: auto send   Option Shift R: auto read aloud'
   ].join('\n');
   Object.assign(pill.style, {
     position: 'fixed', zIndex: 40, display: 'flex', alignItems: 'center', gap: '6px',   // 7.7: under Claude's menus
@@ -9397,7 +9408,7 @@
     else if (held) { dot = '#ffffff'; bg = '#c4402f'; label = 'On hold · say resume'; }   // 8.0
     else if (approvalOpen() || voiceApproval()) { dot = '#ffffff'; bg = '#c4402f'; label = cfg.autoListen ? 'Say allow or deny' : 'Squeeze to allow once'; }
     else if (DK.on) { dot = '#ffffff'; bg = '#c95a22'; label = 'Swipe Deck by voice'; }   // 7.9
-    else if (isFloor()) { dot = '#7ee2b8'; bg = '#1f6f5b'; label = 'Switcheroo' + (cfg.autoRead ? '' : ' · silent') + (cfg.autoListen ? ' · your turn' : ''); }
+    else if (isFloor()) { dot = '#7ee2b8'; bg = '#1f6f5b'; label = 'Hands free on' + (cfg.autoListen ? ' · your turn' : ''); }
     else { dot = '#c9d2ce'; bg = '#39423f'; label = 'Standby'; }
     const html = '<span style="width:8px;height:8px;border-radius:50%;background:' + dot + '"></span>' + label;
     if (pill.innerHTML !== html) pill.innerHTML = html;
@@ -9430,7 +9441,8 @@
   pill.addEventListener('click', (e) => {
     e.preventDefault(); e.stopPropagation();
     if (!tabOff && DK.present && !composer()) { if (DK.on) deckStop(false); else deckStart('pill'); return; }   // 7.9
-    if (!isFloor()) { takeFloor('touch'); toast('This tab has the floor'); }   // 9.8: the pill no longer turns anything off
+    if (!tabOff && !isFloor()) { takeFloor('touch'); toast('This tab has the floor'); return; }
+    toggleTab();
   });
   paintPill();
   placeBars();
@@ -9461,6 +9473,7 @@
   // ---------- hotkeys ----------
   document.addEventListener('keydown', (e) => {
     if (!e.altKey) return;
+    if (e.code === 'KeyH' && e.shiftKey) { e.preventDefault(); toggleTab(); return; }
     if (e.code === 'KeyB' && e.shiftKey) { e.preventDefault(); toggleMin(); return; }
     if (e.code === 'KeyQ' && e.shiftKey) { e.preventDefault(); if (!isFloor()) takeFloor('touch'); runCommand({ kind: 'pauseToggle' }); return; }   // 7.3
     if (e.code === 'KeyM' && e.shiftKey) { e.preventDefault(); enterScreenMode(); return; }
@@ -9474,7 +9487,17 @@
     if (e.code === 'KeyP' && ag.audio) { e.preventDefault(); if (agPlaying()) agPause(); else agPlay(); return; }
     if (e.code === 'KeyJ' && ag.audio) { e.preventDefault(); ag.audio.currentTime = Math.max(0, ag.audio.currentTime - 10); ag.ended = false; paintAgenda(); return; }
     if (e.code === 'KeyX' && ag.audio) { e.preventDefault(); closeAgenda(); return; }
-    // 9.8: Readback, Mic after and Auto send are switched on HQ only
+    if (e.code === 'KeyR') {
+      e.preventDefault();
+      cfg.autoRead = !cfg.autoRead; save(cfg);
+      toast('Auto read aloud ' + (cfg.autoRead ? 'on' : 'off'));
+    }
+    if (e.code === 'KeyL') { e.preventDefault(); toggleAutoListen(); return; }
+    if (e.code === 'KeyA') {
+      e.preventDefault();
+      cfg.autoSend = !cfg.autoSend; save(cfg);
+      toast('Auto send on pause ' + (cfg.autoSend ? 'on' : 'off'));
+    }
   }, true);
 
   // ---------- switchboard: heartbeat ----------
@@ -9515,5 +9538,5 @@
   every(1000, tick);
   micOnArrive('load');   // 6.4
 
-  toast('Switcheroo ' + SW_VER + ' loaded' + (held ? '. On hold, say resume' : ''));
+  toast(tabOff ? 'Hands free is off in this tab. Option Shift H turns it on' : 'Switcheroo ' + SW_VER + ' loaded' + (held ? '. On hold, say resume' : ''));
 })();
