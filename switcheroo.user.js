@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Claude Hands Free Text Mode
 // @namespace    andre.mandel
-// @version      9.9.4
-// @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land. 8.8: one model for every open chat, by voice ("all chats to Sonnet") or from the HQ model pills. 8.9: Boot. The Switcheroo Chrome launcher opens HQ with your 10 most recent chats behind it and the mic ready, no clicks; or say "boot up". 8.9.1: "stop, new chat in Alder" works: a lead in no longer hides a command, and new chat finds every project, not just the sidebar. 8.9.2: the mic bell is now the Long bell, struck three times so the AirPods can't clip it. 8.9.3: Retro, a third HQ look: sunset sky, a neon floor rolling toward you, chrome type. Click Look on the control panel, or say "retro look". 9.0: Chief of Staff joins HQ as the COS wedge and panel, and a fourth look, night drive, from the board. Say chief for the brief, what needs me for Start Here, done two to close a thread, undo to reopen it. 9.0.1: fifty looks. Each push of Look steps to the next one (right click goes back); say "next look", "previous look", "random look" or a look by name. And "next, over" heard as "next server" still jumps. 9.1: the CHxTLD Outbox joins HQ as the OUT wedge, and a click opens your drafts over the pie to read and edit; edits save back to the Outbox. Say "outbox" to hear them, "read draft two" to hear one. Nothing sends from HQ. 9.2: a View pill with eleven ways to draw your chats, a Look pill with a picker and favorites, two hand sketched looks, and Chief of Staff one tap away with Open chat on every Start Here card. 9.3: looks run dark to light, so stepping never jumps from black to white, and a change fades instead of cutting. Retro Sky, a retro futurist look whose sky follows the time of day. Follow the clock picks from your favorites by daylight; say "follow the clock". 9.4: a second Outbox, ANDRÉ MANDEL, on its own letterhead beside the CHxTLD one, both one tap away on the pill rail ("mandel outbox"); and ten new looks: Trace, Marker, Charcoal, Chalkboard, Funnies, Space Opera, Overdrive, Dime Novel, Desert Neon, Bunker. 9.4.1: Chief of Staff wears HQ's look; Night drive keeps the board's own. 9.4.3: the model pills sit in the control panel's header, so nothing falls off the bottom of HQ, and a short window scales HQ down instead of cutting it off. 9.5: HQ holds the AirPods press, so the chats window can be minimized. 9.6: double press is a new chat in this project, triple press is the next chat waiting. 9.7: a voice per project: Mississippi Nikola, Walsh Hank, Haynes Jamieson, Kelly Samantha, and Eleanor for any other chat. 9.7.1: the natural ElevenLabs model, normal speed, and HQ's own lines keep your old voice. 9.7.2: mic sound 22, Voices: a woman's voice says one of 24 short lines when the mic opens, a different one each time. 9.7.3: every chat back to Annika; per project voices are off until you add one. 9.7.4: one voice everywhere, picked from your ElevenLabs library by name. 9.9.4: mute, a fourth rule for sites whose player hides from Switcheroo; with the Switcheroo Tabs extension the whole tab mutes while we talk.
+// @version      9.9.5
+// @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land. 8.8: one model for every open chat, by voice ("all chats to Sonnet") or from the HQ model pills. 8.9: Boot. The Switcheroo Chrome launcher opens HQ with your 10 most recent chats behind it and the mic ready, no clicks; or say "boot up". 8.9.1: "stop, new chat in Alder" works: a lead in no longer hides a command, and new chat finds every project, not just the sidebar. 8.9.2: the mic bell is now the Long bell, struck three times so the AirPods can't clip it. 8.9.3: Retro, a third HQ look: sunset sky, a neon floor rolling toward you, chrome type. Click Look on the control panel, or say "retro look". 9.0: Chief of Staff joins HQ as the COS wedge and panel, and a fourth look, night drive, from the board. Say chief for the brief, what needs me for Start Here, done two to close a thread, undo to reopen it. 9.0.1: fifty looks. Each push of Look steps to the next one (right click goes back); say "next look", "previous look", "random look" or a look by name. And "next, over" heard as "next server" still jumps. 9.1: the CHxTLD Outbox joins HQ as the OUT wedge, and a click opens your drafts over the pie to read and edit; edits save back to the Outbox. Say "outbox" to hear them, "read draft two" to hear one. Nothing sends from HQ. 9.2: a View pill with eleven ways to draw your chats, a Look pill with a picker and favorites, two hand sketched looks, and Chief of Staff one tap away with Open chat on every Start Here card. 9.3: looks run dark to light, so stepping never jumps from black to white, and a change fades instead of cutting. Retro Sky, a retro futurist look whose sky follows the time of day. Follow the clock picks from your favorites by daylight; say "follow the clock". 9.4: a second Outbox, ANDRÉ MANDEL, on its own letterhead beside the CHxTLD one, both one tap away on the pill rail ("mandel outbox"); and ten new looks: Trace, Marker, Charcoal, Chalkboard, Funnies, Space Opera, Overdrive, Dime Novel, Desert Neon, Bunker. 9.4.1: Chief of Staff wears HQ's look; Night drive keeps the board's own. 9.4.3: the model pills sit in the control panel's header, so nothing falls off the bottom of HQ, and a short window scales HQ down instead of cutting it off. 9.5: HQ holds the AirPods press, so the chats window can be minimized. 9.6: double press is a new chat in this project, triple press is the next chat waiting. 9.7: a voice per project: Mississippi Nikola, Walsh Hank, Haynes Jamieson, Kelly Samantha, and Eleanor for any other chat. 9.7.1: the natural ElevenLabs model, normal speed, and HQ's own lines keep your old voice. 9.7.2: mic sound 22, Voices: a woman's voice says one of 24 short lines when the mic opens, a different one each time. 9.7.3: every chat back to Annika; per project voices are off until you add one. 9.7.4: one voice everywhere, picked from your ElevenLabs library by name. 9.9.4: mute, a fourth rule for sites whose player hides from Switcheroo; with the Switcheroo Tabs extension the whole tab mutes while we talk. 9.9.5: the Outboxes open only when you tap their pills, and an ElevenLabs refusal says why and which key.
 // @match        https://claude.ai/*
 // @match        *://*/*
 // @grant        GM_xmlhttpRequest
@@ -348,6 +348,10 @@
     violet night, rosy dawn, a pale peach morning, a bright blue noon, golden hour, then the sunset at dusk. Follow
     the clock (in the Look picker, or say "follow the clock") picks from your favorites by daylight, darkest at night,
     brightest at noon; picking a look yourself turns it off. Look numbers changed; favorites keep.
+  9.9.5: NO SURPRISE OUTBOX TABS, AND ELEVENLABS SAYS WHY. HQ no longer opens both Outboxes behind it when it
+    loads; an Outbox opens when you tap its pill or say "outbox". Chief of Staff still opens on its own. When
+    ElevenLabs refuses, the note now gives the last four characters of the key Tampermonkey holds and
+    ElevenLabs' own reason (a missing permission, a bad key), so you can match it against your API Keys page.
   9.9.4: MUTE THIS SITE. Some stream sites bury their player in a frame Tampermonkey can't enter, so turn
     down never reached it. The site menu now steps auto, pause, turn down, mute, leave alone. Mute asks the
     Switcheroo Tabs extension (1.1 or later) to mute the whole tab with Chrome's own tab mute while we talk,
@@ -3462,7 +3466,7 @@
     setTimeout(() => {
       const want = [];
       if (!chAlive()) want.push(['chief', CHIEF_URL]);
-      for (const l of ['ch', 'am']) if (!oxAlive(l)) want.push([l, OUTBOX_URLS[l]]);
+      // 9.9.5: the Outboxes no longer open themselves; a tap on their pill or "outbox" opens them
       want.forEach(([k, url], i) => setTimeout(() => {
         if (k === 'chief' ? chAlive() : oxAlive(k)) return;
         if (k === 'chief') chOpening = Date.now(); else oxOpening[k] = Date.now();
@@ -6973,6 +6977,25 @@
     for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i);
     return new Blob([u], { type: 'audio/mpeg' });
   }
+  // 9.9.5: ElevenLabs' own reason for a refusal, read from the answer's body, so the note can say it
+  function elReject(r, reject) {
+    const fin = (body) => {
+      let why = '';
+      try {
+        const j = typeof body === 'string' ? JSON.parse(body) : body;
+        const d = j && j.detail;
+        why = String((d && (d.message || d.status)) || (typeof d === 'string' ? d : '') || (j && j.message) || '').slice(0, 160);
+      } catch (e) {}
+      reject({ status: r.status, why });
+    };
+    try {
+      const b = r.response;
+      if (b && typeof Blob !== 'undefined' && b instanceof Blob) return void b.text().then(fin, () => fin(''));
+      fin(b != null ? b : r.responseText);
+    } catch (e) { reject({ status: r.status, why: '' }); }
+  }
+  const elKeyTail = () => { const k = elKey(); return k ? ' ending ' + k.slice(-4) : ''; };
+  const elWhyLine = (e) => (e && e.why ? ' ElevenLabs says: ' + e.why : '');
   function elRequest(text, voice, key, stamps, model) {
     return new Promise((resolve, reject) => {
       GM_xmlhttpRequest({
@@ -6982,7 +7005,7 @@
         data: JSON.stringify({ text, model_id: model || 'eleven_multilingual_v2' }),   // 9.7.1: the natural model, not the fast one
         responseType: stamps ? 'json' : 'blob', timeout: 25000,
         onload: (r) => {
-          if (!(r.status >= 200 && r.status < 300 && r.response)) return reject({ status: r.status });
+          if (!(r.status >= 200 && r.status < 300 && r.response)) return elReject(r, reject);
           if (!stamps) return resolve(r.response);
           try {
             const j = typeof r.response === 'string' ? JSON.parse(r.response) : r.response;
@@ -7004,7 +7027,7 @@
         headers: { 'xi-api-key': key, Accept: 'application/json' },
         responseType: 'json', timeout: 20000,
         onload: (r) => {
-          if (!(r.status >= 200 && r.status < 300 && r.response)) return reject({ status: r.status });
+          if (!(r.status >= 200 && r.status < 300 && r.response)) return elReject(r, reject);
           try {
             const j = typeof r.response === 'string' ? JSON.parse(r.response) : r.response;
             const out = (j.voices || []).map((v) => ({ id: v.voice_id, name: String(v.name || v.voice_id) })).filter((v) => v.id);
@@ -7031,7 +7054,7 @@
     try { list = await elMyVoices(key); }
     catch (e) {
       const st = (e && e.status) || 0;
-      return toast(st === 401 ? 'ElevenLabs turned down the API key.' : "Couldn't reach your ElevenLabs voices.");
+      return toast(st === 401 ? 'ElevenLabs turned down the key' + elKeyTail() + '.' + elWhyLine(e) : "Couldn't reach your ElevenLabs voices." + elWhyLine(e));
     }
     const now = elChiefVoice();
     const at = list.findIndex((v) => v.id === now);
@@ -7074,7 +7097,7 @@
   function elFailed(e) {
     const st = (e && e.status) || 0;
     elDownUntil = Date.now() + (st === 401 || st === 402 || st === 429 ? 10 * 60000 : 60000);
-    toast(st === 401 ? 'ElevenLabs turned down the API key. Set it again in the Tampermonkey menu.'
+    toast(st === 401 ? 'ElevenLabs turned down the key' + elKeyTail() + '.' + elWhyLine(e) + ' Set it again in the Tampermonkey menu.'
       : st === 402 || st === 429 ? 'ElevenLabs is out of credits or busy. Using another voice for now.'
       : "ElevenLabs didn't answer. Using another voice for now.");
   }
