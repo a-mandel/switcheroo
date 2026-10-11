@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Claude Hands Free Text Mode
 // @namespace    andre.mandel
-// @version      9.9.3
-// @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land. 8.8: one model for every open chat, by voice ("all chats to Sonnet") or from the HQ model pills. 8.9: Boot. The Switcheroo Chrome launcher opens HQ with your 10 most recent chats behind it and the mic ready, no clicks; or say "boot up". 8.9.1: "stop, new chat in Alder" works: a lead in no longer hides a command, and new chat finds every project, not just the sidebar. 8.9.2: the mic bell is now the Long bell, struck three times so the AirPods can't clip it. 8.9.3: Retro, a third HQ look: sunset sky, a neon floor rolling toward you, chrome type. Click Look on the control panel, or say "retro look". 9.0: Chief of Staff joins HQ as the COS wedge and panel, and a fourth look, night drive, from the board. Say chief for the brief, what needs me for Start Here, done two to close a thread, undo to reopen it. 9.0.1: fifty looks. Each push of Look steps to the next one (right click goes back); say "next look", "previous look", "random look" or a look by name. And "next, over" heard as "next server" still jumps. 9.1: the CHxTLD Outbox joins HQ as the OUT wedge, and a click opens your drafts over the pie to read and edit; edits save back to the Outbox. Say "outbox" to hear them, "read draft two" to hear one. Nothing sends from HQ. 9.2: a View pill with eleven ways to draw your chats, a Look pill with a picker and favorites, two hand sketched looks, and Chief of Staff one tap away with Open chat on every Start Here card. 9.3: looks run dark to light, so stepping never jumps from black to white, and a change fades instead of cutting. Retro Sky, a retro futurist look whose sky follows the time of day. Follow the clock picks from your favorites by daylight; say "follow the clock". 9.4: a second Outbox, ANDRÉ MANDEL, on its own letterhead beside the CHxTLD one, both one tap away on the pill rail ("mandel outbox"); and ten new looks: Trace, Marker, Charcoal, Chalkboard, Funnies, Space Opera, Overdrive, Dime Novel, Desert Neon, Bunker. 9.4.1: Chief of Staff wears HQ's look; Night drive keeps the board's own. 9.4.3: the model pills sit in the control panel's header, so nothing falls off the bottom of HQ, and a short window scales HQ down instead of cutting it off. 9.5: HQ holds the AirPods press, so the chats window can be minimized. 9.6: double press is a new chat in this project, triple press is the next chat waiting. 9.7: a voice per project: Mississippi Nikola, Walsh Hank, Haynes Jamieson, Kelly Samantha, and Eleanor for any other chat. 9.7.1: the natural ElevenLabs model, normal speed, and HQ's own lines keep your old voice. 9.7.2: mic sound 22, Voices: a woman's voice says one of 24 short lines when the mic opens, a different one each time. 9.7.3: every chat back to Annika; per project voices are off until you add one. 9.7.4: one voice everywhere, picked from your ElevenLabs library by name.
+// @version      9.9.4
+// @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land. 8.8: one model for every open chat, by voice ("all chats to Sonnet") or from the HQ model pills. 8.9: Boot. The Switcheroo Chrome launcher opens HQ with your 10 most recent chats behind it and the mic ready, no clicks; or say "boot up". 8.9.1: "stop, new chat in Alder" works: a lead in no longer hides a command, and new chat finds every project, not just the sidebar. 8.9.2: the mic bell is now the Long bell, struck three times so the AirPods can't clip it. 8.9.3: Retro, a third HQ look: sunset sky, a neon floor rolling toward you, chrome type. Click Look on the control panel, or say "retro look". 9.0: Chief of Staff joins HQ as the COS wedge and panel, and a fourth look, night drive, from the board. Say chief for the brief, what needs me for Start Here, done two to close a thread, undo to reopen it. 9.0.1: fifty looks. Each push of Look steps to the next one (right click goes back); say "next look", "previous look", "random look" or a look by name. And "next, over" heard as "next server" still jumps. 9.1: the CHxTLD Outbox joins HQ as the OUT wedge, and a click opens your drafts over the pie to read and edit; edits save back to the Outbox. Say "outbox" to hear them, "read draft two" to hear one. Nothing sends from HQ. 9.2: a View pill with eleven ways to draw your chats, a Look pill with a picker and favorites, two hand sketched looks, and Chief of Staff one tap away with Open chat on every Start Here card. 9.3: looks run dark to light, so stepping never jumps from black to white, and a change fades instead of cutting. Retro Sky, a retro futurist look whose sky follows the time of day. Follow the clock picks from your favorites by daylight; say "follow the clock". 9.4: a second Outbox, ANDRÉ MANDEL, on its own letterhead beside the CHxTLD one, both one tap away on the pill rail ("mandel outbox"); and ten new looks: Trace, Marker, Charcoal, Chalkboard, Funnies, Space Opera, Overdrive, Dime Novel, Desert Neon, Bunker. 9.4.1: Chief of Staff wears HQ's look; Night drive keeps the board's own. 9.4.3: the model pills sit in the control panel's header, so nothing falls off the bottom of HQ, and a short window scales HQ down instead of cutting it off. 9.5: HQ holds the AirPods press, so the chats window can be minimized. 9.6: double press is a new chat in this project, triple press is the next chat waiting. 9.7: a voice per project: Mississippi Nikola, Walsh Hank, Haynes Jamieson, Kelly Samantha, and Eleanor for any other chat. 9.7.1: the natural ElevenLabs model, normal speed, and HQ's own lines keep your old voice. 9.7.2: mic sound 22, Voices: a woman's voice says one of 24 short lines when the mic opens, a different one each time. 9.7.3: every chat back to Annika; per project voices are off until you add one. 9.7.4: one voice everywhere, picked from your ElevenLabs library by name. 9.9.4: mute, a fourth rule for sites whose player hides from Switcheroo; with the Switcheroo Tabs extension the whole tab mutes while we talk.
 // @match        https://claude.ai/*
 // @match        *://*/*
 // @grant        GM_xmlhttpRequest
@@ -348,6 +348,10 @@
     violet night, rosy dawn, a pale peach morning, a bright blue noon, golden hour, then the sunset at dusk. Follow
     the clock (in the Look picker, or say "follow the clock") picks from your favorites by daylight, darkest at night,
     brightest at noon; picking a look yourself turns it off. Look numbers changed; favorites keep.
+  9.9.4: MUTE THIS SITE. Some stream sites bury their player in a frame Tampermonkey can't enter, so turn
+    down never reached it. The site menu now steps auto, pause, turn down, mute, leave alone. Mute asks the
+    Switcheroo Tabs extension (1.1 or later) to mute the whole tab with Chrome's own tab mute while we talk,
+    and unmutes it in the quiet. It only ever unmutes a tab it muted itself.
   9.9.3: BACK TO 9.7.4. Everything from tonight (9.8 through 9.9.2) is rolled back. This is 9.7.4 exactly,
     numbered up so Tampermonkey takes it.
   9.7.4: ONE VOICE EVERYWHERE. A menu item (ElevenLabs: one voice everywhere) lists your ElevenLabs voices by
@@ -521,8 +525,17 @@
     const LIVE_SITES = /(^|\.)(espn\.com|tv\.youtube\.com|nba\.com|nfl\.com|mlb\.com|nhl\.com|wnba\.com|mls(soccer)?\.com|peacocktv\.com|fubo\.tv|paramountplus\.com|foxsports\.com|fox\.com|foxone\.com|dazn\.com|sling\.com|nbcsports\.com|cbssports\.com|kayosports\.com\.au|afl\.com\.au|watchafl\.com\.au|fifa\.com|plus\.fifa\.com|twitch\.tv|kick\.com|directv\.com|stream\.directv\.com|hulu\.com\/live|telemundo\.com|tudn\.com|globoplay\.globo\.com|ge\.globo)$/;
     let rules = {};
     try { rules = GM_getValue('chf_site_media', {}) || {}; } catch (e) {}
-    GM_addValueChangeListener('chf_site_media', (n, o, v) => { rules = v || {}; beat(true); if (isDucked) enforce(); });
-    const siteRule = () => rules[SITE] || 'auto';   // pause, lower, ignore, or auto
+    GM_addValueChangeListener('chf_site_media', (n, o, v) => { rules = v || {}; beat(true); if (isDucked) enforce(); muteTab(isDucked); });
+    const siteRule = () => rules[SITE] || 'auto';   // pause, lower, mute, ignore, or auto
+    // 9.9.4: mute. The top page asks the Switcheroo Tabs extension to mute the whole tab, so a player in a
+    // frame we can't reach still goes quiet. Only the top page asks, and only when the answer changes.
+    let tabMuted = false;
+    function muteTab(on) {
+      on = !!(on && TOP && siteRule() === 'mute');
+      if (on === tabMuted) return;
+      tabMuted = on;
+      try { document.dispatchEvent(new CustomEvent('switcheroo-mute', { detail: on ? 'on' : 'off' })); } catch (e) {}
+    }
     function ytPlayer(el) {
       try {
         if (!/(^|\.)youtube\.com$|(^|\.)youtube-nocookie\.com$/.test(location.hostname)) return null;
@@ -553,7 +566,7 @@
     let gmode = 'lower', kind = 'talk';
     function actionFor(el) {
       const r = siteRule();
-      if (r === 'ignore') return 'ignore';
+      if (r === 'ignore' || r === 'mute') return 'ignore';   // 9.9.4: mute works on the whole tab instead
       let how = r === 'pause' || r === 'lower' ? r : (gmode === 'pause' && !isLive(el) ? 'pause' : 'lower');
       // a short Switcheroo line ("Alder needs you") never pauses a video; it only turns it down
       if (how === 'pause' && kind === 'line') how = held.has(el) ? 'keep' : 'lower';
@@ -633,15 +646,17 @@
         if (!isDucked || level !== (typeof v.level === 'number' ? v.level : 0)) restore();
         isDucked = true; level = typeof v.level === 'number' ? v.level : 0;
         enforce();
+        muteTab(true);
       } else {
         if (isDucked) { isDucked = false; restore(); }
+        muteTab(false);
         resumeSoon(v && v.resumeMs);
       }
     }
     GM_addValueChangeListener('chf_duck', (name, oldV, newV) => apply(newV));
     try { apply(GM_getValue('chf_duck', null)); } catch (e) {}
     // if the Claude tab vanished mid message, don't leave this tab silent or paused
-    setInterval(() => { if (isDucked && Date.now() - stamp > 20000) { isDucked = false; restore(); resumeSoon(0); } }, 3000);
+    setInterval(() => { if (isDucked && Date.now() - stamp > 20000) { isDucked = false; restore(); muteTab(false); resumeSoon(0); } }, 3000);
     // 5.7: some players put their volume back on their own; keep it down while ducked
     // 8.3: and in pause mode, a player that started itself (autoplay, next in queue) pauses too
     setInterval(() => { if (isDucked) enforce(); }, 1000);
@@ -658,7 +673,7 @@
     function beat(force) {
       try {
         const ms = media().filter((el) => el.currentSrc || el.src || el.srcObject);
-        if (!ms.length && !held.size) return;
+        if (!ms.length && !held.size && !(TOP && siteRule() === 'mute')) return;   // 9.9.4: a muted site reports even when its player hides
         const play = ms.find((el) => !el.paused && !el.muted) || ms.find((el) => held.has(el)) || ms[0];
         const live = play ? isLive(play) : LIVE_SITES.test(SITE);
         const b = { id: BEAT_ID, site: SITE, title: TOP ? String(document.title || '').slice(0, 80) : '', live, rule: siteRule(),
@@ -690,11 +705,11 @@
     setInterval(() => { if (media().some(audible)) tell(true); }, 10000);
     // 8.4: this site, your way. Tampermonkey menu on the site itself
     if (TOP && typeof GM_registerMenuCommand === 'function') {
-      const NEXT = { auto: 'pause', pause: 'lower', lower: 'ignore', ignore: 'auto' };
+      const NEXT = { auto: 'pause', pause: 'lower', lower: 'mute', mute: 'ignore', ignore: 'auto' };
       const SAY = { auto: 'Switcheroo decides: videos pause, live and sports turn down', pause: 'Videos here always pause while you talk to Claude',
-        lower: 'Videos here always turn down instead of pausing', ignore: 'Switcheroo leaves this site alone' };
+        lower: 'Videos here always turn down instead of pausing', mute: 'This whole tab mutes while you talk to Claude (needs Switcheroo Tabs 1.1)', ignore: 'Switcheroo leaves this site alone' };
       try {
-        GM_registerMenuCommand('Switcheroo on this site: pause, turn down, or leave alone', () => {
+        GM_registerMenuCommand('Switcheroo on this site: pause, turn down, mute, or leave alone', () => {
           const r = NEXT[siteRule()] || 'pause';
           const all = Object.assign({}, rules);
           if (r === 'auto') delete all[SITE]; else all[SITE] = r;
@@ -9110,6 +9125,7 @@
   const siteName = (h) => /(^|\.)youtube\.com$/.test(h) ? (/^tv\./.test(h) ? 'YouTube TV' : 'YouTube') : /(^|\.)espn\.com$/.test(h) ? 'ESPN' : String(h || 'a site').replace(/\.(com|net|org|tv|co|com\.au|io)$/, '');
   function mediaWord(b) {
     if (b.rule === 'ignore') return 'is left alone';
+    if (b.rule === 'mute') return 'mutes the whole tab while we talk';
     if (b.rule === 'lower' || (b.rule === 'auto' && (b.live || duckMode() === 'lower'))) return b.live ? 'is live, so it turns down' : 'turns down';
     return 'pauses while we talk';
   }

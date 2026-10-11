@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Switcheroo Tabs",
-  "version": "1.0",
-  "description": "Brings Switcheroo HQ forward when you and Claude talk, and your video back when it plays on.",
+  "version": "1.1",
+  "description": "Brings Switcheroo HQ forward when you and Claude talk, your video back when it plays on, and mutes a tab whose site is set to mute.",
   "background": {
     "service_worker": "bg.js"
   },

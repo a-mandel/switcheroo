@@ -8,6 +8,7 @@ const setHq = (id) => { hqTab = id; chrome.storage.session.set({ hqTab: id }).ca
 chrome.runtime.onMessage.addListener((msg, sender) => {
   const tab = sender && sender.tab;
   if (!msg || !tab || tab.id == null) return;
+  if ('mute' in msg) { muteTab(tab.id, !!msg.mute); return; }
   if (Date.now() - lastSwitch < 1200) return;
   if (msg.front === 'hq') {
     setHq(tab.id);
@@ -29,3 +30,29 @@ chrome.runtime.onMessage.addListener((msg, sender) => {
 });
 
 chrome.tabs.onRemoved.addListener((id) => { if (id === hqTab) setHq(null); });
+
+// 1.1: mute a tab while you talk to Claude, for sites whose player Switcheroo can't reach. Unmutes only tabs
+// it muted itself, so a tab you muted by hand stays muted.
+async function muteTab(id, on) {
+  try {
+    const v = await chrome.storage.session.get('muted');
+    const mine = new Set((v && v.muted) || []);
+    if (on) {
+      const t = await chrome.tabs.get(id);
+      if (t.mutedInfo && t.mutedInfo.muted) return;
+      await chrome.tabs.update(id, { muted: true });
+      mine.add(id);
+    } else {
+      if (!mine.has(id)) return;
+      mine.delete(id);
+      await chrome.tabs.update(id, { muted: false });
+    }
+    await chrome.storage.session.set({ muted: [...mine] });
+  } catch (e) {}
+}
+chrome.tabs.onRemoved.addListener((id) => {
+  chrome.storage.session.get('muted').then((v) => {
+    const l = ((v && v.muted) || []).filter((x) => x !== id);
+    return chrome.storage.session.set({ muted: l });
+  }).catch(() => {});
+});
