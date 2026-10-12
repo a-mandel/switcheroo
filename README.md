@@ -4,6 +4,12 @@ Hands free Claude in Chrome: dictation, read aloud, a switchboard for every Clau
 
 Install or update: open [switcheroo.user.js](https://raw.githubusercontent.com/a-mandel/switcheroo/main/switcheroo.user.js) with Tampermonkey installed. Tampermonkey keeps it current from this repo on its own. Say "update Switcheroo" to check right away.
 
+## Fewer words, fewer credits (9.9.6)
+
+The voice never reads code blocks, inline code, the gray tool and status lines that scroll by while Claude works, tables, file paths, file names, raw links, IDs or code style names. Links read as their label only.
+
+Replies stop after the first paragraph, about 60 words at most, and ask "Keep going?" with the mic open. Say yes, keep going or keep reading for the rest; no, or just silence, ends it. "Read the whole thing" still reads a reply start to finish. Tampermonkey menu, Read cap on or off, turns the cap off.
+
 ## Natural voices (9.7.1)
 
 Replies use ElevenLabs' natural model, not the fast one, and reading speed is back to normal. HQ's own lines keep the voice you had before, Annika (ElevenLabs: HQ lines voice by ID to change it).

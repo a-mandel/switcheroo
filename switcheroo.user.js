@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Claude Hands Free Text Mode
 // @namespace    andre.mandel
-// @version      9.9.5
-// @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land. 8.8: one model for every open chat, by voice ("all chats to Sonnet") or from the HQ model pills. 8.9: Boot. The Switcheroo Chrome launcher opens HQ with your 10 most recent chats behind it and the mic ready, no clicks; or say "boot up". 8.9.1: "stop, new chat in Alder" works: a lead in no longer hides a command, and new chat finds every project, not just the sidebar. 8.9.2: the mic bell is now the Long bell, struck three times so the AirPods can't clip it. 8.9.3: Retro, a third HQ look: sunset sky, a neon floor rolling toward you, chrome type. Click Look on the control panel, or say "retro look". 9.0: Chief of Staff joins HQ as the COS wedge and panel, and a fourth look, night drive, from the board. Say chief for the brief, what needs me for Start Here, done two to close a thread, undo to reopen it. 9.0.1: fifty looks. Each push of Look steps to the next one (right click goes back); say "next look", "previous look", "random look" or a look by name. And "next, over" heard as "next server" still jumps. 9.1: the CHxTLD Outbox joins HQ as the OUT wedge, and a click opens your drafts over the pie to read and edit; edits save back to the Outbox. Say "outbox" to hear them, "read draft two" to hear one. Nothing sends from HQ. 9.2: a View pill with eleven ways to draw your chats, a Look pill with a picker and favorites, two hand sketched looks, and Chief of Staff one tap away with Open chat on every Start Here card. 9.3: looks run dark to light, so stepping never jumps from black to white, and a change fades instead of cutting. Retro Sky, a retro futurist look whose sky follows the time of day. Follow the clock picks from your favorites by daylight; say "follow the clock". 9.4: a second Outbox, ANDRÉ MANDEL, on its own letterhead beside the CHxTLD one, both one tap away on the pill rail ("mandel outbox"); and ten new looks: Trace, Marker, Charcoal, Chalkboard, Funnies, Space Opera, Overdrive, Dime Novel, Desert Neon, Bunker. 9.4.1: Chief of Staff wears HQ's look; Night drive keeps the board's own. 9.4.3: the model pills sit in the control panel's header, so nothing falls off the bottom of HQ, and a short window scales HQ down instead of cutting it off. 9.5: HQ holds the AirPods press, so the chats window can be minimized. 9.6: double press is a new chat in this project, triple press is the next chat waiting. 9.7: a voice per project: Mississippi Nikola, Walsh Hank, Haynes Jamieson, Kelly Samantha, and Eleanor for any other chat. 9.7.1: the natural ElevenLabs model, normal speed, and HQ's own lines keep your old voice. 9.7.2: mic sound 22, Voices: a woman's voice says one of 24 short lines when the mic opens, a different one each time. 9.7.3: every chat back to Annika; per project voices are off until you add one. 9.7.4: one voice everywhere, picked from your ElevenLabs library by name. 9.9.4: mute, a fourth rule for sites whose player hides from Switcheroo; with the Switcheroo Tabs extension the whole tab mutes while we talk. 9.9.5: the Outboxes open only when you tap their pills, and an ElevenLabs refusal says why and which key.
+// @version      9.9.6
+// @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land. 8.8: one model for every open chat, by voice ("all chats to Sonnet") or from the HQ model pills. 8.9: Boot. The Switcheroo Chrome launcher opens HQ with your 10 most recent chats behind it and the mic ready, no clicks; or say "boot up". 8.9.1: "stop, new chat in Alder" works: a lead in no longer hides a command, and new chat finds every project, not just the sidebar. 8.9.2: the mic bell is now the Long bell, struck three times so the AirPods can't clip it. 8.9.3: Retro, a third HQ look: sunset sky, a neon floor rolling toward you, chrome type. Click Look on the control panel, or say "retro look". 9.0: Chief of Staff joins HQ as the COS wedge and panel, and a fourth look, night drive, from the board. Say chief for the brief, what needs me for Start Here, done two to close a thread, undo to reopen it. 9.0.1: fifty looks. Each push of Look steps to the next one (right click goes back); say "next look", "previous look", "random look" or a look by name. And "next, over" heard as "next server" still jumps. 9.1: the CHxTLD Outbox joins HQ as the OUT wedge, and a click opens your drafts over the pie to read and edit; edits save back to the Outbox. Say "outbox" to hear them, "read draft two" to hear one. Nothing sends from HQ. 9.2: a View pill with eleven ways to draw your chats, a Look pill with a picker and favorites, two hand sketched looks, and Chief of Staff one tap away with Open chat on every Start Here card. 9.3: looks run dark to light, so stepping never jumps from black to white, and a change fades instead of cutting. Retro Sky, a retro futurist look whose sky follows the time of day. Follow the clock picks from your favorites by daylight; say "follow the clock". 9.4: a second Outbox, ANDRÉ MANDEL, on its own letterhead beside the CHxTLD one, both one tap away on the pill rail ("mandel outbox"); and ten new looks: Trace, Marker, Charcoal, Chalkboard, Funnies, Space Opera, Overdrive, Dime Novel, Desert Neon, Bunker. 9.4.1: Chief of Staff wears HQ's look; Night drive keeps the board's own. 9.4.3: the model pills sit in the control panel's header, so nothing falls off the bottom of HQ, and a short window scales HQ down instead of cutting it off. 9.5: HQ holds the AirPods press, so the chats window can be minimized. 9.6: double press is a new chat in this project, triple press is the next chat waiting. 9.7: a voice per project: Mississippi Nikola, Walsh Hank, Haynes Jamieson, Kelly Samantha, and Eleanor for any other chat. 9.7.1: the natural ElevenLabs model, normal speed, and HQ's own lines keep your old voice. 9.7.2: mic sound 22, Voices: a woman's voice says one of 24 short lines when the mic opens, a different one each time. 9.7.3: every chat back to Annika; per project voices are off until you add one. 9.7.4: one voice everywhere, picked from your ElevenLabs library by name. 9.9.4: mute, a fourth rule for sites whose player hides from Switcheroo; with the Switcheroo Tabs extension the whole tab mutes while we talk. 9.9.5: the Outboxes open only when you tap their pills, and an ElevenLabs refusal says why and which key. 9.9.6: the voice never reads code, the gray tool and status lines, tables, paths, file names or raw links, and replies stop after the first paragraph (about 60 words) to ask "Keep going?"; yes for the rest, no or silence to stop.
 // @match        https://claude.ai/*
 // @match        *://*/*
 // @grant        GM_xmlhttpRequest
@@ -267,7 +267,7 @@
     along with the ElevenLabs voice, a sentence at a time; scroll yourself and it waits 6 seconds.
   7.6: after notes, next, take me to and new chat send the notes first, then go. Read it, keep
     reading, pause and the settings commands leave the notes in the box for your next message.
-    The optional read cap (menu) is 300 words when on.
+    The optional read cap (menu) is 300 words when on (9.9.6: about 60, and on by default).
   7.7: the pill moved to the left corner above the message box, sits under Claude's own menus,
     and hides while the model picker or any other Claude menu is open.
   7.8: screen mode redrawn flat. The transcript docks on the left with the latest image under it,
@@ -4253,6 +4253,7 @@
   let cfg = Object.assign({ autoRead: true, autoSend: true, autoListen: true }, load());
   if (!cfg.v64) { cfg.autoListen = true; cfg.v64 = true; save(cfg); }   // 6.4: your turn mode on, once
   if (!cfg.v75) { cfg.readCap = false; cfg.v75 = true; save(cfg); }     // 7.5: replies read start to finish
+  if (!cfg.v996) { cfg.readCap = true; cfg.v996 = true; save(cfg); }    // 9.9.6: the short cap comes on once; the menu still turns it off
   if (!cfg.autoListen && !cfg.listenOff) { cfg.autoListen = true; save(cfg); }   // 7.8: your turn mode comes on with hands free, every load (8.0: unless the panel turned it off)
 
   // per tab master switch, kept in sessionStorage so it survives a reload of this tab only
@@ -6696,16 +6697,77 @@
   let fb = null;   // { parts, i, paused, gen }
   const fbActive = () => !!fb && !fb.paused;
   // 8.7: the reply as plain text, its sentences, and sentences grouped into reading parts
-  function replyText(m) {
-    const els = [...m.querySelectorAll('p, li, h1, h2, h3, h4, h5, blockquote, td')]
-      .filter((e) => !e.closest('pre, button, [aria-hidden="true"], .sr-only, [data-testid="message-actions"]'));   // 6.2: no hidden summary
-    const outer = els.filter((e) => !els.some((o) => o !== e && o.contains(e)));
-    return (outer.length ? outer.map((e) => e.innerText) : [m.innerText]).join('. ')
+  // 9.9.6: never voiced: code blocks and inline code, the gray tool and status lines, tables,
+  // file paths and names, raw links, IDs, code style names and markdown marks. Every word costs credits.
+  const SPEAK_SKIP = 'pre, code, kbd, samp, table, button, details, summary, svg, math, .katex, [role="button"], [aria-hidden="true"], .sr-only, [data-testid="message-actions"], [data-testid*="tool"], [class*="tool-use"], [class*="thinking"]';
+  const SPEAK_INLINE = 'code, kbd, samp, svg, math, .katex, button, [aria-hidden="true"], .sr-only';
+  const rgbOf = (c) => { const x = String(c || '').match(/[\d.]+/g); return x && x.length >= 3 ? { r: +x[0], g: +x[1], b: +x[2], a: x.length > 3 ? +x[3] : 1 } : null; };
+  const lumOf = (o) => { const f = (v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }; return 0.2126 * f(o.r) + 0.7152 * f(o.g) + 0.0722 * f(o.b); };
+  function pageBg() {
+    for (let e = document.body; e; e = e.parentElement) { const o = rgbOf(getComputedStyle(e).backgroundColor); if (o && o.a > 0.5) return o; }
+    const o = rgbOf(getComputedStyle(document.documentElement).backgroundColor);
+    if (o && o.a > 0.5) return o;
+    return matchMedia('(prefers-color-scheme: dark)').matches ? { r: 30, g: 30, b: 30, a: 1 } : { r: 255, g: 255, b: 255, a: 1 };
+  }
+  // how far a block's text color stands off the page: the gray status lines stand off less than the reply
+  function standOff(e, bg, lbg) {
+    try {
+      const o = rgbOf(getComputedStyle(e).color);
+      if (!o) return 1;
+      const k = Math.min(1, o.a) * Math.min(1, +getComputedStyle(e).opacity || 1);
+      const mix = { r: o.r * k + bg.r * (1 - k), g: o.g * k + bg.g * (1 - k), b: o.b * k + bg.b * (1 - k) };
+      return Math.abs(lumOf(mix) - lbg);
+    } catch (x) { return 1; }
+  }
+  // a block's own words, leaving out inline code and the rest of SPEAK_INLINE
+  function spokenOf(e) {
+    let out = '';
+    const tw = document.createTreeWalker(e, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT, { acceptNode: (n) => {
+      if (n.nodeType === 3) return NodeFilter.FILTER_ACCEPT;
+      if (n.tagName === 'BR') return NodeFilter.FILTER_ACCEPT;
+      return n.matches(SPEAK_INLINE) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_SKIP;
+    } });
+    for (let n = tw.nextNode(); n; n = tw.nextNode()) out += n.nodeType === 3 ? n.nodeValue : ' ';
+    return out;
+  }
+  const SPEAK_EXT = 'js|mjs|cjs|ts|tsx|jsx|json|md|py|sh|zsh|bash|html?|css|txt|csv|tsv|ya?ml|toml|lock|log|xml|gs|zip|dwg|dxf|pdf|docx?|xlsx?|pptx?|png|jpe?g|gif|webp|svg|mp3|mp4|m4a|wav|vwx|ifc|skp|rvt|plist|env|ini|cfg|conf';
+  // 9.9.6: the words of a block, cleaned of jargon nobody needs to hear
+  function speakClean(t) {
+    return String(t || '')
       .replace(/^\s*Claude responded:\s*/i, '')
-      .replace(/https?:\/\/\S+/g, 'a link').replace(/[`*_#>|]/g, ' ').replace(/\s+/g, ' ').replace(/(\.\s*){2,}/g, '. ').trim();
+      .replace(/\bhttps?:\/\/\S+/gi, ' ').replace(/\bwww\.\S+/gi, ' ')
+      .replace(/(^|[\s(])(?:~|\.{1,2})?\/[\w.@%+-]+(?:\/[\w.@%+-]*)*/g, '$1')   // /home/claude/x, ~/x, ./x
+      .replace(/\b[\w.-]+\/[\w.-]+\/[\w.\/-]*[A-Za-z][\w.\/-]*/g, ' ')         // a/b/c, unless it's all numbers (a date)
+      .replace(new RegExp('\\b[\\w-]+(?:\\.[\\w-]+)*\\.(?:' + SPEAK_EXT + ')\\b', 'gi'), ' ')   // switcheroo.user.js
+      .replace(/\b[A-Za-z][A-Za-z0-9]*_[\w]+\b/g, ' ')                          // snake_case
+      .replace(/\b[a-z]{2,}[A-Z][a-z]\w*\b/g, ' ')                              // camelCase, not iPhone or macOS
+      .replace(/\b(?=[\w-]*\d)(?=[\w-]*[A-Za-z])[\w-]{12,}\b/g, ' ')            // voice IDs, hashes, tokens
+      .replace(/(^|\s)--?[a-z][\w-]*/g, '$1')                                     // --flags
+      .replace(/[`*_#>|~^{}\[\]<=\\]/g, ' ')
+      .replace(/\(\s*[,;:]?\s*\)/g, ' ')
+      .replace(/\s+([,.;:!?])/g, '$1').replace(/([,;:])(?:\s*[,;:])+/g, '$1')
+      .replace(/\s+/g, ' ').trim();
+  }
+  // the blocks a reply is read from, in order, each cleaned
+  function replyBlocks(m) {
+    const els = [...m.querySelectorAll('p, li, h1, h2, h3, h4, h5, h6, blockquote')]
+      .filter((e) => !e.closest(SPEAK_SKIP));
+    const outer = els.filter((e) => !els.some((o) => o !== e && o.contains(e)));
+    if (!outer.length) return m.closest(SPEAK_SKIP) ? [] : [speakClean(spokenOf(m))].filter(Boolean);
+    // 9.9.6: the gray lines (tool steps, status, scrolling progress) stand off the page less than the reply itself
+    let keep = outer;
+    try {
+      const bg = pageBg(), lbg = lumOf(bg);
+      const so = outer.map((e) => standOff(e, bg, lbg)), top = Math.max(...so);
+      if (top > 0.15) keep = outer.filter((e, i) => so[i] >= top * 0.8);
+    } catch (x) {}
+    return keep.map((e) => speakClean(spokenOf(e))).filter((x) => /[A-Za-z]{2,}/.test(x));
+  }
+  function replyText(m) {
+    return replyBlocks(m).join('. ').replace(/([.!?])\s*\.\s/g, '$1 ').replace(/(\.\s*){2,}/g, '. ').trim();
   }
   // a period inside a number (8.7, 3.5 ft) doesn't end a sentence
-  const sentencesOf = (text) => (String(text || '').replace(/(\d)\.(\d)/g, '$1\u2024$2').match(/[^.!?]+[.!?]+["')\]]*|[^.!?]+$/g) || []).map((y) => y.trim().replace(/\u2024/g, '.')).filter(Boolean);
+  const sentencesOf = (text) => (String(text || '').replace(/(\d)\.(\d)/g, '$1\u2024$2').match(/[^.!?]+[.!?]+["')\]]*|[^.!?]+$/g) || []).map((y) => y.trim().replace(/\u2024/g, '.')).filter((y) => /[A-Za-z]{2,}/.test(y));   // 9.9.6: no word, no sound
   function partsOf(sentences, firstMax, restMax) {
     const parts = [];
     let cur = '';
@@ -6751,33 +6813,41 @@
       readPos(null);   // 8.1
       // 6.7: stopped at the cap: the rest waits for "keep reading"
       if (me.more && me.more.length) {
-        moreRead = { path: location.pathname, parts: me.more, at: Date.now() };
+        moreRead = { path: location.pathname, parts: me.more, at: Date.now(), cueAt: Date.now() };
         dlog('read cap', me.more.length + ' parts left');
-        say("There's more. Say keep reading.");
+        say('Keep going?');   // 9.9.6: the mic opens after; yes for the rest, no or silence to stop
       }
     }
   }
   // 6.7: long replies stop after about 150 words; "keep reading" plays the rest
-  const READ_CAP = 300;   // 7.6: only if you turn the cap on in the menu
-  let moreRead = null;   // { path, parts, at }
+  // 9.9.6: on by default and much shorter: the first paragraph once it has 25 words, never past about 60.
+  // Then "Keep going?" and the mic opens: yes, keep going or keep reading for the rest; no or silence ends it.
+  const READ_CAP = 60, READ_FLOOR = 25;
+  let moreRead = null;   // { path, parts, at, cueAt }
   const wordsIn = (x) => String(x || '').split(/\s+/).filter(Boolean).length;
-  function capParts(parts) {
+  function capFor(m) {
+    let n = 0;
+    try { for (const b of replyBlocks(m)) { n += wordsIn(b); if (n >= READ_FLOOR) return Math.min(n, READ_CAP); } } catch (e) {}
+    return READ_CAP;
+  }
+  function capParts(parts, cap) {
     if (cfg.readCap !== true) return { now: parts, more: [] };   // 7.5: off unless you turn it on
+    cap = cap || READ_CAP;
     const now = [];
     let n = 0;
     for (let k = 0; k < parts.length; k++) {
       const w = wordsIn(parts[k]);
-      if (n + w <= READ_CAP + 20) { now.push(parts[k]); n += w; continue; }
+      if (n + w <= cap + 8) { now.push(parts[k]); n += w; continue; }
       // this chunk runs past the cap: stop at the sentence that reaches it
       const sents = (parts[k].match(/[^.!?]+[.!?]+["')\]]*|[^.!?]+$/g) || [parts[k]]).map((x) => x.trim()).filter(Boolean);
       let take = '', j = 0;
       for (; j < sents.length; j++) {
-        if (n >= READ_CAP && (take || now.length)) break;
+        if (n >= cap && (take || now.length)) break;
         take += (take ? ' ' : '') + sents[j]; n += wordsIn(sents[j]);
       }
       if (take) now.push(take);
       const more = (j < sents.length ? [sents.slice(j).join(' ')] : []).concat(parts.slice(k + 1));
-      if (wordsIn(more.join(' ')) < 40) return { now: parts, more: [] };   // not worth a stop for a short tail
+      if (wordsIn(more.join(' ')) < 15) return { now: parts, more: [] };   // not worth a stop for a short tail
       return { now, more };
     }
     return { now: parts, more: [] };
@@ -6869,7 +6939,7 @@
       }
     }
     moreRead = null;
-    const cut = full ? { now: all, more: [] } : capParts(all);
+    const cut = full ? { now: all, more: [] } : capParts(all, capFor(m));
     const parts = cut.now;
     dlog('reading', parts.length + ' parts: ' + (parts[0] || '').slice(0, 50));
     if (!parts.length) return;
@@ -7143,9 +7213,9 @@
         cfg.follow = cfg.follow === false; save(cfg);
         toast(cfg.follow === false ? 'The page stays put while replies are read' : 'The page follows along as replies are read');
       });
-      GM_registerMenuCommand('Read cap on or off (300 words)', () => {
+      GM_registerMenuCommand('Read cap on or off (about 60 words)', () => {
         cfg.readCap = cfg.readCap !== true; save(cfg);
-        toast(cfg.readCap !== true ? 'Replies read start to finish' : 'Replies stop after about 300 words. Say keep reading for the rest.');
+        toast(cfg.readCap !== true ? 'Replies read start to finish' : 'Replies stop after the first paragraph, about 60 words at most. Say yes or keep going for the rest.');
       });
       GM_registerMenuCommand('Mic sound: next', () => setCue(cueNum() + 1));
       GM_registerMenuCommand('Mic sound: louder', () => stepCueVol(1));
@@ -7608,6 +7678,11 @@
     // 6.7: the rest of a capped reply, or a whole reply
     if (/^(?:keep reading|read more|read the rest|the rest|rest of it|read on|finish (?:it|reading)|finish the reply)(?: please)?$/.test(flat)) return { kind: 'more' };
     if (/^(?:keep going|go on|continue|more|carry on)(?: please)?$/.test(flat) && moreWaiting()) return { kind: 'more' };
+    // 9.9.6: a plain yes or no answers "Keep going?" for a minute after it's asked
+    if (moreWaiting() && Date.now() - (moreRead.cueAt || 0) < 60000) {
+      if (/^(?:yes|yeah|yep|yup|sure|ok(?:ay)?|go ahead|go for it|please|yes please|read it|keep it going)$/.test(flat)) return { kind: 'more' };
+      if (/^(?:no|nope|nah|no thanks|no thank you|stop|skip(?: it)?|that's (?:fine|enough|good)|thats (?:fine|enough|good)|i'm good|im good|got it|enough|all good)$/.test(flat)) return { kind: 'noMore' };
+    }
     if (/^(?:(?:could you|can you|would you|please)\s+)?read (?:the whole (?:thing|reply|message|response)|all of it|it all|everything)(?: please)?$/.test(flat)) return { kind: 'readAll' };
     // 6.7: "could you repeat that", "can you read it again for me"
     const flatRead = flat.replace(/^(?:could you|can you|would you|will you)\s+(?:please\s+)?/, '').replace(/\s+for me$/, '');
@@ -7900,6 +7975,7 @@
       return readLatest(true);
     }
     if (c.kind === 'more') return readMore();
+    if (c.kind === 'noMore') { moreRead = null; dlog('read cap', 'rest skipped'); return; }   // 9.9.6
     if (c.kind === 'readAll') { takeFloor('touch'); return readLatest(true, true); }
     if (c.kind === 'louder') return stepRead(1, true);
     if (c.kind === 'faster') return stepSpeed(1);
