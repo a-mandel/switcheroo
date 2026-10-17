@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Claude Hands Free Text Mode
 // @namespace    andre.mandel
-// @version      9.9.7
-// @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land. 8.8: one model for every open chat, by voice ("all chats to Sonnet") or from the HQ model pills. 8.9: Boot. The Switcheroo Chrome launcher opens HQ with your 10 most recent chats behind it and the mic ready, no clicks; or say "boot up". 8.9.1: "stop, new chat in Alder" works: a lead in no longer hides a command, and new chat finds every project, not just the sidebar. 8.9.2: the mic bell is now the Long bell, struck three times so the AirPods can't clip it. 8.9.3: Retro, a third HQ look: sunset sky, a neon floor rolling toward you, chrome type. Click Look on the control panel, or say "retro look". 9.0: Chief of Staff joins HQ as the COS wedge and panel, and a fourth look, night drive, from the board. Say chief for the brief, what needs me for Start Here, done two to close a thread, undo to reopen it. 9.0.1: fifty looks. Each push of Look steps to the next one (right click goes back); say "next look", "previous look", "random look" or a look by name. And "next, over" heard as "next server" still jumps. 9.1: the CHxTLD Outbox joins HQ as the OUT wedge, and a click opens your drafts over the pie to read and edit; edits save back to the Outbox. Say "outbox" to hear them, "read draft two" to hear one. Nothing sends from HQ. 9.2: a View pill with eleven ways to draw your chats, a Look pill with a picker and favorites, two hand sketched looks, and Chief of Staff one tap away with Open chat on every Start Here card. 9.3: looks run dark to light, so stepping never jumps from black to white, and a change fades instead of cutting. Retro Sky, a retro futurist look whose sky follows the time of day. Follow the clock picks from your favorites by daylight; say "follow the clock". 9.4: a second Outbox, ANDRÉ MANDEL, on its own letterhead beside the CHxTLD one, both one tap away on the pill rail ("mandel outbox"); and ten new looks: Trace, Marker, Charcoal, Chalkboard, Funnies, Space Opera, Overdrive, Dime Novel, Desert Neon, Bunker. 9.4.1: Chief of Staff wears HQ's look; Night drive keeps the board's own. 9.4.3: the model pills sit in the control panel's header, so nothing falls off the bottom of HQ, and a short window scales HQ down instead of cutting it off. 9.5: HQ holds the AirPods press, so the chats window can be minimized. 9.6: double press is a new chat in this project, triple press is the next chat waiting. 9.7: a voice per project: Mississippi Nikola, Walsh Hank, Haynes Jamieson, Kelly Samantha, and Eleanor for any other chat. 9.7.1: the natural ElevenLabs model, normal speed, and HQ's own lines keep your old voice. 9.7.2: mic sound 22, Voices: a woman's voice says one of 24 short lines when the mic opens, a different one each time. 9.7.3: every chat back to Annika; per project voices are off until you add one. 9.7.4: one voice everywhere, picked from your ElevenLabs library by name. 9.9.4: mute, a fourth rule for sites whose player hides from Switcheroo; with the Switcheroo Tabs extension the whole tab mutes while we talk. 9.9.5: the Outboxes open only when you tap their pills, and an ElevenLabs refusal says why and which key. 9.9.6: the voice never reads code, the gray tool and status lines, tables, paths, file names or raw links, and replies stop after the first paragraph (about 60 words) to ask "Keep going?"; yes for the rest, no or silence to stop. 9.9.7: one voice. Only ElevenLabs talks: the Mac voice and Claude's own read aloud no longer step in when ElevenLabs fails (a line shows on screen instead), and a talk lock across every Claude tab and HQ means nothing starts while something else is speaking. Backup voices come back from the Tampermonkey menu if you ever want them.
+// @version      9.9.8
+// @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land. 8.8: one model for every open chat, by voice ("all chats to Sonnet") or from the HQ model pills. 8.9: Boot. The Switcheroo Chrome launcher opens HQ with your 10 most recent chats behind it and the mic ready, no clicks; or say "boot up". 8.9.1: "stop, new chat in Alder" works: a lead in no longer hides a command, and new chat finds every project, not just the sidebar. 8.9.2: the mic bell is now the Long bell, struck three times so the AirPods can't clip it. 8.9.3: Retro, a third HQ look: sunset sky, a neon floor rolling toward you, chrome type. Click Look on the control panel, or say "retro look". 9.0: Chief of Staff joins HQ as the COS wedge and panel, and a fourth look, night drive, from the board. Say chief for the brief, what needs me for Start Here, done two to close a thread, undo to reopen it. 9.0.1: fifty looks. Each push of Look steps to the next one (right click goes back); say "next look", "previous look", "random look" or a look by name. And "next, over" heard as "next server" still jumps. 9.1: the CHxTLD Outbox joins HQ as the OUT wedge, and a click opens your drafts over the pie to read and edit; edits save back to the Outbox. Say "outbox" to hear them, "read draft two" to hear one. Nothing sends from HQ. 9.2: a View pill with eleven ways to draw your chats, a Look pill with a picker and favorites, two hand sketched looks, and Chief of Staff one tap away with Open chat on every Start Here card. 9.3: looks run dark to light, so stepping never jumps from black to white, and a change fades instead of cutting. Retro Sky, a retro futurist look whose sky follows the time of day. Follow the clock picks from your favorites by daylight; say "follow the clock". 9.4: a second Outbox, ANDRÉ MANDEL, on its own letterhead beside the CHxTLD one, both one tap away on the pill rail ("mandel outbox"); and ten new looks: Trace, Marker, Charcoal, Chalkboard, Funnies, Space Opera, Overdrive, Dime Novel, Desert Neon, Bunker. 9.4.1: Chief of Staff wears HQ's look; Night drive keeps the board's own. 9.4.3: the model pills sit in the control panel's header, so nothing falls off the bottom of HQ, and a short window scales HQ down instead of cutting it off. 9.5: HQ holds the AirPods press, so the chats window can be minimized. 9.6: double press is a new chat in this project, triple press is the next chat waiting. 9.7: a voice per project: Mississippi Nikola, Walsh Hank, Haynes Jamieson, Kelly Samantha, and Eleanor for any other chat. 9.7.1: the natural ElevenLabs model, normal speed, and HQ's own lines keep your old voice. 9.7.2: mic sound 22, Voices: a woman's voice says one of 24 short lines when the mic opens, a different one each time. 9.7.3: every chat back to Annika; per project voices are off until you add one. 9.7.4: one voice everywhere, picked from your ElevenLabs library by name. 9.9.4: mute, a fourth rule for sites whose player hides from Switcheroo; with the Switcheroo Tabs extension the whole tab mutes while we talk. 9.9.5: the Outboxes open only when you tap their pills, and an ElevenLabs refusal says why and which key. 9.9.6: the voice never reads code, the gray tool and status lines, tables, paths, file names or raw links, and replies stop after the first paragraph (about 60 words) to ask "Keep going?"; yes for the rest, no or silence to stop. 9.9.7: one voice. Only ElevenLabs talks: the Mac voice and Claude's own read aloud no longer step in when ElevenLabs fails (a line shows on screen instead), and a talk lock across every Claude tab and HQ means nothing starts while something else is speaking. Backup voices come back from the Tampermonkey menu if you ever want them. 9.9.8: every reply is read once and only once. A reply that keeps writing after a tool step is read when the new text lands instead of going quiet, and nothing already voiced, by read along or an earlier pass, is voiced again.
 // @match        https://claude.ai/*
 // @match        *://*/*
 // @grant        GM_xmlhttpRequest
@@ -6804,6 +6804,29 @@
     firstMax = firstMax || 220; restMax = restMax || 220;
     return partsOf(sentencesOf(replyText(m)), firstMax, restMax);
   }
+  // 9.9.8: each reply remembers, sentence by sentence, what it actually voiced (said) and what was on
+  // screen whenever it was handled (offered). Nothing is voiced twice, and text that lands after a
+  // tool step is still voiced instead of skipped. Matching ignores case, punctuation and markdown.
+  const normS = (x) => String(x || '').toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
+  const boxes = new WeakMap();
+  const boxOf = (m) => { let b = boxes.get(m); if (!b) { b = { said: new Set(), offered: new Set() }; boxes.set(m, b); } return b; };
+  function inSet(set, x) {
+    const n = normS(x);
+    if (!n || set.has(n)) return true;
+    if (n.length < 24) return false;
+    for (const y of set) if (y.length >= 24 && (y.includes(n) || n.includes(y))) return true;
+    return false;
+  }
+  function markSaid(m, part) {
+    if (!m) return;
+    const b = boxOf(m);
+    for (const x of sentencesOf(part)) { const n = normS(x); if (n) { b.said.add(n); b.offered.add(n); } }
+  }
+  function markOffered(m, ss) {
+    if (!m) return;
+    const b = boxOf(m);
+    for (const x of ss || []) { const n = normS(x); if (n) b.offered.add(n); }
+  }
   async function fbPlay() {
     if (!fb) return;
     const me = fb;
@@ -6829,6 +6852,7 @@
       } else ok = await say(me.parts[me.i]);
       if (fb !== me || me.gen !== gen) return;
       if (!ok) { me.paused = true; return; }   // paused by a squeeze: pick up from this part later
+      markSaid(me.el, me.parts[me.i]);         // 9.9.8: voiced to the end, so never again
       me.i += 1;
     }
     if (fb === me && me.i >= me.parts.length) {
@@ -6836,7 +6860,7 @@
       readPos(null);   // 8.1
       // 6.7: stopped at the cap: the rest waits for "keep reading"
       if (me.more && me.more.length) {
-        moreRead = { path: location.pathname, parts: me.more, at: Date.now(), cueAt: Date.now() };
+        moreRead = { path: location.pathname, parts: me.more, at: Date.now(), cueAt: Date.now(), el: me.el };   // 9.9.8: el
         dlog('read cap', me.more.length + ' parts left');
         say('Keep going?');   // 9.9.6: the mic opens after; yes for the rest, no or silence to stop
       }
@@ -6880,10 +6904,10 @@
     if (!moreWaiting()) return say('Nothing more to read here.');
     if (!elReady()) { moreRead = null; return say('The rest needs the ElevenLabs voice.'); }
     takeFloor('touch');
-    const parts = moreRead.parts;
+    const parts = moreRead.parts, mel = moreRead.el;
     moreRead = null;
     fbStop();
-    fb = { engine: 'el', parts, i: 0, paused: false, gen: 0, audio: null, audioIdx: -1, cache: [], more: [] };
+    fb = { engine: 'el', parts, i: 0, paused: false, gen: 0, audio: null, audioIdx: -1, cache: [], more: [], el: mel };
     fbPlay();
   }
   // 7.5: the page follows the voice, a paragraph at a time, unless you just scrolled yourself
@@ -6948,19 +6972,27 @@
     if (engine !== 'el') return;   // 5.3: no Mac voice for replies
     const el = true;
     let all = replyParts(m, 180, 600);
+    const ssNow = sentencesOf(replyText(m));
     // 8.7: what read along already said isn't said twice
-    if (auto && ra && ra.heard.size) {
-      const ss = sentencesOf(replyText(m)), rest = ss.filter((x) => !ra.heard.has(x));
-      if (rest.length < ss.length) {
+    // 9.9.8: judged by what was actually voiced, matched loosely, so a reading that got dropped or a
+    // sentence that rendered a little differently once Claude finished is neither lost nor said twice
+    if (auto) {
+      const b = boxOf(m);
+      const live = !!(fb && fb.ra && ra);
+      const queued = live ? new Set([...ra.heard].map(normS)) : new Set();
+      const rest = ssNow.filter((x) => !inSet(b.said, x) && !inSet(queued, x));
+      if (rest.length < ssNow.length) {
         ra = null;
+        markOffered(m, ssNow);
         const tail = partsOf(rest, 180, 600);
-        dlog('read along, the rest', tail.length + ' parts');
-        if (fb && fb.ra) { fb.parts.push(...tail); fb.ra = false; return; }
+        dlog('already voiced, the rest', rest.length + ' of ' + ssNow.length + ' sentences');
+        if (live) { fb.parts.push(...tail); fb.ra = false; return; }
         if (!tail.length) { if (cfg.autoListen && !fbActive()) yourTurn(); return; }
         all = tail;
         full = true;
       }
     }
+    markOffered(m, ssNow);   // 9.9.8: on screen now, so a later growth reads only what's new
     moreRead = null;
     const cut = full ? { now: all, more: [] } : capParts(all, capFor(m));
     const parts = cut.now;
@@ -8958,7 +8990,10 @@
     // the start of the reply text (the timestamp at the end changes, so skip it)
     const msg = btn.closest('[data-testid="assistant-message"]');
     if (!msg) return '';
-    return msg.innerText.trim().slice(0, 300);
+    // 9.9.8: plus how many paragraphs and how long the last one is, so text that lands after a
+    // tool step changes the key even when the first 300 characters (the tool lines) don't
+    const bl = msg.querySelectorAll('p, li'), lb = bl[bl.length - 1];
+    return msg.innerText.trim().slice(0, 300) + '|' + bl.length + '|' + (lb ? (lb.textContent || '').length : 0);
   }
   let lastKey = null;
   const readEls = new WeakSet();   // 5.6: each reply is auto read once, by element
@@ -8982,7 +9017,7 @@
     const b = last(buttons('speak')); lastKey = b ? replyKey(b) : '';
     dlog('page (re)loaded, current reply marked as heard');
     const lm = last([...document.querySelectorAll('[data-testid="assistant-message"]')]);
-    if (lm) { readEls.add(lm); markHeard(headOf(lm), true); }   // 5.6: the reply already on screen is never auto read
+    if (lm) { readEls.add(lm); markHeard(headOf(lm), true); try { markOffered(lm, sentencesOf(replyText(lm))); } catch (e) {} }   // 9.9.8: offered   // 5.6: the reply already on screen is never auto read
     // a take already on screen at load is remembered, not loaded
     const msgs = document.querySelectorAll('[data-testid="assistant-message"]');
     const m = msgs[msgs.length - 1];
@@ -9024,6 +9059,26 @@
   });
   observer.observe(document.body, { childList: true, subtree: true });
 
+  // 9.9.8: a reply that was already handled grew (Claude wrote more after a tool step, or the first
+  // look came between steps). Only sentences that weren't on screen before and were never voiced are read.
+  function growRead(msg) {
+    let ss;
+    try { ss = sentencesOf(replyText(msg)); } catch (e) { return; }
+    const b = boxOf(msg);
+    const fresh = ss.filter((x) => !inSet(b.offered, x) && !inSet(b.said, x));
+    markOffered(msg, ss);
+    if (!fresh.length) return;
+    if (held || !ownsFloor() || !elReady()) { dlog('reply grew, not read here', fresh.length + ' sentences'); return; }
+    dlog('reply grew, reading the new part', fresh.length + ' sentences: ' + fresh[0].slice(0, 40));
+    const parts = partsOf(fresh, 180, 600);
+    if (fb && fb.el === msg && !fb.paused) { fb.parts.push(...parts); return; }
+    markHeard(headOf(msg));
+    const cut = capParts(parts, READ_CAP);
+    moreRead = null;
+    fbStop();
+    fb = { engine: 'el', parts: cut.now, i: 0, paused: false, gen: 0, audio: null, audioIdx: -1, cache: [], more: cut.more, el: msg, lastBlock: null };
+    fbPlay();
+  }
   // a finished reply that hasn't been read yet gets read, once
   function maybeAutoRead() {
     if (tabOff) return;
@@ -9039,13 +9094,13 @@
       lastKey = key;
       const msg = speak.closest('[data-testid="assistant-message"]');
       if (!msg) { dlog('new reply, no message box'); return; }
-      if (readEls.has(msg)) { dlog('new reply text, same box, skip'); return; }      // 5.6: this reply already had its turn
+      if (readEls.has(msg)) { growRead(msg); return; }   // 5.6: this reply already had its turn (9.9.8: but new text in it is read)
       readEls.add(msg);
       const head = headOf(msg);
-      if (heardBefore(head)) { dlog('reply already heard, skip', head.slice(0, 50)); return; }             // 5.7: same words in a fresh element
+      if (heardBefore(head)) { dlog('reply already heard, skip', head.slice(0, 50)); try { markOffered(msg, sentencesOf(replyText(msg))); } catch (e) {} return; }             // 5.7: same words in a fresh element
       markHeard(head, true);   // 9.5.1: shared only once it's actually read, below
-      if (held) { dlog('new reply, on hold, not read', head.slice(0, 50)); return; }   // 8.0
-      if (!ownsFloor()) dlog('new reply, not the floor, chime only', head.slice(0, 50));
+      if (held) { dlog('new reply, on hold, not read', head.slice(0, 50)); try { markOffered(msg, sentencesOf(replyText(msg))); } catch (e) {} return; }   // 8.0
+      if (!ownsFloor()) { dlog('new reply, not the floor, chime only', head.slice(0, 50)); try { markOffered(msg, sentencesOf(replyText(msg))); } catch (e) {} }
       if (ownsFloor()) {                           // other tabs chime on the switchboard instead
         dlog('auto read', (msg.innerText || '').trim().slice(18, 70));
         markHeard(head);   // 9.5.1: now every tab knows it was read

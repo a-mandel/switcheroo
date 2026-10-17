@@ -4,6 +4,22 @@ Hands free Claude in Chrome: dictation, read aloud, a switchboard for every Clau
 
 Install or update: open [switcheroo.user.js](https://raw.githubusercontent.com/a-mandel/switcheroo/main/switcheroo.user.js) with Tampermonkey installed. Tampermonkey keeps it current from this repo on its own. Say "update Switcheroo" to check right away.
 
+## Read once (9.9.8)
+
+Every reply is read once and only once. When Claude writes more after a tool step, the new text is read as it lands instead of going quiet, and anything already voiced, by read along or an earlier pass, is never voiced again.
+
+## Must pass before every push
+
+Every build is checked against this list. A build that fails any line does not ship, and a rollback is a new version on top of main, never a reset, so later fixes are not lost.
+
+1. A plain reply is read once.
+2. A reply that runs a tool first, then writes, is read (only the written part).
+3. A reply read along while Claude works is not read again when it finishes.
+4. Gray tool and status lines, code, tables, paths and links are never voiced.
+5. A long reply stops at about 60 words and asks "Keep going?".
+6. Saying stop ends the reading, and it does not restart on its own.
+7. Only ElevenLabs talks, one voice at a time across every tab and HQ.
+
 ## Fewer words, fewer credits (9.9.6)
 
 The voice never reads code blocks, inline code, the gray tool and status lines that scroll by while Claude works, tables, file paths, file names, raw links, IDs or code style names. Links read as their label only.
