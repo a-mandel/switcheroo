@@ -4,6 +4,10 @@ Hands free Claude in Chrome: dictation, read aloud, a switchboard for every Clau
 
 Install or update: open [switcheroo.user.js](https://raw.githubusercontent.com/a-mandel/switcheroo/main/switcheroo.user.js) with Tampermonkey installed. Tampermonkey keeps it current from this repo on its own. Say "update Switcheroo" to check right away.
 
+## New chats open the mic (9.9.9)
+
+Landing on a new chat opens the mic within a few seconds, without queuing behind Switcheroo's lines. Only sound that is really playing holds the one voice lock, so a paused reading's Resume button in a background chat can't block every other tab. No line ever plays into an open mic.
+
 ## Read once (9.9.8)
 
 Every reply is read once and only once. When Claude writes more after a tool step, the new text is read as it lands instead of going quiet, and anything already voiced, by read along or an earlier pass, is never voiced again.
