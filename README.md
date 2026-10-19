@@ -4,6 +4,10 @@ Hands free Claude in Chrome: dictation, read aloud, a switchboard for every Clau
 
 Install or update: open [switcheroo.user.js](https://raw.githubusercontent.com/a-mandel/switcheroo/main/switcheroo.user.js) with Tampermonkey installed. Tampermonkey keeps it current from this repo on its own. Say "update Switcheroo" to check right away.
 
+## More voice cues (9.9.11)
+
+Mic sound 22, Voices, now has 155 lines, most of them flirty. The new ones are made once through your ElevenLabs key and play first; then the whole set runs as a shuffled deck, so no line repeats until every one has had a turn.
+
 ## YouTube pauses (9.9.10)
 
 YouTube pauses whenever you talk or Claude talks to you, live or not, and plays on in the quiet, backed up two seconds. The Other tabs pill no longer turns YouTube down. YouTube TV and the sports sites still only turn down. A turn down rule set on YouTube before 9.9.10 is cleared once; set it again from YouTube's Tampermonkey menu if you ever want it.
