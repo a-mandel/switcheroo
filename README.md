@@ -4,6 +4,10 @@ Hands free Claude in Chrome: dictation, read aloud, a switchboard for every Clau
 
 Install or update: open [switcheroo.user.js](https://raw.githubusercontent.com/a-mandel/switcheroo/main/switcheroo.user.js) with Tampermonkey installed. Tampermonkey keeps it current from this repo on its own. Say "update Switcheroo" to check right away.
 
+## No double read (9.9.12)
+
+A reply that was read along is no longer read again from the top when Claude swaps it for a fresh copy of itself. That swap happened most when HQ wasn't the tab on top. Each reply remembers what was voiced by its place in the chat, not by its page element.
+
 ## More voice cues (9.9.11)
 
 Mic sound 22, Voices, now has 155 lines, most of them flirty. The new ones are made once through your ElevenLabs key and play first; then the whole set runs as a shuffled deck, so no line repeats until every one has had a turn.
