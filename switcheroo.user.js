@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Claude Hands Free Text Mode
 // @namespace    andre.mandel
-// @version      9.9.12
-// @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land. 8.8: one model for every open chat, by voice ("all chats to Sonnet") or from the HQ model pills. 8.9: Boot. The Switcheroo Chrome launcher opens HQ with your 10 most recent chats behind it and the mic ready, no clicks; or say "boot up". 8.9.1: "stop, new chat in Alder" works: a lead in no longer hides a command, and new chat finds every project, not just the sidebar. 8.9.2: the mic bell is now the Long bell, struck three times so the AirPods can't clip it. 8.9.3: Retro, a third HQ look: sunset sky, a neon floor rolling toward you, chrome type. Click Look on the control panel, or say "retro look". 9.0: Chief of Staff joins HQ as the COS wedge and panel, and a fourth look, night drive, from the board. Say chief for the brief, what needs me for Start Here, done two to close a thread, undo to reopen it. 9.0.1: fifty looks. Each push of Look steps to the next one (right click goes back); say "next look", "previous look", "random look" or a look by name. And "next, over" heard as "next server" still jumps. 9.1: the CHxTLD Outbox joins HQ as the OUT wedge, and a click opens your drafts over the pie to read and edit; edits save back to the Outbox. Say "outbox" to hear them, "read draft two" to hear one. Nothing sends from HQ. 9.2: a View pill with eleven ways to draw your chats, a Look pill with a picker and favorites, two hand sketched looks, and Chief of Staff one tap away with Open chat on every Start Here card. 9.3: looks run dark to light, so stepping never jumps from black to white, and a change fades instead of cutting. Retro Sky, a retro futurist look whose sky follows the time of day. Follow the clock picks from your favorites by daylight; say "follow the clock". 9.4: a second Outbox, ANDRÉ MANDEL, on its own letterhead beside the CHxTLD one, both one tap away on the pill rail ("mandel outbox"); and ten new looks: Trace, Marker, Charcoal, Chalkboard, Funnies, Space Opera, Overdrive, Dime Novel, Desert Neon, Bunker. 9.4.1: Chief of Staff wears HQ's look; Night drive keeps the board's own. 9.4.3: the model pills sit in the control panel's header, so nothing falls off the bottom of HQ, and a short window scales HQ down instead of cutting it off. 9.5: HQ holds the AirPods press, so the chats window can be minimized. 9.6: double press is a new chat in this project, triple press is the next chat waiting. 9.7: a voice per project: Mississippi Nikola, Walsh Hank, Haynes Jamieson, Kelly Samantha, and Eleanor for any other chat. 9.7.1: the natural ElevenLabs model, normal speed, and HQ's own lines keep your old voice. 9.7.2: mic sound 22, Voices: a woman's voice says one of 24 short lines when the mic opens, a different one each time. 9.7.3: every chat back to Annika; per project voices are off until you add one. 9.7.4: one voice everywhere, picked from your ElevenLabs library by name. 9.9.4: mute, a fourth rule for sites whose player hides from Switcheroo; with the Switcheroo Tabs extension the whole tab mutes while we talk. 9.9.5: the Outboxes open only when you tap their pills, and an ElevenLabs refusal says why and which key. 9.9.6: the voice never reads code, the gray tool and status lines, tables, paths, file names or raw links, and replies stop after the first paragraph (about 60 words) to ask "Keep going?"; yes for the rest, no or silence to stop. 9.9.7: one voice. Only ElevenLabs talks: the Mac voice and Claude's own read aloud no longer step in when ElevenLabs fails (a line shows on screen instead), and a talk lock across every Claude tab and HQ means nothing starts while something else is speaking. Backup voices come back from the Tampermonkey menu if you ever want them. 9.9.8: every reply is read once and only once. A reply that keeps writing after a tool step is read when the new text lands instead of going quiet, and nothing already voiced, by read along or an earlier pass, is voiced again. 9.9.9: a new chat opens its mic again: a paused reading's Resume button in a background chat no longer holds the one voice lock, a new chat's mic opens without waiting on lines, and no line plays into an open mic. 9.9.10: YouTube pauses, never just turns down: whenever you talk or Claude talks to you, live or not, whatever the Other tabs pill says. Sports sites still only turn down. 9.9.11: voice cues, from 24 lines to 155, mostly flirty; the new ones play first, and no line repeats until every one has had a turn. 9.9.12: a reply is never read twice when Claude swaps it for a fresh copy, which happened most when HQ wasn't the tab on top.
+// @version      9.9.13
+// @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land. 8.8: one model for every open chat, by voice ("all chats to Sonnet") or from the HQ model pills. 8.9: Boot. The Switcheroo Chrome launcher opens HQ with your 10 most recent chats behind it and the mic ready, no clicks; or say "boot up". 8.9.1: "stop, new chat in Alder" works: a lead in no longer hides a command, and new chat finds every project, not just the sidebar. 8.9.2: the mic bell is now the Long bell, struck three times so the AirPods can't clip it. 8.9.3: Retro, a third HQ look: sunset sky, a neon floor rolling toward you, chrome type. Click Look on the control panel, or say "retro look". 9.0: Chief of Staff joins HQ as the COS wedge and panel, and a fourth look, night drive, from the board. Say chief for the brief, what needs me for Start Here, done two to close a thread, undo to reopen it. 9.0.1: fifty looks. Each push of Look steps to the next one (right click goes back); say "next look", "previous look", "random look" or a look by name. And "next, over" heard as "next server" still jumps. 9.1: the CHxTLD Outbox joins HQ as the OUT wedge, and a click opens your drafts over the pie to read and edit; edits save back to the Outbox. Say "outbox" to hear them, "read draft two" to hear one. Nothing sends from HQ. 9.2: a View pill with eleven ways to draw your chats, a Look pill with a picker and favorites, two hand sketched looks, and Chief of Staff one tap away with Open chat on every Start Here card. 9.3: looks run dark to light, so stepping never jumps from black to white, and a change fades instead of cutting. Retro Sky, a retro futurist look whose sky follows the time of day. Follow the clock picks from your favorites by daylight; say "follow the clock". 9.4: a second Outbox, ANDRÉ MANDEL, on its own letterhead beside the CHxTLD one, both one tap away on the pill rail ("mandel outbox"); and ten new looks: Trace, Marker, Charcoal, Chalkboard, Funnies, Space Opera, Overdrive, Dime Novel, Desert Neon, Bunker. 9.4.1: Chief of Staff wears HQ's look; Night drive keeps the board's own. 9.4.3: the model pills sit in the control panel's header, so nothing falls off the bottom of HQ, and a short window scales HQ down instead of cutting it off. 9.5: HQ holds the AirPods press, so the chats window can be minimized. 9.6: double press is a new chat in this project, triple press is the next chat waiting. 9.7: a voice per project: Mississippi Nikola, Walsh Hank, Haynes Jamieson, Kelly Samantha, and Eleanor for any other chat. 9.7.1: the natural ElevenLabs model, normal speed, and HQ's own lines keep your old voice. 9.7.2: mic sound 22, Voices: a woman's voice says one of 24 short lines when the mic opens, a different one each time. 9.7.3: every chat back to Annika; per project voices are off until you add one. 9.7.4: one voice everywhere, picked from your ElevenLabs library by name. 9.9.4: mute, a fourth rule for sites whose player hides from Switcheroo; with the Switcheroo Tabs extension the whole tab mutes while we talk. 9.9.5: the Outboxes open only when you tap their pills, and an ElevenLabs refusal says why and which key. 9.9.6: the voice never reads code, the gray tool and status lines, tables, paths, file names or raw links, and replies stop after the first paragraph (about 60 words) to ask "Keep going?"; yes for the rest, no or silence to stop. 9.9.7: one voice. Only ElevenLabs talks: the Mac voice and Claude's own read aloud no longer step in when ElevenLabs fails (a line shows on screen instead), and a talk lock across every Claude tab and HQ means nothing starts while something else is speaking. Backup voices come back from the Tampermonkey menu if you ever want them. 9.9.8: every reply is read once and only once. A reply that keeps writing after a tool step is read when the new text lands instead of going quiet, and nothing already voiced, by read along or an earlier pass, is voiced again. 9.9.9: a new chat opens its mic again: a paused reading's Resume button in a background chat no longer holds the one voice lock, a new chat's mic opens without waiting on lines, and no line plays into an open mic. 9.9.10: YouTube pauses, never just turns down: whenever you talk or Claude talks to you, live or not, whatever the Other tabs pill says. Sports sites still only turn down. 9.9.11: voice cues, from 24 lines to 155, mostly flirty; the new ones play first, and no line repeats until every one has had a turn. 9.9.12: a reply is never read twice when Claude swaps it for a fresh copy, which happened most when HQ wasn't the tab on top. 9.9.13: Claude Code tabs. The press and hold mic opens and closes like a squeeze, Code tabs go green while Claude works and chime when it's your turn, and each tile wears its session's name instead of Claude Code.
 // @match        https://claude.ai/*
 // @match        *://*/*
 // @grant        GM_xmlhttpRequest
@@ -4293,14 +4293,14 @@
   try { tabOff = sessionStorage.getItem(TAB_KEY) === '1'; } catch (e) {}
 
   const GUESSES = {
-    mic:   ['dictate'],                 // 'Microphone' and 'Use voice mode' are voice mode, never click them
+    mic:   ['dictate', 'hold to record'],   // 'Microphone' and 'Use voice mode' are voice mode, never click them (9.9.13: Claude Code's hold mic)
     stop:  ['finish dictation'],
     cancel: ['cancel dictation'],
     send:  ['send message'],
     speak: ['read aloud', 'listen', 'play audio', 'speak', 'read'],
     pause:  ['pause'],   // exact labels, matched below
     resume: ['resume'],
-    halt:  ['stop response', 'stop generating', 'stop claude']
+    halt:  ['stop response', 'stop generating', 'stop claude', 'interrupt']
   };
 
   // ---------- helpers ----------
@@ -4317,9 +4317,67 @@
 
   const OURS = '#chf-pill, #chf-agenda, #chf-board';
   const ours = (el) => !!(el && el.closest && el.closest(OURS));
+  // 9.9.13: CLAUDE CODE. claude.ai/code is its own page: the mic is press and hold (Shift F10 is its key),
+  // working shows on its own flag, and Send lives in its own cell. Everything here only runs on /code,
+  // so a plain chat behaves exactly as it did.
+  const onCode = () => /^\/code(\/|$)/.test(location.pathname);
+  const CODE_MIC = 'button[aria-label="Press and hold to record"], button[aria-keyshortcuts="Shift+F10"]';
+  let codeHold = null;   // { el, at, key }
+  const codeMicEl = () => [...document.querySelectorAll(CODE_MIC)].filter((b) => !ours(b) && visible(b)).pop() || null;
+  // live: Claude Code says it's recording, or we pressed it a moment ago and it's still catching up
+  const codeMicLive = (b) => !!b && (b.getAttribute('aria-pressed') === 'true' || (!!codeHold && codeHold.el === b && Date.now() - codeHold.at < 1500));
+  function codePtr(el, type) {
+    const r = el.getBoundingClientRect(), x = r.left + r.width / 2, y = r.top + r.height / 2;
+    const down = /down/.test(type);
+    const o = { bubbles: true, cancelable: true, composed: true, clientX: x, clientY: y, button: 0, buttons: down ? 1 : 0, view: window };
+    try { el.dispatchEvent(new PointerEvent(type, Object.assign({ pointerId: 1, pointerType: 'mouse', isPrimary: true }, o))); } catch (e) {}
+    try { el.dispatchEvent(new MouseEvent(type.replace('pointer', 'mouse'), o)); } catch (e) {}
+  }
+  function codeKey(type) {
+    const o = { key: 'F10', code: 'F10', keyCode: 121, which: 121, shiftKey: true, bubbles: true, cancelable: true, composed: true };
+    try { (document.activeElement || document.body).dispatchEvent(new KeyboardEvent(type, o)); } catch (e) {}
+  }
+  function codeHoldDown(el) {
+    if (codeMicLive(el)) return;
+    codeHold = { el, at: Date.now(), key: false };
+    dlog('code mic', 'hold');
+    codePtr(el, 'pointerdown');
+    setTimeout(() => {   // the press didn't take: hold the mic's own key, Shift F10, instead
+      if (!codeHold || codeHold.el !== el || el.getAttribute('aria-pressed') === 'true') return;
+      codeHold.key = true; codeHold.at = Date.now();
+      dlog('code mic', 'by key');
+      codeKey('keydown');
+      setTimeout(() => {
+        if (codeHold && codeHold.el === el && el.getAttribute('aria-pressed') !== 'true') {
+          dlog('code mic', 'did not open');
+          codeHoldUp(el);
+          toast("Claude Code's mic didn't open. Click it once yourself so Chrome allows the mic, then squeeze again.");
+        }
+      }, 900);
+    }, 400);
+  }
+  function codeHoldUp(el) {
+    const h = codeHold;
+    codeHold = null;
+    dlog('code mic', 'release');
+    if (h && h.key) codeKey('keyup');
+    codePtr(el, 'pointerup');
+  }
   function buttons(kind) {
     // Claude's Pause and Resume sit in a hover-only bar, so don't require them to be visible
     const hidden = kind === 'pause' || kind === 'resume';
+    // 9.9.13: on Claude Code the one hold mic is the mic, the finish and the cancel. Pressing it holds;
+    // finishing or cancelling lets go. Every caller clicks what this returns, so the click is pointed there.
+    if (onCode()) {
+      const cm = codeMicEl();
+      if (kind === 'mic') { if (!cm || codeMicLive(cm)) return []; cm.click = () => codeHoldDown(cm); return [cm]; }
+      if (kind === 'stop' || kind === 'cancel') { if (!cm || !codeMicLive(cm)) return []; cm.click = () => codeHoldUp(cm); return [cm]; }
+      if (kind === 'send') {
+        const cell = document.querySelector('[data-testid="code-prompt-send-cell"]');
+        const sends = cell ? [...cell.querySelectorAll('button')].filter((b) => visible(b)) : [];
+        if (sends.length) return sends;
+      }
+    }
     const all = [...document.querySelectorAll('button, [role="button"]')]
       .filter((b) => !ours(b) && (hidden || visible(b)));
     if (cfg[kind]) {
@@ -4342,7 +4400,7 @@
     if (kind === 'speak') return fair.filter((b) => GUESSES.speak.some((g) => labelOf(b).startsWith(g)));
     return fair.filter((b) => GUESSES[kind].some((g) => labelOf(b).includes(g)));
   }
-  const TESTIDS = { speak: ['action-bar-read-aloud'] };
+  const TESTIDS = { speak: ['action-bar-read-aloud', 'epitaxy-read-aloud'] };   // 9.9.13: Claude Code's
   const last = (arr) => arr[arr.length - 1];
   // 5.9: trouble log, kept in this browser only (localStorage chf_log)
   function dlog(ev, extra) {
@@ -4357,6 +4415,7 @@
   }
   const composer = () =>
     document.querySelector('[data-testid="chat-input"]') ||
+    document.querySelector('[data-testid="code-prompt-input"]') ||   // 9.9.13
     document.querySelector('div.ProseMirror[contenteditable="true"]');
   const composerText = () => {
     const c = composer();
@@ -5050,6 +5109,14 @@
   let idleSince = 0;
 
   function chatTitle() {
+    // 9.9.13: Claude Code titles every tab "Claude Code"; the session's name sits on its rename button
+    if (onCode()) {
+      try {
+        const rn = [...document.querySelectorAll('button[aria-label$=", rename session"]')].find((b) => !b.closest('[data-testid="sidebar"]'));
+        const nm = rn ? rn.getAttribute('aria-label').replace(/, rename session$/, '').trim() : '';
+        if (nm) return nm;
+      } catch (e) {}
+    }
     let t = (document.title || '').replace(/\s*[|–—-]\s*Claude\s*$/i, '').trim();
     if (!t || /^claude$/i.test(t) || /^new chat$/i.test(t)) t = 'New chat';
     return t;
@@ -5065,6 +5132,7 @@
   }
   function isWorking() {
     if (document.querySelector('[data-is-streaming="true"]')) return true;
+    if (document.querySelector('[data-testid="code-working-line"][data-turn-working="true"]')) return true;   // 9.9.13: Claude Code
     return buttons('halt').length > 0;
   }
   // backup: the newest reply is still growing (its last line, a timestamp, is left out)
