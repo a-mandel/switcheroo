@@ -4,6 +4,10 @@ Hands free Claude in Chrome: dictation, read aloud, a switchboard for every Clau
 
 Install or update: open [switcheroo.user.js](https://raw.githubusercontent.com/a-mandel/switcheroo/main/switcheroo.user.js) with Tampermonkey installed. Tampermonkey keeps it current from this repo on its own. Say "update Switcheroo" to check right away.
 
+## Forty voices, and Code's turn (9.9.14)
+
+Mic sound 22, Voices, now speaks in forty ElevenLabs voices instead of two, three or four lines each, and never the same voice twice running. Each line is still made once, so it costs the same credits as before; the set is made fresh the first time the mic opens after the update, with Chirp standing in until it lands. A voice your ElevenLabs key can't use is skipped for the next one on the list. Claude Code tabs now open the mic on their own when Code finishes, held down for you and let go when you stop talking, so no squeeze is needed.
+
 ## Claude Code tabs (9.9.13)
 
 Switcheroo now knows the Claude Code page at claude.ai/code. Its mic is press and hold, so a squeeze, F8 or Space holds it down for you and lets go when you finish or say over; if the press doesn't take, Switcheroo holds Shift F10, the mic's own key. Code tabs go green while Claude works and chime when it's your turn, the same as chats, and each tile and "needs you" line uses the session's name instead of "Claude Code". Plain chats are untouched.
