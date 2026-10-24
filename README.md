@@ -4,6 +4,10 @@ Hands free Claude in Chrome: dictation, read aloud, a switchboard for every Clau
 
 Install or update: open [switcheroo.user.js](https://raw.githubusercontent.com/a-mandel/switcheroo/main/switcheroo.user.js) with Tampermonkey installed. Tampermonkey keeps it current from this repo on its own. Say "update Switcheroo" to check right away.
 
+## One talker, in order (9.9.15)
+
+Arriving in a chat either reads its last reply, if you haven't heard it, or opens the mic with its cue. Never neither, and no name line in front of a reply you've already heard. A chat that just popped gets 10 seconds to draw before Switcheroo decides. Other chats' "needs you" lines wait for a prompt: they play only in the gap after you send, while this chat works, one line per gap, and the mic doesn't open after them. HQ tiles still change color right away, and this chat's own requests are never held back. The mic cue waits until the AirPods deliver real sound, so a short cue works again, and it's skipped right after a Switcheroo line. "Over" closes the mic in under half a second, said once or twice. The room's noise is learned over a full second, and when no new words land for the pause, the mic closes however noisy the room is.
+
 ## Forty voices, and Code's turn (9.9.14)
 
 Mic sound 22, Voices, now speaks in forty ElevenLabs voices instead of two, three or four lines each, and never the same voice twice running. Each line is still made once, so it costs the same credits as before; the set is made fresh the first time the mic opens after the update, with Chirp standing in until it lands. A voice your ElevenLabs key can't use is skipped for the next one on the list. Claude Code tabs now open the mic on their own when Code finishes, held down for you and let go when you stop talking, so no squeeze is needed.
@@ -44,6 +48,10 @@ Every build is checked against this list. A build that fails any line does not s
 6. Saying stop ends the reading, and it does not restart on its own.
 7. Only ElevenLabs talks, one voice at a time across every tab and HQ.
 8. YouTube pauses while you talk or Claude talks, and plays on in the quiet. Sports sites only turn down.
+9. Arriving in a chat either reads the unheard reply or plays the cue, never neither.
+10. No needs you line plays before André's first send in a chat, and none is followed by the mic cue.
+11. "Over" at the end closes the mic within about half a second, said once or twice.
+12. Room noise with no new words closes the mic after the pause.
 
 ## Fewer words, fewer credits (9.9.6)
 
