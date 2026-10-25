@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Claude Hands Free Text Mode
 // @namespace    andre.mandel
-// @version      9.9.15
-// @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land. 8.8: one model for every open chat, by voice ("all chats to Sonnet") or from the HQ model pills. 8.9: Boot. The Switcheroo Chrome launcher opens HQ with your 10 most recent chats behind it and the mic ready, no clicks; or say "boot up". 8.9.1: "stop, new chat in Alder" works: a lead in no longer hides a command, and new chat finds every project, not just the sidebar. 8.9.2: the mic bell is now the Long bell, struck three times so the AirPods can't clip it. 8.9.3: Retro, a third HQ look: sunset sky, a neon floor rolling toward you, chrome type. Click Look on the control panel, or say "retro look". 9.0: Chief of Staff joins HQ as the COS wedge and panel, and a fourth look, night drive, from the board. Say chief for the brief, what needs me for Start Here, done two to close a thread, undo to reopen it. 9.0.1: fifty looks. Each push of Look steps to the next one (right click goes back); say "next look", "previous look", "random look" or a look by name. And "next, over" heard as "next server" still jumps. 9.1: the CHxTLD Outbox joins HQ as the OUT wedge, and a click opens your drafts over the pie to read and edit; edits save back to the Outbox. Say "outbox" to hear them, "read draft two" to hear one. Nothing sends from HQ. 9.2: a View pill with eleven ways to draw your chats, a Look pill with a picker and favorites, two hand sketched looks, and Chief of Staff one tap away with Open chat on every Start Here card. 9.3: looks run dark to light, so stepping never jumps from black to white, and a change fades instead of cutting. Retro Sky, a retro futurist look whose sky follows the time of day. Follow the clock picks from your favorites by daylight; say "follow the clock". 9.4: a second Outbox, ANDRÉ MANDEL, on its own letterhead beside the CHxTLD one, both one tap away on the pill rail ("mandel outbox"); and ten new looks: Trace, Marker, Charcoal, Chalkboard, Funnies, Space Opera, Overdrive, Dime Novel, Desert Neon, Bunker. 9.4.1: Chief of Staff wears HQ's look; Night drive keeps the board's own. 9.4.3: the model pills sit in the control panel's header, so nothing falls off the bottom of HQ, and a short window scales HQ down instead of cutting it off. 9.5: HQ holds the AirPods press, so the chats window can be minimized. 9.6: double press is a new chat in this project, triple press is the next chat waiting. 9.7: a voice per project: Mississippi Nikola, Walsh Hank, Haynes Jamieson, Kelly Samantha, and Eleanor for any other chat. 9.7.1: the natural ElevenLabs model, normal speed, and HQ's own lines keep your old voice. 9.7.2: mic sound 22, Voices: a woman's voice says one of 24 short lines when the mic opens, a different one each time. 9.7.3: every chat back to Annika; per project voices are off until you add one. 9.7.4: one voice everywhere, picked from your ElevenLabs library by name. 9.9.4: mute, a fourth rule for sites whose player hides from Switcheroo; with the Switcheroo Tabs extension the whole tab mutes while we talk. 9.9.5: the Outboxes open only when you tap their pills, and an ElevenLabs refusal says why and which key. 9.9.6: the voice never reads code, the gray tool and status lines, tables, paths, file names or raw links, and replies stop after the first paragraph (about 60 words) to ask "Keep going?"; yes for the rest, no or silence to stop. 9.9.7: one voice. Only ElevenLabs talks: the Mac voice and Claude's own read aloud no longer step in when ElevenLabs fails (a line shows on screen instead), and a talk lock across every Claude tab and HQ means nothing starts while something else is speaking. Backup voices come back from the Tampermonkey menu if you ever want them. 9.9.8: every reply is read once and only once. A reply that keeps writing after a tool step is read when the new text lands instead of going quiet, and nothing already voiced, by read along or an earlier pass, is voiced again. 9.9.9: a new chat opens its mic again: a paused reading's Resume button in a background chat no longer holds the one voice lock, a new chat's mic opens without waiting on lines, and no line plays into an open mic. 9.9.10: YouTube pauses, never just turns down: whenever you talk or Claude talks to you, live or not, whatever the Other tabs pill says. Sports sites still only turn down. 9.9.11: voice cues, from 24 lines to 155, mostly flirty; the new ones play first, and no line repeats until every one has had a turn. 9.9.12: a reply is never read twice when Claude swaps it for a fresh copy, which happened most when HQ wasn't the tab on top. 9.9.13: Claude Code tabs. The press and hold mic opens and closes like a squeeze, Code tabs go green while Claude works and chime when it's your turn, and each tile wears its session's name instead of Claude Code. 9.9.14: forty voices for the voice cues instead of two, never the same voice twice running; and a Claude Code tab opens the mic by itself when Code finishes. 9.9.15: one talker, in order: arriving reads an unheard reply or just opens the mic, other chats' needs you lines wait for the gap after you send, the mic cue waits for live sound, over closes in under half a second, and room noise no longer holds the mic open.
+// @version      9.9.16
+// @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land. 8.8: one model for every open chat, by voice ("all chats to Sonnet") or from the HQ model pills. 8.9: Boot. The Switcheroo Chrome launcher opens HQ with your 10 most recent chats behind it and the mic ready, no clicks; or say "boot up". 8.9.1: "stop, new chat in Alder" works: a lead in no longer hides a command, and new chat finds every project, not just the sidebar. 8.9.2: the mic bell is now the Long bell, struck three times so the AirPods can't clip it. 8.9.3: Retro, a third HQ look: sunset sky, a neon floor rolling toward you, chrome type. Click Look on the control panel, or say "retro look". 9.0: Chief of Staff joins HQ as the COS wedge and panel, and a fourth look, night drive, from the board. Say chief for the brief, what needs me for Start Here, done two to close a thread, undo to reopen it. 9.0.1: fifty looks. Each push of Look steps to the next one (right click goes back); say "next look", "previous look", "random look" or a look by name. And "next, over" heard as "next server" still jumps. 9.1: the CHxTLD Outbox joins HQ as the OUT wedge, and a click opens your drafts over the pie to read and edit; edits save back to the Outbox. Say "outbox" to hear them, "read draft two" to hear one. Nothing sends from HQ. 9.2: a View pill with eleven ways to draw your chats, a Look pill with a picker and favorites, two hand sketched looks, and Chief of Staff one tap away with Open chat on every Start Here card. 9.3: looks run dark to light, so stepping never jumps from black to white, and a change fades instead of cutting. Retro Sky, a retro futurist look whose sky follows the time of day. Follow the clock picks from your favorites by daylight; say "follow the clock". 9.4: a second Outbox, ANDRÉ MANDEL, on its own letterhead beside the CHxTLD one, both one tap away on the pill rail ("mandel outbox"); and ten new looks: Trace, Marker, Charcoal, Chalkboard, Funnies, Space Opera, Overdrive, Dime Novel, Desert Neon, Bunker. 9.4.1: Chief of Staff wears HQ's look; Night drive keeps the board's own. 9.4.3: the model pills sit in the control panel's header, so nothing falls off the bottom of HQ, and a short window scales HQ down instead of cutting it off. 9.5: HQ holds the AirPods press, so the chats window can be minimized. 9.6: double press is a new chat in this project, triple press is the next chat waiting. 9.7: a voice per project: Mississippi Nikola, Walsh Hank, Haynes Jamieson, Kelly Samantha, and Eleanor for any other chat. 9.7.1: the natural ElevenLabs model, normal speed, and HQ's own lines keep your old voice. 9.7.2: mic sound 22, Voices: a woman's voice says one of 24 short lines when the mic opens, a different one each time. 9.7.3: every chat back to Annika; per project voices are off until you add one. 9.7.4: one voice everywhere, picked from your ElevenLabs library by name. 9.9.4: mute, a fourth rule for sites whose player hides from Switcheroo; with the Switcheroo Tabs extension the whole tab mutes while we talk. 9.9.5: the Outboxes open only when you tap their pills, and an ElevenLabs refusal says why and which key. 9.9.6: the voice never reads code, the gray tool and status lines, tables, paths, file names or raw links, and replies stop after the first paragraph (about 60 words) to ask "Keep going?"; yes for the rest, no or silence to stop. 9.9.7: one voice. Only ElevenLabs talks: the Mac voice and Claude's own read aloud no longer step in when ElevenLabs fails (a line shows on screen instead), and a talk lock across every Claude tab and HQ means nothing starts while something else is speaking. Backup voices come back from the Tampermonkey menu if you ever want them. 9.9.8: every reply is read once and only once. A reply that keeps writing after a tool step is read when the new text lands instead of going quiet, and nothing already voiced, by read along or an earlier pass, is voiced again. 9.9.9: a new chat opens its mic again: a paused reading's Resume button in a background chat no longer holds the one voice lock, a new chat's mic opens without waiting on lines, and no line plays into an open mic. 9.9.10: YouTube pauses, never just turns down: whenever you talk or Claude talks to you, live or not, whatever the Other tabs pill says. Sports sites still only turn down. 9.9.11: voice cues, from 24 lines to 155, mostly flirty; the new ones play first, and no line repeats until every one has had a turn. 9.9.12: a reply is never read twice when Claude swaps it for a fresh copy, which happened most when HQ wasn't the tab on top. 9.9.13: Claude Code tabs. The press and hold mic opens and closes like a squeeze, Code tabs go green while Claude works and chime when it's your turn, and each tile wears its session's name instead of Claude Code. 9.9.14: forty voices for the voice cues instead of two, never the same voice twice running; and a Claude Code tab opens the mic by itself when Code finishes. 9.9.15: one talker, in order: arriving reads an unheard reply or just opens the mic, other chats' needs you lines wait for the gap after you send, the mic cue waits for live sound, over closes in under half a second, and room noise no longer holds the mic open. 9.9.16: Solo. Work with one chat for a while: the others keep working but go quiet, no lines, chimes or jumps, and when you say unsolo you hear who needs you, in order. Say solo, solo Kelly, or tap the Solo pill on HQ.
 // @match        https://claude.ai/*
 // @match        *://*/*
 // @grant        GM_xmlhttpRequest
@@ -80,6 +80,9 @@
       go quiet             no chimes until you say wake up
       pause switchboard    no chimes or alerts for your next two messages (7.2)
       wake up              chimes back on
+      solo                 (9.9.16) work with this chat only. Solo kelly picks one by name. The others keep
+                           working, silently: no lines, chimes or jumps; next and triple press stay here.
+      unsolo               solo off, then one line: who needs you, in priority order. Also solo off, end solo.
       silence              (8.0) HOLD: nothing reads, talks, chimes or opens the mic, in any tab,
                            until you resume. Also hold everything, responses off, meeting mode, shut up.
       resume               (8.0) ends a hold. Also responses on, back on, meeting over.
@@ -348,6 +351,12 @@
     violet night, rosy dawn, a pale peach morning, a bright blue noon, golden hour, then the sunset at dusk. Follow
     the clock (in the Look picker, or say "follow the clock") picks from your favorites by daylight, darkest at night,
     brightest at noon; picking a look yourself turns it off. Look numbers changed; favorites keep.
+  9.9.16: SOLO. Say solo (or focus mode) and Switcheroo works with this chat only; solo Kelly picks one by name,
+    and the Solo pill on HQ's rail solos the chat you're in, or ends it. The other chats keep working, nothing is
+    stopped, but they go quiet: no needs you lines, no chimes, no approvals read out, and next or a triple press
+    stays on the solo chat (from anywhere else it takes you back there). Say unsolo, solo off or end solo, or tap
+    the pill again, and you hear one line: who needs you, approvals first, longest waiting next. The pill glows
+    and names the chat while solo is on. A brand new chat keeps its solo when it gets its real address.
   9.9.15: ONE TALKER, IN ORDER. Arriving in a chat reads its last reply if you haven't heard it (its name first),
     otherwise just opens the mic with its cue, no name line; a chat that just popped gets 10 seconds to draw, and
     if a reading never starts the mic opens anyway. Other chats' needs you lines wait for the gap after you send,
@@ -1595,6 +1604,15 @@
         '.smx .oxq i{width:9px;height:9px;border-radius:50%;background:var(--line)}',
         '.smx .oxq.hot i{background:var(--wait)}',
         '.smx .oxq:hover,.smx .oxq.on{border-color:var(--ink);background:var(--ink);color:var(--bg)}',
+        // 9.9.16: Solo. Quiet until it's on; then it glows in the accent and names the chat
+        '.smx .slo{display:flex;align-items:center;gap:9px;height:42px;padding:0 16px;border-radius:999px;border:1px solid var(--line);color:var(--mute);font:700 14px var(--mf);letter-spacing:.16em;text-transform:uppercase;background:var(--panel);white-space:nowrap;max-width:210px;min-width:0;flex:0 1 auto}',
+        '.smx .slo span{overflow:hidden;text-overflow:ellipsis}',
+        '.smx .slo i{width:9px;height:9px;flex:none;border-radius:50%;border:2px solid currentColor;box-sizing:border-box}',
+        '.smx .slo:hover{color:var(--ink);border-color:var(--ink)}',
+        '.smx .slo.on{color:var(--bg);background:var(--accent);border-color:var(--accent);animation:smsolo 2.4s ease-in-out infinite}',
+        '.smx .slo.on i{background:var(--bg);border-color:var(--bg)}',
+        '@keyframes smsolo{0%,100%{box-shadow:0 0 0 0 var(--accent)}50%{box-shadow:0 0 18px 2px var(--accent)}}',
+        '@media (prefers-reduced-motion:reduce){.smx .slo.on{animation:none;box-shadow:0 0 12px 1px var(--accent)}}',
         '.smx .ctr:hover .cb{stroke:var(--ink)}',
         // 9.1: the pickers
         '.smx .pik{position:absolute;left:800px;top:148px;width:1100px;bottom:20px;z-index:7;border:1px solid var(--line);background:linear-gradient(var(--panel),var(--panel)),var(--bg);display:flex;flex-direction:column;box-shadow:0 18px 40px rgba(0,0,0,.3);color:var(--ink)}',
@@ -1876,7 +1894,8 @@
         '<div class="hint">say next · take me to · chief · allow · resume</div><button type="button" class="flw" hidden title="Follow the voice again">FOLLOW</button></div>' +
         '<div class="bar"><span class="br" title="Next look (Option Shift D)"></span><span class="sb">Switche<b>roo</b></span><span class="dots"></span><span class="grow"></span><span class="nx" title="Go to the next chat (Option Shift N)"></span><span class="bt" title="Boot: open your 10 most recent chats behind HQ">BOOT</span><span class="lk zero" title="Links from your chats. Say open, or open two">LINKS</span><span class="pz" title="Pause the Switchboard for two turns, or resume it">LIVE</span></div>' +
         '<div class="prl"><button type="button" class="chp" title="Chief of Staff, any time. Or say chief (Option Shift C)"><i></i><span>Chief</span></button>' +
-          '<button type="button" class="oxq" data-oxq="ch" title="CHxTLD Outbox"><i></i><span>CHxTLD</span></button><button type="button" class="oxq am" data-oxq="am" title="ANDRÉ MANDEL Outbox"><i></i><span>Mandel</span></button><span class="gr"></span>' +   // 9.1
+          '<button type="button" class="oxq" data-oxq="ch" title="CHxTLD Outbox"><i></i><span>CHxTLD</span></button><button type="button" class="oxq am" data-oxq="am" title="ANDRÉ MANDEL Outbox"><i></i><span>Mandel</span></button>' +
+          '<button type="button" class="slo" data-solo title="Solo: just the chat you\'re in. The others keep working, quietly. Or say solo, and unsolo"><i></i><span>Solo</span></button><span class="gr"></span>' +   // 9.1, 9.9.16
         '<span class="pil vwp"><button type="button" data-vw="-1" title="Previous view">‹</button><button type="button" class="pn" data-vw="pick" title="Every view (Option Shift V steps)"><i>View</i><b>Pie</b></button><button type="button" data-vw="1" title="Next view">›</button></span>' +
         '<span class="pil lkp"><button type="button" data-lk="-1" title="Previous look">‹</button><button type="button" class="pn" data-lk="pick" title="Every look, favorites first (Option Shift D steps)"><i>Look</i><b></b></button><button type="button" data-lk="1" title="Next look">›</button></span></div>' +
         '<svg class="smdefs" width="0" height="0" aria-hidden="true" style="position:absolute"><filter id="smwob" x="-2%" y="-2%" width="104%" height="104%"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="7" result="n"></feTurbulence><feDisplacementMap in="SourceGraphic" in2="n" scale="3" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap></filter><filter id="smwob1" x="-2%" y="-2%" width="104%" height="104%"><feTurbulence type="fractalNoise" baseFrequency=".05" numOctaves="1" seed="3" result="n"></feTurbulence><feDisplacementMap in="SourceGraphic" in2="n" scale="1.2" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap></filter><filter id="smwob3" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency=".028" numOctaves="3" seed="11" result="n"></feTurbulence><feDisplacementMap in="SourceGraphic" in2="n" scale="6.5" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap></filter></svg>' +
@@ -1951,6 +1970,7 @@
         if (ev.target.closest('.flw')) { follow(); return; }
         // 9.1: the pill rail and the pickers
         if (ev.target.closest('.prl .chp')) { onAction({ t: cosOpen ? 'cos' : 'jump', cmd: 'close', id: '__chief' }); return; }
+        if (ev.target.closest('.prl [data-solo]')) { onAction({ t: 'solo' }); return; }   // 9.9.16
         const oq = ev.target.closest('.prl [data-oxq]');   // 9.4: either Outbox, one tap
         if (oq) { const l = oq.getAttribute('data-oxq'); onAction(oxOpen && oxLaneP === l ? { t: 'ox', cmd: 'close', lane: l } : { t: 'jump', id: l === 'am' ? '__amoutbox' : '__outbox' }); return; }
         const vw = ev.target.closest('[data-vw]');
@@ -2769,6 +2789,8 @@
           b.querySelector('span').textContent = (l === 'am' ? 'Mandel' : 'CHxTLD') + (k ? ' · ' + k : '');
           b.classList.toggle('hot', k > 0); b.classList.toggle('on', oxOpen && oxLaneP === l);
         });
+        { const so = (m && m.solo) || {}, sp = q('.prl .slo');   // 9.9.16
+          if (sp) { const on = !!(so.on && (so.path || so.id)); sp.classList.toggle('on', on); sp.querySelector('span').textContent = on ? 'Solo · ' + (so.name || 'one chat') : 'Solo'; } }
         q('.vwp .pn').classList.toggle('on', pickOpen === 'view'); q('.lkp .pn').classList.toggle('on', pickOpen === 'look');
       }
       function togglePick(w) { pickOpen = pickOpen === w ? '' : w; pickSig = ''; if (model) { renderPick(model); renderRail(model); } }
@@ -3501,7 +3523,7 @@
       if (de) list.push(de);
       // 9.5.1: Chief and both Outboxes live on the pill rail only, not as cards in the views
       const apps = [chiefEntry(), outboxEntry('ch'), outboxEntry('am')];
-      return { tabs: list, apps, floorId: floorId || (f && f.id) || '', floor: floorP, quiet: lsGet('chf_sb_quiet', {}), ctl: ctlModel(), deck: deckModel(), cos: chiefModel(), ox: outboxModel(), links: linkList(), looks: { favs, step: lkStep, view: viewIdHQ, clock: lookClock } };
+      return { tabs: list, apps, floorId: floorId || (f && f.id) || '', floor: floorP, quiet: lsGet('chf_sb_quiet', {}), solo: lsGet('chf_solo', { on: false }) || { on: false }, ctl: ctlModel(), deck: deckModel(), cos: chiefModel(), ox: outboxModel(), links: linkList(), looks: { favs, step: lkStep, view: viewIdHQ, clock: lookClock } };
     }
     // 9.5.1: the three pills only work when their pages are open somewhere. HQ opens any that haven't
     // reported in, once, behind it, a few seconds after it loads, so Chief, CHxTLD and Mandel are ready to tap.
@@ -3610,7 +3632,7 @@
       else if (m.t === 'state' && m.e) { reg.set(m.e.id, Object.assign({}, m.e, { ts: Date.now() })); scr.paint(model()); }
       else if (m.t === 'bye') { reg.delete(m.id); scr.paint(model()); }
       else if (m.t === 'floor' && m.to) { floorId = m.to; scr.paint(model()); }
-      else if (m.t === 'quiet' || m.t === 'hold' || m.t === 'cfg') scr.paint(model());
+      else if (m.t === 'quiet' || m.t === 'hold' || m.t === 'cfg' || m.t === 'solo') scr.paint(model());   // 9.9.16: solo
       // 8.1: where the voice is, approvals answered, the deck
       else if (m.t === 'reading') { if (!m.from || m.from === floorId) scr.setReading(m.r && floorP && m.r.path === floorP.path ? m.r : null); }
       else if (m.t === 'hq-reclaim') hqReclaim();   // 9.5: a chat started playing a reading
@@ -3644,7 +3666,7 @@
       else if (m.t === 'look' && SM_THEMES[m.id] && m.id !== themeId) setLook(m.id);                    // 8.9.3: "retro look"
     };
     // another tab changed a setting, the hold, or quiet mode
-    window.addEventListener('storage', (e) => { if (/^chf_(config_v1|hold|sb_quiet)$/.test(e.key || '')) scr.paint(model()); });
+    window.addEventListener('storage', (e) => { if (/^chf_(config_v1|hold|sb_quiet|solo)$/.test(e.key || '')) scr.paint(model()); });
     window.addEventListener('storage', (e) => { if (e.key === 'chf_mirror_theme' && SM_THEMES[e.newValue] && e.newValue !== themeId) setLook(e.newValue); });   // 8.9.3
     window.addEventListener('storage', (e) => { if (e.key === 'chf_mirror_view' && e.newValue !== viewIdHQ) setViewHQ(e.newValue, true); });   // 9.1
 
@@ -3708,6 +3730,18 @@
       }
       scr.paint(model());
       scr.flash(CTL_NAMES[k] + (on ? ' on' : ' off'));
+    }
+    // 9.9.16: the Solo pill. The chat you're in does the work, so its voice says who's waiting at unsolo
+    function soloFromHQ() {
+      const so = lsGet('chf_solo', { on: false }) || {}, on = !!(so.on && (so.path || so.id));
+      const f = floorId && reg.get(floorId);
+      if (f && f.on) { send({ t: 'solo-cmd', on: !on }); scr.flash(on ? 'Solo off' : 'Solo on ' + (f.name || 'this chat')); return; }
+      if (!on) { scr.flash('Open a chat first, then tap Solo'); return; }
+      const s2 = { on: false, at: Date.now() };
+      try { localStorage.setItem('chf_solo', JSON.stringify(s2)); } catch (x) {}
+      send({ t: 'solo', s: s2 });
+      scr.paint(model());
+      scr.flash('Solo off');
     }
     function togglePause() {
       if (ctlModel().held) { toggleCtl('hold'); return; }   // 8.0: the pill reads ON HOLD; a click resumes
@@ -3932,6 +3966,7 @@
       else if (a.t === 'theme') flipTheme(a.dir);
       else if (a.t === 'ctl') toggleCtl(a.k);   // 8.0
       else if (a.t === 'boot') bootRun('pill');  // 8.9
+      else if (a.t === 'solo') soloFromHQ();     // 9.9.16
     }
 
     // 8.7: HQ takes files and typing. A file dropped on a wedge or a rail lands in that chat's message
@@ -5164,6 +5199,13 @@
   // 8.0: HOLD. Shared by every Claude tab and kept across reloads until you resume
   const K_HOLD = 'chf_hold';
   let held = !!(lsJson(K_HOLD, {}) || {}).on;
+  // 9.9.16: SOLO. One chat gets you; the others keep working, silently, until you say unsolo.
+  // Shared by every Claude tab and HQ: { on, id, path, name, at }. A chat counts by its tab or its address.
+  const K_SOLO = 'chf_solo';
+  let solo = lsJson(K_SOLO, { on: false }) || { on: false };
+  const soloOn = () => !!(solo && solo.on && (solo.path || solo.id));
+  const isSoloE = (e) => !!e && soloOn() && (e.id === solo.id || (!!solo.path && e.path === solo.path));
+  const soloLets = (e) => !soloOn() || isSoloE(e);
   const quietNow = () => held || hardPause || !!quiet.quiet || Date.now() < (quiet.until || 0) || pausedTurns();
 
   const sb = { state: 'idle', since: Date.now(), seen: true, request: '', reqKey: '', urgent: false, folder: '', ask: false, ready: false, path: location.pathname };
@@ -6528,6 +6570,7 @@
   let lastPub = '', lastPubAt = 0;
   function publish(force) {
     const e = myEntry();
+    if (soloOn() && solo.id === ME && solo.path !== e.path) setSolo(Object.assign({}, solo, { path: e.path, name: e.name }));   // 9.9.16
     reg.set(ME, e);
     const sig = JSON.stringify(Object.assign({}, e, { ts: 0 }));
     if (force || sig !== lastPub || Date.now() - lastPubAt > 15000) {
@@ -6590,6 +6633,8 @@
         if (m.to === ME && pendingApprove) { pendingApprove = null; say(m.ok ? 'Denied.' : 'That request changed, so I left it alone.'); }
         break;
       case 'quiet': quiet = m.q || { quiet: false, until: 0 }; paintBoard(); break;
+      case 'solo': solo = m.s || { on: false }; paintBoard(); break;   // 9.9.16
+      case 'solo-cmd': if (isFloor() && !tabOff) runCommand(m.on ? { kind: 'solo', name: '', from: 'hq' } : { kind: 'unsolo' }); break;   // 9.9.16: HQ's pill
       case 'hold': applyHold(!!m.on); break;   // 8.0
       case 'model':   // 8.8: set this chat's model, then report back
         if (m.from !== ME) setModelHere(m.name).then((r) => post({ t: 'model-ack', to: m.from, token: m.token, id: ME, name: shortName(chatTitle()), ok: r.ok, why: r.why || '' }));
@@ -7837,7 +7882,7 @@
   async function tickAnnouncer(fromTurn) {
     if (!isFloor() || alerting || quietNow() || busy()) return;
     const now = Date.now();
-    const due = listTabs().filter((e) => e.on && (e.id === ME || gapOpen())).map((e) => {
+    const due = listTabs().filter((e) => e.on && (e.id === ME || gapOpen()) && soloLets(e)).map((e) => {   // 9.9.16: solo keeps the others quiet
       if (e.state === 'red' && (e.reqKey || e.folder)) return { e, every: RED_EVERY };
       if (e.state === 'red' && !e.seen) return { e, every: RED_EVERY };
       if (e.state === 'yellow' && !e.seen && e.id !== ME) return { e, every: YELLOW_EVERY };
@@ -7980,6 +8025,13 @@
     const lkc = lookParse(flat);   // 8.9.3, 9.0.1: HQ's look
     if (lkc) return lkc;
     if (/^(go quiet|quiet|be quiet|quiet mode|hush|shh+)$/.test(flat)) return { kind: 'quiet' };
+    // 9.9.16: solo. "solo", "solo here", "focus mode", "solo kelly"; and "unsolo", "solo off", "end solo"
+    if (UNSOLO_SAID.test(flat)) return { kind: 'unsolo' };
+    if (SOLO_HERE.test(flat)) return { kind: 'solo', name: '' };
+    {   // a name counts when it's an open chat; plain "solo X" in three words or fewer gets a "don't see it" reply
+      const sm = flat.match(SOLO_NAMED);
+      if (sm && !/^(?:off|mode|over|please)$/.test(sm[1]) && (matchTab(sm[1]) || (/^(?:go )?solo /.test(flat) && flat.split(' ').length <= 3))) return { kind: 'solo', name: sm[1] };
+    }
     // 7.2: hold the board for a few of your messages
     const BOARD = '(?:the )?(?:switchboard|switch board|switch boards|switchboards|switcheroo|switch a roo|switch roo|board|alerts?|notifications?|chimes?)';
     let pm = flat.match(new RegExp('^(?:pause|hold|mute|silence|quiet) ' + BOARD + '(?: for (?:the next )?(.+?)(?: more)?(?: prompts?| turns?| messages?| exchanges?| rounds?)?)?$'));
@@ -8065,6 +8117,11 @@
     }
     return null;
   }
+  // 9.9.16: the words for solo. Dictation hears solo as so low, soulo or sola
+  const SOLO_W = '(?:solo|so low|soulo|sola|soloe)';
+  const SOLO_HERE = new RegExp('^(?:please )?(?:' + SOLO_W + '|' + SOLO_W + ' (?:here|this|this one|this chat|me|mode|on|mode on)|go ' + SOLO_W + '|focus|focus mode|focus mode on|focus here|focus on this(?: one| chat)?|just this (?:one|chat))(?: please)?(?: over)?$');
+  const SOLO_NAMED = new RegExp('^(?:please )?(?:go )?' + SOLO_W + '(?: on| with)? (?:the |my )?(.{2,40}?)(?: chat)?(?: please)?(?: over)?$');
+  const UNSOLO_SAID = new RegExp('^(?:please )?(?:un[ -]?' + SOLO_W + '|un so low|' + SOLO_W + ' (?:off|done|mode off|is over)|(?:end|stop|exit|leave|drop|cancel|turn off) (?:the )?' + SOLO_W + '(?: mode)?|focus (?:mode )?off|(?:end|stop|exit) focus(?: mode)?|(?:everyone|everybody|all chats|the others) back(?: on| in)?|bring (?:the others|everyone|everybody) back)(?: please)?(?: over)?$');
   // 8.0: the words for HOLD and for ending it
   // 8.9.3, 9.0.1: HQ's look by voice. "next look", "previous look", "random look", or a look by name:
   // "blueprint look", "aurora theme", "change the look to tahoe", "switch to retro". A name has to be one
@@ -8301,6 +8358,8 @@
       return say('Switcheroo paused for ' + (c.n === 1 ? 'one turn.' : c.n + ' turns.'));
     }
     if (c.kind === 'quiet') { hush(); setQuiet({ quiet: true, until: 0 }); return say('Going quiet. Say wake up when you want me back.'); }
+    if (c.kind === 'solo') return soloStart(c);       // 9.9.16
+    if (c.kind === 'unsolo') return soloEnd(false);
     if (c.kind === 'hold') return setHold(true, c.meeting);     // 8.0 (8.1: meeting mode shows as MEETING)
     if (c.kind === 'unhold') return setHold(false);
     if (c.kind === 'pauseToggle') {   // 7.3: the board's button, Option Shift Q, the menu
@@ -8333,6 +8392,40 @@
   setInterval(() => { if (isFloor()) checkUpdate(false); }, 3 * 3600000);
 
   function setQuiet(q) { quiet = q; lsPut(K_QUIET, q); post({ t: 'quiet', q }); paintBoard(); }
+
+  // ---------- 9.9.16: SOLO ----------
+  // Solo picks one chat. The others are never stopped; they just don't talk, chime or pull you away until
+  // you say unsolo. Then one line says who needs you, approvals first, longest waiting next.
+  function setSolo(s) { solo = s; lsPut(K_SOLO, s); post({ t: 'solo', s }); paintBoard(); }
+  function soloStart(c) {
+    let e = myEntry();
+    if (c.name) {
+      const hit = matchTab(c.name);
+      if (!hit) return say("I don't see " + c.name + ' open. Say solo here, or open it first.');
+      e = hit;
+    }
+    const again = soloOn() && isSoloE(e);
+    setSolo({ on: true, id: e.id, path: e.path, name: e.name, at: Date.now() });
+    dlog('solo', e.name + (c.from ? ' from ' + c.from : ''));
+    if (e.id !== ME) { say('Solo on ' + e.name + '.'); handOff(e, 'solo'); return; }
+    return say(again ? 'Already solo on ' + e.name + '.' : 'Solo on ' + e.name + '. The others keep working, quietly.');
+  }
+  function soloLine(list) {
+    if (!list.length) return 'Nothing waiting.';
+    const bit = (e) => e.name + (e.state === 'red' && (e.reqKey || e.folder || e.comp) ? ' needs approval' : e.state === 'red' ? ' is urgent' : e.ask ? ' has a question' : ' needs you');
+    const top = list.slice(0, 4).map(bit), more = list.length - top.length;
+    return top.join(', then ') + (more > 0 ? ', and ' + more + ' more.' : '.');
+  }
+  async function soloEnd(quietly) {
+    if (!soloOn()) return quietly ? null : say('Solo is already off.');
+    const was = solo.name || 'that chat';
+    setSolo({ on: false, at: Date.now() });
+    dlog('solo off', was);
+    if (quietly) return;
+    const list = waitingList();
+    list.forEach((e) => nagMark(e));   // the line below covers them; the usual reminders pick up from here
+    return say('Solo off. ' + soloLine(list));
+  }
 
   // ---------- 8.8: one model for every open chat ----------
   // Each chat tab opens its own model picker and clicks the model named, then reports back.
@@ -8441,10 +8534,18 @@
     if (e.key === STORE) reloadCfg();
     else if (e.key === K_HOLD) { try { applyHold(!!(JSON.parse(e.newValue) || {}).on); } catch (x) {} }
     else if (e.key === K_QUIET) { try { quiet = JSON.parse(e.newValue) || { quiet: false, until: 0 }; paintBoard(); } catch (x) {} }
+    else if (e.key === K_SOLO) { try { solo = JSON.parse(e.newValue) || { on: false }; paintBoard(); } catch (x) {} }   // 9.9.16
   });
 
   // "next" on its own parks the chat you're in (grey) so the rotation moves on
   function jumpNext(park) {
+    if (soloOn()) {   // 9.9.16: solo. Next goes back to the solo chat, or stays put
+      if (isSoloE(myEntry())) { say('Solo is on. Say unsolo when you want the others.'); return; }
+      const se = listTabs().find((e) => e.on && isSoloE(e));
+      if (se) { handOff(se, 'solo'); return; }
+      say("Your solo chat isn't open. Say unsolo, or solo here.");
+      return;
+    }
     if (park && (sb.state === 'yellow' || (sb.state === 'red' && sb.urgent))) {
       Object.assign(sb, { state: 'idle', since: Date.now(), seen: true, urgent: false, request: '' });
       persistChat();
@@ -8731,6 +8832,7 @@
     const parts = [];
     const here = list.find((e) => e.id === floorId);
     if (here) parts.push("You're in " + here.name + '.');
+    if (soloOn()) parts.push('Solo on ' + (solo.name || 'one chat') + '.');   // 9.9.16
     list.filter((e) => e.state === 'red').forEach((e) => parts.push(e.folder ? folderLine(e) : e.name + (e.reqKey ? ' needs approval.' : ' is urgent.')));
     const ys = list.filter((e) => e.state === 'yellow' && e.id !== floorId).sort((a, b) => a.since - b.since);
     ys.slice(0, 4).forEach((e) => parts.push(e.name + (e.ask ? ' has a question, waiting ' : ' waiting ') + ago(e.since) + '.'));
@@ -8739,7 +8841,7 @@
     if (gs.length) parts.push(gs.length <= 2 ? gs.map((e) => e.name).join(' and ') + (gs.length === 1 ? ' is working.' : ' are working.') : gs.length + ' chats working.');
     const idle = list.filter((e) => e.state === 'idle').length;
     if (idle) parts.push(idle === 1 ? 'One chat idle.' : idle + ' chats idle.');
-    if (!parts.slice(here ? 1 : 0).length) parts.push('Nothing else going on.');
+    if (!parts.slice((here ? 1 : 0) + (soloOn() ? 1 : 0)).length) parts.push('Nothing else going on.');
     if (pausedTurns()) parts.push('Paused for ' + (quiet.turns > 0 ? quiet.turns + ' more ' + (quiet.turns === 1 ? 'turn.' : 'turns.') : 'this reply.'));
     else if (quiet.quiet) parts.push('Quiet mode is on.');
     else if (Date.now() < quiet.until) parts.push('Snoozed for ' + ago(Date.now() - (quiet.until - Date.now())) + ' more.');
@@ -9884,7 +9986,7 @@
   pill.title = [
     'Click: take the floor here, or hands free off and on (Option Shift H)',
     'F8, Space or squeeze: talk. Again, or pause, to send',
-    'Say next, take me to name, status, snooze 10, go quiet, wake up',
+    'Say next, take me to name, status, snooze 10, go quiet, wake up, solo, unsolo',
     'F8, Space or squeeze while Claude talks: quick note, or say stop to drop the reading',
     'F8 or squeeze while an agenda take plays: note, then it resumes',
     'Double squeeze: new chat in this project. Triple: next chat waiting. Your turn mode: Option Shift L',

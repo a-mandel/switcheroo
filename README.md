@@ -4,6 +4,10 @@ Hands free Claude in Chrome: dictation, read aloud, a switchboard for every Clau
 
 Install or update: open [switcheroo.user.js](https://raw.githubusercontent.com/a-mandel/switcheroo/main/switcheroo.user.js) with Tampermonkey installed. Tampermonkey keeps it current from this repo on its own. Say "update Switcheroo" to check right away.
 
+## Solo (9.9.16)
+
+Work with one chat for a while. Say "solo" (or "focus mode") and Switcheroo stays with the chat you're in; "solo Kelly" picks one by name and takes you there. The Solo pill on HQ's rail does the same for the chat you're in, glows while it's on, and names the chat. The other chats keep working, nothing is stopped, but they go quiet: no "needs you" lines, no chimes, no approvals read out, and "next" or a triple press stays on the solo chat (from anywhere else, it takes you back). HQ tiles still change color, so a glance still tells you. Say "unsolo", "solo off" or "end solo", or tap the pill again, and you hear one line: who needs you, approvals first, then urgent, then longest waiting. "Status" still gives the whole board.
+
 ## One talker, in order (9.9.15)
 
 Arriving in a chat either reads its last reply, if you haven't heard it, or opens the mic with its cue. Never neither, and no name line in front of a reply you've already heard. A chat that just popped gets 10 seconds to draw before Switcheroo decides. Other chats' "needs you" lines wait for a prompt: they play only in the gap after you send, while this chat works, one line per gap, and the mic doesn't open after them. HQ tiles still change color right away, and this chat's own requests are never held back. The mic cue waits until the AirPods deliver real sound, so a short cue works again, and it's skipped right after a Switcheroo line. "Over" closes the mic in under half a second, said once or twice. The room's noise is learned over a full second, and when no new words land for the pause, the mic closes however noisy the room is.
@@ -52,6 +56,9 @@ Every build is checked against this list. A build that fails any line does not s
 10. No needs you line plays before André's first send in a chat, and none is followed by the mic cue.
 11. "Over" at the end closes the mic within about half a second, said once or twice.
 12. Room noise with no new words closes the mic after the pause.
+13. With solo on, no other chat's line, chime or approval plays, and next or a triple press never leaves the solo chat.
+14. Unsolo says who needs you in priority order, once, and those chats aren't announced again right after.
+15. With solo off, every chat announces exactly as before.
 
 ## Fewer words, fewer credits (9.9.6)
 
