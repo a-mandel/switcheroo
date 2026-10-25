@@ -4,6 +4,10 @@ Hands free Claude in Chrome: dictation, read aloud, a switchboard for every Clau
 
 Install or update: open [switcheroo.user.js](https://raw.githubusercontent.com/a-mandel/switcheroo/main/switcheroo.user.js) with Tampermonkey installed. Tampermonkey keeps it current from this repo on its own. Say "update Switcheroo" to check right away.
 
+## Code ears (9.9.17)
+
+Claude Code's mic opens by itself again when Code finishes. Chrome ignores a scripted press on Code's hold mic, so the old way never took. On Code tabs Switcheroo now listens with Chrome's own speech recognition, the same ears the Swipe Deck uses, and types what you say into Code's box as you talk. No click needed, since claude.ai already has the mic. Pause, "over", send and cancel work as before, and holding Code's own mic yourself still works.
+
 ## Solo (9.9.16)
 
 Work with one chat for a while. Say "solo" (or "focus mode") and Switcheroo stays with the chat you're in; "solo Kelly" picks one by name and takes you there. The Solo pill on HQ's rail does the same for the chat you're in, glows while it's on, and names the chat. The other chats keep working, nothing is stopped, but they go quiet: no "needs you" lines, no chimes, no approvals read out, and "next" or a triple press stays on the solo chat (from anywhere else, it takes you back). HQ tiles still change color, so a glance still tells you. Say "unsolo", "solo off" or "end solo", or tap the pill again, and you hear one line: who needs you, approvals first, then urgent, then longest waiting. "Status" still gives the whole board.
@@ -58,6 +62,7 @@ Every build is checked against this list. A build that fails any line does not s
 12. Room noise with no new words closes the mic after the pause.
 13. With solo on, no other chat's line, chime or approval plays, and next or a triple press never leaves the solo chat.
 14. Unsolo says who needs you in priority order, once, and those chats aren't announced again right after.
+15. On a Claude Code tab, the mic opens by itself when Code finishes, with no click, and the words land in Code's box.
 15. With solo off, every chat announces exactly as before.
 
 ## Fewer words, fewer credits (9.9.6)
