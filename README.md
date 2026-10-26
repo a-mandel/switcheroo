@@ -4,6 +4,10 @@ Hands free Claude in Chrome: dictation, read aloud, a switchboard for every Clau
 
 Install or update: open [switcheroo.user.js](https://raw.githubusercontent.com/a-mandel/switcheroo/main/switcheroo.user.js) with Tampermonkey installed. Tampermonkey keeps it current from this repo on its own. Say "update Switcheroo" to check right away.
 
+## Code ears you can see (9.9.18)
+
+The ears opened when Code finished but heard nothing, and nothing showed they were on, so a squeeze closed them. Now Code's mic glows orange while Switcheroo listens, so a squeeze sends instead of shutting it off. The pause watcher goes by words on Code rather than opening a second mic stream beside the ears, the quiet window waits for the AirPods to wake, and every listen logs its sound, words and errors to the trouble log.
+
 ## Code ears (9.9.17)
 
 Claude Code's mic opens by itself again when Code finishes. Chrome ignores a scripted press on Code's hold mic, so the old way never took. On Code tabs Switcheroo now listens with Chrome's own speech recognition, the same ears the Swipe Deck uses, and types what you say into Code's box as you talk. No click needed, since claude.ai already has the mic. Pause, "over", send and cancel work as before, and holding Code's own mic yourself still works.
@@ -63,7 +67,8 @@ Every build is checked against this list. A build that fails any line does not s
 13. With solo on, no other chat's line, chime or approval plays, and next or a triple press never leaves the solo chat.
 14. Unsolo says who needs you in priority order, once, and those chats aren't announced again right after.
 15. On a Claude Code tab, the mic opens by itself when Code finishes, with no click, and the words land in Code's box.
-15. With solo off, every chat announces exactly as before.
+16. With solo off, every chat announces exactly as before.
+17. On a Claude Code tab, Code's mic glows while Switcheroo listens and stops glowing when it closes.
 
 ## Fewer words, fewer credits (9.9.6)
 
