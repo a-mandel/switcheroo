@@ -4,6 +4,10 @@ Hands free Claude in Chrome: dictation, read aloud, a switchboard for every Clau
 
 Install or update: open [switcheroo.user.js](https://raw.githubusercontent.com/a-mandel/switcheroo/main/switcheroo.user.js) with Tampermonkey installed. Tampermonkey keeps it current from this repo on its own. Say "update Switcheroo" to check right away.
 
+## String along (9.9.20)
+
+Need a beat mid thought? Say "string along" as the last thing before you go quiet. The mic stays hot with no pause clock and a Holding note shows. When you talk again, your words join the same message, and the usual five second quiet or "over" sends it, with string along taken out. Only at the very end counts, so "don't string her along" in a sentence is just words. A hold left for ten minutes goes back to the normal pause.
+
 ## A looser mic (9.9.19)
 
 The mic was closing 3.5 seconds after your last transcribed word, so a soft voice or a pause to think got cut off. It now waits five seconds of quiet. The level that counts as your voice also has a ceiling, so a loud second while the mic learns the room (the bell, a TV) no longer means you have to talk loud to keep it open. Room noise with no new words still closes the mic, after five seconds instead of three and a half. Want it longer or shorter? Change PAUSE_MS near the top of the listening code.
@@ -74,6 +78,8 @@ Every build is checked against this list. A build that fails any line does not s
 15. On a Claude Code tab, the mic opens by itself when Code finishes, with no click, and the words land in Code's box.
 16. With solo off, every chat announces exactly as before.
 17. On a Claude Code tab, Code's mic glows while Switcheroo listens and stops glowing when it closes.
+18. Saying string along last, then going quiet past five seconds, keeps the mic open; talking again continues the same message.
+19. A sent message never contains the words string along, and string along mid sentence does not hold the mic.
 
 ## Fewer words, fewer credits (9.9.6)
 
