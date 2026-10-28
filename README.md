@@ -4,6 +4,10 @@ Hands free Claude in Chrome: dictation, read aloud, a switchboard for every Clau
 
 Install or update: open [switcheroo.user.js](https://raw.githubusercontent.com/a-mandel/switcheroo/main/switcheroo.user.js) with Tampermonkey installed. Tampermonkey keeps it current from this repo on its own. Say "update Switcheroo" to check right away.
 
+## Spring along counts too (9.9.21)
+
+Chrome sometimes hears string along as "spring along" or "strong along". Those hold the mic now too, and come out before the message sends.
+
 ## String along (9.9.20)
 
 Need a beat mid thought? Say "string along" as the last thing before you go quiet. The mic stays hot with no pause clock and a Holding note shows. When you talk again, your words join the same message, and the usual five second quiet or "over" sends it, with string along taken out. Only at the very end counts, so "don't string her along" in a sentence is just words. A hold left for ten minutes goes back to the normal pause.
