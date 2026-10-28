@@ -4,6 +4,10 @@ Hands free Claude in Chrome: dictation, read aloud, a switchboard for every Clau
 
 Install or update: open [switcheroo.user.js](https://raw.githubusercontent.com/a-mandel/switcheroo/main/switcheroo.user.js) with Tampermonkey installed. Tampermonkey keeps it current from this repo on its own. Say "update Switcheroo" to check right away.
 
+## A looser mic (9.9.19)
+
+The mic was closing 3.5 seconds after your last transcribed word, so a soft voice or a pause to think got cut off. It now waits five seconds of quiet. The level that counts as your voice also has a ceiling, so a loud second while the mic learns the room (the bell, a TV) no longer means you have to talk loud to keep it open. Room noise with no new words still closes the mic, after five seconds instead of three and a half. Want it longer or shorter? Change PAUSE_MS near the top of the listening code.
+
 ## Code ears you can see (9.9.18)
 
 The ears opened when Code finished but heard nothing, and nothing showed they were on, so a squeeze closed them. Now Code's mic glows orange while Switcheroo listens, so a squeeze sends instead of shutting it off. The pause watcher goes by words on Code rather than opening a second mic stream beside the ears, the quiet window waits for the AirPods to wake, and every listen logs its sound, words and errors to the trouble log.
@@ -63,7 +67,8 @@ Every build is checked against this list. A build that fails any line does not s
 9. Arriving in a chat either reads the unheard reply or plays the cue, never neither.
 10. No needs you line plays before André's first send in a chat, and none is followed by the mic cue.
 11. "Over" at the end closes the mic within about half a second, said once or twice.
-12. Room noise with no new words closes the mic after the pause.
+12. Room noise with no new words closes the mic after the pause (five seconds).
+18. A soft voice with short thinking pauses keeps the mic open; five seconds of quiet closes it.
 13. With solo on, no other chat's line, chime or approval plays, and next or a triple press never leaves the solo chat.
 14. Unsolo says who needs you in priority order, once, and those chats aren't announced again right after.
 15. On a Claude Code tab, the mic opens by itself when Code finishes, with no click, and the words land in Code's box.
