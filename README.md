@@ -4,6 +4,10 @@ Hands free Claude in Chrome: dictation, read aloud, a switchboard for every Clau
 
 Install or update: open [switcheroo.user.js](https://raw.githubusercontent.com/a-mandel/switcheroo/main/switcheroo.user.js) with Tampermonkey installed. Tampermonkey keeps it current from this repo on its own. Say "update Switcheroo" to check right away.
 
+## Claude's voice fills in (9.9.22)
+
+Out of ElevenLabs credits? Claude's own read aloud reads your replies until ElevenLabs is back, instead of leaving them on screen. Still one talker at a time, and the Mac voice stays off. Turn it off from the Tampermonkey menu: Claude read aloud when ElevenLabs is out.
+
 ## Spring along counts too (9.9.21)
 
 Chrome sometimes hears string along as "spring along" or "strong along". Those hold the mic now too, and come out before the message sends.
