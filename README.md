@@ -4,6 +4,10 @@ Hands free Claude in Chrome: dictation, read aloud, a switchboard for every Clau
 
 Install or update: open [switcheroo.user.js](https://raw.githubusercontent.com/a-mandel/switcheroo/main/switcheroo.user.js) with Tampermonkey installed. Tampermonkey keeps it current from this repo on its own. Say "update Switcheroo" to check right away.
 
+## Claude Code waits its turn (9.9.23)
+
+After you send on a Claude Code tab, the mic stays cold. It won't go hot for at least twelve seconds, and not until Code has been quiet for five straight seconds, so a pause between Code's steps no longer opens it. Code's reply is read back first, then the mic opens. If a reply lands while the mic is open, it's read as soon as the mic closes.
+
 ## Claude's voice fills in (9.9.22)
 
 Out of ElevenLabs credits? Claude's own read aloud reads your replies until ElevenLabs is back, instead of leaving them on screen. Still one talker at a time, and the Mac voice stays off. Turn it off from the Tampermonkey menu: Claude read aloud when ElevenLabs is out.
@@ -88,6 +92,8 @@ Every build is checked against this list. A build that fails any line does not s
 17. On a Claude Code tab, Code's mic glows while Switcheroo listens and stops glowing when it closes.
 18. Saying string along last, then going quiet past five seconds, keeps the mic open; talking again continues the same message.
 19. A sent message never contains the words string along, and string along mid sentence does not hold the mic.
+20. On a Claude Code tab, the mic stays cold after a send until Code finishes, Code's reply is read aloud, then the mic opens.
+21. A Code reply that lands while the mic is open is read once the mic closes.
 
 ## Fewer words, fewer credits (9.9.6)
 
