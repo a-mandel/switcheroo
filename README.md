@@ -4,6 +4,14 @@ Hands free Claude in Chrome: dictation, read aloud, a switchboard for every Clau
 
 Install or update: open [switcheroo.user.js](https://raw.githubusercontent.com/a-mandel/switcheroo/main/switcheroo.user.js) with Tampermonkey installed. Tampermonkey keeps it current from this repo on its own. Say "update Switcheroo" to check right away.
 
+## The split: replies free, lines in ElevenLabs (9.9.26)
+
+Replies are what used up the ElevenLabs credits, so Claude's own read aloud now reads them, at no cost. ElevenLabs keeps the short lines: who needs you, the brief, the mic cues. Claude's voice reads the whole reply, so the 60 word cap and the skip code rules don't apply to it, and updates mid task aren't read. To put replies back on ElevenLabs, use "ElevenLabs reads replies too" in the Tampermonkey menu.
+
+## Flash voices (9.9.25)
+
+ElevenLabs reads on Flash v2.5, about half the credits of the natural model. "ElevenLabs model: Flash or natural" in the Tampermonkey menu switches back. Voice cues stay natural since each is made once.
+
 ## Switchboard voices stand in (9.9.24)
 
 When ElevenLabs is out of credits, Switchboard lines (who needs you, and the rest) speak in the Mac voice instead of only showing on screen. They still wait their turn, so nothing talks over a reading or your mic. Replies still go to Claude's read aloud. Turn it off from the Tampermonkey menu.
