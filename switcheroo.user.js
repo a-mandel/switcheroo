@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Claude Hands Free Text Mode
 // @namespace    andre.mandel
-// @version      9.9.26
-// @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land. 8.8: one model for every open chat, by voice ("all chats to Sonnet") or from the HQ model pills. 8.9: Boot. The Switcheroo Chrome launcher opens HQ with your 10 most recent chats behind it and the mic ready, no clicks; or say "boot up". 8.9.1: "stop, new chat in Alder" works: a lead in no longer hides a command, and new chat finds every project, not just the sidebar. 8.9.2: the mic bell is now the Long bell, struck three times so the AirPods can't clip it. 8.9.3: Retro, a third HQ look: sunset sky, a neon floor rolling toward you, chrome type. Click Look on the control panel, or say "retro look". 9.0: Chief of Staff joins HQ as the COS wedge and panel, and a fourth look, night drive, from the board. Say chief for the brief, what needs me for Start Here, done two to close a thread, undo to reopen it. 9.0.1: fifty looks. Each push of Look steps to the next one (right click goes back); say "next look", "previous look", "random look" or a look by name. And "next, over" heard as "next server" still jumps. 9.1: the CHxTLD Outbox joins HQ as the OUT wedge, and a click opens your drafts over the pie to read and edit; edits save back to the Outbox. Say "outbox" to hear them, "read draft two" to hear one. Nothing sends from HQ. 9.2: a View pill with eleven ways to draw your chats, a Look pill with a picker and favorites, two hand sketched looks, and Chief of Staff one tap away with Open chat on every Start Here card. 9.3: looks run dark to light, so stepping never jumps from black to white, and a change fades instead of cutting. Retro Sky, a retro futurist look whose sky follows the time of day. Follow the clock picks from your favorites by daylight; say "follow the clock". 9.4: a second Outbox, ANDRÉ MANDEL, on its own letterhead beside the CHxTLD one, both one tap away on the pill rail ("mandel outbox"); and ten new looks: Trace, Marker, Charcoal, Chalkboard, Funnies, Space Opera, Overdrive, Dime Novel, Desert Neon, Bunker. 9.4.1: Chief of Staff wears HQ's look; Night drive keeps the board's own. 9.4.3: the model pills sit in the control panel's header, so nothing falls off the bottom of HQ, and a short window scales HQ down instead of cutting it off. 9.5: HQ holds the AirPods press, so the chats window can be minimized. 9.6: double press is a new chat in this project, triple press is the next chat waiting. 9.7: a voice per project: Mississippi Nikola, Walsh Hank, Haynes Jamieson, Kelly Samantha, and Eleanor for any other chat. 9.7.1: the natural ElevenLabs model, normal speed, and HQ's own lines keep your old voice. 9.7.2: mic sound 22, Voices: a woman's voice says one of 24 short lines when the mic opens, a different one each time. 9.7.3: every chat back to Annika; per project voices are off until you add one. 9.7.4: one voice everywhere, picked from your ElevenLabs library by name. 9.9.4: mute, a fourth rule for sites whose player hides from Switcheroo; with the Switcheroo Tabs extension the whole tab mutes while we talk. 9.9.5: the Outboxes open only when you tap their pills, and an ElevenLabs refusal says why and which key. 9.9.6: the voice never reads code, the gray tool and status lines, tables, paths, file names or raw links, and replies stop after the first paragraph (about 60 words) to ask "Keep going?"; yes for the rest, no or silence to stop. 9.9.7: one voice. Only ElevenLabs talks: the Mac voice and Claude's own read aloud no longer step in when ElevenLabs fails (a line shows on screen instead), and a talk lock across every Claude tab and HQ means nothing starts while something else is speaking. Backup voices come back from the Tampermonkey menu if you ever want them. 9.9.8: every reply is read once and only once. A reply that keeps writing after a tool step is read when the new text lands instead of going quiet, and nothing already voiced, by read along or an earlier pass, is voiced again. 9.9.9: a new chat opens its mic again: a paused reading's Resume button in a background chat no longer holds the one voice lock, a new chat's mic opens without waiting on lines, and no line plays into an open mic. 9.9.10: YouTube pauses, never just turns down: whenever you talk or Claude talks to you, live or not, whatever the Other tabs pill says. Sports sites still only turn down. 9.9.11: voice cues, from 24 lines to 155, mostly flirty; the new ones play first, and no line repeats until every one has had a turn. 9.9.12: a reply is never read twice when Claude swaps it for a fresh copy, which happened most when HQ wasn't the tab on top. 9.9.13: Claude Code tabs. The press and hold mic opens and closes like a squeeze, Code tabs go green while Claude works and chime when it's your turn, and each tile wears its session's name instead of Claude Code. 9.9.14: forty voices for the voice cues instead of two, never the same voice twice running; and a Claude Code tab opens the mic by itself when Code finishes. 9.9.15: one talker, in order: arriving reads an unheard reply or just opens the mic, other chats' needs you lines wait for the gap after you send, the mic cue waits for live sound, over closes in under half a second, and room noise no longer holds the mic open. 9.9.16: Solo. Work with one chat for a while: the others keep working but go quiet, no lines, chimes or jumps, and when you say unsolo you hear who needs you, in order. Say solo, solo Kelly, or tap the Solo pill on HQ. 9.9.17: Claude Code's mic opens by itself again. Switcheroo listens on Code tabs with Chrome's own speech recognition and types into Code's box, so no click is needed; pause, over and send work as before. 9.9.18: you can see Code's ears: Code's mic glows while Switcheroo listens, so a squeeze never turns it off by mistake; the ears no longer share the mic with a second stream, and every listen is logged. 9.9.19: a looser mic: five seconds of quiet before it closes, and a soft voice counts as talking however loud the room was when it opened. 9.9.20: string along. Say it as the last thing before you go quiet and the mic holds, hot, until you talk again; your new words join the same message and string along never goes out. 9.9.21: spring along and strong along count too, since that's how Chrome hears it sometimes. 9.9.22: Claude's own read aloud is back as the stand in. When ElevenLabs is out of credits, off or not answering, Claude's read aloud reads the reply instead of leaving it on screen; still one talker at a time, and the Mac voice stays off. Turn it off from the Tampermonkey menu. 9.9.23: Claude Code waits its turn. After you send, the mic stays cold until Code has truly finished (five quiet seconds, never sooner than twelve after the send), Code's reply is read back first, and only then does the mic go hot. A reply that lands while the mic is open is read as soon as it closes. 9.9.24: the Switchboard voices are back when ElevenLabs is out. Lines like who needs you speak in the Mac voice instead of only showing on screen, one talker at a time; turn it off from the Tampermonkey menu. 9.9.25: the fast ElevenLabs model, Flash v2.5, reads replies and lines for about half the credits. The natural model is one click away in the Tampermonkey menu; the voice cues stay natural since each is made once. 9.9.26: the split. Claude's own read aloud reads replies, free, and ElevenLabs keeps the short lines: who needs you, the brief, the cues. Replies in ElevenLabs come back from the Tampermonkey menu.
+// @version      9.9.27
+// @description  Hands free dictation and read aloud for claude.ai, an agenda review player, and the Switchboard: a traffic light tile for every Claude tab, chimes when a chat needs you, voice commands to move between chats, and a squeeze to allow once. 7.9: ballot cards by voice, and Swipe Deck hands free. 8.0: Hold stops every response in every tab until you resume, and screen mode has a control panel. 8.1: Switcheroo. Screen mode (HQ) answers approvals and question cards with a click, runs the Swipe Deck over the pie, glows the sentence being read, and the pie's center plays and pauses everything; arriving in a chat reads its last reply. 8.3: videos in other tabs pause while you and Claude talk, and play on in the quiet. 8.7: HQ takes files and typing, and updates Claude sends mid task are read as they land. 8.8: one model for every open chat, by voice ("all chats to Sonnet") or from the HQ model pills. 8.9: Boot. The Switcheroo Chrome launcher opens HQ with your 10 most recent chats behind it and the mic ready, no clicks; or say "boot up". 8.9.1: "stop, new chat in Alder" works: a lead in no longer hides a command, and new chat finds every project, not just the sidebar. 8.9.2: the mic bell is now the Long bell, struck three times so the AirPods can't clip it. 8.9.3: Retro, a third HQ look: sunset sky, a neon floor rolling toward you, chrome type. Click Look on the control panel, or say "retro look". 9.0: Chief of Staff joins HQ as the COS wedge and panel, and a fourth look, night drive, from the board. Say chief for the brief, what needs me for Start Here, done two to close a thread, undo to reopen it. 9.0.1: fifty looks. Each push of Look steps to the next one (right click goes back); say "next look", "previous look", "random look" or a look by name. And "next, over" heard as "next server" still jumps. 9.1: the CHxTLD Outbox joins HQ as the OUT wedge, and a click opens your drafts over the pie to read and edit; edits save back to the Outbox. Say "outbox" to hear them, "read draft two" to hear one. Nothing sends from HQ. 9.2: a View pill with eleven ways to draw your chats, a Look pill with a picker and favorites, two hand sketched looks, and Chief of Staff one tap away with Open chat on every Start Here card. 9.3: looks run dark to light, so stepping never jumps from black to white, and a change fades instead of cutting. Retro Sky, a retro futurist look whose sky follows the time of day. Follow the clock picks from your favorites by daylight; say "follow the clock". 9.4: a second Outbox, ANDRÉ MANDEL, on its own letterhead beside the CHxTLD one, both one tap away on the pill rail ("mandel outbox"); and ten new looks: Trace, Marker, Charcoal, Chalkboard, Funnies, Space Opera, Overdrive, Dime Novel, Desert Neon, Bunker. 9.4.1: Chief of Staff wears HQ's look; Night drive keeps the board's own. 9.4.3: the model pills sit in the control panel's header, so nothing falls off the bottom of HQ, and a short window scales HQ down instead of cutting it off. 9.5: HQ holds the AirPods press, so the chats window can be minimized. 9.6: double press is a new chat in this project, triple press is the next chat waiting. 9.7: a voice per project: Mississippi Nikola, Walsh Hank, Haynes Jamieson, Kelly Samantha, and Eleanor for any other chat. 9.7.1: the natural ElevenLabs model, normal speed, and HQ's own lines keep your old voice. 9.7.2: mic sound 22, Voices: a woman's voice says one of 24 short lines when the mic opens, a different one each time. 9.7.3: every chat back to Annika; per project voices are off until you add one. 9.7.4: one voice everywhere, picked from your ElevenLabs library by name. 9.9.4: mute, a fourth rule for sites whose player hides from Switcheroo; with the Switcheroo Tabs extension the whole tab mutes while we talk. 9.9.5: the Outboxes open only when you tap their pills, and an ElevenLabs refusal says why and which key. 9.9.6: the voice never reads code, the gray tool and status lines, tables, paths, file names or raw links, and replies stop after the first paragraph (about 60 words) to ask "Keep going?"; yes for the rest, no or silence to stop. 9.9.7: one voice. Only ElevenLabs talks: the Mac voice and Claude's own read aloud no longer step in when ElevenLabs fails (a line shows on screen instead), and a talk lock across every Claude tab and HQ means nothing starts while something else is speaking. Backup voices come back from the Tampermonkey menu if you ever want them. 9.9.8: every reply is read once and only once. A reply that keeps writing after a tool step is read when the new text lands instead of going quiet, and nothing already voiced, by read along or an earlier pass, is voiced again. 9.9.9: a new chat opens its mic again: a paused reading's Resume button in a background chat no longer holds the one voice lock, a new chat's mic opens without waiting on lines, and no line plays into an open mic. 9.9.10: YouTube pauses, never just turns down: whenever you talk or Claude talks to you, live or not, whatever the Other tabs pill says. Sports sites still only turn down. 9.9.11: voice cues, from 24 lines to 155, mostly flirty; the new ones play first, and no line repeats until every one has had a turn. 9.9.12: a reply is never read twice when Claude swaps it for a fresh copy, which happened most when HQ wasn't the tab on top. 9.9.13: Claude Code tabs. The press and hold mic opens and closes like a squeeze, Code tabs go green while Claude works and chime when it's your turn, and each tile wears its session's name instead of Claude Code. 9.9.14: forty voices for the voice cues instead of two, never the same voice twice running; and a Claude Code tab opens the mic by itself when Code finishes. 9.9.15: one talker, in order: arriving reads an unheard reply or just opens the mic, other chats' needs you lines wait for the gap after you send, the mic cue waits for live sound, over closes in under half a second, and room noise no longer holds the mic open. 9.9.16: Solo. Work with one chat for a while: the others keep working but go quiet, no lines, chimes or jumps, and when you say unsolo you hear who needs you, in order. Say solo, solo Kelly, or tap the Solo pill on HQ. 9.9.17: Claude Code's mic opens by itself again. Switcheroo listens on Code tabs with Chrome's own speech recognition and types into Code's box, so no click is needed; pause, over and send work as before. 9.9.18: you can see Code's ears: Code's mic glows while Switcheroo listens, so a squeeze never turns it off by mistake; the ears no longer share the mic with a second stream, and every listen is logged. 9.9.19: a looser mic: five seconds of quiet before it closes, and a soft voice counts as talking however loud the room was when it opened. 9.9.20: string along. Say it as the last thing before you go quiet and the mic holds, hot, until you talk again; your new words join the same message and string along never goes out. 9.9.21: spring along and strong along count too, since that's how Chrome hears it sometimes. 9.9.22: Claude's own read aloud is back as the stand in. When ElevenLabs is out of credits, off or not answering, Claude's read aloud reads the reply instead of leaving it on screen; still one talker at a time, and the Mac voice stays off. Turn it off from the Tampermonkey menu. 9.9.23: Claude Code waits its turn. After you send, the mic stays cold until Code has truly finished (five quiet seconds, never sooner than twelve after the send), Code's reply is read back first, and only then does the mic go hot. A reply that lands while the mic is open is read as soon as it closes. 9.9.24: the Switchboard voices are back when ElevenLabs is out. Lines like who needs you speak in the Mac voice instead of only showing on screen, one talker at a time; turn it off from the Tampermonkey menu. 9.9.25: the fast ElevenLabs model, Flash v2.5, reads replies and lines for about half the credits. The natural model is one click away in the Tampermonkey menu; the voice cues stay natural since each is made once. 9.9.26: the split. Claude's own read aloud reads replies, free, and ElevenLabs keeps the short lines: who needs you, the brief, the cues. Replies in ElevenLabs come back from the Tampermonkey menu. 9.9.27: Kokoro, a free voice engine on your Mac. Replies and Switchboard lines speak in a Kokoro voice you pick, with no credits; the saved voice cues play as before. If Kokoro isn't running, lines fall back to ElevenLabs or the Mac voice and replies to Claude's read aloud.
 // @match        https://claude.ai/*
 // @match        *://*/*
 // @grant        GM_xmlhttpRequest
@@ -18,6 +18,8 @@
 // @connect      dropboxusercontent.com
 // @connect      fonts.googleapis.com
 // @connect      fonts.gstatic.com
+// @connect      127.0.0.1
+// @connect      localhost
 // @connect      *
 // @sandbox      JavaScript
 // @updateURL    https://raw.githubusercontent.com/a-mandel/switcheroo/main/switcheroo.user.js
@@ -4868,7 +4870,7 @@
     if (!(await talkTurn(30000, true))) { dlog('line dropped, something else kept talking', text); return false; }
     if (held || !ownsFloor()) return false;
     if (buttons('stop').length) { dlog('line dropped, your mic is open', text); return false; }   // 9.9.9: never into an open mic
-    if (elReady()) {                      // 5.4: the Switchboard talks in the ElevenLabs voice
+    if (kokoroReady() || elReady()) {     // 5.4: the Switchboard talks in the ElevenLabs voice (9.9.27: Kokoro first, free)
       const r = await speakEl(text);
       if (r !== null) return r;           // null means ElevenLabs couldn't make it
     }
@@ -7517,8 +7519,50 @@
     return say((j === i && dir !== 0 ? 'That is as ' + (dir > 0 ? 'fast' : 'slow') + ' as it goes. ' : '') + 'Voice at ' + x + ' speed.');
   }
   const elReady = () => cfg.el !== false && !!elKey() && Date.now() > elDownUntil && typeof GM_xmlhttpRequest === 'function';
-  // 9.9.26: replies are what spend the credits, so Claude's read aloud reads them; ElevenLabs keeps the short lines
-  const elReplyReady = () => cfg.elReplies === true && elReady();
+  // 9.9.27: Kokoro, a free voice engine running on André's Mac (Kokoro-FastAPI on port 8880).
+  // When it answers, replies and Switchboard lines go to it first, so nothing spends ElevenLabs credits.
+  const KOKORO = 'http://127.0.0.1:8880';
+  let kokoroUp = false, kokoroDownUntil = 0;
+  const kokoroVoice = () => (typeof cfg.kokoroVoice === 'string' && cfg.kokoroVoice ? cfg.kokoroVoice : 'af_heart');
+  const kokoroReady = () => cfg.kokoro !== false && kokoroUp && Date.now() > kokoroDownUntil && typeof GM_xmlhttpRequest === 'function';
+  function kokoroGet(path, ms) {
+    return new Promise((resolve, reject) => {
+      try {
+        GM_xmlhttpRequest({
+          method: 'GET', url: KOKORO + path, headers: { Accept: 'application/json' }, responseType: 'json', timeout: ms || 3000,
+          onload: (r) => {
+            if (!(r.status >= 200 && r.status < 300)) return reject({ status: r.status, kokoro: true });
+            try { resolve(typeof r.response === 'string' ? JSON.parse(r.response) : (r.response || JSON.parse(r.responseText || 'null'))); }
+            catch (e) { reject({ status: 1, kokoro: true }); }
+          },
+          onerror: () => reject({ status: 0, kokoro: true }), ontimeout: () => reject({ status: 0, kokoro: true })
+        });
+      } catch (e) { reject({ status: 0, kokoro: true }); }
+    });
+  }
+  async function kokoroPing() {
+    if (cfg.kokoro === false || typeof GM_xmlhttpRequest !== 'function') return;
+    const was = kokoroUp;
+    try { await kokoroGet('/v1/audio/voices', 3000); kokoroUp = true; }
+    catch (e) { kokoroUp = false; }
+    if (was !== kokoroUp) dlog(kokoroUp ? 'Kokoro is up' : 'Kokoro is down');
+  }
+  try { if (window.top === window.self) { kokoroPing(); setInterval(kokoroPing, 30000); } } catch (e) {}   // claude.ai tabs only (non claude sites return near the top)
+  function kokoroRequest(text) {
+    return new Promise((resolve, reject) => {
+      GM_xmlhttpRequest({
+        method: 'POST', url: KOKORO + '/v1/audio/speech',
+        headers: { 'Content-Type': 'application/json', Accept: 'audio/mpeg' },
+        data: JSON.stringify({ model: 'kokoro', input: text, voice: kokoroVoice(), response_format: 'mp3', speed: 1 }),
+        responseType: 'blob', timeout: 30000,
+        onload: (r) => (r.status >= 200 && r.status < 300 && r.response ? resolve(r.response) : reject({ status: r.status || 1, kokoro: true })),
+        onerror: () => reject({ status: 0, kokoro: true }), ontimeout: () => reject({ status: 0, kokoro: true })
+      });
+    });
+  }
+  // 9.9.26: replies spend the credits, so ElevenLabs reads them only when that's switched back on
+  // 9.9.27: Kokoro reads them free whenever it's running
+  const elReplyReady = () => kokoroReady() || (cfg.elReplies === true && elReady());
   // 9.9.22: Claude's own read aloud stands in for replies when ElevenLabs is out (on unless you turn it off).
   // The Mac voice still needs backup voices on.
   const claudeStandIn = () => cfg.claudeVoice !== false || cfg.backupVoice === true;
@@ -7631,6 +7675,14 @@
   }
 
   async function elFetch(text, stamps) {
+    if (kokoroReady()) {   // 9.9.27: the free voice on the Mac first
+      try { return await kokoroRequest(text); }
+      catch (e) {
+        kokoroUp = false; kokoroDownUntil = Date.now() + 60000;
+        dlog('Kokoro failed', 'status ' + ((e && e.status) || 0));
+        if (!elReady() || (stamps && cfg.elReplies !== true)) throw e;   // a reply goes to Claude's read aloud, not to the credits
+      }
+    }
     const key = elKey(), voice = elVoice(stamps);   // stamps means a reply: it reads in its project's voice
     const go = async (v) => {
       if (!stamps || elStampsOff) return elRequest(text, v, key, false);
@@ -7659,6 +7711,10 @@
   }
   function elFailed(e) {
     const st = (e && e.status) || 0;
+    if (e && e.kokoro) {   // 9.9.27: Kokoro, not ElevenLabs; ElevenLabs keeps its own clock
+      toast("Kokoro on your Mac isn't answering." + (claudeStandIn() ? " Claude's read aloud is reading for now." : ''));
+      return;
+    }
     // 9.9.7: a 429 is ElevenLabs saying "one at a time", not a dead key, so it only sits out a few seconds
     elDownUntil = Date.now() + (st === 401 || st === 402 ? 10 * 60000 : st === 429 ? 15000 : 60000);
     const after = claudeStandIn() ? " Claude's read aloud is reading for now." : ' Switcheroo stays quiet until it is back.';   // 9.9.22
@@ -7719,6 +7775,26 @@
       GM_registerMenuCommand('Backup voices when ElevenLabs is out, on or off', () => {
         cfg.backupVoice = cfg.backupVoice !== true; save(cfg);
         toast(cfg.backupVoice ? 'Backups on: the Mac voice and Claude read aloud fill in when ElevenLabs is out' : 'One voice: only ElevenLabs talks. When it is out, lines and replies stay on screen.');
+      });
+      // 9.9.27: Kokoro, the free voice on the Mac
+      GM_registerMenuCommand('Kokoro voice on or off', () => {
+        cfg.kokoro = cfg.kokoro === false; save(cfg);
+        if (cfg.kokoro !== false) { kokoroDownUntil = 0; kokoroPing(); }
+        toast(cfg.kokoro !== false ? 'Kokoro on: replies and lines speak free on your Mac when it is running' : 'Kokoro off');
+      });
+      GM_registerMenuCommand('Kokoro: pick a voice', async () => {
+        let list = [];
+        try { const j = await kokoroGet('/v1/audio/voices', 5000); list = ((j && j.voices) || []).map((v) => (typeof v === 'string' ? v : v && v.id)).filter(Boolean); }
+        catch (e) { return toast("Kokoro isn't running on this Mac. Run the Kokoro setup line, then try again."); }
+        list = list.filter((v) => /^[ab][fm]_/.test(v) && !/_v0/.test(v));   // American and British English
+        if (!list.length) return toast('Kokoro sent no English voices.');
+        const pick = window.prompt('Pick a Kokoro voice by number. f is a woman, m is a man; a is American, b is British. Now: ' + kokoroVoice() + '\n\n' + list.map((v, i) => (i + 1) + '. ' + v).join('\n'), '');
+        if (pick === null) return;
+        const i = parseInt(String(pick).trim(), 10) - 1;
+        if (!(i >= 0 && i < list.length)) return toast('No voice picked.');
+        cfg.kokoroVoice = list[i]; save(cfg);
+        try { elLines.clear(); } catch (e) {}
+        toast('Kokoro now speaks as ' + list[i] + '. Reload your chat tabs.');
       });
       // 9.9.26: off by default. On, ElevenLabs reads replies again, at full credit cost
       GM_registerMenuCommand('ElevenLabs reads replies too, on or off', () => {

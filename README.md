@@ -4,6 +4,16 @@ Hands free Claude in Chrome: dictation, read aloud, a switchboard for every Clau
 
 Install or update: open [switcheroo.user.js](https://raw.githubusercontent.com/a-mandel/switcheroo/main/switcheroo.user.js) with Tampermonkey installed. Tampermonkey keeps it current from this repo on its own. Say "update Switcheroo" to check right away.
 
+## Kokoro, a free voice on your Mac (9.9.27)
+
+Kokoro is an open source voice engine that runs on your Mac, so replies and Switchboard lines speak without spending ElevenLabs credits. Set it up once in Terminal; it starts at every login:
+
+```
+curl -fsSL https://raw.githubusercontent.com/a-mandel/switcheroo/main/mac/kokoro.sh | bash
+```
+
+Pick the voice from the Tampermonkey menu with "Kokoro: pick a voice". The saved voice cues play as before. If Kokoro isn't running, lines fall back to ElevenLabs or the Mac voice, and replies to Claude's read aloud.
+
 ## The split: replies free, lines in ElevenLabs (9.9.26)
 
 Replies are what used up the ElevenLabs credits, so Claude's own read aloud now reads them, at no cost. ElevenLabs keeps the short lines: who needs you, the brief, the mic cues. Claude's voice reads the whole reply, so the 60 word cap and the skip code rules don't apply to it, and updates mid task aren't read. To put replies back on ElevenLabs, use "ElevenLabs reads replies too" in the Tampermonkey menu.
